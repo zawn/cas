@@ -1,14 +1,17 @@
 package org.apereo.cas;
 
 import com.google.common.base.Throwables;
+import org.apache.commons.io.IOUtils;
 import org.apereo.cas.util.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.VfsResource;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.ZonedDateTime;
+import java.util.Properties;
 
 /**
  * Class that exposes the CAS version. Fetches the "Implementation-Version"
@@ -19,7 +22,55 @@ import java.time.ZonedDateTime;
  */
 public class CasVersion {
     private static Logger LOGGER = LoggerFactory.getLogger(CasVersion.class);
-    
+
+    private static final String VERSION;
+    private static final ZonedDateTime DATE_TIME;
+
+    static {
+        try {
+            final Class clazz = CasVersion.class;
+            final URL resource = clazz.getResource(clazz.getSimpleName() + ".class");
+            final String[] split = clazz.getName().split("\\.");
+            InputStream inputStream = null;
+            final Properties properties = new Properties();
+            try {
+                final StringBuilder relativeUrl = new StringBuilder();
+                for (int i = 0; i < split.length; i++) {
+                    relativeUrl.append("../");
+                }
+                relativeUrl.append("META-INF/MANIFEST.MF");
+                final URL url = new URL(resource, relativeUrl.toString());
+                inputStream = url.openStream();
+                properties.load(inputStream);
+            } finally {
+                if (inputStream != null) {
+                    IOUtils.closeQuietly(inputStream);
+                }
+            }
+            VERSION = CasVersion.class.getPackage().getImplementationVersion() + "_" + properties.getProperty("Change", "null");
+
+            long lastModified = 0;
+            if ("file".equals(resource.getProtocol())) {
+                lastModified = new File(resource.toURI()).lastModified();
+            } else if ("jar".equals(resource.getProtocol())) {
+                final String path = resource.getPath();
+                final File file = new File(path.substring(5, path.indexOf('!')));
+                lastModified = file.lastModified();
+            } else if ("vfs".equals(resource.getProtocol())) {
+                final File file = new VfsResource(resource.openConnection().getContent()).getFile();
+                lastModified = file.lastModified();
+            }
+            if (lastModified != 0) {
+                DATE_TIME = DateTimeUtils.zonedDateTimeOf(lastModified);
+            } else {
+                final String property = properties.getProperty("Implementation-Date");
+                DATE_TIME = DateTimeUtils.zonedDateTimeOf(property);
+            }
+        } catch (final Exception e) {
+            throw Throwables.propagate(e);
+        }
+    }
+
     /**
      * Private constructor for CasVersion. You should not be able to instantiate
      * this class.
@@ -33,38 +84,15 @@ public class CasVersion {
      * @see java.lang.Package#getImplementationVersion
      */
     public static String getVersion() {
-        return CasVersion.class.getPackage().getImplementationVersion();
+        return VERSION;
     }
 
     /**
      * Gets last modified date/time for the module.
+     *
      * @return the date/time
      */
     public static ZonedDateTime getDateTime() {
-        try {
-            final Class clazz = CasVersion.class;
-            final URL resource = clazz.getResource(clazz.getSimpleName() + ".class");
-            
-            if ("file".equals(resource.getProtocol())) {
-                return DateTimeUtils.zonedDateTimeOf(new File(resource.toURI()).lastModified());
-            }
-            
-            if ("jar".equals(resource.getProtocol())) {
-                final String path = resource.getPath();
-                final File file = new File(path.substring(5, path.indexOf('!')));
-                return DateTimeUtils.zonedDateTimeOf(file.lastModified());
-            } 
-            
-            if ("vfs".equals(resource.getProtocol())) {
-                final File file = new VfsResource(resource.openConnection().getContent()).getFile();
-                return DateTimeUtils.zonedDateTimeOf(file.lastModified());
-            }
-            
-            LOGGER.warn("Unhandled url protocol: {} resource: {}", resource.getProtocol(), resource);
-            return ZonedDateTime.now();
-            
-        } catch (final Exception e) {
-            throw Throwables.propagate(e);
-        }
+        return DATE_TIME;
     }
 }
