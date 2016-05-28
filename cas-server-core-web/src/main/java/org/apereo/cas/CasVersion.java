@@ -30,10 +30,10 @@ public class CasVersion {
         try {
             final Class clazz = CasVersion.class;
             final URL resource = clazz.getResource(clazz.getSimpleName() + ".class");
-            final String[] split = clazz.getName().split("\\.");
-            InputStream inputStream = null;
             final Properties properties = new Properties();
+            InputStream inputStream = null;
             try {
+                final String[] split = clazz.getName().split("\\.");
                 final StringBuilder relativeUrl = new StringBuilder();
                 for (int i = 0; i < split.length; i++) {
                     relativeUrl.append("../");
@@ -42,12 +42,15 @@ public class CasVersion {
                 final URL url = new URL(resource, relativeUrl.toString());
                 inputStream = url.openStream();
                 properties.load(inputStream);
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
             } finally {
                 if (inputStream != null) {
                     IOUtils.closeQuietly(inputStream);
                 }
             }
-            VERSION = CasVersion.class.getPackage().getImplementationVersion() + "_" + properties.getProperty("Change", "null");
+            String change = properties.getProperty("Change", null);
+            VERSION = CasVersion.class.getPackage().getImplementationVersion() + (change == null ? "" : ("_" + change));
 
             long lastModified = 0;
             if ("file".equals(resource.getProtocol())) {
@@ -63,8 +66,8 @@ public class CasVersion {
             if (lastModified != 0) {
                 DATE_TIME = DateTimeUtils.zonedDateTimeOf(lastModified);
             } else {
-                final String property = properties.getProperty("Implementation-Date");
-                DATE_TIME = DateTimeUtils.zonedDateTimeOf(property);
+                final String property = properties.getProperty("Implementation-Date", null);
+                DATE_TIME = property == null ? DateTimeUtils.zonedDateTimeOf(0) : DateTimeUtils.zonedDateTimeOf(property);
             }
         } catch (final Exception e) {
             throw Throwables.propagate(e);
