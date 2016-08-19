@@ -20,9 +20,9 @@ public class DefaultOAuthCasClientRedirectActionBuilder implements OAuthCasClien
     @Override
     public RedirectAction build(final CasClient casClient, final WebContext context) {
         try {
-            final String redirectionUrl = CommonUtils.constructRedirectUrl(casClient.getCasLoginUrl(),
+            final String redirectionUrl = CommonUtils.constructRedirectUrl(casClient.getConfiguration().getLoginUrl(),
                     CasProtocolConstants.PARAMETER_SERVICE,
-                    casClient.computeFinalCallbackUrl(context), casClient.isRenew(), casClient.isGateway());
+                    casClient.computeFinalCallbackUrl(context), casClient.getConfiguration().isRenew(), casClient.getConfiguration().isGateway());
             LOGGER.debug("Final redirect url is {}", redirectionUrl);
             return RedirectAction.redirect(redirectionUrl);
         } catch (final Exception e) {

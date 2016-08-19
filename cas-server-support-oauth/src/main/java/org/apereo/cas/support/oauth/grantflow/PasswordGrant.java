@@ -12,7 +12,7 @@ import org.apereo.cas.ticket.code.OAuthCodeFactory;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.UsernamePasswordCredentials;
-import org.pac4j.core.credentials.authenticator.UsernamePasswordAuthenticator;
+import org.pac4j.core.credentials.authenticator.Authenticator;
 import org.pac4j.core.exception.HttpAction;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
@@ -40,7 +40,7 @@ public class PasswordGrant extends OAuth20Grant {
     private OAuthCodeFactory oAuthCodeFactory;
 
     @Autowired
-    public PasswordGrant(UsernamePasswordAuthenticator oAuthUserAuthenticator) {
+    public PasswordGrant(Authenticator<UsernamePasswordCredentials> oAuthUserAuthenticator) {
         userFormClient = new DirectFormClient(oAuthUserAuthenticator);
         userFormClient.setName("userForm");
     }

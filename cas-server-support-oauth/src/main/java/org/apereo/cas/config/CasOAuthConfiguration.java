@@ -15,6 +15,11 @@ import org.apereo.cas.support.oauth.authenticator.OAuthClientAuthenticator;
 import org.apereo.cas.support.oauth.authenticator.OAuthUserAuthenticator;
 import org.apereo.cas.support.oauth.grantflow.IndirectGrant;
 import org.apereo.cas.support.oauth.services.OAuthCallbackAuthorizeService;
+import org.apereo.cas.support.oauth.validator.OAuth20ValidationServiceSelectionStrategy;
+import org.apereo.cas.support.oauth.validator.OAuthValidator;
+import org.apereo.cas.support.oauth.web.*;
+import org.apereo.cas.ticket.ExpirationPolicy;
+import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.DefaultAccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuthAccessTokenExpirationPolicy;
@@ -24,19 +29,6 @@ import org.apereo.cas.ticket.code.OAuthCodeFactory;
 import org.apereo.cas.ticket.refreshtoken.DefaultRefreshTokenFactory;
 import org.apereo.cas.ticket.refreshtoken.OAuthRefreshTokenExpirationPolicy;
 import org.apereo.cas.ticket.refreshtoken.RefreshTokenFactory;
-import org.apereo.cas.support.oauth.validator.OAuth20ValidationServiceSelectionStrategy;
-import org.apereo.cas.support.oauth.validator.OAuthValidator;
-import org.apereo.cas.support.oauth.web.AccessTokenResponseGenerator;
-import org.apereo.cas.support.oauth.web.ConsentApprovalViewResolver;
-import org.apereo.cas.support.oauth.web.OAuth20AccessTokenController;
-import org.apereo.cas.support.oauth.web.OAuth20AccessTokenResponseGenerator;
-import org.apereo.cas.support.oauth.web.OAuth20AuthorizeController;
-import org.apereo.cas.support.oauth.web.OAuth20CallbackAuthorizeController;
-import org.apereo.cas.support.oauth.web.OAuth20CallbackAuthorizeViewResolver;
-import org.apereo.cas.support.oauth.web.OAuth20ConsentApprovalViewResolver;
-import org.apereo.cas.support.oauth.web.OAuth20ProfileController;
-import org.apereo.cas.ticket.ExpirationPolicy;
-import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.apereo.cas.validation.ValidationServiceSelectionStrategy;
@@ -46,7 +38,8 @@ import org.pac4j.core.client.RedirectAction;
 import org.pac4j.core.client.direct.AnonymousClient;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.credentials.authenticator.UsernamePasswordAuthenticator;
+import org.pac4j.core.credentials.UsernamePasswordCredentials;
+import org.pac4j.core.credentials.authenticator.Authenticator;
 import org.pac4j.core.http.CallbackUrlResolver;
 import org.pac4j.http.client.direct.DirectBasicAuthClient;
 import org.pac4j.http.client.direct.DirectFormClient;
@@ -239,7 +232,7 @@ public class CasOAuthConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public UsernamePasswordAuthenticator oAuthClientAuthenticator() {
+    public Authenticator<UsernamePasswordCredentials> oAuthClientAuthenticator() {
         final OAuthClientAuthenticator c = new OAuthClientAuthenticator();
         c.setValidator(oAuthValidator());
         c.setServicesManager(this.servicesManager);
@@ -247,7 +240,7 @@ public class CasOAuthConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public UsernamePasswordAuthenticator oAuthUserAuthenticator() {
+    public Authenticator<UsernamePasswordCredentials> oAuthUserAuthenticator() {
         final OAuthUserAuthenticator w = new OAuthUserAuthenticator();
         w.setAuthenticationSystemSupport(authenticationSystemSupport);
         return w;
