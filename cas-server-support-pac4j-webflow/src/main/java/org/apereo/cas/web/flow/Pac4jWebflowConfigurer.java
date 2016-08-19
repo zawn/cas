@@ -22,6 +22,7 @@ public class Pac4jWebflowConfigurer extends AbstractCasWebflowConfigurer {
         actionState.getTransitionSet().add(createTransition(CasWebflowConstants.TRANSITION_ID_SUCCESS,
                 CasWebflowConstants.TRANSITION_ID_SEND_TICKET_GRANTING_TICKET));
         actionState.getTransitionSet().add(createTransition(CasWebflowConstants.TRANSITION_ID_ERROR, getStartState(flow).getId()));
+        actionState.getTransitionSet().add(createTransition(CasWebflowConstants.TRANSITION_ID_AUTHENTICATION_FAILURE, getStartState(flow).getId()));
         actionState.getTransitionSet().add(createTransition("stop", STOP_WEBFLOW));
         setStartState(flow, actionState);
         createViewState(flow, STOP_WEBFLOW, STOP_WEBFLOW);
