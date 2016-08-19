@@ -41,6 +41,9 @@ public class OAuthUserAuthenticator extends AbstractUsernamePasswordAuthenticato
             if (attributes != null) {
                 profile.addAttributes(attributes);
             }
+            if (authentication.getAttributes() != null && authentication.getAttributes().size() > 0) {
+                profile.addAttributes(authentication.getAttributes());
+            }
             credentials.setUserProfile(profile);
         } catch (final AuthenticationException e) {
             throw new CredentialsException("Cannot login user using CAS internal authentication", e);

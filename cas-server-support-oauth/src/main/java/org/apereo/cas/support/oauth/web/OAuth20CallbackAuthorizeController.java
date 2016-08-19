@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jerome Leleu
  * @since 3.5.0
  */
-public class OAuth20CallbackAuthorizeController extends BaseOAuthWrapperController {
+public class OAuth20CallbackAuthorizeController {
 
     private Config config;
 

@@ -2,10 +2,8 @@ package org.apereo.cas.ticket.accesstoken;
 
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Service;
-import org.apereo.cas.ticket.ExpirationPolicy;
-import org.apereo.cas.ticket.Ticket;
-import org.apereo.cas.ticket.TicketFactory;
-import org.apereo.cas.ticket.UniqueTicketIdGenerator;
+import org.apereo.cas.ticket.*;
+import org.apereo.cas.ticket.refreshtoken.RefreshToken;
 import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +25,10 @@ public class DefaultAccessTokenFactory implements AccessTokenFactory {
     protected ExpirationPolicy expirationPolicy;
 
     @Override
-    public AccessToken create(final Service service, final Authentication authentication) {
+    public AccessToken create(final RefreshToken refreshToken) {
         final String codeId = this.accessTokenIdGenerator.getNewTicketId(AccessToken.PREFIX);
-        return new AccessTokenImpl(codeId, service, authentication, this.expirationPolicy);
+        ServiceTicket ticket = refreshToken.grantServiceTicket(codeId, null, this.expirationPolicy, refreshToken.getAuthentication(), false);
+        return (AccessToken) ticket;
     }
 
     @Override

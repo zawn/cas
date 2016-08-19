@@ -13,6 +13,7 @@ import org.apereo.cas.support.oauth.OAuthCasClientRedirectActionBuilder;
 import org.apereo.cas.support.oauth.OAuthConstants;
 import org.apereo.cas.support.oauth.authenticator.OAuthClientAuthenticator;
 import org.apereo.cas.support.oauth.authenticator.OAuthUserAuthenticator;
+import org.apereo.cas.support.oauth.grantflow.IndirectGrant;
 import org.apereo.cas.support.oauth.services.OAuthCallbackAuthorizeService;
 import org.apereo.cas.ticket.accesstoken.AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.DefaultAccessTokenFactory;
@@ -42,6 +43,7 @@ import org.apereo.cas.validation.ValidationServiceSelectionStrategy;
 import org.jasig.cas.client.util.URIBuilder;
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.core.client.RedirectAction;
+import org.pac4j.core.client.direct.AnonymousClient;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.authenticator.UsernamePasswordAuthenticator;
@@ -105,6 +107,9 @@ public class CasOAuthConfiguration extends WebMvcConfigurerAdapter {
     @Qualifier("ticketRegistry")
     private TicketRegistry ticketRegistry;
 
+    @Autowired
+    private IndirectGrant[] indirectGrants;
+
 
     @ConditionalOnMissingBean(name = "accessTokenResponseGenerator")
     @Bean(autowire = Autowire.BY_NAME)
@@ -138,11 +143,11 @@ public class CasOAuthConfiguration extends WebMvcConfigurerAdapter {
         directFormClient.setUsernameParameter(OAuthConstants.CLIENT_ID);
         directFormClient.setPasswordParameter(OAuthConstants.CLIENT_SECRET);
 
-        final DirectFormClient userFormClient = new DirectFormClient(oAuthUserAuthenticator());
-        userFormClient.setName("userForm");
+        final AnonymousClient anonymousClient = new AnonymousClient();
+        anonymousClient.setName("clientAnonymous");
 
         final String callbackUrl = casProperties.getServer().getPrefix().concat("/oauth2.0/callbackAuthorize");
-        return new Config(callbackUrl, oauthCasClient, basicAuthClient, directFormClient, userFormClient);
+        return new Config(callbackUrl, oauthCasClient, basicAuthClient, directFormClient, anonymousClient);
     }
 
     private CallbackUrlResolver buildOAuthCasCallbackUrlResolver() {
@@ -191,7 +196,7 @@ public class CasOAuthConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public SecurityInterceptor requiresAuthenticationAccessTokenInterceptor() {
-        return new SecurityInterceptor(oauthSecConfig(), "clientBasicAuth,clientForm,userForm");
+        return new SecurityInterceptor(oauthSecConfig(), "clientBasicAuth,clientForm,clientAnonymous");
     }
 
     @Bean
@@ -206,9 +211,14 @@ public class CasOAuthConfiguration extends WebMvcConfigurerAdapter {
                 if (pattern.matcher(requestPath).find()) {
                     return requiresAuthenticationAccessTokenInterceptor().preHandle(request, response, handler);
                 }
-
+                StringBuilder typeRegxBuilder = new StringBuilder().append("^");
+                for (IndirectGrant indirectGrant : indirectGrants) {
+                    if (!indirectGrant.needPreAuthorization())
+                        typeRegxBuilder.append(indirectGrant.authorizeResponseType()).append("|");
+                }
+                typeRegxBuilder.append("$");
                 pattern = Pattern.compile('/' + OAuthConstants.AUTHORIZE_URL + "(/)*$");
-                if (pattern.matcher(requestPath).find()) {
+                if (pattern.matcher(requestPath).find() && !request.getParameter(OAuthConstants.RESPONSE_TYPE).matches(typeRegxBuilder.toString())) {
                     return requiresAuthenticationAuthorizeInterceptor().preHandle(request, response, handler);
                 }
                 return true;
@@ -300,43 +310,6 @@ public class CasOAuthConfiguration extends WebMvcConfigurerAdapter {
         c.setCallbackController(callbackController());
         c.setConfig(oauthSecConfig());
         c.setAuth20CallbackAuthorizeViewResolver(callbackAuthorizeViewResolver());
-        return c;
-    }
-
-    @Bean
-    public OAuth20AccessTokenController accessTokenController() {
-        final OAuth20AccessTokenController c = new OAuth20AccessTokenController();
-        c.setAccessTokenFactory(defaultAccessTokenFactory());
-        c.setAccessTokenResponseGenerator(accessTokenResponseGenerator());
-        c.setPrincipalFactory(oauthPrincipalFactory());
-        c.setRefreshTokenFactory(defaultRefreshTokenFactory());
-        c.setServicesManager(servicesManager);
-        c.setTicketRegistry(ticketRegistry);
-        c.setValidator(oAuthValidator());
-        return c;
-    }
-
-    @Bean
-    public OAuth20ProfileController profileController() {
-        final OAuth20ProfileController c = new OAuth20ProfileController();
-        c.setAccessTokenFactory(defaultAccessTokenFactory());
-        c.setPrincipalFactory(oauthPrincipalFactory());
-        c.setServicesManager(servicesManager);
-        c.setTicketRegistry(ticketRegistry);
-        c.setValidator(oAuthValidator());
-        return c;
-    }
-
-    @Bean
-    public OAuth20AuthorizeController authorizeController() {
-        final OAuth20AuthorizeController c = new OAuth20AuthorizeController();
-        c.setAccessTokenFactory(defaultAccessTokenFactory());
-        c.setPrincipalFactory(oauthPrincipalFactory());
-        c.setServicesManager(servicesManager);
-        c.setTicketRegistry(ticketRegistry);
-        c.setValidator(oAuthValidator());
-        c.setConsentApprovalViewResolver(consentApprovalViewResolver());
-        c.setoAuthCodeFactory(defaultOAuthCodeFactory());
         return c;
     }
 

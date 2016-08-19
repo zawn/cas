@@ -1,9 +1,12 @@
 package org.apereo.cas.support.oauth.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.scribejava.core.utils.OAuthEncoder;
 import org.apache.http.HttpStatus;
+import org.apereo.cas.authentication.AuthenticationException;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.UnauthorizedServiceException;
 import org.apereo.cas.support.oauth.OAuthConstants;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 
@@ -102,6 +105,41 @@ public final class OAuthUtils {
             return value;
         } catch (final Exception e) {
             throw new IllegalArgumentException(e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * Write to the output this error text and return a null view.
+     *
+     * @param response http response
+     * @param e        exception
+     * @return a null view
+     */
+    public static ModelAndView writeTextError(final HttpServletResponse response, final Exception e) {
+        String error = OAuthConstants.INVALID_REQUEST;
+        String error_description = e.getMessage();
+
+        int status = HttpStatus.SC_BAD_REQUEST;
+        if (e instanceof AuthenticationException || e instanceof UnauthorizedServiceException)
+            status = HttpStatus.SC_UNAUTHORIZED;
+        response.setStatus(status);
+        return writeTextError(response, error, error_description);
+    }
+
+    /**
+     * Write to the output this error text and return a null view.
+     *
+     * @param response          http response
+     * @param error             error message
+     * @param error_description error description message
+     * @return a null view
+     */
+    public static ModelAndView writeTextError(final HttpServletResponse response, final String error, final String error_description) {
+        if (error_description != null && !"".equals(error_description)) {
+            return OAuthUtils.writeText(response, "error=" + error + "&error_description=" + OAuthEncoder.encode(error_description), response.getStatus());
+        } else {
+            return OAuthUtils.writeText(response, "error=" + error, response.getStatus());
         }
     }
 }
