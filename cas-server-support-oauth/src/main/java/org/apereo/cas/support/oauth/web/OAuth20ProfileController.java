@@ -3,6 +3,7 @@ package org.apereo.cas.support.oauth.web;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.support.oauth.OAuthConstants;
 import org.apereo.cas.support.oauth.util.OAuthUtils;
@@ -100,7 +101,8 @@ public class OAuth20ProfileController {
         }
 
         final Map<String, Object> map =
-                writeOutProfileResponse(accessTokenTicket.getAuthentication().getPrincipal());
+                writeOutProfileResponse(accessTokenTicket.getAuthentication(),
+                        accessTokenTicket.getAuthentication().getPrincipal());
         final String value = OAuthUtils.jsonify(map);
         return new ResponseEntity<>(value, HttpStatus.OK);
     }
@@ -108,16 +110,19 @@ public class OAuth20ProfileController {
     /**
      * Write out profile response.
      *
-     * @param principal the principal
+     * @param authentication the authentication
+     * @param principal      the principal
      * @return the linked multi value map
      * @throws IOException the io exception
      */
-    protected Map<String, Object> writeOutProfileResponse(final Principal principal) throws IOException {
+    protected Map<String, Object> writeOutProfileResponse(final Authentication authentication,
+                                                          final Principal principal) throws IOException {
         final Map<String, Object> map = new HashMap<>();
         map.put(ID, principal.getId());
         map.put(ATTRIBUTES, principal.getAttributes());
         return map;
     }
+
 
     public TicketRegistry getTicketRegistry() {
         return this.ticketRegistry;

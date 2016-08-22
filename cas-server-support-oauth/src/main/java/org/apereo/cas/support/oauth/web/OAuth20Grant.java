@@ -320,6 +320,7 @@ public abstract class OAuth20Grant {
      * Return the OAuth token (a code or a refresh token).
      *
      * @param request the HTTP request
+     * @param response the HTTP response
      * @return the OAuth token
      */
     protected OAuthToken getOAuthToken(final HttpServletRequest request, final HttpServletResponse response) {
