@@ -40,7 +40,7 @@ import java.util.Set;
 @Inheritance
 @DiscriminatorColumn(name = "expression_type", length = 15, discriminatorType = DiscriminatorType.STRING,
                      columnDefinition = "VARCHAR(15) DEFAULT 'ant'")
-@Table(name = "RegexRegisteredService")
+@Table(name = "Regex_Registered_Service")
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public abstract class AbstractRegisteredService implements RegisteredService, Comparable<RegisteredService> {
 

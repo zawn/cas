@@ -25,7 +25,7 @@ import java.util.Map;
  * @since 5.0.0
  */
 @Entity
-@Table(name = "CasEvent")
+@Table(name = "Cas_Event")
 public class CasEvent {
 
     @Id

@@ -40,7 +40,7 @@ import java.util.Set;
  * @since 3.0.0
  */
 @Entity
-@Table(name="TICKETGRANTINGTICKET")
+@Table(name="Ticket_Granting_Ticket")
 @DiscriminatorColumn(name = "TYPE")
 @DiscriminatorValue(TicketGrantingTicket.PREFIX)
 public class TicketGrantingTicketImpl extends AbstractTicket implements TicketGrantingTicket {

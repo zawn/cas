@@ -24,7 +24,7 @@ import javax.persistence.Table;
  * @since 3.0.0
  */
 @Entity
-@Table(name = "SERVICETICKET")
+@Table(name = "Service_Ticket")
 @DiscriminatorColumn(name = "TYPE")
 @DiscriminatorValue(ServiceTicket.PREFIX)
 public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket {

@@ -19,7 +19,7 @@ import java.util.List;
  * @since 5.0.0
  */
 @Entity
-@Table(name = "GoogleAuthenticatorRegistrationRecord")
+@Table(name = "Google_Authenticator_Registration_Record")
 public class GoogleAuthenticatorRegistrationRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
