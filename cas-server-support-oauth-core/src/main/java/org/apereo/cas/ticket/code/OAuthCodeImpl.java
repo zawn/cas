@@ -24,7 +24,7 @@ import javax.persistence.Table;
  * @since 5.0.0
  */
 @Entity
-@Table(name="OAUTH_TOKENS")
+@Table(name="OAuth_Tokens")
 @DiscriminatorColumn(name="TYPE")
 @DiscriminatorValue(OAuthCode.PREFIX)
 public class OAuthCodeImpl extends AbstractTicket implements OAuthCode {
