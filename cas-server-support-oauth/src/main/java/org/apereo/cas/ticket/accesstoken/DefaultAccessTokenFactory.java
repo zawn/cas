@@ -2,11 +2,14 @@ package org.apereo.cas.ticket.accesstoken;
 
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.support.oauth.services.OAuthWebApplicationService;
 import org.apereo.cas.ticket.*;
 import org.apereo.cas.ticket.refreshtoken.RefreshToken;
 import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Default OAuth access token factory.
@@ -24,10 +27,13 @@ public class DefaultAccessTokenFactory implements AccessTokenFactory {
     /** ExpirationPolicy for access tokens. */
     protected ExpirationPolicy expirationPolicy;
 
+    @Autowired
+    private CasConfigurationProperties casProperties;
+
     @Override
     public AccessToken create(final RefreshToken refreshToken) {
         final String codeId = this.accessTokenIdGenerator.getNewTicketId(AccessToken.PREFIX);
-        ServiceTicket ticket = refreshToken.grantServiceTicket(codeId, null, this.expirationPolicy, refreshToken.getAuthentication(), false);
+        ServiceTicket ticket = refreshToken.grantServiceTicket(codeId, null, this.expirationPolicy, refreshToken.getAuthentication(), casProperties.getTicket().getTgt().isOnlyTrackMostRecentSession());
         return (AccessToken) ticket;
     }
 
