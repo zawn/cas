@@ -16,8 +16,14 @@ def isArtifactSigningRequired = {
     return false
 }
 
+def localReleaseDest = "${project.getRootDir()}/repo"
+
 def projectMavenDeployer = {
     beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+    if (publishLocal){
+        repository(url: "file://${localReleaseDest}")
+    }
 
     if (publishReleases) {
         repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
@@ -347,6 +353,7 @@ subprojects {
         maven { url "https://repo.spring.io/snapshot" }
         maven { url "https://repo.spring.io/libs-snapshot" }
         maven { url "https://dl.bintray.com/uniconiam/maven" }
+        maven { url "http://dl.bintray.com/zhangzhenli/maven" }
     }
 
     test {

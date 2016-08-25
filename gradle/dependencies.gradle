@@ -741,13 +741,13 @@ ext.libraries = [
                 dependencies.create("commons-codec:commons-codec:$commonsCodecVersion")
         ],
         pac4j                   : [
-                dependencies.create("org.pac4j:pac4j-cas:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-cas:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-config:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-config:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
@@ -782,20 +782,20 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "xmltooling")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-core:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-core:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
                     exclude(group: "commons-codec", module: "commons-codec")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-http:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-http:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-jwt:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-jwt:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "org.bouncycastle", module: "bcprov-jdk15on")
@@ -803,14 +803,14 @@ ext.libraries = [
                     exclude(group: "net.minidev", module: "json-smart")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-oidc:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-oidc:$pac4jVersion") {
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "com.nimbusds", module: "nimbus-jose-jwt")
                     exclude(group: "net.minidev", module: "json-smart")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-mongo:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-mongo:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -818,7 +818,7 @@ ext.libraries = [
                     exclude(group: "org.mongodb", module: "mongo-java-driver")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-oauth:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-oauth:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.apache.commons", module: "commons-codec")
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -827,7 +827,7 @@ ext.libraries = [
                     exclude(group: "com.fasterxml.jackson.core", module: "jackson-databind")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-saml:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-saml:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "jcl-over-slf4j")
                     exclude(group: "org.slf4j", module: "slf4j-api")
@@ -860,7 +860,7 @@ ext.libraries = [
                     exclude(group: "org.opensaml", module: "xmltooling")
                     force = true
                 },
-                dependencies.create("org.pac4j:pac4j-stormpath:$pac4jVersion") {
+                dependencies.create("com.appunity:pac4j-stormpath:$pac4jVersion") {
                     exclude(group: "org.apache.commons", module: "commons-lang3")
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "joda-time", module: "joda-time")
