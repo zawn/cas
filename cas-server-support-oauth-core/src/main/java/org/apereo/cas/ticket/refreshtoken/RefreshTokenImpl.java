@@ -30,14 +30,6 @@ public class RefreshTokenImpl extends OAuthCodeImpl implements RefreshToken {
     private static final long serialVersionUID = 4310599856914389467L;
 
     /**
-     * The ticket registry.
-     */
-    @Autowired
-    @Qualifier("ticketRegistry")
-    @Transient
-    protected TicketRegistry ticketRegistry;
-
-    /**
      * The services associated to this ticket.
      */
     @Lob
@@ -84,13 +76,6 @@ public class RefreshTokenImpl extends OAuthCodeImpl implements RefreshToken {
      */
     protected void updateStateAndTrackServiceSession(final String id, final AccessToken accessToken, final boolean onlyTrackMostRecentSession) {
         update();
-        final List<Authentication> authentications = getChainedAuthentications();
-        if (onlyTrackMostRecentSession) {
-            for (Map.Entry<String, AccessToken> stringAccessTokenEntry : this.getAccessTokenHashMap().entrySet()) {
-                this.getAccessTokenHashMap().remove(stringAccessTokenEntry.getKey());
-                ticketRegistry.deleteTicket(stringAccessTokenEntry.getValue().getId());
-            }
-        }
         this.getAccessTokenHashMap().put(id, accessToken);
     }
 
