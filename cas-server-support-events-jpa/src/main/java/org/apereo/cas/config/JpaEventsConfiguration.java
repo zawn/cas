@@ -7,6 +7,7 @@ import org.apereo.cas.support.events.dao.CasEventRepository;
 import org.apereo.cas.support.events.jpa.JpaCasEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -29,12 +30,15 @@ import javax.sql.DataSource;
  * @since 5.0.0
  */
 @Configuration("jpaEventsConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, JpaProperties.class})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class JpaEventsConfiguration {
 
     @Autowired
     private CasConfigurationProperties casProperties;
+
+    @Autowired
+    private JpaProperties springJpaProperties;
 
     @RefreshScope
     @Bean
@@ -56,7 +60,7 @@ public class JpaEventsConfiguration {
     @Bean
     public LocalContainerEntityManagerFactoryBean eventsEntityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean bean =
-                Beans.newEntityManagerFactoryBean(
+                Beans.newEntityManagerFactoryBean(springJpaProperties,
                         new JpaConfigDataHolder(
                                 jpaEventVendorAdapter(),
                                 "jpaEventRegistryContext",

@@ -8,6 +8,7 @@ import org.apereo.inspektr.audit.support.JdbcAuditTrailManager;
 import org.apereo.inspektr.audit.support.MaxAgeWhereClauseMatchCriteria;
 import org.apereo.inspektr.audit.support.WhereClauseMatchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,12 +30,15 @@ import javax.sql.DataSource;
  */
 @Configuration("casJdbcAuditConfiguration")
 @EnableAspectJAutoProxy
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, JpaProperties.class})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class CasSupportJdbcAuditConfiguration {
 
     @Autowired
     private CasConfigurationProperties casProperties;
+
+    @Autowired
+    private JpaProperties springJpaProperties;
 
     @Bean(name = {"jdbcAuditTrailManager", "auditTrailManager"})
     public AuditTrailManager jdbcAuditTrailManager() {
@@ -48,7 +52,7 @@ public class CasSupportJdbcAuditConfiguration {
     @Lazy
     @Bean
     public LocalContainerEntityManagerFactoryBean inspektrAuditEntityManagerFactory() {
-        return Beans.newEntityManagerFactoryBean(
+        return Beans.newEntityManagerFactoryBean(springJpaProperties,
                 new JpaConfigDataHolder(
                         Beans.newHibernateJpaVendorAdapter(casProperties.getJdbc()),
                         "jpaInspektrAuditContext",

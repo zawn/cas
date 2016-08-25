@@ -6,6 +6,7 @@ import org.apereo.cas.services.JpaServiceRegistryDaoImpl;
 import org.apereo.cas.services.ServiceRegistryDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -32,12 +33,15 @@ import static org.apereo.cas.configuration.support.Beans.newHickariDataSource;
  * @since 5.0.0
  */
 @Configuration("jpaServiceRegistryConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, JpaProperties.class})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class JpaServiceRegistryConfiguration {
 
     @Autowired
     private CasConfigurationProperties casProperties;
+
+    @Autowired
+    private JpaProperties springJpaProperties;
 
     @RefreshScope
     @Bean
@@ -57,7 +61,7 @@ public class JpaServiceRegistryConfiguration {
     @Lazy
     @Bean
     public LocalContainerEntityManagerFactoryBean serviceEntityManagerFactory() {
-        return newEntityManagerFactoryBean(
+        return newEntityManagerFactoryBean(springJpaProperties,
                 new JpaConfigDataHolder(
                         jpaServiceVendorAdapter(),
                         "jpaServiceRegistryContext",
