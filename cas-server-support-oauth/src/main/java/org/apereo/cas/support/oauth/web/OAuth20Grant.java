@@ -251,7 +251,12 @@ public abstract class OAuth20Grant {
         final Service service = token.getService();
         final Authentication authentication = token.getAuthentication();
 
-        final RefreshToken refreshToken = generateRefreshToken(service, authentication);
+        final RefreshToken refreshToken;
+        if (!generateRefreshToken && token instanceof RefreshToken) {
+            refreshToken = (RefreshToken) token;
+        } else {
+            refreshToken = generateRefreshToken(service, authentication);
+        }
 
         final AccessToken accessToken = generateAccessToken(refreshToken);
         final String accessTokenId = accessToken.getId();
