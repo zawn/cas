@@ -7,10 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.OidcConstants;
 import org.apereo.cas.services.OidcRegisteredService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.support.oauth.web.BaseOAuthWrapperController;
 import org.jooq.lambda.Unchecked;
 import org.jose4j.jwk.JsonWebKey;
 import org.jose4j.jwk.JsonWebKeySet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -31,7 +32,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-public class OidcJwksEndpointController extends BaseOAuthWrapperController {
+public class OidcJwksEndpointController {
+    private static final Logger logger = LoggerFactory.getLogger(OidcJwksEndpointController.class);
 
     /**
      * The Resource loader.

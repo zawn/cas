@@ -51,7 +51,7 @@ public class ClientAuthenticationHandlerTests {
         this.handler.setServicesManager(mock(ServicesManager.class));
         this.handler.setTypedIdUsed(true);
 
-        final Credentials credentials = new OAuth20Credentials(null, MockFacebookClient.CLIENT_NAME);
+        final Credentials credentials = new OAuth20Credentials((String) null, MockFacebookClient.CLIENT_NAME);
         this.clientCredential = new ClientCredential(credentials);
         ExternalContextHolder.setExternalContext(mock(ServletExternalContext.class));
     }

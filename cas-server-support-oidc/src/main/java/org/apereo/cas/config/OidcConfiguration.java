@@ -12,7 +12,6 @@ import org.apereo.cas.ticket.code.OAuthCodeFactory;
 import org.apereo.cas.ticket.refreshtoken.RefreshTokenFactory;
 import org.apereo.cas.support.oauth.validator.OAuthValidator;
 import org.apereo.cas.support.oauth.web.AccessTokenResponseGenerator;
-import org.apereo.cas.support.oauth.web.BaseOAuthWrapperController;
 import org.apereo.cas.support.oauth.web.ConsentApprovalViewResolver;
 import org.apereo.cas.support.oauth.web.OAuth20CallbackAuthorizeViewResolver;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -244,7 +243,7 @@ public class OidcConfiguration extends WebMvcConfigurerAdapter {
         return new DefaultPrincipalFactory();
     }
 
-    @RefreshScope
+    /*@RefreshScope
     @Bean
     public BaseOAuthWrapperController oidcAccessTokenController() {
         final OidcAccessTokenEndpointController c = new OidcAccessTokenEndpointController();
@@ -308,7 +307,7 @@ public class OidcConfiguration extends WebMvcConfigurerAdapter {
         c.setConsentApprovalViewResolver(consentApprovalViewResolver());
         c.setoAuthCodeFactory(defaultOAuthCodeFactory);
         return c;
-    }
+    }*/
 }
 
 

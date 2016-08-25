@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import org.apereo.cas.OidcConstants;
 import org.apereo.cas.config.OidcServerDiscoverySettings;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.support.oauth.web.BaseOAuthWrapperController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-public class OidcWellKnownEndpointController extends BaseOAuthWrapperController {
+public class OidcWellKnownEndpointController {
 
     @Autowired
     private CasConfigurationProperties casProperties;
