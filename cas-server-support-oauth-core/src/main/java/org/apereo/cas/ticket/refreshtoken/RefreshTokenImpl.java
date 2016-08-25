@@ -10,6 +10,9 @@ import org.apereo.cas.ticket.accesstoken.AccessToken;
 import org.apereo.cas.ticket.accesstoken.AccessTokenImpl;
 import org.apereo.cas.ticket.code.OAuthCodeImpl;
 import org.apereo.cas.ticket.proxy.ProxyGrantingTicket;
+import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.persistence.*;
 import java.util.*;
@@ -27,18 +30,27 @@ public class RefreshTokenImpl extends OAuthCodeImpl implements RefreshToken {
     private static final long serialVersionUID = 4310599856914389467L;
 
     /**
+     * The ticket registry.
+     */
+    @Autowired
+    @Qualifier("ticketRegistry")
+    @Transient
+    protected TicketRegistry ticketRegistry;
+
+    /**
      * The services associated to this ticket.
      */
     @Lob
     @Column(name = "ACCESS_TOKEN_GRANTED_TO", nullable = false, length = Integer.MAX_VALUE)
-    @OneToMany
-    private HashMap<String, AccessToken> accessTokenHashMap = new HashMap<>();
+    @OneToMany(targetEntity = AccessTokenImpl.class, mappedBy = "ticketGrantingTicket")
+    @MapKey(name="id")
+    private Map<String, AccessToken> accessTokenHashMap = new HashMap<>();
 
 
     /**
      * Flag to enforce manual expiration.
      */
-    @Column(name = "EXPIRED", nullable = false)
+    @Column(name = "EXPIRED")
     private Boolean expired = Boolean.FALSE;
 
     /**
@@ -72,12 +84,14 @@ public class RefreshTokenImpl extends OAuthCodeImpl implements RefreshToken {
      */
     protected void updateStateAndTrackServiceSession(final String id, final AccessToken accessToken, final boolean onlyTrackMostRecentSession) {
         update();
-
         final List<Authentication> authentications = getChainedAuthentications();
         if (onlyTrackMostRecentSession) {
-            // TODO: 处理已颁发的Token.
+            for (Map.Entry<String, AccessToken> stringAccessTokenEntry : this.getAccessTokenHashMap().entrySet()) {
+                this.getAccessTokenHashMap().remove(stringAccessTokenEntry.getKey());
+                ticketRegistry.deleteTicket(stringAccessTokenEntry.getValue().getId());
+            }
         }
-        this.accessTokenHashMap.put(id, accessToken);
+        this.getAccessTokenHashMap().put(id, accessToken);
     }
 
     @Override
@@ -133,5 +147,13 @@ public class RefreshTokenImpl extends OAuthCodeImpl implements RefreshToken {
     @Override
     public Service getProxiedBy() {
         return null;
+    }
+
+    public Map<String, AccessToken> getAccessTokenHashMap() {
+        return accessTokenHashMap;
+    }
+
+    public void setAccessTokenHashMap(Map<String, AccessToken> accessTokenHashMap) {
+        this.accessTokenHashMap = accessTokenHashMap;
     }
 }

@@ -9,8 +9,18 @@ import org.apereo.cas.ticket.code.OAuthCodeImpl;
 import org.apereo.cas.ticket.refreshtoken.RefreshToken;
 import org.apereo.cas.ticket.refreshtoken.RefreshTokenImpl;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * An OAuth access token implementation.
@@ -19,18 +29,17 @@ import java.util.*;
  * @since 5.0.0
  */
 @Entity
-@Table(name="OAUTH_ACCESS_TOKENS")
 @DiscriminatorValue(AccessToken.PREFIX)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class AccessTokenImpl extends OAuthCodeImpl implements AccessToken {
 
     private static final long serialVersionUID = -8287917546624594512L;
 
     @Lob
-    @Column(name="SCOPES")
+    @Column(name = "SCOPES")
     private Set<String> scope;
 
     @ManyToOne(targetEntity = RefreshTokenImpl.class)
+    @JoinColumn(foreignKey = @ForeignKey(name = "refresh_token_fkey"), name = "refresh_token_id")
     private TicketGrantingTicket ticketGrantingTicket;
 
     /**
