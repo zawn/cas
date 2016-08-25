@@ -11,6 +11,7 @@ import org.apereo.cas.ticket.registry.support.LockingStrategy;
 import org.apereo.cas.util.InetAddressUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -31,13 +32,16 @@ import javax.sql.DataSource;
  * @since 5.0.0
  */
 @Configuration("jpaTicketRegistryConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, JpaProperties.class})
 @EnableTransactionManagement
 public class JpaTicketRegistryConfiguration {
 
     @Autowired
     private CasConfigurationProperties casProperties;
-        
+
+    @Autowired
+    private JpaProperties springJpaProperties;
+
     /**
      * Jpa packages to scan string [].
      *
@@ -60,7 +64,7 @@ public class JpaTicketRegistryConfiguration {
     @Lazy
     @Bean
     public LocalContainerEntityManagerFactoryBean ticketEntityManagerFactory() {
-        return Beans.newEntityManagerFactoryBean(
+        return Beans.newEntityManagerFactoryBean(springJpaProperties,
                 new JpaConfigDataHolder(
                         Beans.newHibernateJpaVendorAdapter(casProperties.getJdbc()),
                         "jpaTicketRegistryContext",

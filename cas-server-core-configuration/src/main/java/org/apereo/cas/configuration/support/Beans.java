@@ -48,6 +48,7 @@ import org.ldaptive.ssl.SslConfig;
 import org.ldaptive.ssl.X509CredentialConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean;
@@ -141,7 +142,7 @@ public class Beans {
      * @param jpaProperties the jpa properties
      * @return the local container entity manager factory bean
      */
-    public static LocalContainerEntityManagerFactoryBean newEntityManagerFactoryBean(final JpaConfigDataHolder config,
+    public static LocalContainerEntityManagerFactoryBean newEntityManagerFactoryBean(final JpaProperties springJpaProperties, final JpaConfigDataHolder config,
                                                                                      final AbstractJpaProperties jpaProperties) {
         final LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
 
@@ -154,9 +155,14 @@ public class Beans {
         bean.setDataSource(config.getDataSource());
 
         final Properties properties = new Properties();
-        properties.put("hibernate.dialect", jpaProperties.getDialect());
-        properties.put("hibernate.hbm2ddl.auto", jpaProperties.getDdlAuto());
-        properties.put("hibernate.jdbc.batch_size", jpaProperties.getBatchSize());
+        Map<String, String> hibernateProperties = springJpaProperties.getHibernateProperties(config.getDataSource());
+        properties.putAll(hibernateProperties);
+        if (StringUtils.isNotBlank(jpaProperties.getDialect()))
+            properties.put("hibernate.dialect", jpaProperties.getDialect());
+        if (StringUtils.isNotBlank(jpaProperties.getDdlAuto()))
+            properties.put("hibernate.hbm2ddl.auto", jpaProperties.getDdlAuto());
+        if (StringUtils.isNotBlank(jpaProperties.getBatchSize()))
+            properties.put("hibernate.jdbc.batch_size", jpaProperties.getBatchSize());
         bean.setJpaProperties(properties);
         return bean;
     }
