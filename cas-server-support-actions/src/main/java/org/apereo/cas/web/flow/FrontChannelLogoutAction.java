@@ -12,6 +12,7 @@ import org.apereo.cas.logout.LogoutRequest;
 import org.apereo.cas.web.support.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.webflow.execution.Event;
@@ -34,6 +35,7 @@ public class FrontChannelLogoutAction extends AbstractLogoutAction {
 
     private String logoutRequestParameter = DEFAULT_LOGOUT_PARAMETER;
 
+    @Autowired
     @Qualifier("logoutManager")
     private LogoutManager logoutManager;
 
