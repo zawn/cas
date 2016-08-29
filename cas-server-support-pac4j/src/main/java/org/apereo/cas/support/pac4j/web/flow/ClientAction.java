@@ -9,6 +9,7 @@ import org.apereo.cas.authentication.principal.ClientCredential;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.ticket.TicketGrantingTicket;
+import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.client.BaseClient;
 import org.pac4j.core.client.Client;
@@ -18,14 +19,13 @@ import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.exception.HttpAction;
+import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.profile.CommonProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 import org.springframework.webflow.action.AbstractAction;
-import org.springframework.webflow.context.ExternalContext;
-import org.springframework.webflow.context.ExternalContextHolder;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -81,47 +81,50 @@ public class ClientAction extends AbstractAction {
 
         // it's an authentication
         if (StringUtils.isNotBlank(clientName)) {
-            // get client
-            final BaseClient<Credentials, CommonProfile> client =
-                    (BaseClient<Credentials, CommonProfile>) this.clients
-                    .findClient(clientName);
-            logger.debug("Client: {}", client);
-
-            // get credentials
-            final Credentials credentials;
             try {
-                credentials = client.getCredentials(webContext);
-                logger.debug("credentials: {}", credentials);
-            } catch (final Exception e) {
-                logger.debug("requires http action", e);
-                response.flushBuffer();
-                final ExternalContext externalContext = ExternalContextHolder.getExternalContext();
-                externalContext.recordResponseComplete();
-                return new Event(this, "stop");
+                // get client
+                final BaseClient<Credentials, CommonProfile> client =
+                        (BaseClient<Credentials, CommonProfile>) this.clients
+                                .findClient(clientName);
+                logger.debug("Client: {}", client);
+
+                // get credentials
+                Credentials credentials;
+                try {
+                    credentials = client.getCredentials(webContext);
+                    logger.debug("credentials: {}", credentials);
+                } catch (final Exception e) {
+                    logger.debug("requires http action", e);
+                    credentials = null;
+                }
+
+                // retrieve parameters from web session
+                final Service service = (Service) session.getAttribute(CasProtocolConstants.PARAMETER_SERVICE);
+                context.getFlowScope().put(CasProtocolConstants.PARAMETER_SERVICE, service);
+                logger.debug("retrieve service: {}", service);
+                if (service != null) {
+                    request.setAttribute(CasProtocolConstants.PARAMETER_SERVICE, service.getId());
+                }
+                restoreRequestAttribute(request, session, ThemeChangeInterceptor.DEFAULT_PARAM_NAME);
+                restoreRequestAttribute(request, session, LocaleChangeInterceptor.DEFAULT_PARAM_NAME);
+                restoreRequestAttribute(request, session, CasProtocolConstants.PARAMETER_METHOD);
+
+                // credentials not null -> try to authenticate
+                if (credentials != null) {
+                    final AuthenticationResult authenticationResult =
+                            this.authenticationSystemSupport.handleAndFinalizeSingleAuthenticationTransaction(service,
+                                    new ClientCredential(credentials));
+
+                    final TicketGrantingTicket tgt = this.centralAuthenticationService.createTicketGrantingTicket(authenticationResult);
+                    WebUtils.putTicketGrantingTicketInScopes(context, tgt);
+                    return success();
+                } else {
+                    throw new TechnicalException("Credential is Null");
+                }
+            } catch (final TechnicalException e) {
+                prepareForLoginPage(context);
+                return new Event(this, CasWebflowConstants.TRANSITION_ID_AUTHENTICATION_FAILURE);
             }
-
-            // retrieve parameters from web session
-            final Service service = (Service) session.getAttribute(CasProtocolConstants.PARAMETER_SERVICE);
-            context.getFlowScope().put(CasProtocolConstants.PARAMETER_SERVICE, service);
-            logger.debug("retrieve service: {}", service);
-            if (service != null) {
-                request.setAttribute(CasProtocolConstants.PARAMETER_SERVICE, service.getId());
-            }
-            restoreRequestAttribute(request, session, ThemeChangeInterceptor.DEFAULT_PARAM_NAME);
-            restoreRequestAttribute(request, session, LocaleChangeInterceptor.DEFAULT_PARAM_NAME);
-            restoreRequestAttribute(request, session, CasProtocolConstants.PARAMETER_METHOD);
-
-            // credentials not null -> try to authenticate
-            if (credentials != null) {
-                final AuthenticationResult authenticationResult =
-                        this.authenticationSystemSupport.handleAndFinalizeSingleAuthenticationTransaction(service,
-                                new ClientCredential(credentials));
-
-                final TicketGrantingTicket tgt = this.centralAuthenticationService.createTicketGrantingTicket(authenticationResult);
-                WebUtils.putTicketGrantingTicketInScopes(context, tgt);
-                return success();
-            }
-
         }
 
         // no or aborted authentication : go to login page
