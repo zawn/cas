@@ -138,6 +138,7 @@ public class Beans {
     /**
      * New entity manager factory bean.
      *
+     * @param springJpaProperties  the spring jpa properties
      * @param config        the config
      * @param jpaProperties the jpa properties
      * @return the local container entity manager factory bean
