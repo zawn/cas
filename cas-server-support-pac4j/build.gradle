@@ -1,6 +1,6 @@
 description = "Apereo CAS Client Protocols Support using pac4j"
 dependencies {
-
+    compile project(":cas-server-core-webflow")
     compile project(":cas-server-core-tickets")
     compile project(":cas-server-core-web")
     compile project(":cas-server-support-pac4j-core")

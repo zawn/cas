@@ -16,7 +16,7 @@ def isArtifactSigningRequired = {
     return false
 }
 
-def localReleaseDest = "${project.getRootDir()}/repo"
+def localReleaseDest = "${project.getRootDir().getParentFile()}/repo"
 
 def projectMavenDeployer = {
     beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
