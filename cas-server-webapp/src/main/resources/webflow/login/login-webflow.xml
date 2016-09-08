@@ -112,7 +112,7 @@
         <transition on="UnauthorizedServiceForPrincipalException" to="initializeLoginForm" />
         <transition on="UnsatisfiedAuthenticationPolicyException" to="initializeLoginForm"/>
         <transition on="UnauthorizedAuthenticationException" to="casAuthenticationBlockedView"/>
-        <transition to="initializeLoginForm"/>
+        <transition to="terminateSession"/>
     </action-state>
 
     <action-state id="sendTicketGrantingTicket">
