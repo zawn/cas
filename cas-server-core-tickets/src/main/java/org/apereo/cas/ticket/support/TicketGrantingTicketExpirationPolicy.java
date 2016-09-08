@@ -73,8 +73,8 @@ public class TicketGrantingTicketExpirationPolicy extends AbstractCasExpirationP
         }
 
         // Ticket is within hard window, check timeToKill (sliding window)
-        expirationTime = creationTime.plus(this.timeToKillInMilliSeconds, ChronoUnit.MILLIS);
-        if (ticketState.getLastTimeUsed().isAfter(expirationTime)) {
+        expirationTime = ticketState.getLastTimeUsed().plus(this.timeToKillInMilliSeconds, ChronoUnit.MILLIS);
+        if (currentSystemTime.isAfter(expirationTime)) {
             LOGGER.debug("Ticket is expired because the time since last use is greater than timeToKillInMilliseconds");
             return true;
         }

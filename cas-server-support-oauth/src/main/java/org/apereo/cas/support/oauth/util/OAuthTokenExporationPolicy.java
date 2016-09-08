@@ -101,8 +101,8 @@ public class OAuthTokenExporationPolicy extends AbstractCasExpirationPolicy {
 
         // token is within hard window, check timeToKill (sliding window)
         if (this.timeToKillInMilliSeconds >= 0) {
-            ZonedDateTime expirationTime = creationTime.plus(this.timeToKillInMilliSeconds, ChronoUnit.MILLIS);
-            if (ticketState.getLastTimeUsed().isAfter(expirationTime)) {
+            ZonedDateTime expirationTime = ticketState.getLastTimeUsed().plus(this.timeToKillInMilliSeconds, ChronoUnit.MILLIS);
+            if (currentSystemTime.isAfter(expirationTime)) {
                 LOGGER.debug("Access token is expired because the time since last use is greater than timeToKillInMilliseconds");
                 return true;
             }
