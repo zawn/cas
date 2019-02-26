@@ -38,21 +38,31 @@ public class QueryDatabaseAuthenticationHandler extends AbstractJdbcUsernamePass
         }
 
         final String username = credential.getUsername();
-        final String password = credential.getPassword();
+        String password = credential.getPassword();
         try {
-            final String dbPassword = getJdbcTemplate().queryForObject(this.sql, String.class, username);
+            final String dbPassword = getJdbcTemplate().queryForObject(this.sql, String.class,
+                    username);
+//            Md5PasswordEncoder md5PasswordEncoder  = new Md5PasswordEncoder();
+//            md5PasswordEncoder.encodePassword(password,null);
+            password = getEncoderPassword(password);
             if (!StringUtils.equals(password, dbPassword)) {
                 throw new FailedLoginException("Password does not match value on record.");
             }
         } catch (final IncorrectResultSizeDataAccessException e) {
             if (e.getActualSize() == 0) {
                 throw new AccountNotFoundException(username + " not found with SQL query");
-            } 
+            }
             throw new FailedLoginException("Multiple records found for " + username);
         } catch (final DataAccessException e) {
             throw new PreventedException("SQL exception while executing query for " + username, e);
         }
-        return createHandlerResult(credential, this.principalFactory.createPrincipal(username), null);
+        return createHandlerResult(credential, this.principalFactory.createPrincipal(username),
+                null);
+    }
+
+    private String getEncoderPassword(String password) {
+        String key = "zhangweilong";
+        return EncryptClass.encrypt(password, key);
     }
 
     public void setSql(final String sql) {
