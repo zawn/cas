@@ -1,11 +1,11 @@
 ---
 layout: default
-title: CAS - Home
+title: CAS - 首页
 ---
 
-# CAS Enterprise Single Sign-On
+# CAS 企业单点登录
 
-Welcome to the home of the Apereo Central Authentication Service project, more commonly referred to as CAS. CAS is an enterprise multilingual single sign-on solution for the web and attempts to be a comprehensive platform for your authentication and authorization needs.
+欢迎来到Apereo中央认证服务项目，该项目通常称为CAS。 CAS is an enterprise multilingual single sign-on solution for the web and attempts to be a comprehensive platform for your authentication and authorization needs.
 
 CAS is an open and well-documented authentication protocol. The primary implementation of the protocol is an open-source Java server component by the same name hosted here, with support for a plethora of additional authentication protocols and features.
 
@@ -27,15 +27,15 @@ The following items include a summary of features and technologies presented by 
 
 To learn how to contribute to the project, [please see this guide](/cas/developer/Contributor-Guidelines.html).
 
-## Getting Started
+## 开始使用
 
-We recommend reading the following documentation in order to plan and execute a CAS deployment.
+我们建议阅读以下文档，以便规划和执行一次CAS部署。
 
-* [Architecture](planning/Architecture.html)
-* [Getting Started](planning/Getting-Started.html)
-* [Installation Requirements](planning/Installation-Requirements.html)
-* [Installation](installation/WAR-Overlay-Installation.html)
-* [Blog](https://apereo.github.io)
+* [软件架构](planning/Architecture.html)
+* [开始使用](planning/Getting-Started.html)
+* [安装要求](planning/Installation-Requirements.html)
+* [安装](installation/WAR-Overlay-Installation.html)
+* [博客](https://apereo.github.io)
 
 ## Powered By
 
