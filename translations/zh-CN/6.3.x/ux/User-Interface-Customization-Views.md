@@ -1,42 +1,44 @@
 ---
-layout: default
-title: Views - User Interface Customization - CAS
-category: User Interface
+layout: 违约
+title: 视图 - 用户界面自定义 - CAS
+category: 用户界面
 ---
 
-# Views
+# 视图
 
-The views are found inside the CAS web application in the `WEB-INF\lib\cas-server-support-thymeleaf-<cas.version>.jar` in the templates folder. Add any views that require customization to the `src/main/resources/templates` folder in the CAS overlay project.  
-Any files found in that module can be overridden by putting them in the same location under `src/main/resources` in the CAS overlay project. The Gradle build script for the overlay has tasks that help get resources from the CAS web application to the correct location in the CAS overlay.
+这些视图位于 模板文件夹中 `WEB-INF-lib-cas 服务器支持-百里香叶-<cas.version>.jar` 中的 CAS Web 应用程序中。 将任何需要自定义的视图添加到 CAS 叠加项目中</code> 文件夹 `src/主/资源/模板。<br x-id="2" />
+该模块中发现的任何文件都可以通过将它们放在 CAS 叠加项目中
+<code>src/主/资源` 下的同一位置来覆盖。 覆盖的 Gradle 构建脚本具有帮助将资源从 CAS Web 应用程序 到 CAS 叠加的正确位置的任务。
 
-Views also may be externalized outside the web application conditionally and individually, provided the external path via CAS settings. If a view template file is not found at the externalized path, the default one that ships with CAS will be used as the fallback.
+视图也可以有条件地和单独地在 Web 应用程序之外外部外部化，前提是通过 CAS 设置 外部路径。 如果在外部化路径上找不到视图模板文件，则使用 CAS 的默认文件将用作回退。
 
-Views may also be found using an external URL in CAS settings that is responsible to produce the full view body in the response. This URL endpoint will receive the available request headers as well as the following headers in its request:
+也可以在 CAS 设置中使用外部 URL 找到视图，该 URL 负责在响应 生成全视图主体。 此 URL 端点将接收可用的请求标题及其请求中的以下标题：
 
-| Header                 |
-| ---------------------- |
-| `owner`                |
-| `template`             |
-| `resource`             |
-| `theme`, if available  |
-| `locale`, if available |
+| 页眉        |
+| --------- |
+| `所有者`     |
+| `模板`      |
+| `资源`      |
+| `主题`，如果可用 |
+| `地区`，如果可用 |
 
-Upon a successful `200` status result, the response body is expected to contain the view that will be rendered by CAS.
+在成功 `200` 状态结果后，响应机构预计将包含中科院将呈现的观点。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#views).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#views)。
 
-## Thymeleaf
+## 蒂梅利夫
 
-CAS uses [Thymeleaf](https://www.thymeleaf.org) for its markup rendering engine. Each template is decorated by `layout.html` template file, which provides a layout structure for the template's content. Individual components optimized for re-use among multiple templates are stored in the `src/main/resources/templates/fragments` folder, and referenced by the templates in `src/main/resources/templates`.
+CAS使用 [百里香叶](https://www.thymeleaf.org) 进行加价渲染发动机。 每个模板都由 `布局.html` 模板文件进行装饰，该文件为模板的内容提供了布局结构。 在多个模板中优化用于重复使用的单个组件存储在 `src/主/资源/模板/片段` 文件夹中，并在</code>`src/主/资源/模板中引用模板。</p>
 
-Refer to the [Thymeleaf documentation](https://www.thymeleaf.org/) for more information on its use and syntax.
+<p spaces-before="0">有关提梅叶文档 <a href="https://www.thymeleaf.org/">，请参阅</a> 有关其使用和语法的更多信息。</p>
 
-## Warning Before Accessing Application
+<h2 spaces-before="0">访问应用程序前的警告</h2>
 
-CAS has the ability to warn the user before being redirected to the service. This allows users to be made aware whenever an application uses CAS to log them in. (If they don't elect the warning, they may not see any CAS screen when accessing an application that successfully relies upon an existing CAS single sign-on session.) Some CAS adopters remove the 'warn' checkbox in the CAS login view and don't offer this interstitial advisement that single sign-on is happening.
+<p spaces-before="0">CAS 能够在重定向到服务之前警告用户。 这样，每当应用程序使用 CAS 登录时，用户都可以随时了解。
+（如果他们不选择警告，在访问成功依赖于现有 CAS 单个登录会话的应用程序时，他们可能看不到任何 CAS 屏幕。
+一些 CAS 采用者删除 CAS 登录视图中的"警告"复选框，并且不提供单个登录正在发生的插座建议。</p>
 
-```html
-...
+<pre><code class="html">...
 <input id="warn"
        name="warn"
        value="true"
@@ -45,10 +47,10 @@ CAS has the ability to warn the user before being redirected to the service. Thi
        type="checkbox" />
 <label for="warn" th:utext="#{screen.welcome.label.warn}"/>
 ...
-```
+`</pre>
 
-## Custom Fields
+## 自定义字段
 
-CAS allows on the ability to dynamically extend the login form by including additional fields, to be populated by the user. Such fields are taught to CAS using settings and are then bound to the authentication flow and made available to all authentication handlers that wish to impose additional processes and rules using said fields.
+CAS 允许通过包含由用户填充的其他字段来动态扩展登录表单。 这些字段使用设置向 CAS 传授，然后受身份验证流程约束，并提供给所有希望使用该字段实施额外流程和规则的 认证处理程序。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#views).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#views)。
