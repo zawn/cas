@@ -1,25 +1,25 @@
 ---
-layout: default
-title: CAS - Shibboleth Integration
-category: Integration
+layout: 默认
+title: CAS-Shibboleth集成
+category: 一体化
 ---
 
-# Overview
+# 概述
 
-CAS can be integrated with the [Shibboleth federated SSO platform](http://shibboleth.net/) by a couple different strategies. It is possible to designate CAS to serve as the authentication provider for the Shibboleth IdP. With such a setup, when user is routed to the IdP, the following may take place:
+通过 不同的策略，可以将CAS与 [Shibboleth联邦SSO平台](http://shibboleth.net/) 可以指定CAS作为Shibboleth IdP的身份验证提供者。 通过这种设置，当用户被路由到IdP时，可能会发生以下情况：
 
-- If the user has already authenticated to CAS and has a valid CAS SSO session, the IdP will transparently perform the requested action, e.g. attribute release.
-- If the user does not have a valid CAS SSO session, the user will be redirected to CAS and must authenticate before the IdP proceeds with the requested action.
+- 如果用户已经通过CAS认证并且具有有效的CAS SSO会话，则IdP将透明地 执行所请求的操作，例如属性释放。
+- 如果用户没有有效的CAS SSO会话，则该用户将被重定向到CAS，并且必须为 身份验证，然后IdP才能继续执行所请求的操作。
 
-<div class="alert alert-info"><strong>Note</strong><p>Remember that this page is specifically dedicated to integration options with the Shibboleth Identity Provider. If you need CAS to act as a SAML2 identity provider on its own, you should <a href="../installation/Configuring-SAML2-Authentication.html">start here instead</a>.</p></div>
+<div class="alert alert-info"><strong>笔记</strong><p>请记住，此页面专门用于Shibboleth Identity Provider的集成选项。 如果您需要CAS自己充当SAML2身份提供者，则应从 <a href="../installation/Configuring-SAML2-Authentication.html">开始，而不是</a>。</p></div>
 
-## SSO for Shibboleth IdP (External)
+## Shibboleth IdP的SSO（外部）
 
-This is a Shibboleth IdP external authentication plugin that delegates the authentication to CAS. This solution has the ability to utilize a full range of native CAS protocol features such as `renew` and `gateway`.
+这是一个Shibboleth IdP外部身份验证插件，它将 身份验证委派给CAS。 该解决方案具有 种完整的本机CAS协议功能（例如 `续订` 和 `网关`。
 
-The plugin is available for both Shibboleth Identity Provider [v2](https://github.com/Unicon/shib-cas-authn2) and [v3](https://github.com/Unicon/shib-cas-authn3) and [v4](https://github.com/Unicon/shib-cas-authn).
+该插件可用于 Shibboleth Identity Provider [v2](https://github.com/Unicon/shib-cas-authn2) 和 [v3](https://github.com/Unicon/shib-cas-authn3) 和 [v4](https://github.com/Unicon/shib-cas-authn)。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -29,25 +29,25 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-### Relying Party EntityId
+### 依赖方EntityId
 
-The authentication plugin is able to pass the relying party's entity ID over to the CAS server upon authentication requests. The entity ID is passed in form of a url parameter to the CAS server as such:
+身份验证插件可以根据身份验证请求将 的依赖方的实体ID传递给CAS服务器。 实体ID以url参数的形式传递给CAS服务器，如下所示：
 
 ```
-https://sso.example.org/cas/login?service=<authentication-plugin-url>&entityId=<relying-party-entity-id>
+https://sso.example.org/cas/login?service=<authentication-plugin-url>&entityId =<relying-party-entity-id>
 ```
 
-You can also take advantage of the `entityId` parameter and treat it as a normal CAS service definition, so it can be used for multifactor authentication and authorization.
+您还可以利用 `entityId` 参数并将其视为普通的CAS服务定义 以便将其用于多因素身份验证和授权。
 
-See [this guide](../mfa/Configuring-Multifactor-Authentication-Triggers.html) for more info.
+有关更多信息，请参见 [本指南](../mfa/Configuring-Multifactor-Authentication-Triggers.html)
 
-## Displaying SAML MDUI
+## 显示SAML MDUI
 
-The CAS server is able to recognize the `entityId` parameter and display SAML MDUI on the login page, that is provided by the metadata associated with the relying party.
+CAS服务器能够识别 `entityId` 上显示SAML MDUI，该页面由与依赖方关联的元数据提供。
 
-### Configuration
+### 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -57,26 +57,26 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-### Relying Party Metadata
+### 依赖方元数据
 
-You may allow CAS to recognize SAML MDUI directly from metadata documents that are fed to CAS via settings. If the metadata for the relying party matches the requested `entityId` and contains MDUI elements, those will be passed onto the login page for decorations. If MDUI is not available in the metadata, the relevant elements from the matching service in the service registry will be used all the same.
+您可以允许CAS直接从通过设置提供给CAS的元数据文档中识别SAML MDUI。 如果依赖方的元数据与请求的 `entityId` 匹配并且包含MDUI元素，则这些元素将传递到登录页面上进行修饰。 如果元数据中没有MDUI，则将完全使用服务注册表中匹配服务的相关元素。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#saml-metadata-ui).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#saml-metadata-ui)。
 
-### Service Registry Metadata
+### 服务注册表元数据
 
-You may also register the relying party in the CAS service registry as a regular service application and simply specify a number of MDUI-like elements in the body of the registration record. An example follows:
+您也可以在CAS服务注册表中将依赖方注册为常规服务应用程序，并只需在注册记录的正文中指定许多类似MDUI的元素。 下面是一个示例：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "relying-party-entity-id",
-  "name" : "Test",
-  "id" : 100,
-  "description" : "This is the test application.",
-  "evaluationOrder" : 10000,
-  "logo": "images/logo.png",
-  "informationUrl": "https://test.example.org/info",
-  "privacyUrl": "https://test.example.org/privacy"
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ relying-party-entity-id”，
+  “ name”：“ Test”，
+  “ id”：100，
+  “描述”： “这是测试应用程序。”，
+  “evaluationOrder”：10000，
+  “标志”： “图像/ logo.png”，
+  “informationUrl”：“https://test.example.org/ info”，
+  “ privacyUrl”：“ https://test.example.org/privacy”
 }
 ```
