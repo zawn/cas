@@ -1,78 +1,78 @@
 ---
-layout: default
-title: CAS - Attribute Release Consent
-category: Attributes
+layout: 违约
+title: CAS - 属性释放同意书
+category: 属性
 ---
 
-# Attribute Consent
+# 属性同意
 
-CAS provides the ability to enforce user-informed consent upon attribute release. Practically, this means that prior to accessing the target application, the user will be presented with a collection of attributes allowed to be released to the application with options to either proceed or deny the release of said attributes. There are also additional options to indicate how should underlying changes in the attribute release policy be considered by the consent engine. Users are also provided the ability to set up reminders in the event that no change is detected in the attribute release policy.
+CAS 提供在属性发布时强制执行用户知情同意的能力。 实际上，这意味着在访问目标应用程序之前， 用户将收到允许发布到应用程序的属性集合，其中选项可以继续或拒绝发布该属性。 还有其他选项，说明同意引擎应如何考虑属性释放策略中的潜在更改。 如果属性释放策略中未检测到任何更改，用户还可以设置提醒。
 
-Consent attribute records stored in the configured repository are signed and encrypted.
+存储在配置存储库中的同意属性记录已签名并加密。
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-consent-webflow</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡斯服务器支持-同意-网络流</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-## Administrative Endpoints
+## 行政终点
 
-The following endpoints are provided by CAS:
+CAS 提供以下端点：
 
-| Endpoint           | Description                                                                                                                                                                                                                                                                                 |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `attributeConsent` | Manage and control [attribute consent decisions](Attribute-Release-Consent.html). A `GET` operation produces a list of all consent decisions. A `DELETE` operation with a record key id will attempt to remove and revoke the registered device (i.e. `attributeConsent/{principal}/{id}`). |
+| 端点     | 描述                                                                                                                               |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `属性一致` | 管理和控制 [属性同意决定](Attribute-Release-Consent.html)。 `获取` 操作会生成所有同意决定的列表。 带有记录密钥 ID 的 `删除` 操作将尝试删除和撤销注册设备（即 `属性一致/{principal}/{id}`）。 |
 
 
-## Attribute Selection
+## 属性选择
 
-By default, all attributes that are marked for release do qualify for consent. To control this process, you may define a consent policy that indicates a criteria by which attribute selection for consent is carried out.
+默认情况下，标记为释放的所有属性都有资格获得同意。 为了控制此过程，您可以定义一个同意策略，该政策指示执行属性选择以进行同意的标准。
 
-The policy assigned to each service includes the following features:
+分配给每个服务的策略包括以下功能：
 
-| Field                   | Description                                                                                    |
-| ----------------------- | ---------------------------------------------------------------------------------------------- |
-| `excludedAttributes`    | Exclude the indicated attributes from consent.                                                 |
-| `includeOnlyAttributes` | Force-include the indicated attributes in consent, provided attributes are resolved.           |
-| `status`                | Controls whether consent for this service should be activated. See below for activation rules. |
+| 田       | 描述                           |
+| ------- | ---------------------------- |
+| `排除属性`  | 将指示的属性排除在同意之外。               |
+| `包括仅属性` | 强制包括同意中指示的属性，前提是属性已解决。       |
+| `地位`    | 控制是否应激活此服务的同意。 有关激活规则，请参阅下文。 |
 
-A sample definition follows:
+示例定义如下：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy",
-    "consentPolicy": {
-      "@class": "org.apereo.cas.services.consent.DefaultRegisteredServiceConsentPolicy",
-      "excludedAttributes": ["java.util.LinkedHashSet", ["test"]],
-      "includeOnlyAttributes": ["java.util.LinkedHashSet", ["test"]],
-      "status": "FALSE"
-    }
-  }
-}
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "描述"："样本"，
+  "属性释放政策"：\
+    "@class"："org.apereo.cas.服务。返回所有发布政策"，
+    "同意政策"： [
+      "@class"： "org. apereo. cas. 服务. 同意. 默认注册服务礼貌"，
+      "排除属性"： ["java. util. Linkedhash" 设置， ["测试"]，
+      "仅包括属性"： [java. util. linkedhashset"， ["测试"]，
+      "状态"： "错误"
+    [
+  ]
+]
 ```
 
-## Activation
+## 激活
 
-Attribute consent activation can be controlled both at a global and per-service level. By default, global activation rules for attribute consent are turned on and the consent policy rules for the service definition are disabled. The consent policy for the service definition may override the global rules using the `status` field which accepts the following values:
+属性同意激活可以在全球和每项服务级别进行控制。 默认情况下，打开 属性同意的全球激活规则，并禁用服务定义的同意政策规则。 服务定义的同意政策可以采用接受以下值的 `状态` 字段来推翻全球规则：
 
-| Value       | Description                                                                       |
-| ----------- | --------------------------------------------------------------------------------- |
-| `FALSE`     | Consent policy is disabled, overriding the global configuration.                  |
-| `TRUE`      | Consent policy is enabled, overriding the global configuration.                   |
-| `UNDEFINED` | Consent policy is undefined, delegating the decision to the global configuration. |
+| 价值   | 描述                   |
+| ---- | -------------------- |
+| `假`  | 同意政策被禁用，覆盖全球配置。      |
+| `真`  | 已启用同意策略，覆盖全球配置。      |
+| `定义` | 同意政策未定义，将决策权下放给全球配置。 |
 
-Note that attribute consent policies may also be chained together to compose multiple policies. Each policy can be individually disabled or enabled and the overall aggregate status of the entire attribute consent policy will be used to determine attribute consent activation and selection. A sample chain of attribute consent polices follows:
+请注意，属性同意策略也可能被链接在一起以组成多个策略。 每个策略都可以单独禁用或启用，整个属性同意策略的总体聚合状态 将用于确定属性同意激活和选择。 属性同意政策样本链如下：
 
 ```json
 {
@@ -109,249 +109,258 @@ Note that attribute consent policies may also be chained together to compose mul
 }
 ```
 
-### Activation via Groovy
+### 通过格罗夫激活
 
-The default consent activation strategy can be replaced with an external Groovy script to determine whether the request qualifies for consent. Path to the script is defined via CAS configuration properties.
+默认同意激活策略可以替换为外部 Groovy 脚本，以确定请求 是否有资格获得同意。 脚本路径是通过 CAS 配置属性定义的。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#attribute-consent).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#attribute-consent)。
 
-The script itself may be designed as such:
+脚本本身可以这样设计：
 
 ```groovy
-import org.apereo.cas.util.model.TriStateBoolean
+导入组织.apereo.cas.使用.model.模型.三州布尔
 
-def run(Object[] args) {
-    def consentEngine = args[0]
-    def casProperties = args[1]
-    def service = args[2]
-    def registeredService = args[3]
-    def authentication = args[4]
-    def requestContext = args[5]
-    def logger = args[6]
+def运行（对象[]args）{
+    def同意工程师=args[0]
+    d def casProperties=args[1]
+    def服务=args[2]
+    def注册服务=args[3]
+    def身份验证=args[4]
+    def请求通写=args[5]
+    def记录器=args[6]
 
-    logger.debug("Activating consent for ${registeredService.name}")
-    return true;
+    记录器。debug（"激活 ${registeredService.name}同意"）
+    返回真实：
 }
 ```
 
-The following parameters are passed to the script:
+以下参数传递到脚本：
 
-| Parameter           | Description                                                                         |
-| ------------------- | ----------------------------------------------------------------------------------- |
-| `consentEngine`     | A reference to the `ConsentEngine` object.                                          |
-| `casProperties`     | A reference to the CAS configuration properties loaded from property sources.       |
-| `service`           | The `Service` object representing the requesting application.                       |
-| `registeredService` | The `RegisteredService` object representing the service definition in the registry. |
-| `authentication`    | The `Authentication` object representing the active authentication transaction.     |
-| `requestContext`    | The object representing the Spring Webflow `RequestContext`.                        |
-| `logger`            | The object responsible for issuing log messages such as `logger.info(...)`.         |
+| 参数        | 描述                                |
+| --------- | --------------------------------- |
+| `同意工程师`   | 引用 `同意引擎` 对象。                     |
+| `卡斯普罗佩里斯` | 从属性源加载的 CAS 配置属性的引用。              |
+| `服务`      | `服务` 代表请求申请的对象。                   |
+| `注册服务`    | 注册服务 `` 代表注册表中服务定义的对象。            |
+| `认证`      | `身份验证` 表示活动身份验证交易的对象。             |
+| `请求康德信`   | 代表春季网络流的对象 `请求信`。                 |
+| `记录`      | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
 
-The script is expected to return either `true` or `false` to determine whether or not consent is required.
+脚本预计将返回 `真实` 或 `虚假` ，以确定是否需要同意。
 
-## Storage
+## 存储
 
-User consent decisions may be stored and remembered using one of the following options.
+用户同意决定可以使用以下选项之一进行存储和记忆。
 
-### JSON
+### 杰森
 
-This is the default option, most useful for demo and testing purposes. Consent decisions are all kept inside a static JSON resource whose path is taught to CAS via settings.
+这是默认选项，最有用的演示和测试目的。 同意决定都保存 在静态 JSON 资源中，该资源通过设置向 CAS 传授路径。
 
-A sample record follows:
+示例记录如下：
 
 ```json
 {
-   "id": 1000,
-   "principal": "casuser",
-   "service": "https://google.com",
-   "createdDate": [ 2017, 7, 10, 14, 10, 17 ],
-   "options": "ATTRIBUTE_NAME",
-   "reminder": 14,
-   "reminderTimeUnit": "DAYS",
-   "attributes": "..."
+   "id"：1000，
+   "校长"："卡瑟"，
+   "服务"："https://google.com"，
+   "创建日期"：[2017，7，10，14，10，17]，
+   "选项"："ATTRIBUTE_NAME"，
+   "提醒"：14，
+   "提醒时间"："天"，
+   "属性"："。。。"
 }
 ```
 
-The following fields are available:
+可用以下字段：
 
-| Field              | Description                                                                                                                   |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| `id`               | Valid numeric value for existing records.                                                                                     |
-| `principal`        | The authenticated user id.                                                                                                    |
-| `service`          | Target application url to which attributes are about to be released.                                                          |
-| `createdDate`      | Date/Time of the decision record.                                                                                             |
-| `options`          | Indicates how changes in attributes are determined for this application. (i.e. `ATTRIBUTE_NAME`, `ATTRIBUTE_VALUE`, `ALWAYS`) |
-| `reminder`         | Indicates the period after which user will be reminded to consent again, in case no changes are found.                        |
-| `reminderTimeUnit` | The reminder time unit (i.e. `MONTHS`, `DAYS`, `HOURS`, etc).                                                                 |
-| `attributes`       | Base64 of attribute names for this application, signed and encrypted.                                                         |
+| 田        | 描述                                                              |
+| -------- | --------------------------------------------------------------- |
+| `ID`     | 现有记录的有效数字值。                                                     |
+| `主要`     | 已验证的用户ID。                                                       |
+| `服务`     | 目标应用程序网址的属性即将发布。                                                |
+| `创建日`    | 决策记录的日期/时间。                                                     |
+| `选项`     | 指示如何为此应用程序确定属性更改。 （即 `ATTRIBUTE_NAME`， `ATTRIBUTE_VALUE`， `永远`） |
+| `提醒`     | 指示提醒用户再次同意的期限，以防发现任何更改。                                         |
+| `提醒时间统一` | 提醒时间单位（即 `个月`， `天`， `小时`等）。                                     |
+| `属性`     | 此应用程序的属性名称 Base64，已签名并加密。                                       |
 
-Valid values for `options` include:
+</code> `选项的有效值包括：</p>
 
-| Field             | Description                                                                                                                                                                                                       |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ATTRIBUTE_NAME`  | Ask for consent if any of the attribute names change, for instance, in cases where an attribute is added or removed from the release bundle. Consent is ignored if the value of an existing attribute is changed. |
-| `ATTRIBUTE_VALUE` | Same as above, except that attributes values are also accounted for and trigger consent, if changed.                                                                                                              |
-| `ALWAYS`          | Always ask for consent, regardless of change or context.                                                                                                                                                          |
+<table spaces-before="0">
+<thead>
+<tr>
+  <th>田</th>
+  <th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>ATTRIBUTE_NAME`</td> 
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#json-attribute-consent).
+</tr> 
 
-### Groovy
+</tbody> </table>
 
-Consent operations may be handled via a Groovy script whose path is taught to CAS via settings.
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#json-attribute-consent)。
 
-The script may be designed as:
+### 槽的
+
+同意操作可以通过 Groovy 脚本处理，该脚本的路径通过设置传授给 CAS。
+
+脚本可设计为：
 
 ```groovy
-import java.util.*
-import org.apereo.cas.consent.*
+导入 java. util.*
+进口组织. apereo. cas. 同意. *
 
-def Set<ConsentDecision> read(final Object... args) {
-    def consentDecisions = args[0]
-    def logger = args[1]
+设置<ConsentDecision> 读取 （最终对象...args）{
+    def同意决定=args[0]
+    定义记录器=args[1]
+    。。。
+    返回无效;
+=
+
+德布尔写（最终对象。。。args）{
+    def同意决定=args[0]
+    def记录器=args[1]
+    。。。
+    返回真实：
+=
+
+德布尔删除（最终对象。。。args）{
+    定义决策ID=阿格斯[0]
+    德伐木机=args[1]
     ...
-    return null;
-}
+    返回真实：
+=
 
-def Boolean write(final Object... args) {
-    def consentDecision = args[0]
-    def logger = args[1]
+德布尔删除所有（最终对象。。。args）{
+    def本金=阿格斯[0]
+    德伐木机=阿格斯[1]
     ...
-    return true;
-}
-
-def Boolean delete(final Object... args) {
-    def decisionId = args[0]
-    def logger = args[1]
-    ...
-    return true;
-}
-
-def Boolean deleteAll(final Object... args) {
-    def principal = args[0]
-    def logger = args[1]
-    ...
-    return true;
+    返回真实：
 }
 ```
 
 
-### JDBC
+### 京城
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-consent-jdbc</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-同意-jdbc</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jpa-attribute-consent).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#jpa-attribute-consent)。
 
-### MongoDb
+### 蒙古德布
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-consent-mongo</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 同意 - 蒙古</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#mongodb-attribute-consent).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#mongodb-attribute-consent)。
 
-### Redis
+### 雷迪斯
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-consent-redis</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 同意 - 重新</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#redis-attribute-consent).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#redis-attribute-consent)。
 
-### CouchDb
+### 库奇德布
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-consent-couchdb</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 同意 - 沙发</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchdb-attribute-consent).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchdb-attribute-consent)。
 
 
-### REST
+### 休息
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-consent-rest</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡斯服务器支持-同意-休息</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#rest-attribute-consent).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#rest-attribute-consent)。
 
-Endpoints must be designed to accept/process `application/json`.
+端点必须设计为接受/处理 `申请/json`。
 
-| Operation                        | Method   | Data                                  | Expected Response                                |
-| -------------------------------- | -------- | ------------------------------------- | ------------------------------------------------ |
-| Locate consent decision          | `GET`    | `service`, `principal` as headers     | `200`. The consent decision object in the body.  |
-| Locate consent decision for user | `GET`    | `principal` as headers                | `200`. The consent decisions object in the body. |
-| Locate all consent decisions     | `GET`    | N/A                                   | `200`. The consent decisions object in the body. |
-| Store consent decision           | `POST`   | Consent decision object in the body   | `200`.                                           |
-| Delete consent decision          | `DELETE` | `/<decisionId>` appended to URL | `200`.                                           |
-| Delete consent decisions         | `DELETE` | `principal` as header                 | `200`.                                           |
+| 操作        | 方法   | 数据                          | 预期响应                 |
+| --------- | ---- | --------------------------- | -------------------- |
+| 查找同意决定    | `获取` | `服务`， `主要` 为标题              | `200`。 同意决定对象在主体中。   |
+| 为用户查找同意决定 | `获取` | `校长` 作为标题                   | `200`。 同意决定在主体中提出异议。 |
+| 查找所有同意决定  | `获取` | 不适用                         | `200`。 同意决定在主体中提出异议。 |
+| 商店同意决定    | `发布` | 体中的同意决定对象                   | `200`。               |
+| 删除同意决定    | `删除` | `/<decisionId>` 附加到网址 | `200`。               |
+| 删除同意决定    | `删除` | `校长` 作为标题                   | `200`。               |
 
-The consent decision object in transit will and must match the JSON structure above.
+过境过程中的同意决定对象将且必须与上述 JSON 结构匹配。
 
 
-### LDAP
+### 阿尔达普
 
-Consent decisions can be stored on LDAP user objects. The decisions are serialized into JSON and stored one-by-one in a multi-valued string attribute.
+同意决定可以存储在LDAP用户对象上。 这些决策序列化为 JSON，并逐一存储在多值字符串属性中。
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-consent-ldap</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 同意 - ldap</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ldap-attribute-consent).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ldap-attribute-consent)。
 
 
-### Custom
+### 习惯
 
-You may also inject your own implementation for attribute consent management into CAS that would itself handle storing consent decisions, etc. In order to do this, you will need to design a configuration class that roughly matches the following:
+您也可以将自己的属性同意管理实施注入 CAS，该 CAS 本身将处理存储同意决定等。 为此，您需要设计大致匹配以下配置类：
 
 ```java
-package org.apereo.cas.consent;
+包组织. 阿佩雷奥. 卡斯. 同意;
 
-@Configuration("MyConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyConfiguration {
+@Configuration（"我的配置"）
+@EnableConfigurationProperties（cas配置专业.class）
+公共类"我的配置"=
 
     @Bean
-    public ConsentRepository consentRepository() {
-        ...
-    }
+    公众同意存储库（）{
+        。。。
+    •
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[本指南](../configuration/Configuration-Management-Extensions.html) 了解有关如何将配置注册到 CAS 运行时间的更多信息。
