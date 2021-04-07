@@ -1,133 +1,133 @@
 ---
-layout: default
-title: CAS - Service Authentication Policy
-category: Services
+layout: 默认
+title: CAS-服务认证策略
+category: 服务
 ---
 
-# Service Authentication Policy
+# 服务认证策略
 
-Each registered application in the registry may be assigned an authentication policy that indicates how CAS should validate and execute the authentication transaction when processing the given service. The authentication policy may at times override what is globally found in the CAS authentication engine, or it may present complementary features to enhance the authentication flow.
+可以向注册表中的每个注册应用程序分配一个身份验证策略，该策略指示 应该如何验证和执行身份验证事务。 身份验证策略 有时可能会覆盖在CAS身份验证引擎中全局找到的 以增强身份验证流程。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://app.example.org/.+",
-  "name" : "ExampleApp",
-  "id" : 1,
-  "authenticationPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy",  
-    "requiredAuthenticationHandlers" : ["java.util.TreeSet", [ "AuthNHandlerName" ]],
-    "excludedAuthenticationHandlers" : ["java.util.TreeSet", [ ]]
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://app.example.org/.+”，
+  “名称”：为“ExampleApp”，
+  “ id“：
+  ” authenticationPolicy“：{
+    ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy“，  
+    ” requiredAuthenticationHandlers“：[” java.util.TreeSet“，[” AuthNHandlerName“]]，
+    “ excludedAuthenticationHandlers”：[“ java.util.TreeSet”，[]]
   }
 }
 ```
 
-The following fields may be assigned to the policy:
+以下字段可以分配给策略：
 
-| Parameter                        | Description                                                                                                                                                                                                                                                                 |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `requiredAuthenticationHandlers` | A set of identifiers/names for the required authentication handlers available and configured in CAS. These names can be used to enforce a service definition to only use the authentication strategy carrying that name when an authentication request is submitted to CAS. |
-| `excludedAuthenticationHandlers` | A set of identifiers/names for excluded authentication handlers. These names can be used to enforce a service definition to *exclude* and disqualify certain authentication handlers when an authentication request is submitted to CAS.                                    |
+| 范围                               | 描述                                                                              |
+| -------------------------------- | ------------------------------------------------------------------------------- |
+| `requiredAuthenticationHandlers` | 在CAS中可用并配置的所需身份验证处理程序的一组标识符/名称。 这些名称可用于强制服务定义，以仅在将身份验证请求提交给CAS时才使用带有该名称的身份验证策略。 |
+| `excludeAuthenticationHandlers`  | 排除的身份验证处理程序的一组标识符/名称。 这些名称可用于将服务定义强制为 *排除* 并在将身份验证请求提交给CAS时取消某些身份验证处理程序的资格。     |
 
-Note that while authentication methods in CAS all are given a default name, most if not all methods can be assigned a name via CAS settings.
+请注意，虽然CAS中的所有身份验证方法都被赋予了默认名称，但大多数（如果不是全部）方法都可以通过CAS设置来分配名称。
 
-## Authentication Policy Criteria
+## 认证策略标准
 
-Authentication policy criteria can also be assigned to each application definition, which should override the global policy defined for the deployment. Such policies should closely follow after those [that can be defined globally](../installation/Configuring-Authentication-Components.html#authentication-policy), are entirely optional and can be one of the following types:
+身份验证策略标准也可以分配给每个应用程序定义，它们应该覆盖为部署定义的全局策略。 这类政策应紧跟之后那些 [可以全局定义](../installation/Configuring-Authentication-Components.html#authentication-policy)，是完全任选的，并且可以是下列类型之一：
 
-### Allowed
+### 允许的
 
-Maps to the `Required` [authentication policy](../configuration/Configuration-Properties.html#required).
+映射到 `必需` [身份验证策略](../configuration/Configuration-Properties.html#required)。
 
 ```json
 {
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId": "^(https|imaps)://.*",
-  "name": "Example",
-  "id": 1,
-  "authenticationPolicy": {
-    "@class": "org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy",
-    "requiredAuthenticationHandlers" : ["java.util.TreeSet", [ "JSON" ]],
-    "criteria": {
-      "@class": "org.apereo.cas.services.AllowedAuthenticationHandlersRegisteredServiceAuthenticationPolicyCriteria"
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ ^（https | imaps）：//.*”，
+  “ name”：“ Example”，
+  “ id “：
+  ” authenticationPolicy“：{
+    ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy“，
+    ” requiredAuthenticationHandlers“：[” java.util.TreeSet“，[” JSON“]]，
+    “ criteria”：{
+      “ @class”：“ org.apereo.cas.services.AllowedAuthenticationHandlersRegisteredServiceAuthenticationPolicyCriteria”
     }
   }
 }
 ```
 
-### Excluded
+### 排除在外
 
-Enable the authentication policy criteria to exclude and disqualify indicated authentication handlers by their name.
+启用身份验证策略条件，以按其名称排除和取消指定的身份验证处理程序的资格。
 
 ```json
 {
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId": "^(https|imaps)://.*",
-  "name": "Example",
-  "id": 1,
-  "authenticationPolicy": {
-    "@class": "org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy",
-    "excludedAuthenticationHandlers" : ["java.util.TreeSet", [ "JSON" ]],
-    "criteria": {
-      "@class": "org.apereo.cas.services.ExcludedAuthenticationHandlersRegisteredServiceAuthenticationPolicyCriteria"
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ ^（https | imaps）：//.*”，
+  “ name”：“ Example”，
+  “ id “：
+  ” authenticationPolicy“：{
+    ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy“，
+    ” excludedAuthenticationHandlers“：[” java.util.TreeSet“，[” JSON“]]，
+    “ criteria”：{
+      “ @class”：“ org.apereo.cas.services.ExcludedAuthenticationHandlersRegisteredServiceAuthenticationPolicyCriteria”
     }
   }
 }
 ```
 
-### Any
+### 任何
 
-Maps to the `Any` [authentication policy](../configuration/Configuration-Properties.html#authentication-policy).
+映射到 `Any` [身份验证策略](../configuration/Configuration-Properties.html#authentication-policy)。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://app.example.org/.+",
-  "name" : "ExampleApp",
-  "id" : 1,
-  "authenticationPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy",
-    "criteria": {
-      "@class" : "org.apereo.cas.services.AnyAuthenticationHandlerRegisteredServiceAuthenticationPolicyCriteria",
-      "tryAll": true
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://app.example.org/.+”，
+  “名称”：为“ExampleApp”，
+  “ id“：
+  ” authenticationPolicy“：{
+    ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy“，
+    ” criteria“：{
+      ” @class“：” org.apereo.cas.services。 AnyAuthenticationHandlerRegisteredServiceAuthenticationPolicyCriteria“，
+      ” tryAll“：true
     }
   }
 }
 ```
 
-### All
+### 全部
 
-Maps to the `All` [authentication policy](../configuration/Configuration-Properties.html#authentication-policy).
+映射到 `全部` [身份验证策略](../configuration/Configuration-Properties.html#authentication-policy)。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://app.example.org/.+",
-  "name" : "ExampleApp",
-  "id" : 1,
-  "authenticationPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy",
-    "criteria": {
-      "@class" : "org.apereo.cas.services.AllAuthenticationHandlersRegisteredServiceAuthenticationPolicyCriteria"
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://app.example.org/.+”，
+  “名称”：为“ExampleApp”，
+  “ id“：
+  ” authenticationPolicy“：{
+    ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy“，
+    ” criteria“：{
+      ” @class“：” org.apereo.cas.services。 AllAuthenticationHandlersRegisteredServiceAuthenticationPolicyCriteria“
     }
   }
 }
 ```
 
-### Not Prevented
+### 没有预防
 
-Maps to the `Not Prevented` [authentication policy](../configuration/Configuration-Properties.html#authentication-policy).
+映射到 `Not Prevented` [身份验证策略](../configuration/Configuration-Properties.html#authentication-policy)。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://app.example.org/.+",
-  "name" : "ExampleApp",
-  "id" : 1,
-  "authenticationPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy",
-    "criteria": {
-      "@class" : "org.apereo.cas.services.NotPreventedRegisteredServiceAuthenticationPolicyCriteria"
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://app.example.org/.+”，
+  “名称”：为“ExampleApp”，
+  “ id“：
+  ” authenticationPolicy“：{
+    ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy“，
+    ” criteria“：{
+      ” @class“：” org.apereo.cas.services。 NotPreventedRegisteredServiceAuthenticationPolicyCriteria“
     }
   }
 }
@@ -135,43 +135,43 @@ Maps to the `Not Prevented` [authentication policy](../configuration/Configurati
 
 ### Groovy
 
-Maps to the `Groovy` [authentication policy](../configuration/Configuration-Properties.html#authentication-policy).
+映射到 `Groovy` [身份验证策略](../configuration/Configuration-Properties.html#authentication-policy)。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://app.example.org/.+",
-  "name" : "ExampleApp",
-  "id" : 1,
-  "authenticationPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy",
-    "criteria": {
-      "@class" : "org.apereo.cas.services.GroovyRegisteredServiceAuthenticationPolicyCriteria",
-      "script": "..."
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://app.example.org/.+”，
+  “名称”：为“ExampleApp”，
+  “ id“：
+  ” authenticationPolicy“：{
+    ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy“，
+    ” criteria“：{
+      ” @class“：” org.apereo.cas.services。 GroovyRegisteredServiceAuthenticationPolicyCriteria“，
+      ” script“：” ...“
     }
   }
 }
 ```
 
-The `script` attribute can either be an inline Groovy script or a reference to an external file.
+`脚本` 属性可以是嵌入式Groovy脚本或对外部文件的引用。
 
-### REST
+### 休息
 
- Maps to the `Rest` [authentication policy](../configuration/Configuration-Properties.html#authentication-policy).
+ 映射到 `Rest` [身份验证策略](../configuration/Configuration-Properties.html#authentication-policy)。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://app.example.org/.+",
-  "name" : "ExampleApp",
-  "id" : 1,
-  "authenticationPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy",
-    "criteria": {
-      "@class" : "org.apereo.cas.services.RestfulRegisteredServiceAuthenticationPolicyCriteria",
-      "url": "...",
-      "basicAuthUsername": "...",
-      "basicAuthPassword": "..."
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://app.example.org/.+”，
+  “名称”：为“ExampleApp”，
+  “ id“：
+  ” authenticationPolicy“：{
+    ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceAuthenticationPolicy“，
+    ” criteria“：{
+      ” @class“：” org.apereo.cas.services。 RestfulRegisteredServiceAuthenticationPolicyCriteria“，
+      ” url“：” ...“，
+      ” basicAuthUsername“：” ...“，
+      ” basicAuthPassword“：” ...“
     }
   }
 }
