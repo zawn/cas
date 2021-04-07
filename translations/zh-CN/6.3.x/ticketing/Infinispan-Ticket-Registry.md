@@ -1,56 +1,56 @@
 ---
-layout: default
-title: CAS - Infinispan Ticket Registry
-category: Ticketing
+layout: 默认
+title: CAS-Infinispan票务注册表
+category: 售票处
 ---
 
-# Infinispan Ticket Registry
+# Infinispan票务注册表
 
-Infinispan integration is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用Infinispan集成：
 
 ```xml
 <dependency>
      <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-infinispan-ticket-registry</artifactId>
+     <artifactId>cas服务器支持infinispan票务注册表</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#infinispan-ticket-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#infinispan-ticket-registry)。
 
-[Infinispan](http://infinispan.org/) is a distributed in-memory key/value data store with optional schema. It can be used both as an embedded Java library and as a language-independent service accessed remotely over a variety of protocols. It offers advanced functionality such as transactions, events, querying and distributed processing.
+[Infinispan](http://infinispan.org/) 是具有可选模式的分布式内存键/值数据存储。 它既可以用作嵌入式Java库，也可以用作通过各种协议远程访问的与语言无关的服务。 它提供高级功能，例如事务，事件，查询和分布式处理。
 
-Cache instance can be integrated with
+缓存实例可以与
 
-- JCache (JSR-107)
-- Hibernate second-level Cache
-- WildFly modules
-- Apache Lucene directory backed by Infinispan
-- Directory Provider for Hibernate Search
-- Spring Cache 3.x and 4.x
+- JCache（JSR-107）
+- 休眠二级缓存
+- WildFly模块
+- 由Infinispan支持的Apache Lucene目录
+- 休眠搜索的目录提供程序
+- Spring Cache 3.x和4.x
 - CDI
 - OSGi
-- [Apache Spark](https://github.com/infinispan/infinispan-spark)
-- [Apache Hadoop](https://github.com/infinispan/infinispan-hadoop)
+- [阿帕奇火花](https://github.com/infinispan/infinispan-spark)
+- [阿帕奇Hadoop](https://github.com/infinispan/infinispan-hadoop)
 
-There are a variety of cache stores available to choose from, some of which are:
+有多种缓存存储可供选择，其中一些是：
 
-- JPA/JDBC Store
-- Single File & Soft-Index
-- REST
-- Cassandra
-- Redis
-- HBase
-- MongoDB
+- JPA / JDBC存储
+- 单个文件 & 软索引
+- 休息
+- 卡桑德拉
+- 雷迪斯
+- HBase的
+- MongoDB的
 
-See the [full list of implementations](https://infinispan.org/cache-store-implementations).
+参见 [完整的实现列表](https://infinispan.org/cache-store-implementations)。
 
-## Distributed Cache
+## 分布式缓存
 
-A sample `infinispan.xml` configuration file:
+示例 `infinispan.xml` 配置文件：
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
+<吗？xml版本=“ 1.0”编码=“ UTF-8”？>
 <infinispan xsi:schemaLocation="urn:infinispan:config:8.2 http://www.infinispan.org/schemas/infinispan-config-8.2.xsd"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:infinispan:config:8.2">
 
@@ -62,4 +62,4 @@ A sample `infinispan.xml` configuration file:
 
 ```
 
-Refer to the [Infinispan](http://infinispan.org/) documentation to learn more about cache configuration, and how to manage the eviction policy for various ticket types.
+请参阅 [Infinispan](http://infinispan.org/) 文档，以了解有关缓存配置的更多信息，以及如何 管理各种故障单类型的驱逐策略的更多信息。
