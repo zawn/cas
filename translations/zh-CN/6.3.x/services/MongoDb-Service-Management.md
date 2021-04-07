@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - Mongo Service Registry
-category: Services
+layout: 默认
+title: CAS-Mongo服务注册中心
+category: 服务
 ---
 
-# Mongo Service Registry
+# Mongo服务注册中心
 
-This registry uses a [MongoDb](https://www.mongodb.org/) instance to load and persist service definitions. Support is enabled by adding the following module into the overlay:
+该注册表使用 [MongoDb](https://www.mongodb.org/) 实例来加载和保留服务定义。 通过将以下模块添加到叠加层来启用支持：
 
 ```xml
 <dependency>
@@ -16,10 +16,10 @@ This registry uses a [MongoDb](https://www.mongodb.org/) instance to load and pe
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-This implementation auto-configures most of the internal details. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#mongodb-service-registry).
+此实现会自动配置大多数内部细节。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#mongodb-service-registry)。
 
-## Auto Initialization
+## 自动初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+在启动和配置允许的情况下，注册表可以根据CAS可用的默认JSON服务定义自动进行初始化。 有关更多信息，请参见 [本指南](AutoInitialization-Service-Management.html)
