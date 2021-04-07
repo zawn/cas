@@ -1,27 +1,27 @@
 ---
-layout: default
-title: CAS - Microsoft Azure Active Directory Authentication
-category: Authentication
+layout: 违约
+title: CAS - 微软 Azure 活动目录认证
+category: 认证
 ---
 
-# Microsoft Azure Active Directory Authentication
+# 微软 Azure 活动目录认证
 
-[Azure Active Directory (Azure AD)](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) is Microsoft’s cloud-based identity and access management service. The functionality described here allows one to authenticate credentials using Azure Active Directory as the account store and optionally fetch user attributes using Microsoft Graph.
+[Azure 活动目录 （Azure AD）](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) 是微软基于云的身份和访问管理服务。 此处描述的功能允许用户使用 Azure 活动目录作为帐户存储进行身份验证，并使用 Microsoft Graph 可选地提取用户属性。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-azuread-authentication</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - 祖雷达 - 身份验证</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#microsoft-azure-active-directory-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#microsoft-azure-active-directory-authentication)。
 
-## Principal Attributes
+## 主要属性
 
-The above dependency may also be used, in the event that principal attributes need to be fetched from Azure Active Directory without necessarily authenticating credentials . To see the relevant list of CAS properties, please \[review this guide\](..configuration/Configuration-Properties.html#microsoft-azure-active-directory.
+如果主要属性需要从 Azure 活动目录中提取，而无需 必须验证凭据，也可以使用上述依赖性。 要查看 CAS 属性的相关列表，请[查看本指南]。配置/配置属性.html#微软-蔚蓝-主动目录。
