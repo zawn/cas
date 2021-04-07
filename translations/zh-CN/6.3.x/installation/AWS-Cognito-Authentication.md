@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Amazon Cognito Authentication
-category: Authentication
+layout: 默认
+title: CAS-Amazon Cognito身份验证
+category: 验证
 ---
 
-# Amazon Cognito Authentication
+# Amazon Cognito身份验证
 
-Verify and authenticate credentials using [Amazon Cognito](https://aws.amazon.com/cognito/).
+[Amazon Cognito](https://aws.amazon.com/cognito/)验证和认证凭据。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,15 +18,15 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#amazon-cognito-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#amazon-cognito-authentication)。
 
-When you create the *app client* entry in the Amazon Cognito management console, make sure the app is able to support the `ADMIN_NO_SRP_AUTH` authentication flow and it is *NOT* assigned a secret key.
+在 *应用程序客户端* 条目时，请确保该应用程序能够支持 `ADMIN_NO_SRP_AUTH` 身份验证流程，并且为 *NOT* 分配了密钥。
 
-## Troubleshooting
+## 故障排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他日志记录，请配置log4j配置文件以添加以下级别：
 
 ```xml
 ...
