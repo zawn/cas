@@ -1,31 +1,31 @@
 ---
-layout: default
-title: CAS - Configuration Management Clustered Deployment
-category: Configuration
+layout: 违约
+title: CAS - 配置管理分组部署
+category: 配置
 ---
 
-# Clustered Deployments
+# 聚类部署
 
-CAS uses the [Spring Cloud Bus](http://cloud.spring.io/spring-cloud-static/spring-cloud.html) to manage configuration in a distributed deployment. Spring Cloud Bus links nodes of a distributed system with a lightweight message broker. This can then be used to broadcast state changes (e.g. configuration changes) or other management instructions.
+CAS 使用 [春云总线](http://cloud.spring.io/spring-cloud-static/spring-cloud.html) 在分布式部署中管理配置。 春云总线将 分布式系统的节点与轻量级消息中间商连接。 然后，这可用于广播状态 更改（例如配置更改）或其他管理说明。
 
-The bus supports sending messages to all nodes listening. Broadcasted events will attempt to update, refresh and reload each CAS server application’s configuration.
+总线支持向所有收听节点发送消息。 广播事件将尝试更新、刷新和 重新加载每个 CAS 服务器应用程序的配置。
 
-If CAS nodes are not sharing a central location for configuration properties such that each node contains a copy of the settings, any changes you make to one node must be replicated and synced across all nodes so they are persisted on disk. The broadcast mechanism noted above only applies changes to the runtime and the running CAS instance. Ideally, you should be keeping track of CAS settings in a shared (git) repository (or better yet, inside a private Github repository perhaps) where you make a change in one place and it's broadcasted to all nodes. This model removes the need for synchronizing changes across disks and CAS nodes.
+如果 CAS 节点没有共享配置属性的中心位置，以便每个 节点都包含设置的副本，则必须复制您对一个节点的任何更改，并在所有节点之间同步 ，以便它们持续在磁盘上。 上述广播机制仅 对运行时间和运行 CAS 实例进行更改。 理想情况下，您应该在共享（git）存储库（或者更好的是，在私人 Github 存储库内）中跟踪 CAS 设置的 ， 您在一个地方进行更改，并将其广播到所有节点。 此模型无需在磁盘和 CAS 节点之间同步更改 。
 
-To see the relevant list of CAS properties, please [review this guide](Configuration-Properties.html#configuration-storage).
+要查看 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#configuration-storage)。
 
-The following endpoints are secured and exposed by the Spring Cloud Config Bus:
+以下端点由春云配置总线固定并暴露：
 
-| Parameter               | Description                                                                             |
-| ----------------------- | --------------------------------------------------------------------------------------- |
-| `/actuator/bus-refresh` | Reload the configuration of all CAS nodes in the cluster if the cloud bus is turned on. |
-| `/actuator/bus-env`     | Sends key/values pairs to update each CAS node if the cloud bus is turned on.           |
+| 参数          | 描述                             |
+| ----------- | ------------------------------ |
+| `/执行器/总线刷新` | 如果云总线已打开，则重新加载聚类中所有 CAS 节点的配置。 |
+| `/执行器/总线`   | 如果云总线已打开，将发送密钥/值对以更新每个 CAS 节点。 |
 
-The transport mechanism for the bus to broadcast events is handled via one of the following components.
+公共汽车广播事件的运输机制通过以下一个组件处理。
 
-## Troubleshooting
+## 故障 排除
 
-To enable additional logging, modify the logging configuration file to add the following:
+要启用其他日志，请修改记录配置文件以添加以下：
 
 ```xml
 <Logger name="org.springframework.amqp" level="debug" additivity="false">
@@ -34,34 +34,34 @@ To enable additional logging, modify the logging configuration file to add the f
 </Logger>
 ```
 
-## RabbitMQ
+## 兔子
 
-This is the default option for broadcasting change events to CAS nodes. [RabbitMQ](https://www.rabbitmq.com/) is open source message broker software (sometimes called message-oriented middleware) that implements the Advanced Message Queuing Protocol (AMQP).
+这是向 CAS 节点广播更改事件的默认选项。 [兔子MQ](https://www.rabbitmq.com/) 是开源消息经纪人 软件（有时称为消息导向中间件），实现 高级消息排队协议（AMQP）。
 
-Support is enabled by including the following dependency in the final overlay:
+支持通过在最终叠加中包括以下依赖性来实现：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-amqp</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>套机服务器支持-配置-云-amqp</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#rabbitmq).
+要查看此功能的 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#rabbitmq)。
 
-## Kafka
+## 卡 夫 卡
 
-Apache Kafka is an open-source message broker project developed by the Apache Software Foundation. The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds. It is, in its essence, a "massively scalable pub/sub message queue designed as a distributed transaction log", making it highly valuable for enterprise infrastructures to process streaming data.
+阿帕奇卡夫卡是由阿帕奇软件基金会开发的开源消息经纪人项目。 该项目旨在提供一个统一、高通量、低延迟的平台，用于处理实时数据源。 从本质上讲，它是一个"大规模可扩展的酒吧/子消息队列，设计为分布式交易日志"， 使企业基础设施处理流数据具有很高的价值。
 
-Support is enabled by including the following dependency in the final overlay:
+支持通过在最终叠加中包括以下依赖性来实现：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-kafka</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持配置 - 云卡夫卡</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#kafka).
+要查看此功能的 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#kafka)。
