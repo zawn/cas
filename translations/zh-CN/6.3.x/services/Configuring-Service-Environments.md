@@ -1,23 +1,23 @@
 ---
-layout: default
-title: CAS - Configuring Service Environments
-category: Services
+layout: 默认
+title: CAS-配置服务环境
+category: 服务
 ---
 
-# Configure Service Environments
+# 配置服务环境
 
-Each registered application in the registry may be assigned a set of environment names. The environment names act as a filter, allowing CAS to only load and honor the registered service definition if the runtime environment does in fact match the registered service environment. This allows one to register multiple versions of the same application many times with CAS where each version may only be relevant in a particular runtime profile. Environments can be activated in CAS using the `spring.profiles.active` property specified as an environment variable or command-line flag, etc.
+注册表中的每个已注册应用程序都可以分配一组环境名称。 环境名称充当过滤器，如果运行时环境实际上与注册的服务环境匹配 这样一来，一个人就可以在CAS上多次注册同一应用程序的多个版本，而每个版本可能仅与特定的运行时配置文件相关。 可以使用指定为环境变量或命令行标志等 `spring.profiles.active` 属性在CAS中激活环境。
 
-For example, the below service definition is only recognized and loaded by CAS if the runtime environment profile is one of `production` or `pre-production`:
+`生产` 或 `生产前`之一时，CAS才能识别和加载以下服务定义：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://app.example.org/.+",
-  "name" : "ExampleApp",
-  "id" : 1,
-  "environments" : [ "java.util.HashSet", [ "production", "pre-production" ] ]
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://app.example.org/.+”，
+  “名称”：为“ExampleApp”，
+  “ id“：
+  ”环境“：[” java.util.HashSet“，[”生产“，”预生产“]]
 }
 ```
 
-Note that a registered service definition without an assigned environment will be loaded regardless of the runtime profile. Similarly, all service definitions are considered eligible if CAS is set to run without an active profile.
+请注意，无论运行时配置文件如何，都将加载没有分配环境的注册服务定义。 同样，如果将CAS设置为在没有活动配置文件的情况下运行，则所有
