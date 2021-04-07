@@ -1,117 +1,117 @@
 ---
-layout: default
-title: CAS - Release Notes
-category: Planning
+layout: 默认
+title: CAS-发行说明
+category: 规划
 ---
 
-# RC4 Release Notes
+# RC4发行说明
 
-We strongly recommend that you take advantage of the release candidates as they come out. Waiting for a `GA` release is only going to set you up for unpleasant surprises. A `GA` is [a tag and nothing more](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/). Note that CAS releases are *strictly* time-based releases; they are not scheduled or based on specific benchmarks, statistics or completion of features. To gain confidence in a particular release, it is strongly recommended that you start early by experimenting with release candidates and/or follow-up snapshots.
+强烈建议您在发布候选版本时加以利用。 等待 `GA` 发布只会使 感到不愉快。 `GA` 是 [的标记，仅此而已是](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/)。 请注意，CAS 版本是 *严格的* 个基于时间的版本。它们不是预定的，也不是基于特定的基准，统计数据或功能完成情况。 要使 ，强烈建议您从实验候选版本和/或后续快照开始，并尽早开始。
 
-## Apereo Membership
+## Apereo会员资格
 
-If you benefit from Apereo CAS as free and open-source software, we invite you to [join the Apereo Foundation](https://www.apereo.org/content/apereo-membership) and financially support the project at a capacity that best suits your deployment. Note that all development activity is performed *almost exclusively* on a voluntary basis with no expectations, commitments or strings attached. Having the financial means to better sustain engineering activities will allow the developer community to allocate *dedicated and committed* time for long-term support, maintenance and release planning, especially when it comes to addressing critical and security issues in a timely manner. Funding will ensure support for the software you rely on and you gain an advantage and say in the way Apereo, and the CAS project at that, runs and operates. If you consider your CAS deployment to be a critical part of the identity and access management ecosystem, this is a viable option to consider.
+如果您从Apereo CAS作为免费和开源软件受益，我们邀请您 [加入Apereo Foundation](https://www.apereo.org/content/apereo-membership) 并以最适合您部署的能力为该项目提供财务支持。 请注意，所有开发活动 都是在自愿的基础上几乎完全是</em> 进行的 *，没有任何期望，承诺或附加条件。 可持续工程活动的财务能力，将使开发人员社区可以分配 *专用* 时间来提供长期支持， 维护和发布计划，尤其是在及时解决关键和安全问题时。 资助将 ，从而获得优势并以Apereo和当时的CAS项目运行 并运行的方式发言。 如果您认为CAS部署是身份和访问管理生态系统的关键部分，那么这是一个可行的选择。</p>
 
-## Get Involved
+## 参与其中
 
-- Start your CAS deployment today. Try out features and [share feedback](/cas/Mailing-Lists.html).
-- Better yet, [contribute patches](/cas/developer/Contributor-Guidelines.html).
-- Suggest and apply documentation improvements.
+- 立即开始CAS部署。 试用功能，然后 [分享反馈](/cas/Mailing-Lists.html)。
+- 更好的是， [贡献了补丁](/cas/developer/Contributor-Guidelines.html)。
+- 建议并应用文档改进。
 
-## Resources
+## 资源
 
-- [Release Schedule](https://github.com/apereo/cas/milestones)
-- [Release Policy](/cas/developer/Release-Policy.html)
+- [发布时间表](https://github.com/apereo/cas/milestones)
+- [发行政策](/cas/developer/Release-Policy.html)
 
-## Overlay
+## 覆盖
 
-In the `gradle.properties` of the [CAS WAR Overlay](../installation/WAR-Overlay-Installation.html), adjust the following setting:
+在 [CAS WAR叠加层](../installation/WAR-Overlay-Installation.html)`gradle.properties` 中，调整以下设置：
 
 ```properties
-cas.version=6.3.0-RC4
+cas.version = 6.3.0-RC4
 ```
 
 <div class="alert alert-info">
-  <strong>System Requirements</strong><br/>There are no changes to the minimum system/platform requirements for this release.
+  <strong>系统要求</strong><br/>此版本对最低系统/平台要求没有更改。
 </div>
 
-## New & Noteworthy
+## 新增 & 值得注意
 
-The following items are new improvements and enhancements presented in this release.
+以下各项是此版本中提供的新改进和增强功能。
 
-### JDK 15 Compatibility
+### JDK 15兼容性
 
-CAS is able to build and run successfully against the latest versions of JDK 15. The JDK baseline requirement continues to be set at JDK 11, and this release is keeping up with JDK releases to ensure CAS can correctly switch the baseline requirement when deemed necessary.
+CAS能够针对最新版本的JDK 15构建并成功运行。 将继续在JDK 11上设置JDK基准要求 ，并且此发行版与JDK发行版保持一致，以确保CAS 可以在必要时正确切换基准要求。
 
-### Test Coverage via CodeCov
+### 通过CodeCov进行测试
 
-CAS test coverage across all modules in the codebase has now reached `88%` and continues to climb. Additional validation rules are also applied to fail all pull requests that fall below this threshold. This area will be closely monitored and improved as progress is made with the goal of hopefully reaching at least `90%` before the final GA release. Of course, this will not be a blocker for the final release.
+现在，代码库中所有模块的CAS测试覆盖率已达到 `88％` 并继续攀升。 附加验证规则也将应用为 以使所有低于此阈值的拉取请求失败。 随着工作的进展，该领域将受到密切监控并改善为 ，以期在最终发布Google Analytics（分析）之前 `90％` 当然， 不会成为最终版本的阻止者。
 
-### Wildcarded Service Definitions
+### 通配服务定义
 
-Following up on previous release notes, wildcarded service definitions should now be correctly located via CAS service management facilities by improving lookup operations to be protocol-aware. For example, in a scenario where two service definitions for OAuth and CAS service providers might have a very permissive `.*` for the service URL pattern, CAS should be able to correctly locate the right definition depending on whether an authentication request is submitted by an OAUth relying party or a CAS-enabled client application.
+在遵循以前的发行说明之后，现在应该通过将服务改进为协议感知的方式， 例如，在OAuth 和CAS服务提供者的 `*` 的情况下，CAS应该能够 根据验证请求是否正确来正确定位正确的定义。由 OAUth依赖方或启用CAS的客户端应用程序提交。
 
-### UI Themes Bundles
+### UI主题包
 
-Minor improvements to handling of [UI themes](../ux/User-Interface-Customization-Themes.html) when it comes to defining a custom theme on a per application basis. A theme bundle is now also available that will incrementally act as a drawer and a toolbox for a number of common user interface designs and themes, and may also serve as a reference example on how to define or modify a CAS theme.
+[UI主题](../ux/User-Interface-Customization-Themes.html) 当 涉及每个应用程序定义自定义主题）进行了较小的改进。 现在还提供了一个主题包，这些包将逐渐充当多个 用户界面常见设计和主题的抽屉和工具箱，并且还可以用作有关如何定义或修改CAS主题的参考示例。
 
 ### WebAuthN FIDO2 DynamoDb
 
-[WebAuthn FIDO2](../mfa/FIDO2-WebAuthn-Authentication.html) multifactor authentication is able manage and maintain registration records in DynamoDb.
+[WebAuthn FIDO2](../mfa/FIDO2-WebAuthn-Authentication.html) 多因素身份验证能够管理和维护DynamoDb中的注册记录。
 
 ### Kryo v5
 
-The [Kryo library](https://github.com/EsotericSoftware/kryo) used by the [Memcached ticket registry](../ticketing/Memcached-Ticket-Registry.html) and family is now upgraded to version `5.0.0`. This is a major upgrade and a number of internal components that affect Kryo pooling operations are also revised and upgraded. However, the upgrade should remain invisible for the most part.
+在 [KRYO库](https://github.com/EsotericSoftware/kryo) 通过使用 的 [Memcached的票据注册表](../ticketing/Memcached-Ticket-Registry.html) 和家庭现在升级到版本 `5.0.0`。 这是一项重大升级，并且对影响Kryo池操作的许多内部组件也进行了修订和升级。 但是，升级在大多数情况下应该保持不可见。
 
-### Google Authenticator w/ LDAP/AD
+### 带有LDAP / AD的Google身份验证器
 
-[Google Authenticator](../mfa/GoogleAuthenticator-Authentication.html) registration records may be kept inside LDAP/AD systems. Account registration records are kept inside a designated configurable multi-valued attribute as JSON blobs.
+[Google Authenticator](../mfa/GoogleAuthenticator-Authentication.html) 注册记录可以保存在 LDAP / AD系统中。 帐户注册记录以JSON Blob的形式保存在指定的可配置多值属性内。
 
-### Integration Tests Upgrades
+### 集成测试升级
 
-A number of docker images for backend integration tests are updated to ensure support for latest versions of each system. These include the following systems:
+更新了许多用于后端集成测试的Docker映像，以确保每个系统的 其中包括以下系统：
 
-- Amazon DynamoDb
+- 亚马逊DynamoDb
 - Couchbase
 - MongoDb
-- Redis
-- Apache Cassandra
+- 雷迪斯
+- 阿帕奇·卡桑德拉（Apache Cassandra）
 
-Furthermore, the test infrastructure is updated to also support OpenLDAP in addition to 389-ds and Samba (AD).
+此外，除了389-ds和Samba（AD）之外，还更新了测试基础结构以支持OpenLDAP。
 
-### Optional (Mixed) X.509 Authentication
+### 可选（混合）X.509身份验证
 
-[X.509 authentication](../installation/X509-Authentication.html), when running an embedded Apache Tomcat, is enhanced to provide for mixed-mode authentication. In this mode, the user is given an additional option to login via X.509 without being prompted for a certificate preemptively.
+[X.509身份验证](../installation/X509-Authentication.html)（在运行嵌入式Apache Tomcat时）经过增强，可以提供混合模式身份验证。 在这种模式下，为用户提供了一个额外的选项，使其可以通过X.509登录，而不会被提示先输入证书。
 
-## Other Stuff
+## 其他的东西
 
-- LDAP trust managers can now be specified in CAS properties.
-- Apereo CAS [Docker images](https://hub.docker.com/r/apereo/cas) are now automatically published by CI for the `latest` tag.
-- CAS [Release Process](../developer/Release-Process.html) can now automatically close and publish releases on Sonatype.
-- Webflow auto-configuration is slightly improved to allow Kerberos/SPNEGO and X509 modules to work together.
-- [Configuration metadata](../configuration/Configuration-Metadata-Repository.html) is improved to better track required modules, properties and owners for CAS settings.
-- The publishing process of the Bill of Materials (BOM) is improved to include all CAS modules in `dependencyManagement` blocks, removing them from the `dependencies` block in the final generated POM with versions separated and extracted as properties in the `properties` section.
-- [Google Authenticator](../mfa/GoogleAuthenticator-Authentication.html) for multifactor authentication is now patched to securely generate QR codes.
+- 现在可以在CAS属性中指定LDAP信任管理器。
+- CI现在自动为 `最新的` 标记发布Apereo CAS [Docker映像](https://hub.docker.com/r/apereo/cas)
+- 现在，CAS [发行过程](../developer/Release-Process.html) 可以自动关闭并发布有关Sonatype的发行版。
+- Webflow自动配置略有改进，以允许Kerberos / SPNEGO和X509模块一起工作。
+- [改进了配置元数据](../configuration/Configuration-Metadata-Repository.html) ，以更好地跟踪CAS设置所需的模块，属性和所有者。
+- 改进了物料清单（BOM）的发布过程，将所有CAS模块包含在 `dependencyManagement` 块中，并将它们从最终生成的POM中 `依赖` `property` 部分中的属性。
+- [现在对用于多因素身份验证的Google身份验证器](../mfa/GoogleAuthenticator-Authentication.html) 进行了修补，以安全地生成QR码。
 
-## Library Upgrades
+## 图书馆升级
 
-- Lettuce
-- Apache Tomcat
-- Java Melody
-- Oshi
-- Guava
-- Nimbus Jose
-- Twillio
-- Kryo
-- Couchbase Driver
-- Lombok
-- Person Directory
+- 生菜
+- 阿帕奇雄猫
+- Java旋律
+- 大志
+- 番石榴
+- 雨云Jose
+- 特威利奥
+- ry
+- Couchbase驱动程序
+- 龙目岛
+- 人员目录
 - WebAuthN FIDO2
-- Maxmind
-- Amazon SDK
-- Eureka Client
-- Gradle
-- Spring Boot
+- 最大思维
+- 亚马逊SDK
+- 尤里卡客户
+- 摇篮
+- 春季靴
 
 
 
