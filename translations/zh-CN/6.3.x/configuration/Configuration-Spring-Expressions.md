@@ -1,36 +1,36 @@
 ---
-layout: default
-title: CAS - Spring Expressions
-category: Installation
+layout: 违约
+title: CAS - 春季表达式
+category: 安装
 ---
 
-# Spring Expression Language
+# 春季表达语言
 
-A number of components in CAS are able to take advantage of the [Spring Expression Language](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions) syntax for their internal configuration. This is primarily useful when the component wishes to have access to system variables, environment properties or in general requires a more dynamic or programmatic strategy before it can be fully functional.
+CAS 中的许多组件能够利用 [春季表达语言](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions) 语法 进行内部配置。 当组件 希望访问系统变量、环境属性或一般需要更动态或 编程策略才能完全工作时，这主要是有用的。
 
-Expressions are expected to be encapsulated inside the `${...}` syntax. Predefined variables are expected to be preceded with the `#` character. The following predefined variables are available:
+表达式预计将被封装在 `${...}` 语法中。 预定义的变量 预计将在 `#` 字符之前。 提供以下预先定义的变量：
 
-| Variable               | Description                                                     |
-| ---------------------- | --------------------------------------------------------------- |
-| `systemProperties`     | Map of system properties, loaded once typically on startup.     |
-| `sysProps`             | Same as above.                                                  |
-| `environmentVars`      | Map of environment variables, loaded once typically on startup. |
-| `environmentVariables` | Same as above.                                                  |
-| `envVars`              | Same as above.                                                  |
-| `env`                  | Same as above.                                                  |
-| `tempDir`              | Path to the temp directory.                                     |
-| `uuid`                 | Auto-generated `UUID` value.                                    |
-| `randomNumber2`        | 2-digit random number.                                          |
-| `randomNumber4`        | 4-digit random number.                                          |
-| `randomNumber6`        | 6-digit random number.                                          |
-| `randomNumber8`        | 8-digit random number.                                          |
-| `randomString4`        | 4-character random word.                                        |
-| `randomString6`        | 6-character random word.                                        |
-| `randomString8`        | 8-character random word.                                        |
+| 变量       | 描述                 |
+| -------- | ------------------ |
+| `系统专业`   | 系统属性地图，通常在启动时加载一次。 |
+| `西斯普罗普斯` | 与上文相同。             |
+| `环境瓦尔斯`  | 环境变量地图，通常在启动时加载一次。 |
+| `环境可变`   | 与上文相同。             |
+| `恩夫瓦尔斯`  | 与上文相同。             |
+| `恩夫`     | 与上文相同。             |
+| `临时迪尔`   | 路径到临时目录。           |
+| `乌伊德`    | 自动生成的 `UUID` 值。    |
+| `随机编号2`  | 2位随机数。             |
+| `随机编号4`  | 4位随机数。             |
+| `随机编号6`  | 6位随机数。             |
+| `随机编号8`  | 8位随机数。             |
+| `随机条纹4`  | 4个字符的随机单词。         |
+| `随机条纹6`  | 6个字符的随机单词。         |
+| `随机条纹8`  | 8个字符的随机单词。         |
 
-## Examples
+## 例子
 
-- Assuming system property `tier` with a value of `production` is available, the configuration value `file://${#systemProperties['tier']}/file.json` translates to `file://production/file.json`
-- Assuming environment variable `tier` with a value of `qa` is available, the configuration value `file://${#environmentVariables['tier']}/file.json` translates to `file://qa/file.json`
-- Using `${#randomString6}` translates to a 6-character random word, such as `qemguz`.
-- Using `${#randomNumber8}` translates to a 8-digit random number, such as `75915283`.
+- 假设具有 `生产` 值的系统属性 `层` 可用，则配置 值 `file://$#systemProperties['tier']/file./file.json` 转换为 `file://production/file.json`
+- 假设可用具有 `qa` 值的环境可变 `层` ，配置 值 `file://$#environmentVariables['tier']/file.` 翻译为 `file://qa/file.json`
+- 使用 `${#randomString6}` 翻译为一个6个字符的随机单词，如 `qemguz`。
+- 使用 `${#randomNumber8}` 将翻译为 8 位随机数，例如 `75915283`。
