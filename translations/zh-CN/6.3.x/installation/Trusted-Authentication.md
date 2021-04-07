@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Trusted Authentication
-category: Authentication
+layout: 默认
+title: CAS-可信认证
+category: 验证
 ---
 
-# Trusted Authentication
+# 可信认证
 
-The trusted authentication handler provides support for trusting authentication performed by some other component in the HTTP request handling chain. Proxies (including Apache in a reverse proxy scenario) are the most common components that perform authentication in front of CAS.
+可信认证处理程序提供对HTTP请求处理链中 执行的可信认证的支持。 代理（包括反向代理场景中的Apache）是在CAS前面执行身份验证
 
-Trusted authentication handler support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖关系来启用受信任的身份验证处理程序支持：
 
 ```xml
 <dependency>
@@ -18,10 +18,10 @@ Trusted authentication handler support is enabled by including the following dep
 </dependency>
 ```
 
-Trusted authentication is able to extract the remote authenticated user via the following ways:
+受信任的身份验证可以通过以下方式提取远程身份验证的用户：
 
-1. Username may be extracted from `HttpServletRequest#getRemoteUser()`
-2. Username may be extracted from `HttpServletRequest#getUserPrincipal()`
-3. Username may be extracted from a request header whose name is defined in CAS settings.
+1. `HttpServletRequest＃getRemoteUser（）`提取用户名。
+2. `HttpServletRequest＃getUserPrincipal（）`提取用户名
+3. 可以从在CAS设置中定义名称的请求标头中提取用户名。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#trusted-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#trusted-authentication)。
