@@ -1,28 +1,28 @@
 ---
-layout: default
-title: CAS - Swagger API Integration
-category: Integration
+layout: 违约
+title: CAS - 斯瓦格API集成
+category: 集成
 ---
 
-# Overview
+# 概述
 
-CAS takes advantages of [Swagger](https://swagger.io/) to produce API documentation automatically. The generated documentation supports all CAS endpoints and REST APIs provided they are made available to the runtime application context and are present in the overlay.
+CAS 利用 [斯瓦格](https://swagger.io/) 自动生成 API 文档。 生成的文档支持所有 CAS 端点和 REST ABI，前提是它们可以提供给运行时间 应用上下文，并且存在于叠加中。
 
-Support is enabled by including the following dependency in the overlay:
+支持通过在叠加中包括以下依赖关系而启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-swagger</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - 摇摆</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-## Endpoints
+## 端点
 
-The following Swagger endpoints may be used to analyze and test the APIs:
+以下斯瓦格端点可用于分析和测试 ABI：
 
-| Description               | URL                                           |
-| ------------------------- | --------------------------------------------- |
-| Swagger API Specification | `https://sso.example.org/cas/v3/api-docs`     |
-| Swagger UI                | `https://sso.example.org/cas/swagger-ui.html` |       
+| 描述       | 网址                                            |
+| -------- | --------------------------------------------- |
+| 斯瓦格API规范 | `https://sso.example.org/cas/v3/api-docs`     |
+| 斯瓦格 · 乌伊 | `https://sso.example.org/cas/swagger-ui.html` |       
