@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - Database Authentication
-category: Authentication
+layout: 默认
+title: CAS-数据库身份验证
+category: 验证
 ---
 
-# Database Authentication
+# 数据库认证
 
-Database authentication is enabled by including the following dependencies in the WAR overlay:
+通过在WAR覆盖中包括以下依赖项来启用数据库身份验证：
 
 ```xml
 <dependency>
@@ -16,12 +16,18 @@ Database authentication is enabled by including the following dependencies in th
 </dependency>
 ```
 
-To learn how to configure database drivers, [please see this guide](JDBC-Drivers.html).
+要了解如何配置数据库驱动程序，请参阅本指南</a>
 
-## Configuration
+。</p> 
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#database-authentication).
 
-## Password Policy Enforcement
 
-A certain number of database authentication schemes have limited support for detecting locked/disabled/etc accounts via column names that are defined in the CAS settings. To learn how to enforce a password policy, please [review this guide](Password-Policy-Enforcement.html).
+## 配置
+
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#database-authentication)。
+
+
+
+## 密码策略执行
+
+某些数据库身份验证方案对通过CAS设置中定义的列名检测锁定/禁用/等帐户 要了解如何实施密码策略，请 [本指南](Password-Policy-Enforcement.html)。
