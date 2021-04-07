@@ -1,193 +1,195 @@
 ---
-layout: default
-title: CAS - Security Guide
-category: Planning
+layout: 违约
+title: CAS - 安全指南
+category: 规划
 ---
 
-# Security Guide
+# 安全指南
 
-CAS is security software that provides secure Web-based single sign-on to Web-based applications. Single sign-on provides a win/win in terms of security and convenience: it reduces password exposure to a single, trusted credential broker while transparently providing access to multiple services without repetitious logins. The use of CAS generally improves the security environment, but there are several CAS configuration, policy, and deployment concerns that should be considered to achieve suitable security.
+CAS 是一种安全软件，可为基于 Web 的应用程序提供基于 Web 的安全单个登录。 单次登录 在安全性和便利性方面提供了双赢：它减少了对单个受信任的凭据 经纪人的密码曝光，同时透明地提供对多个服务的访问，而无需重复登录。 CAS 的使用通常 改善安全环境，但 CAS 的配置、政策和部署存在一些问题，应 考虑以实现适当的安全性。
 
-<div class="alert alert-info"><strong>Reporting Issues</strong><p>The security team asks that you please <strong>DO NOT</strong> create publicly-viewable issues or posts to discuss what you may consider a security vulnerability. To report issues properly and learn about how responses are produced, please <a href="/cas/developer/Sec-Vuln-Response.html">see this guide</a>.</p></div>
+<div class="alert alert-info"><strong>报告问题</strong><p>安全团队要求您 <strong>不要</strong> 创建可公开查看的问题或帖子，以讨论您可能认为的安全漏洞。 要正确报告问题并了解如何产生响应，请 <a href="/cas/developer/Sec-Vuln-Response.html">本指南</a>。</p></div>
 
-## Announcements
+## 公告
 
-- [Oct 14 2020 Vulnerability Disclosure](https://apereo.github.io/2020/10/14/gauthvuln/)
-- [July 24 2020 Vulnerability Disclosure](https://apereo.github.io/2020/07/24/credvuln/)
-- [Feb 8 2020 Vulnerability Disclosure](https://apereo.github.io/2020/02/08/webflowcrypto/)
-- [Dec 20 2019 Vulnerability Disclosure](https://apereo.github.io/2019/12/20/surrogatevuln/)
-- [Nov 21 2019 Vulnerability Disclosure](https://apereo.github.io/2019/11/24/smfavuln/)
-- [Sep 27 2019 Vulnerability Disclosure](https://apereo.github.io/2019/09/27/numvulndisc/)
-- [Sep 26 2018 Vulnerability Disclosure](https://apereo.github.io/2018/09/26/mfavulndisc/)
-- [Mar 6 2017 Vulnerability Disclosure](https://apereo.github.io/2017/03/06/moncfgsecvulndisc/)
-- [Oct 24 2016 Vulnerability Disclosure](https://apereo.github.io/2016/10/24/servlvulndisc/)
-- [Apr 8 2016 Vulnerability Disclosure](https://apereo.github.io/2016/04/08/commonsvulndisc/)
+- [2020 年 10 月 14 日漏洞披露](https://apereo.github.io/2020/10/14/gauthvuln/)
+- [2020年7月24日 漏洞披露](https://apereo.github.io/2020/07/24/credvuln/)
+- [2020年2月8日 漏洞披露](https://apereo.github.io/2020/02/08/webflowcrypto/)
+- [2019 年 12 月 20 日漏洞披露](https://apereo.github.io/2019/12/20/surrogatevuln/)
+- [2019 年 11 月 21 日漏洞披露](https://apereo.github.io/2019/11/24/smfavuln/)
+- [2019 年 9 月 27 日漏洞披露](https://apereo.github.io/2019/09/27/numvulndisc/)
+- [2018 年 9 月 26 日漏洞披露](https://apereo.github.io/2018/09/26/mfavulndisc/)
+- [2017年3月6日 漏洞披露](https://apereo.github.io/2017/03/06/moncfgsecvulndisc/)
+- [2016 年 10 月 24 日漏洞披露](https://apereo.github.io/2016/10/24/servlvulndisc/)
+- [2016 年 4 月 8 日漏洞披露](https://apereo.github.io/2016/04/08/commonsvulndisc/)
 
-## System Security Considerations
+## 系统安全考虑
 
-Infrastructure security matters to consider may include the following.
+要考虑的基础设施安全事项可能包括以下内容。
 
-### Secure Transport (https)
+### 安全运输 （https）
 
-All communication with the CAS server MUST occur over a secure channel (i.e. TLSv1). There are two primary justifications for this requirement:
+与 CAS 服务器的所有通信都必须通过安全通道进行（即 TLSv1）。 这项要求有两个主要 理由：
 
-1. The authentication process requires transmission of security credentials.
-2. The CAS ticket-granting ticket is a bearer token.
+1. 身份验证过程需要传输安全凭据。
+2. CAS 出票票是无记名令牌。
 
-Since the disclosure of either data would allow impersonation attacks, it's vitally important to secure the communication channel between CAS clients and the CAS server.
+由于这两个数据的披露都允许模拟攻击，因此保护 CAS 客户端和 CAS 服务器之间的 通信通道至关重要。
 
-Practically, it means that all CAS urls must use HTTPS, but it **also** means that all connections from the CAS server to the application must be done using HTTPS:
+实际上，这意味着所有 CAS 网址必须使用 HTTPS，但它也 **** 意味着必须使用 HTTPS 完成从 CAS 服务器到应用程序 的所有连接：
 
-- when the generated service ticket is sent back to the application on the "service" url
-- when a proxy callback url is called.
+- 当生成的服务票被发送回"服务"网址上的应用程序时
+- 当代理回调网址被调用时。
 
-To see the relevant list of CAS properties and tune this behavior, please [review this guide](../configuration/Configuration-Properties.html#http-client).
-
-
-### Connections to Dependent Systems
-
-CAS commonly requires connections to other systems such as LDAP directories, databases, and caching services. We generally recommend to use secure transport (SSL/TLS, IPSec) to those systems where possible, but there may be compensating controls that make secure transport unnecessary. Private networks and corporate networks with strict access controls are common exceptions, but secure transport is recommended nonetheless. Client certification validation can be another good solution for LDAP to bring sufficient security.
-
-As stated previously, connections to other systems must be secured. But if the CAS server is deployed on several nodes, the same applies to the CAS server itself. If a cache-based ticket registry runs without any security issue on a single CAS server, synchronization can become a security problem when using multiple nodes if the network is not protected.
-
-Any disk storage is also vulnerable if not properly secured. EhCache overflow to disk may be turned off to increase protection whereas advanced encryption data mechanism should be used for the database disk storage.
-
-## Deployment-Driven Security Features
-
-CAS supports a number of features that can be leveraged to implement various security policies. The following features are provided through CAS configuration and CAS client integration. Note that many features are available out of the box, while others require explicit setup
-
-### Forced Authentication
-
-Many CAS clients and supported protocols support the concept of forced authentication whereby a user must re-authenticate to access a particular service. The CAS protocols support forced authentication via the _renew_ parameter. Forced authentication provides additional assurance in the identity of the principal of an SSO session since the user must verify his or her credentials prior to access. Forced authentication is suitable for services where higher security is desired or mandated. Typically forced authentication is configured on a per-service basis, but the [service management](#service-management) facility provides some support for implementing forced authentication as a matter of centralized security policy. Forced authentication may be combined with [multi-factor authentication](../configuration/Configuration-Properties.html#multifactor-authentication) features to implement arbitrary service-specific access control policy.
+要查看 CAS 属性的相关列表并调整此行为，请 [查看本指南](../configuration/Configuration-Properties.html#http-client)。
 
 
-### Passive Authentication
+### 连接到附属系统
 
-Some CAS protocols support passive authentication where access to a CAS-protected service is granted anonymously when requested. The CASv2 and CASv3 protocols support this capability via the _gateway_ feature. Passive authentication complements forced authentication; where forced authentication requires authentication to access a service, passive authentication permits service access, albeit anonymously, without authentication.
+CAS 通常需要连接到其他系统，如 LDAP 目录、数据库和缓存服务。 我们通常建议尽可能将安全运输 （SSL/TLS、IPSec） 用于这些系统，但可能会 补偿性控制，因此安全运输变得没有必要。 具有严格 接入控制的专用网络和公司网络是常见的例外，但仍建议安全传输。 客户认证验证可能是LDAP带来足够安全性的另一个好解决方案。
+
+如前所述，必须确保与其他系统的连接。 但是，如果 CAS 服务器部署在多个节点上，则 同样适用于 CAS 服务器本身。 如果基于缓存的票证注册表在 CAS 服务器上的单个 运行没有任何安全问题，则如果网络不受保护，则同步在使用多个节点时可能会成为安全问题。
+
+如果未正确保护，任何磁盘存储也容易受到攻击。 可能会关闭到磁盘的 EhCache 溢出以增加 保护，而数据库磁盘存储应使用先进的加密数据机制。
+
+## 部署驱动的安全功能
+
+CAS 支持一些可以利用这些功能来实施各种安全策略的功能。 以下功能通过 CAS 配置和 CAS 客户端集成提供。 请注意，许多功能 可开箱即用，而其他功能则需要明确的设置
+
+### 强制身份验证
+
+许多 CAS 客户端和支持的协议支持强制身份验证的概念，即用户必须 重新身份验证才能访问特定服务。 CAS 协议支持通过 _续订_ 参数强制认证。 强制身份验证为 SSO 会话负责人的身份提供了额外的保证，因为用户必须在访问之前验证其凭据。 强制身份验证适用于需要或强制要求更高安全性的服务。 通常强制 身份验证是按服务配置的，但 [服务管理](#service-management) 设施 作为集中安全政策实施强制认证提供了一些支持。 强制身份验证可以与 [多重身份验证](../configuration/Configuration-Properties.html#multifactor-authentication) 功能相结合，以 实施任意针对特定服务的访问控制策略。
 
 
-### Proxy Authentication
+### 被动身份验证
 
-Proxy authentication, or delegated authentication, provides a powerful, important, and potentially security-improving feature of CAS. Proxy authentication is supported by the CASv2 and CASv3 protocols and is mediated by proxy tickets that are requested by a service on behalf of a user; thus the service proxies authentication for the user. Proxy authentication is commonly used in cases where a service cannot interact directly with the user and as an alternative to replaying end-user credentials to a service.
-
-However, proxy tickets carry risk in that services accepting proxy tickets are responsible for validating the proxy chain (the list of services through which the end-user's authentication have been delegated to arrive at the ticket validating service). Services can opt out of accepting proxy tickets entirely (and avoid responsibility for validating proxy chains) by validating tickets against the /serviceValidate validation endpoint, but experience has shown it's easy to be confused about this and configure to unintentionally use the /proxyValidate endpoint yet not scrutinize any proxy chains that appear in the ticket validation response. Thus proxy authentication requires careful configuration for proper security controls; it is recommended to disable proxy authentication components at the CAS server if proxy authentication is not needed.
-
-Historically any service could obtain a proxy-granting ticket and from it a proxy ticket to access any other service. In other words, the security model is decentralized rather than centralized. The service management facility affords some centralized control of proxy authentication by exposing a proxy authentication flag that can enabled or disabled on a per-service basis. By default registered services are not granted proxy authentication capability.
-
-### Credential Caching and Replay
-
-The _ClearPass_ extension provides a mechanism to capture primary authentication credentials, cache them (encrypted), and replay on demand as needed to access legacy services. While [proxy authentication](#proxy-authentication) is recommended in lieu of password replay, it may be required to integrate legacy services with CAS. See the [ClearPass](../integration/ClearPass.html) documentation for detailed information.
+一些 CAS 协议支持被动身份验证，当请求时，匿名授予对 CAS 保护服务的访问 。 CASv2 和 CASv3 协议通过 _网关_ 功能支持此功能。 被动身份验证 补充强制身份验证;如果强制身份验证需要身份验证才能访问服务，被动 身份验证允许服务访问，尽管是匿名的，但无需身份验证。
 
 
-### Service Management
+### 代理身份验证
 
-The service management facility provides a number of service-specific configuration controls that affect security policy and provide some support for centralized security policy. (Note that CAS has historically supported the decentralized security policy model.) Some highlights of service management controls:
+代理身份验证（或委托身份验证）提供了 CAS 强大、重要且具有潜在安全性改进 功能。 代理身份验证由 CASv2 和 CASv3 协议支持，并由代表用户的服务请求的代理票证 进行调解：因此，服务代理为用户进行身份验证。 代理身份验证通常用于服务无法直接与用户交互的情况，并作为将最终用户凭据重播到服务的 替代方案。
 
-* Authorized services
-* Forced authentication
-* Attribute release
-* Proxy authentication control
-* Theme control
-* Service authorization control
-* Multi-factor service access policy
+但是，代理票具有风险，因为接受代理票证的服务负责验证 代理链（委托最终用户身份验证到达 票证验证服务的服务列表）。 服务可以通过对/服务验证 验证端点验证票证来完全不接受代理票证（并避免 验证代理链的责任），但经验表明，很容易对此感到困惑，并配置为无意中使用/代理验证端点 但未仔细检查 票证验证响应中出现的任何代理链。 因此，代理身份验证需要仔细配置以进行适当的安全控制： ，如果不需要代理身份验证，建议禁用 CAS 服务器中的代理身份验证组件 。
 
-The service management facility is comprised of a service registry containing one or more registered services, each of which specifies the management controls above. The service registry can be controlled via static configuration files, a Web user interface, or both. See the [Service Management](../services/Service-Management.html) section for more information.
+从历史上看，任何服务都可以获得代理授权票证，并从中获得代理票证以访问任何其他服务。 换句话说，安全模型是分散的，而不是集中的。 服务管理设施通过暴露代理身份验证标志来 某种对代理身份验证的集中控制，该标志可以启用或禁用每个服务 。 默认情况下，未授予注册服务代理身份验证功能。
 
-<div class="alert alert-warning"><strong>Authorized Services</strong><p>
-As a security best practice, it is <strong>strongly</strong> recommended to limit the service management facility
-to only include the list of known applications that are authorized to use CAS. Leaving the management interface
-open for all applications may create an opportunity for security attacks.
+### 证书缓存和重播
+
+_ClearPass_ 扩展提供了一个机制，可以捕获主要身份验证凭据、缓存（加密）、 并根据需要按需重播以访问旧服务。 虽然建议 [代理身份验证](#proxy-authentication) 代替密码重播，但可能需要将旧服务与 CAS 集成。 有关详细信息，请参阅 [清除通行证](../integration/ClearPass.html) 文档。
+
+
+### 服务管理
+
+服务管理设施提供一些影响安全 策略的服务特定配置控制，并为集中安全策略提供一些支持。 （请注意，CAS 历来支持 分散的安全政策模式。 服务管理控制的一些亮点：
+
+* 授权服务
+* 强制认证
+* 属性释放
+* 代理身份验证控制
+* 主题控制
+* 服务授权控制
+* 多因素服务访问策略
+
+服务管理设施由包含一个或多个注册服务的服务注册处组成，每个 都指定了上述管理控制。 服务注册表可以通过静态配置文件、 Web 用户界面或两者兼有来控制。 有关更多 信息，请参阅 [服务管理](../services/Service-Management.html) 部分。
+
+<div class="alert alert-warning"><strong>授权服务</strong><p>
+作为安全最佳实践， <strong>强烈</strong> 建议限制服务管理设施
+仅包括授权使用 CAS 的已知应用程序列表。 让管理界面
+所有应用程序开放，可能会为安全攻击创造机会。
 </p></div>
 
-### SSO Cookie Encryption
+### SSO曲奇加密
 
-A ticket-granting cookie is an HTTP cookie set by CAS upon the establishment of a single sign-on session. The cookie value is by default encrypted and signed via settings defined in CAS properties. While sample data is provided for initial deployments, these keys **MUST** be regenerated per your specific environment. Please [see this guide](../installation/Configuring-SSO.html) for more info.
+赠票饼干是中科院在建立单一签到会话时设置的 HTTP 饼干。 默认情况下，Cookie 值通过 CAS 属性中定义的设置进行加密和签名。 虽然为初始部署提供了示例数据，但这些密钥 **必须** 根据特定 环境进行再生。 有关详细信息，请 [本指南](../installation/Configuring-SSO.html) 。
 
-### Password Management Secure Links
+### 密码管理安全链接
 
-Account password reset requests are handled via a secured link that is sent to the registered email address of the user. The link is available only within a defined time window and the request is properly signed and encrypted by CAS. While sample data is provided for initial deployments, these keys **MUST** be regenerated per your specific environment.
+帐户密码重置请求通过发送到用户注册 电子邮件地址的安全链接处理。 该链接仅在定义的时间窗口 中可用，并且请求由 CAS 正确签署和加密。 虽然为初始部署提供了示例数据，但这些密钥 **必须** 根据您的特定环境进行再生。
 
-Please [see this guide](../installation/Password-Policy-Enforcement.html) for more info.
+有关详细信息，请 [本指南](../installation/Password-Policy-Enforcement.html) 。
 
-### Protocol Ticket Encryption
+### 协议票证加密
 
-Protocol tickets that are issued by CAS and shared with other applications such as service tickets may optionally go through a signing/encryption process. Even though the CAS server will always cross check ticket validity and expiration policy, this may be forced as an extra check to ensure tickets in transit to other applications are not tampered with and remain to be authentic. While sample data is provided for initial deployments, these keys **MUST** be regenerated per your specific environment.
+由 CAS 签发并与其他应用程序（如服务票证）共享的协议票证可选择地通过签名/加密过程。 即使 CAS 服务器始终会交叉检查机票的有效性和到期政策，但这可能会被迫作为额外的检查，以确保其他应用程序的机票不会被篡改并保持真实性。 虽然为初始部署提供了示例数据，但这些密钥 **必须** 根据您的特定环境进行再生。
 
-<div class="alert alert-warning"><strong>Pay Attention</strong><p>Encrypting and signing a generated ticket will, depending on the encryption method and algorithm used, increase the generated ticket length. Not all CAS clients are equipped to handle lengthy ticket strings and may get upset with you. Evaluate existing integrations before turning this on and consider whether this feature is truly needed for your deployment.</p></div>
+<div class="alert alert-warning"><strong>注意</strong><p>加密和签名生成的票证将根据使用的加密方法和算法增加生成的票证长度。 并非所有 CAS 客户都具备处理冗长票串的设备，可能会令您感到不安。 在打开此功能之前评估现有集成，并考虑此功能是否真的需要您的部署。</p></div>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#protocol-ticket-security).
-
-
-### Ticket Registry Encryption
-
-Secure ticket replication as it regards clustered CAS deployments may be required to ensure generated tickets by CAS are not tampered with in transit. CAS covers this issue by allowing tickets to be natively encrypted and signed. While sample data is provided for initial deployments, these keys **MUST** be regenerated per your specific environment. Please [see this guide](../installation/Ticket-Registry-Replication-Encryption.html) for more info.
-
-### Administrative Pages Security
-
-CAS provides a large variety of web interfaces that are aimed at system administrators and deployers. These screens along with a number of REST endpoints allow a CAS deployer to manage and reconfigure CAS behavior without resorting to native command-line interfaces. Needless to say, these endpoints and screens must be secured and allowed proper access only to authorized parties. Please [see this guide](../monitoring/Monitoring-Statistics.html) for more info.
-
-### Ticket Expiration Policies
-
-Ticket expiration policies are a primary mechanism for implementing security policy. Ticket expiration policy allows control of some important aspects of CAS SSO session behavior:
-
-* SSO session duration (sliding expiration, absolute)
-* Ticket reuse
-
-See the [Configuring Ticketing Components](../ticketing/Configuring-Ticketing-Components.html) section for a detailed discussion of the various expiration policies and configuration instructions.
-
-### Single Sign-Out
-
-Single sign-out, or single log-out (SLO), is a feature by which CAS services are notified of the termination of a CAS SSO session with the expectation that services terminate access for the SSO session owner. While single sign-out can improve security, it is fundamentally a best-effort facility and may not actually terminate access to all services consumed during an SSO session. The following compensating controls may be used to improve risks associated with single sign-out shortcomings:
-
-* Require forced authentication for sensitive services
-* Reduce application session timeouts
-* Reduce SSO session duration
-
-SLO can happen in two ways: from the CAS server (back-channel logout) and/or from the browser (front-channel logout). For back-channel logout, the SLO process relies on the `SimpleHttpClient` class which has a threads pool: its size must be defined to properly treat all the logout requests. Additional not-already-processed logout requests are temporarily stored in a queue before being sent: its size is defined to 20% of the global capacity of the threads pool and can be adjusted. Both sizes are critical settings of the CAS system and their values should never exceed the real capacity of the CAS server.
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#protocol-ticket-security)。
 
 
-### Login Throttling
+### 票证注册表加密
 
-CAS supports a policy-driven feature to limit successive failed authentication attempts to help prevent brute force and denial of service attacks. The feature is beneficial in environments where back-end authentication stores lack equivalent features. In cases where this support is available in underlying systems, we encourage using it instead of CAS features; the justification is that enabling support in underlying systems provides the feature in all dependent systems including CAS. See the [login throttling configuration](../installation/Configuring-Authentication-Components.html#login-throttling) section for further information.
+可能需要在聚类 CAS 部署方面进行安全票证复制，以确保 CAS 生成的机票在运输途中不会被篡改。 CAS 通过允许门票进行本地加密和签名来解决此问题。 虽然为初始部署提供了示例数据，但这些密钥 **必须** 根据您的特定环境进行再生。 有关详细信息，请 [本指南](../installation/Ticket-Registry-Replication-Encryption.html) 。
 
-### Credential Encryption
+### 行政页面安全
 
-To learn how sensitive CAS settings can be secured via encryption, [please review this guide](../configuration/Configuration-Properties-Security.html).
+CAS 提供针对系统管理员和部署人员的多种 Web 界面。 这些屏幕以及一些 REST 端点允许 CAS 部署人员管理和重新配置 CAS 行为，而无需使用 本地命令线接口。 不用说，这些端点和屏幕必须得到保护，并且只允许 授权方正常访问。 有关详细信息，请 [本指南](../monitoring/Monitoring-Statistics.html) 。
 
-### CAS Security Filter
+### 票证到期政策
 
-The CAS project provides a number of a blunt [generic security filters][cas-sec-filter] suitable for patching-in-place Java CAS server and Java CAS client deployments vulnerable to certain request parameter based bad-CAS-protocol-input attacks. The filters are configured to sanitize authentication request parameters and reject the request if it is not compliant with the CAS protocol in the event that for instance, a parameter is repeated multiple times, includes multiple values, contains unacceptable values, etc.
+票证到期政策是实施安全政策的主要机制。 票证到期政策允许 控制 CAS SSO 会话行为的一些重要方面：
 
-It is **STRONGLY** recommended that all CAS deployments be evaluated and include this configuration if necessary to prevent protocol attacks in situations where the CAS container and environment are unable to block malicious and badly-configured requests.
+* SSO 会话持续时间（滑动到期，绝对）
+* 门票重用
 
-#### CORS
+有关各种到期政策和配置说明的详细讨论，请参阅 [配置票务组件](../ticketing/Configuring-Ticketing-Components.html) 部分，了解 详细讨论。
 
-CAS provides first-class support for enabling HTTP access control (CORS). One application of CORS is when a resource makes a cross-origin HTTP request when it requests a resource from a different domain than the one which the first resource itself serves. This should help more with CAS-enabled applications are accessed via XHR/Ajax requests.
+### 单个签出
 
-To see the relevant list of CAS properties and tune this behavior, please [review this guide](../configuration/Configuration-Properties.html#http-web-requests).
+单次注销或单次注销 （SLO） 是一项功能，通过该功能，CAS 服务将收到 CAS SSO 会话终止的通知，期望服务终止 SSO 会话所有者的访问权限。 虽然单次签出可以 改善安全性，但它从根本上说是一个尽最大努力的设施，实际上可能不会终止访问 SSO 会议期间消耗的所有服务 。 以下补偿控制可用于改善与 单一签出缺陷相关的风险：
 
-#### Security Response Headers
+* 要求对敏感服务进行强制认证
+* 减少应用会话超时
+* 缩短 SSO 会话持续时间
 
-As part of the CAS Security Filter, the CAS project automatically provides the necessary configuration to insert HTTP Security headers into the web response to prevent against HSTS, XSS, X-FRAME and other attacks. These settings are presently on by default. To see the relevant list of CAS properties and tune this behavior, please [review this guide](../configuration/Configuration-Properties.html#http-web-requests).
-
-To review and learn more about these options, please visit [this guide][cas-sec-filter].
-
-### Spring Webflow Sessions
-
-The CAS project uses Spring Webflow to manage and orchestrate the authentication process. The conversational state of the webflow used by CAS is managed by the client which is then passed and tracked throughout various states of the authentication process. This state must be secured and encrypted to prevent session hijacking. While CAS provides default encryption settings out of the box, it is **STRONGLY** recommended that [all CAS deployments](../webflow/Webflow-Customization.html) be evaluated prior to production deployments and regenerate this configuration to prevent attacks.
-
-### Long Term Authentication
-
-The long term authentication feature, commonly referred to as "Remember Me", is selected (usually via checkbox) on the CAS login form to avoid re-authentication for an extended period of time. Long term authentication allows users to elect additional convenience at the expense of reduced security. The extent of reduced security is a function of the characteristics of the device used to establish a CAS SSO session. A long-term SSO session established from a device owned or operated by a single user is marginally less secure than a standard CAS SSO session. The only real concern would be the increased lifetime and resulting increased exposure of the CAS ticket-granting ticket. Establishing a long-term CAS SSO session from a shared device, on the other hand, may dramatically reduce security. The likelihood of artifacts from previous SSO sessions affecting subsequent SSO sessions established by other users, even in the face of single sign-out, may increase the likelihood of impersonation. While there is no feasible mitigation for improving security of long-term SSO sessions on a shared device, educating users on the inherent risks may improve overall security.
-
-It is important to note that forced authentication supersedes long term authentication, thus if a service were configured for forced authentication, authentication would be required for service access even in the context of a long-term session.
-
-Long term authentication support must be explicitly enabled through [configuration and UI customization](../installation/Configuring-Authentication-Components.html#long-term-authentication) during the installation process. Thus deployers choose to offer long-term authentication support, and when available users may elect to use it via selection on the CAS login form.
+SLO 可以通过两种方式发生：从 CAS 服务器（后通道注销）和/或从浏览器（前通道注销）。 对于后通道注销，SLO 过程依赖于具有线程池的 `简单HttpClient` 类：必须定义其大小以正确处理所有注销请求。 其他尚未处理的注销请求在发送之前暂时存储在队列中：其大小定义为线程池全球容量的 20%，可以进行调整。 这两种尺寸都是 CAS 系统的关键设置，其值不应超过 CAS 服务器的实际容量。
 
 
-### Warn
+### 登录限制
 
-CAS supports optional notification of service access during an established SSO session. By default CAS transparently requests tickets needed for service access and presents them to the target service for validation, whereby upon successful validation access to the service is permitted. In most cases this happens nearly instantly and the user is not aware of the CAS authentication process required to access CAS-enabled services. There may be some security benefit to awareness of this process, and CAS supports a _warn_ flag that may be selected by the user on the CAS login screen to provide an interstitial notification page that is displayed prior to accessing a service. By default the notification page offers the user an option to proceed with CAS authentication or abort by navigating away from the target service.
+CAS 支持政策驱动的功能，以限制连续失败的身份验证尝试，以帮助防止暴力 和拒绝服务攻击。 该功能在后端身份验证商店缺乏等效功能 环境中是有益的。 在基础系统中提供此支持的情况下，我们鼓励将其用于 CAS 功能 ：理由是，基础系统的启用支持提供了包括CAS在内的所有依赖 系统的功能。 有关更多信息，请参阅 [登录限制配置](../installation/Configuring-Authentication-Components.html#login-throttling) 部分。
+
+### 凭据加密
+
+要了解如何通过加密保护 CAS 设置的敏感性，请 [](../configuration/Configuration-Properties-Security.html)查看本指南。
+
+### CAS 安全过滤器
+
+CAS 项目提供了一些钝 [通用安全滤镜，][cas-sec-filter] 适用于修补现场 Java CAS 服务器和 Java CAS 客户端部署，这些部署易受某些基于某些请求参数的坏 CAS 协议输入攻击。 如果该请求不符合 CAS 协议 ，例如，参数重复多次、包括多个值、包含不可接受的值等，则配置过滤器以对身份验证请求参数进行消毒并拒绝请求。
+
+**强烈** 建议对 CAS 的所有部署进行评估，并在必要时包括此配置，以防止在 CAS 容器和环境无法阻止恶意和配置不良的请求的情况下发生 协议攻击。
+
+#### 科尔斯
+
+CAS 为启用 HTTP 访问控制 （CORS） 提供一流的支持。 CORS 的一个应用是，当资源从与第一个资源本身服务的域 请求资源时，会提出跨源 HTTP 请求。 这应该有助于更多支持 CAS 的 通过 XHR/Ajax 请求访问应用程序。
+
+要查看 CAS 属性的相关列表并调整此行为，请 [查看本指南](../configuration/Configuration-Properties.html#http-web-requests)。
+
+#### 安全响应标题
+
+作为 CAS 安全过滤器的一部分，CAS 项目自动提供必要的配置， 将 HTTP 安全头插入 Web 响应中，以防止 HSTS、XSS、X-FRAME 和其他攻击。 默认情况下，这些设置当前处于打开状态。 要查看 CAS 属性的相关列表并调整此行为，请 [查看本指南](../configuration/Configuration-Properties.html#http-web-requests)。
+
+要查看和了解有关这些选项的更多信息，请访问本指南 [][cas-sec-filter]。
+
+### 春季网络流会话
+
+CAS 项目使用春季网络流来管理和协调认证过程。 中科院使用的 网络流的会话状态由客户端管理，然后通过并跟踪认证 过程的各个状态。 必须保护并加密此状态，以防止会话劫持。 虽然 CAS 开箱即用地提供默认加密 设置，但 **强烈** 建议 [所有 CAS 部署](../webflow/Webflow-Customization.html) 在生产部署之前进行 评估，并再生此配置以防止攻击。
+
+### 长期认证
+
+长期身份验证功能通常称为"记住我"，在 CAS 登录 表单上选择（通常通过复选框），以避免长时间重新认证。 长期身份验证允许用户选择额外的便利性， 降低安全性的费用。 安全性降低的程度是用于在 CAS SSO 会话 建立设备的功能。 与标准 CAS SSO 会话相比，从单个用户拥有或操作的设备中建立的长期 SSO 会话的安全性略逊于 。 唯一真正令人担心的是， CAS门票的寿命增加，导致风险敞口增加。 另一方面，通过共享设备建立长期 CAS SSO 会话可能会大大降低安全性。 以前 SSO 会话中的工件影响其他用户建立的后续 SSO 会话的可能性，即使面对单个签出 ，也可能增加仿冒的可能性。 虽然在改进共享设备上长期 SSO 会话的安全 方面没有可行的缓解措施，但教育用户有关固有风险的教育可能会提高整体安全性。
+
+需要注意的是，强制身份验证取代了长期身份验证，因此，如果 将服务配置为强制身份验证，即使在 长期会话的背景下，服务访问也需要身份验证。
+
+在安装过程中，必须通过 [配置和 UI 定制](../installation/Configuring-Authentication-Components.html#long-term-authentication) 明确启用长期身份验证支持。 因此，部署人员选择提供长期身份验证支持，当可用 用户可以选择通过 CAS 登录表上的选择使用它。
+
+
+### 警告
+
+CAS 支持在已建立的 SSO 会话期间对服务访问进行可选通知。 默认情况下，CAS 透明地请求服务访问所需的门票，并将它们提交目标服务进行验证， 允许在验证成功后访问该服务。 在大多数情况下，这种情况几乎在 立即发生，用户不知道访问支持 CAS 的服务所需的 CAS 认证过程。 了解此过程可能 一些安全益处，CAS 支持一个 _警告用户在 CAS 登录屏幕上 可能选择的_ 标志，以提供访问服务之前显示的插座通知页面。 默认情况下，通知页面为用户提供了一个选项，通过 导航离开目标服务进行 CAS 认证或中止。
+
+[cas-sec-filter]: https://github.com/apereo/cas-server-security-filter
 
 [cas-sec-filter]: https://github.com/apereo/cas-server-security-filter
 
