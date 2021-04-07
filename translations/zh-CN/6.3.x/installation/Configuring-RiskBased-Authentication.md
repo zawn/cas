@@ -1,74 +1,74 @@
 ---
-layout: default
-title: CAS - Adaptive Risk-based Authentication
-category: Authentication
+layout: 默认
+title: CAS-基于风险的自适应身份验证
+category: 验证
 ---
 
-# Risk-based Authentication
+# 基于风险的认证
 
-Risk-based authentication allows CAS to detect suspicious and seemingly-fraudulent authentication requests based on past user behavior and collected authentication events, statistics, etc. Once and *after* primary authentication where the principal is identified, the authentication transaction is analyzed via a number of configurable criteria and fences to determine how *risky* the attempt may be. The result of the evaluation step is a cumulative risk score that is then weighed against a risk threshold set by the CAS operator. In the event that the authentication attempt is considered risky well beyond the risk threshold, CAS may be allowed to take action and mitigate that risk.
+基于风险的身份验证使CAS能够根据过去的用户行为 以及收集的身份验证事件，统计信息等来检测可疑且看似欺诈的身份验证请求。 一旦和 *之后* ，其中主要被识别主认证， 认证交易经由许多配置的标准和围栏分析以确定如何 *风险* 的尝试可能会。 评估步骤的结果是累积风险评分，然后将其与CAS操作员设置的风险阈值进行权衡。 如果认为认证尝试的风险远超过风险阈值，则可以允许CAS采取措施并降低风险
 
-Simply put, the story told is:
-> If an authentication request is at least [X%] risky, take action to mitigate that risk.
+简而言之，讲述的故事是：
+> 如果身份验证请求的 [X%] ，请采取措施降低该风险。
 
-The functionality of this feature is **ENTIRELY** dependent upon collected statistics and authentication events in the past. Without data, there is nothing to analyze and no risk to detect.
+这个功能的功能是 **完全** 取决于过去收集的统计数据和身份验证事件。 没有数据，就没有什么可以分析，也没有检测到的风险。
 
-Note that evaluation of attempts and mitigation of risks are all recorded in the audit log.
+请注意，对尝试的评估和降低的风险均记录在审核日志中。
 
-<div class="alert alert-info"><strong>Adaptive Authentication</strong><p>
-If you need to preemptively evaluate authentication attempts based on various characteristics of the request,
-you may be interested in <a href="../mfa/Configuring-Adaptive-Authentication.html">this guide</a> instead.</p></div>
+<div class="alert alert-info"><strong>自适应身份验证</strong><p>
+如果你需要抢先评估基础上的要求，各种特性的验证尝试
+您可以在感兴趣 <a href="../mfa/Configuring-Adaptive-Authentication.html">本指南</a> 代替。</p></div>
 
-## Risk Calculation
+## 风险计算
 
-One or more risk calculators may be enabled to allow an analysis of authentication requests.
+可以启用一个或多个风险计算器，以允许对身份验证请求进行分析。
 
-A high-level explanation of the risk calculation strategy follows:
+风险计算策略的高级解释如下：
 
-- If there is no recorded event at all present for the principal, consider the request suspicious.
-- If the number of recorded events for the principal based on the active criteria matches the total number of events, consider the request safe.
+- 如果主体没有任何记录的事件，则认为该请求可疑。
+- 如果基于活动标准的主体记录的事件数与事件总数匹配，则将 请求视为安全。
 
-### IP Address
+### IP地址
 
-This calculator looks into past authentication events that match the client ip address. It is applicable if you wish to consider authentication requests from unknown ip addresses suspicious for the user. The story here is:
+该计算器调查与客户端ip地址匹配的过去的身份验证事件。 如果希望 认为来自未知ip地址的身份验证请求对用户可疑，则适用。 这里的故事是：
 
-> Find all past authentication events that match the current client ip address and calculate an averaged score.
+> 查找与当前客户端ip地址匹配的所有过去的身份验证事件，并计算平均分数。
 
-### Browser User Agent
+### 浏览器用户代理
 
-This calculator looks into past authentication events that match the client's `user-agent` string. It is applicable if you wish to consider authentication requests from unknown browsers suspicious for the user. The story here is:
+该计算器调查与客户端的 `用户代理` 字符串匹配的过去的身份验证事件。 如果希望 认为来自未知浏览器的身份验证请求对用户可疑，则适用。 这里的故事是：
 
-> Find all past authentication events that match the current client browser and calculate an averaged score.
+> 查找与当前客户端浏览器匹配的所有过去的身份验证事件，并计算平均分数。
 
-### Geolocation
+### 地理位置定位
 
-This calculator looks into past authentication events that contain geolocation data, and compares those with the current geolocation. If current geolocation data is unavailable, it will attempt to geocode the location based on the current client ip address. This feature mostly depends on whether or not geodata is made available to CAS via the client browser and requires [geotracking of authentication requests](GeoTracking-Authentication-Requests.html).
+该计算器调查包含地理位置数据的过去身份验证事件，并将这些事件与当前地理位置进行比较。 如果当前地理位置数据不可用，它将尝试根据当前客户端ip地址对位置进行地理编码。 此功能 主要取决于是否通过客户端浏览器将地理数据提供给CAS，而 需要 [进行身份验证请求的地理跟踪](GeoTracking-Authentication-Requests.html)。
 
-The story here is:
+这里的故事是：
 
-> Find all past authentication events that match the current client location and calculate an average score.
+> 查找与当前客户端位置匹配的所有过去的身份验证事件，并计算平均分数。
 
-### Date/Time
+### 约会时间
 
-This calculator looks into past authentication events that fit within the defined time-window. It is applicable if you wish to consider authentication requests outside that window suspicious for the user. The story here is:
+该计算器调查符合定义时间窗口的过去身份验证事件。 如果您希望 认为该窗口之外的身份验证请求对用户可疑，则适用。 这里的故事是：
 
-> Find all past authentication events that are established X hours before/after now and calculate an averaged score.
+> 查找现在之前/之后X个小时建立的所有过去的身份验证事件，并计算平均分数。
 
-## Risk Mitigation
+## 风险缓解
 
-Once an authentication attempt is deemed risky, a contingency plan may be enabled to mitigate risk. If configured and allowed, CAS may notify both the principal and deployer via both email and sms.
+一旦认证尝试被认为有风险，可以启用应急计划以减轻风险。 如果配置并允许，则 CAS可以通过电子邮件和短信通知主体和部署者。
 
-### Block Authentication
+### 块验证
 
-Prevent the authentication flow to proceed and disallow the establishment of the SSO session.
+阻止身份验证流程继续进行，并禁止建立SSO会话。
 
-### Multifactor Authentication
+### 多因素身份验证
 
-Force the authentication event into a [multifactor flow of choice](../mfa/Configuring-Multifactor-Authentication.html), identified by the provider id.
+强制认证事件为 [选择的多因素流](../mfa/Configuring-Multifactor-Authentication.html)， 由提供者ID来标识。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the overlay:
+通过在叠加层中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -78,14 +78,14 @@ Support is enabled by including the following dependency in the overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#risk-based-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#risk-based-authentication)。
 
-### Messaging & Notifications
+### 消息传送 & 通知
 
-Users may be notified of risky authentication attempts via text messages and/or email. To learn more about available options, please [see this guide](../notifications/SMS-Messaging-Configuration.html) or [this guide](../notifications/Sending-Email-Configuration.html).
+可以通过文本消息和/或电子邮件将危险的身份验证尝试通知给用户。 要了解更多有关可用选项，请 [参阅本指南](../notifications/SMS-Messaging-Configuration.html) 或 [本指南](../notifications/Sending-Email-Configuration.html)。
 
-### Remember
+### 记住
 
-- You **MUST** allow and configure CAS to track and record [authentication events](Configuring-Authentication-Events.html).
-- You **MUST** allow and configure CAS to [geolocate authentication requests](GeoTracking-Authentication-Requests.html).
-- If the selected contingency plan is to force the user into a multifactor authentication flow, you then **MUST** configure CAS for [multifactor authentication](../mfa/Configuring-Multifactor-Authentication.html) and the relevant provider.
+- 您 **必须** 允许并配置CAS以跟踪和记录 [身份验证事件](Configuring-Authentication-Events.html)。
+- 您 **必须** 允许CAS并将其配置为 [地理认证请求](GeoTracking-Authentication-Requests.html)。
+- 如果选择的应急计划是强制用户进入多因素身份验证流程，则 **必须** 将CAS配置为 [多因素身份验证](../mfa/Configuring-Multifactor-Authentication.html) 和相关提供者。
