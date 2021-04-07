@@ -1,149 +1,149 @@
 ---
-layout: default
-title: CAS - Multifactor Authentication Bypass
-category: Multifactor Authentication
+layout: 违约
+title: CAS - 多因素身份验证旁路
+category: 多因素认证
 ---
 
-# Multifactor Authentication Bypass
+# 多因素身份验证旁路
 
-Each [multifactor provider](Configuring-Multifactor-Authentication.html) is equipped with options to allow for bypass. Once the provider is chosen to honor the authentication request, bypass rules are then consulted to calculate whether the provider should ignore the request and skip MFA conditionally.
+每个 [多因素提供商](Configuring-Multifactor-Authentication.html) 都配备了允许旁路的选项。 一旦选择提供商 以尊重身份验证请求，则会参考旁路规则来计算提供商是否应该忽略请求并有条件地跳过 MFA。
 
-## Default Bypass
+## 默认旁路
 
-CAS provides a default bypass policy for each [multifactor provider](Configuring-Multifactor-Authentication.html) that can be configured through CAS properties.  
-All providers will consult this policy for bypass events before consulting any other configured bypass providers.
+CAS 为可以通过 CAS 属性配置的 [多因素提供商](Configuring-Multifactor-Authentication.html) 提供默认旁路策略。  
+所有提供商在咨询任何其他配置的旁路提供商之前，都会就旁路事件咨询此策略。
 
-Bypass rules allow for the following options for each provider:
+旁路规则允许每个提供商提供以下选项：
 
-- Skip multifactor authentication based on designated **principal** attribute **names**.
-- ...[and optionally] Skip multifactor authentication based on designated **principal** attribute **values**.
-- Skip multifactor authentication based on designated **authentication** attribute **names**.
-- ...[and optionally] Skip multifactor authentication based on designated **authentication** attribute **values**.
-- Skip multifactor authentication depending on method/form of primary authentication execution.
-- Skip multifactor authentication depending on the properties of the http request such as remote addr/host and/or header names.
+- 跳过基于指定 **主** 属性 **名称**的多因素认证。
+- ...[和可选]跳过基于指定 **主** 属性 **值**的多因素身份验证。
+- 跳过基于指定 **身份验证** 属性 **名称**的多因素身份验证。
+- ...[和可选]跳过基于指定 **身份验证** 属性 **值**的多因素身份验证。
+- 根据主要身份验证执行的方法/形式，跳过多因素身份验证。
+- 跳过多因子身份验证，具体取决于 http 请求的属性，例如远程添加器/主机和/或标题名称。
 
-A few examples follow:
+以下几个示例：
 
-- Trigger MFA except when the principal carries an `affiliation` attribute whose value is either `alum` or `member`.
-- Trigger MFA except when the principal carries a `superAdmin` attribute.
-- Trigger MFA except if the method of primary authentication is SPNEGO.
-- Trigger MFA except if credentials used for primary authentication are of type `org.example.MyCredential`.
+- 触发 MFA，除非当委托人携带 `隶属关系` 属性，其价值不是 `校友` ，就是 `成员`。
+- 触发 MFA，除非当委托人携带 `超级管理员` 属性。
+- 触发 MFA，除非主要身份验证方法是 SPNEGO。
+- 触发 MFA，除非用于主要身份验证的凭据是 `组织示例类型。我的信用`。
 
-Note that in addition to the above options, some multifactor authentication providers may also skip and bypass the authentication request in the event that the authenticated principal does not quite "qualify" for multifactor authentication. See the documentation for each specific provider to learn more.
+请注意，除了上述选项之外， 的一些多因素身份验证提供商还可以跳过和绕过身份验证请求，如果认证委托人不太"符合"多因素身份验证 。 请参阅每个特定提供商的文档以了解更多内容。
 
-### Configuration
+### 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#multifactor-authentication)。
 
-Note that ticket validation requests shall successfully go through if multifactor authentication is bypassed for the given provider. In such cases, no authentication context is passed back to the application and additional attributes are supplanted to let the application know multifactor authentication is bypassed for the provider.
+请注意，如果给定提供商 绕过多因子身份验证，则票证验证请求应成功通过。 在这种情况下，不会将身份验证上下文传回应用程序，并且 其他属性被取代，以允许应用程序知道提供商绕过了多因素身份验证。
 
-### Bypass Per Service
+### 绕过每个服务
 
-MFA Bypass rules can be overridden per application via the CAS service registry. This is useful when MFA may be turned on globally for all applications and services, yet a few selectively need to be excluded. Services whose access should bypass MFA may be defined as such in the CAS service registry:
+MFA 旁路规则可以通过 CAS 服务注册表覆盖每个应用程序。 当全球所有应用程序和服务都可能启用 MFA 时，这很有用，但少数应用和服务需要选择性地排除在外。 在 CAS 服务注册表中，访问应绕过 MFA 的服务 可以定义为：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "id" : 100,
-  "multifactorPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy",
-    "multifactorAuthenticationProviders" : [ "java.util.LinkedHashSet", [ "mfa-duo" ] ],
-    "bypassEnabled" : "true"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："^（https|图片）"，
+  "id"：100，
+  "多因素政策"：
+    "@class"："org.apereo.cas.服务。默认注册服务多因素政策"，
+    "多因素授权提供者"："java.uled.使用。领英哈什集"，"mfa-duo"]]，
+    "旁路"："真实"
   }
 }
 ```
 
-### Bypass Per Principal Attribute & Service
+### 绕过每个主属性 & 服务
 
-This is similar to the above option, except that bypass is only activated for the registered application if the authenticated principal contains an attribute with the specified value(s).
+这类似于上述选项，但仅激活旁路以 注册申请，如果经过验证的本金包含具有指定值的属性 。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "id" : 100,
-  "multifactorPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy",
-    "bypassPrincipalAttributeName": "attributeForBypass",
-    "bypassPrincipalAttributeValue": "^bypass-value-[A-Z].+",
-    "bypassEnabled" : "true"
-  }
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："^（https|图片）"，
+  "id"：100，
+  "多因素政策"：
+    "@class"："org.apereo.cas.服务。默认注册服务多因素政策"，
+    "旁路原则属性名称"："属性为"，
+    "旁路原则属性价值"："#旁路价值-[A-Z]。+"，
+    "旁路可归因名称"："真实"
+  =
 }
 ```
 
-## Additional Bypass Providers
+## 其他旁路提供商
 
-In addition to the configurable default bypass rules, the following bypass providers can be defined and executed after default bypass rules are calculated.
+除了可配置的默认旁路规则外，在计算默认旁路规则后，还可以定义并执行以下旁路提供商。
 
-In the case where the default rules determine that the multifactor authentication should be bypassed, the chain will be short circuited and no additional bypass providers will be consulted.
+如果默认规则确定应绕过多因素身份验证，则链条将短路，并且不会咨询其他旁路提供商。
 
-### Bypass via Groovy
+### 通过格罗夫旁路
 
-Multifactor authentication bypass may be determined using a Groovy script of your own design. The outcome of the script, if `true` indicates that multifactor authentication for the requested provider should proceed. Otherwise `false` indicates that  multifactor authentication for this provider should be skipped and bypassed.
+多因素身份验证旁路可以使用您自己设计的 Groovy 脚本确定。 脚本的结果，如果 `真实的` 表明，多因素 认证请求的供应商应该进行。 否则， `虚假` 表明，应跳过和绕过此提供商的多因素身份验证。
 
-The outline of the script may be as follows:
+脚本的大纲如下：
 
 ```groovy
-import java.util.*
+导入java.利用。*
 
-def boolean run(final Object... args) {
-    def authentication = args[0]
-    def principal = args[1]
-    def registeredService = args[2]
-    def provider = args[3]
-    def logger = args[4]
-    def httpRequest = args[5]
+德布尔运行（最终对象。。。args）{
+    定义身份验证=args[0]
+    def本金=args[1]
+    def注册服务=args[2]
+    def提供商=args[3]
+    d记录器=args[4]
+    d def http要求=args[5]
 
-    // Stuff happens...
+    //发生的东西。。。
 
-    return false;
+    返回假：
 }
 ```
 
-The parameters passed are as follows:
+通过的参数如下：
 
-| Parameter        | Description                                                                   |
-| ---------------- | ----------------------------------------------------------------------------- |
-| `authentication` | The object representing the established authentication event.                 |
-| `principal`      | The object representing the authenticated principal.                          |
-| `service`        | The object representing the corresponding service definition in the registry. |
-| `provider`       | The object representing the requested multifactor authentication provider.    |
-| `logger`         | The object responsible for issuing log messages such as `logger.info(...)`.   |
-| `httpRequest`    | The object responsible for capturing the http request.                        |
+| 参数         | 描述                                |
+| ---------- | --------------------------------- |
+| `认证`       | 表示已建立身份验证事件的对象。                   |
+| `主要`       | 表示经过验证的主体的对象。                     |
+| `服务`       | 表示注册表中相应服务定义的对象。                  |
+| `供应商`      | 表示请求的多因素身份验证提供商的对象。               |
+| `记录`       | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
+| `赫特普·雷奎斯特` | 负责捕获 http 请求的对象。                  |
 
-As an example, the following script skips multifactor authentication if the application requesting it is registered in the CAS service registry under the name `MyApplication` and only does so if the provider is Duo Security and the authenticated principal contains an attribute named `mustBypassMfa` whose values contains `true`.
+例如，如果请求的应用程序以"MyApapp"</code> 的名义在 CAS 服务注册表中注册 `，则以下脚本跳过了多因素身份验证，并且仅在提供商为 Duo Security 且经过验证的委托人包含名为" <code>必须通过Mfa` 其值包含 `真实`"的属性时才会跳过多因素认证。
 
 ```groovy
-def boolean run(final Object... args) {
-    def authentication = args[0]
-    def principal = args[1]
-    def service = args[2]
-    def provider = args[3]
-    def logger = args[4]
-    def httpRequest = args[5]
+德布利安运行（最终对象。。。args）{
+    定义认证=args[0]
+    def本金=args[1]
+    def服务=args[2]
+    def提供商=args[3]
+    def记录器=args[4]
+    d def http要求=args[5]
 
-    if (service.name == "MyApplication") {
-        logger.info("Evaluating principal attributes ${principal.attributes}")
+    如果（service.name=="我的应用"）{
+        logger.info（"评估主要属性 ${principal.attributes}"）
 
-        def bypass = principal.attributes['mustBypassMfa']
-        if (bypass.contains("true") && provider.id == "mfa-duo") {
-            logger.info("Skipping bypass for principal ${principal.id}")
-            return false
+        def旁路=本金。属性[必须通过Mfa']
+        如果（旁路.包含（"真实"） && provider.id=="mfa-duo"）{
+            logger.info（"跳过绕行本金 ${principal.id}"）
+            返回虚假
         }
     }
-    return true
+    返回真实
 }
 ```
 
-### Bypass via REST
+### 通过休息绕过
 
-Multifactor authentication bypass may be determined using a REST API of your own design. Endpoints must be designed to accept/process `application/json` via `GET` requests. A returned status code `202` meaning `ACCEPTED` indicates that multifactor authentication for the requested provider should proceed. Otherwise multifactor authentication for this provider should be skipped and bypassed.
+使用您自己设计的 REST API 可以确定多因素身份验证旁路。 端点必须设计为通过获取</code> 请求 `接受/处理 <code>申请/json` 。 返回的状态代码 `202` ，意思是 `接受` 表示应继续对请求的提供商进行多因素认证。 否则，应跳过和绕过此提供商的多因素身份验证。
 
-The following parameters are passed:
+传递以下参数：
 
-| Parameter   | Description                                                       |
-| ----------- | ----------------------------------------------------------------- |
-| `principal` | The identifier of the authenticated principal.                    |
-| `provider`  | The identifier of the multifactor authentication provider.        |
-| `service`   | The identifier of the registered service in the registry, if any. |
+| 参数    | 描述                   |
+| ----- | -------------------- |
+| `主要`  | 经过验证的委托人的标识符。        |
+| `供应商` | 多因素身份验证提供商的标识符。      |
+| `服务`  | 注册表中注册服务的标识符（如果有的话）。 |
