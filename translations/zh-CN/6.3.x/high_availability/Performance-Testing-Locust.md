@@ -1,48 +1,62 @@
 ---
-layout: default
-title: CAS - High Availability Performance Testing
-category: High Availability
+layout: 默认
+title: CAS-高可用性性能测试
+category: 高可用性
 ---
 
-# Locust Performance Testing
+# 蝗虫性能测试
 
-[Locust](http://locust.io/) is an easy-to-use, distributed, user load testing tool. It is intended for load-testing web sites (or other systems) and figuring out how many concurrent users a system can handle. [See this guide](http://docs.locust.io/en/latest/what-is-locust.html) for more info.
+[Locust](http://locust.io/) 是易于使用的分布式用户负载测试工具。 它旨在对网站（或其他系统）进行负载测试，并弄清一个系统可以处理多少个并发用户。 [有关更多信息，请参见本指南](http://docs.locust.io/en/latest/what-is-locust.html)
 
-### Setup
+### 设置
 
-A fundamental feature of Locust is that you describe all your tests in Python code. No need for clunky UIs or bloated XML, just plain code. For this to work, you will need to [download Python](https://www.python.org/downloads/). Next download the Locust test suite [from here](https://github.com/apereo/cas/raw/master/etc/loadtests) and [configure a virtual environment](https://virtualenv.pypa.io/en/stable/) to install modules:
+Locust的基本功能是用Python代码描述所有测试。 不需要笨拙的UI或庞大的XML，只需简单的代码即可。 为此，您需要 [下载Python](https://www.python.org/downloads/)。 接下来从此处</a> 和下载Locust测试套件 [，配置虚拟环境](https://github.com/apereo/cas/raw/master/etc/loadtests) 以安装模块：</p> 
+
+
 
 ```bash
 pip3 install virtualenv
-virtualenv mylocustenv/
+virtualenv mylocustenv /
 pip3 install -r requirements.txt
 ```
 
-Install Locust via the following:
+
+通过以下方法安装蝗虫：
+
+
 
 ```bash
 pip3 install locustio
 ```
 
-Create a `credentials.csv` file that contains `username,password` entries used for load tests.
+
+创建一个 `凭据.csv` 文件，其中包含 `用户名和` 个用于负载测试的条目。
+
+
 
 ```bash
-echo casuser,Mellon > cas/credentials.csv
+echo casuser，Mellon > cas / credentials.csv
 ```
 
-Run the script as such:
+
+像这样运行脚本：
+
+
 
 ```bash
-locust -f cas/casLocust.py --host=https://cas.example.org
+locust -f cas / casLocust.py --host = https：//cas.example.org
 ...
-[2017-05-02 16:31:49,742] test/INFO/locust.main: Starting web monitor at *:8089
-[2017-05-02 16:31:49,744] test/INFO/locust.main: Starting Locust 0.8a2
+[2017-05-02 16：31：49,742] test / INFO / locust.main：在*：8089
+启动Web监控器[2017-05-02 16：31：49,744] test / INFO / locust.main：启动蝗虫0.8a2
 ```
 
-Navigate to [http://localhost:8089](http://localhost:8089) and proceed with starting the test swarm.
 
-For additional options, use:
+导航到 [http：// localhost：8089](http://localhost:8089) 并继续启动测试群。
+
+对于其他选项，请使用：
+
+
 
 ```bash
-locust --help
+蝗虫-帮助
 ```
