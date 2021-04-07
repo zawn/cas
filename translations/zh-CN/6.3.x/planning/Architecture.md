@@ -1,80 +1,80 @@
 ---
-layout: default
-title: CAS - Architecture
-category: Planning
+layout: 违约
+title: 中科院 - 建筑
+category: 规划
 ---
 
-# Architecture
+# 建筑
 
-![CAS Architecture Diagram](../images/cas_architecture.png "CAS Architecture Diagram")
+![中科院建筑图](../images/cas_architecture.png "中科院建筑图")
 
-## System Components
+## 系统组件
 
-The CAS server and clients comprise the two physical components of the CAS system architecture that communicate by means of various protocols.
+CAS 服务器和客户端由 CAS 系统架构的两个物理组件组成，它们通过各种协议 进行通信。
 
-### CAS Server
+### CAS服务器
 
-The CAS server is Java servlet built on the Spring Framework whose primary responsibility is to authenticate users and grant access to CAS-enabled services, commonly called CAS clients, by issuing and validating tickets. An SSO session is created when the server issues a ticket-granting ticket (TGT) to the user upon successful login. A service ticket (ST) is issued to a service at the user's request via browser redirects using the TGT as a token. The ST is subsequently validated at the CAS server via back-channel communication. These interactions are described in great detail in the CAS Protocol document.
+CAS 服务器是建在"春季框架"基础上的 Java 伺服器，其主要职责是通过签发和验证门票来验证用户 并授予对 CAS 启用服务（通常称为 CAS 客户端）的访问权限。 当服务器在成功登录时向用户发出赠票票证 （TGT） 时，将创建 SSO 会话。 应用户要求，通过使用 TGT 作为代币的浏览器重定向向向服务签发服务票证 （ST）。 ST随后通过后通道通信在CAS服务器上进行验证。 CAS 礼宾文件详细描述了这些交互。
 
 
-### CAS Clients
+### 中科院客户
 
-The term "CAS client" has two distinct meanings in its common use. A CAS client is any CAS-enabled application that can communicate with the server via a supported protocol. A CAS client is also a software package that can be integrated with various software platforms and applications in order to communicate with the CAS server via some authentication protocol (e.g. CAS, SAML, OAuth). CAS clients supporting a number of software platforms and products have been developed.
+术语"CAS 客户端"在其常用中具有两个不同的含义。 CAS 客户端是任何支持 CAS 的应用程序， 可以通过支持的协议与服务器通信。 CAS 客户端也是一个软件包，可以 与各种软件平台和应用程序集成，以便通过一些 认证协议（例如 CAS、SAML、OAuth）与 CAS 服务器进行通信。 中科院客户支持一些软件平台和产品 已经开发。
 
-Platforms:
+平台：
 
-* Apache httpd Server ([mod_auth_cas module](https://github.com/Jasig/mod_auth_cas))
-* Java ([Java CAS Client](https://github.com/apereo/java-cas-client))
-* .NET ([.NET CAS Client](https://github.com/apereo/dotnet-cas-client))
-* PHP ([phpCAS](https://github.com/Jasig/phpCAS))
-* Perl (PerlCAS)
-* Python (pycas)
-* Ruby (rubycas-client)
+* 阿帕奇 httpd 服务器 （[mod_auth_cas模块](https://github.com/Jasig/mod_auth_cas)）
+* 爪哇 （[爪哇中科院客户](https://github.com/apereo/java-cas-client)）
+* 。NET （[.NET CAS 客户端](https://github.com/apereo/dotnet-cas-client)）
+* PHP （[菲普卡斯](https://github.com/Jasig/phpCAS)）
+* 佩尔 （佩尔卡斯）
+* Python （皮卡斯）
+* 红宝石（红宝石客户）
 
-Applications:
+应用：
 
-* Canvas
-* Atlassian Confluence
-* Atlassian JIRA
-* Drupal
-* Liferay
-* uPortal
+* 帆布
+* 阿特拉斯汇合
+* 阿特拉斯·吉拉
+* 德鲁帕尔
+* 生命射线
+* u波尔塔尔
 * ...
 
-When the term "CAS client" appears in this manual without further qualification, it refers to the integration components such as the Java CAS Client rather than to the application relying upon (a client of) the CAS server.
+当"CAS 客户端"一词在没有进一步资格的情况下出现在本手册中时，它是指 组件（如 Java CAS 客户端）的集成，而不是指向依赖 CAS 服务器（客户端）的应用程序。
 
 
-## Supported Protocols
+## 支持的协议
 
-Clients communicate with the server by any of several supported protocols.  All the supported protocols are conceptually similar, yet some have features or characteristics that make them desirable for particular applications or use cases. For example, the CAS protocol supports delegated (proxy) authentication, and the SAML protocol supports attribute release and single sign-out.
+客户端通过多个支持的协议中的任何一个与服务器通信。  所有支持的协议在概念上 相似，但有些协议具有特定应用或使用案例所需的功能或特征。 例如，CAS 协议支持委托（代理）身份验证，SAML 协议支持属性发布和单个签出。
 
-Supported protocols:
+支持的协议：
 
-* [CAS (versions 1, 2, and 3)](../protocol/CAS-Protocol.html)
-* [SAML 1.1 and 2](../protocol/SAML-Protocol.html)
-* [OpenID Connect](../protocol/OIDC-Protocol.html)
-* [OpenID](../protocol/OpenID-Protocol.html)
-* [OAuth 2.0](../protocol/OAuth-Protocol.html)
-* [WS Federation](../protocol/WS-Federation-Protocol.html)
+* [CAS （版本 1、2 和 3）](../protocol/CAS-Protocol.html)
+* [萨姆尔 1.1 和 2](../protocol/SAML-Protocol.html)
+* [打开ID连接](../protocol/OIDC-Protocol.html)
+* [开放ID](../protocol/OpenID-Protocol.html)
+* [非授权 2.0](../protocol/OAuth-Protocol.html)
+* [WS 联合会](../protocol/WS-Federation-Protocol.html)
 
 
-## Software Components
+## 软件组件
 
-It is helpful to describe the CAS server in terms of three layered subsystems:
+用三个分层子系统来描述 CAS 服务器是有帮助的：
 
-* Web (Spring MVC/Spring Webflow)
-* [Ticketing](../ticketing/Configuring-Ticketing-Components.html)
-* [Authentication](../installation/Configuring-Authentication-Components.html)
+* 网络（春季 MVC/春季网络流）
+* [票务](../ticketing/Configuring-Ticketing-Components.html)
+* [认证](../installation/Configuring-Authentication-Components.html)
 
-Almost all deployment considerations and component configuration involve those three subsystems. The Web tier is the endpoint for communication with all external systems including CAS clients. The Web tier delegates to the ticketing subsystem to generate tickets for CAS client access. The SSO session begins with the issuance of a ticket-granting ticket on successful authentication, thus the ticketing subsystem frequently delegates to the authentication subsystem.
+几乎所有的部署考虑和组件配置都涉及这三个子系统。 Web 层是与包括 CAS 客户端在内的所有外部系统通信的终点。 Web 层代表到票务子系统，为 CAS 客户端访问生成票证。 SSO 会议从成功认证时签发出票证开始，因此票务子系统经常委托给身份验证子系统。
 
-The authentication system is typically only processing requests at the start of the SSO session, though there are other cases when it can be invoked (e.g. forced authentication).
+身份验证系统通常仅在 SSO 会话开始时处理请求，但还有其他可以调用请求的情况（例如强制身份验证）。
 
-### Spring Framework
+### 春季框架
 
-CAS uses the many aspects of the Spring Framework; most notably, [Spring MVC](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html) and [Spring Webflow](https://projects.spring.io/spring-webflow). Spring provides a complete and extensible framework for the core CAS codebase as well as for deployers; it's straightforward to customize or extend CAS behavior by hooking CAS and Spring API extension points. General knowledge of Spring is beneficial to understanding the interplay among some framework components, but it's not strictly required.
+中科院运用了《春季框架》的许多方面：最引人注目的是， [春MVC](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html) 和 [春网流](https://projects.spring.io/spring-webflow)。 Spring 为 CAS 核心代码库以及部署人员提供了完整且可扩展的框架：通过连接 CAS 和春季 API 扩展点来自定义或扩展 CAS 行为非常简单。 对 Spring 的一般知识有助于理解 某些框架组件之间的相互作用，但并非严格要求。
 
-### Spring Boot
+### 弹簧启动
 
-CAS is also heavily based on [Spring Boot](http://projects.spring.io/spring-boot/), which allows it to take an opinionated view of the Spring platform and third-party libraries to create a stand-alone web application without the hassle of XML configuration as much as possible. Spring Boot allows CAS to hide much of the internal complexity of its components and their configuration and instead provides auto-configuration modules that  
-and automatically configure the running application context without much manual interference. 
+中科院也在很大程度上基于 [春靴](http://projects.spring.io/spring-boot/)，这使得它能够采取意见的观点 春天平台和第三方图书馆创建一个独立的网络应用程序，而无需XML配置的麻烦尽可能多。 Spring Boot 允许 CAS 隐藏其组件及其配置的大部分内部复杂性，而是提供自动配置模块，这些模块  
+并自动配置运行中的应用上下文，而不会受到太多手动干扰。 
