@@ -1,95 +1,108 @@
 ---
-layout: default
-title: CAS - Release Notes
-category: Planning
+layout: 默认
+title: CAS-发行说明
+category: 规划
 ---
 
-# RC3 Release Notes
+# RC3发行说明
 
-We strongly recommend that you take advantage of the release candidates as they come out. Waiting for a `GA` release is only going to set you up for unpleasant surprises. A `GA` is [a tag and nothing more](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/). Note that CAS releases are *strictly* time-based releases; they are not scheduled or based on specific benchmarks, statistics or completion of features. To gain confidence in a particular release, it is strongly recommended that you start early by experimenting with release candidates and/or follow-up snapshots.
+强烈建议您在发布候选版本时加以利用。 等待 `GA` 发布只会使 感到不愉快。 `GA` 是 [的标记，仅此而已是](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/)。 请注意，CAS 版本是 *严格的* 个基于时间的版本。它们不是预定的，也不是基于特定的基准，统计数据或功能完成情况。 要使 ，强烈建议您从实验候选版本和/或后续快照开始，并尽早开始。
 
-## Apereo Membership
+## Apereo会员资格
 
-If you benefit from Apereo CAS as free and open-source software, we invite you to [join the Apereo Foundation](https://www.apereo.org/content/apereo-membership) and financially support the project at a capacity that best suits your deployment. Note that all development activity is performed *almost exclusively* on a voluntary basis with no expectations, commitments or strings attached. Having the financial means to better sustain engineering activities will allow the developer community to allocate *dedicated and committed* time for long-term support, maintenance and release planning, especially when it comes to addressing critical and security issues in a timely manner. Funding will ensure support for the software you rely on and you gain an advantage and say in the way Apereo, and the CAS project at that, runs and operates. If you consider your CAS deployment to be a critical part of the identity and access management ecosystem, this is a viable option to consider.
+如果您从Apereo CAS作为免费和开源软件受益，我们邀请您 [加入Apereo Foundation](https://www.apereo.org/content/apereo-membership) 并以最适合您部署的能力为该项目提供财务支持。 请注意，所有开发活动 都是在自愿的基础上几乎完全是</em> 进行的 *，没有任何期望，承诺或附加条件。 可持续工程活动的财务能力，将使开发人员社区可以分配 *专用* 时间来提供长期支持， 维护和发布计划，尤其是在及时解决关键和安全问题时。 资助将 ，从而获得优势并以Apereo和当时的CAS项目运行 并运行的方式发言。 如果您认为CAS部署是身份和访问管理生态系统的关键部分，那么这是一个可行的选择。</p>
 
-## Get Involved
+## 参与其中
 
-- Start your CAS deployment today. Try out features and [share feedback](/cas/Mailing-Lists.html).
-- Better yet, [contribute patches](/cas/developer/Contributor-Guidelines.html).
-- Suggest and apply documentation improvements.
+- 立即开始CAS部署。 试用功能，然后 [分享反馈](/cas/Mailing-Lists.html)。
+- 更好的是， [贡献了补丁](/cas/developer/Contributor-Guidelines.html)。
+- 建议并应用文档改进。
 
-## Resources
+## 资源
 
-- [Release Schedule](https://github.com/apereo/cas/milestones)
-- [Release Policy](/cas/developer/Release-Policy.html)
+- [发布时间表](https://github.com/apereo/cas/milestones)
+- [发行政策](/cas/developer/Release-Policy.html)
 
-## Overlay
+## 覆盖
 
-In the `gradle.properties` of the [CAS WAR Overlay](../installation/WAR-Overlay-Installation.html), adjust the following setting:
+在 [CAS WAR叠加层](../installation/WAR-Overlay-Installation.html)`gradle.properties` 中，调整以下设置：
 
 ```properties
-cas.version=6.3.0-RC3
+cas.version = 6.3.0-RC3
 ```
 
 <div class="alert alert-info">
-  <strong>System Requirements</strong><br/>There are no changes to the minimum system/platform requirements for this release.
+  <strong>系统要求</strong><br/>此版本对最低系统/平台要求没有更改。
 </div>
 
-## New & Noteworthy
+## 新增 & 值得注意
 
-The following items are new improvements and enhancements presented in this release.
+以下各项是此版本中提供的新改进和增强功能。
 
-### Test Coverage via CodeCov
+### 通过CodeCov进行测试
 
-CAS test coverage across all modules in the codebase has now reached `86%` and continues to climb. Additional validation rules are also applied to fail all pull requests that fall below this threshold. This area will be closely monitored and improved as progress is made with the goal of hopefully reaching at least `88%` before the final GA release. Of course, this will not be a blocker for the final release.
+现在，代码库中所有模块的CAS测试覆盖率已达到 `86％` 并继续攀升。 附加验证规则也将应用为 以使所有低于此阈值的拉取请求失败。 随着工作的进展，该领域将受到密切监控并改善为 ，以期在最终的Google Analytics（分析）发布之前 `88％` 当然， 不会成为最终版本的阻止者。
 
-### WebAuthn FIDO2 Support
+### WebAuthn FIDO2支持
 
-CAS can now support [WebAuthn FIDO2](../mfa/FIDO2-WebAuthn-Authentication.html) for multifactor authentication.
+CAS现在可以支持 [WebAuthn FIDO2](../mfa/FIDO2-WebAuthn-Authentication.html) 进行多因素身份验证。
 
-### Service Authentication Policy
+### 服务认证策略
 
-An additional [authentication policy for services](../services/Configuring-Service-AuthN-Policy.html) is now available to require allowed/defined authentication handlers.
+</a> 的附加
+身份验证策略现在 ，以要求允许/定义的身份验证处理程序。</p> 
 
-### Delegated Authentication SSO Participation
 
-Participation in single sign-on sessions for applications that are assigned a [delegated authentication policy](../integration/Delegate-Authentication.html#access-strategy) can now be conditionally renewed if the single sign-on session is established using a disallowed provider for the application.
 
-### SAML2 Metadata URL Proxies
+### 委派身份验证SSO参与
 
-SAML2 application definitions whose metadata is retrieved from URLs can now specify a proxy endpoint in the application definition, in case the metadata is behind a proxy.
+参与单点登录会话的应用程序是 分配 [委派认证策略](../integration/Delegate-Authentication.html#access-strategy) 现在可以有条件地更新 ，如果单点登录会话中使用的应用程序不允许的供应商建立。
 
-### Git Service Registry Groups
 
-Service definitions managed by [Git Service Registry](../services/Git-Service-Management.html) are now given an option, on by default, to locate and group service definitions by their type, and store them in dedicated folders for easier management.
 
-### Registered Service Properties
+### SAML2元数据URL代理
 
-Assigning [custom properties](../services/Configuring-Service-Custom-Properties.html) to registered service definitions can now take advantage of [Spring Expressions](../configuration/Configuration-Spring-Expressions.html).
+从URL检索其元数据的SAML2应用程序定义现在可以在应用程序定义中指定代理端点，如果元数据位于代理之后 
 
-## Other Stuff
 
-- Password reset verification attempts can now properly handle expired or invalid reset attempts in the authentication webflow.
-- Logged ascii-art statements are now routed to their own dedicated `AsciiArt` logging category.
-- Configuration distributed session store and its replication for OAuth, OpenID Connect and Delegated Authentication is corrected to determine the cookie path automatically if CAS is set to auto-configure the cookie path based on the context. This item would be specially applicable if the `autoConfigureCookiePath` is set to false.
-- Multiple LDAP base-dns can be specified and join together for a single LDAP configuration block using a special delimiter character.
-- [Integration with Ehcache](../ticketing/Ehcache-Ticket-Registry.html) gains a new setting to allow disk persistence.
-- CAS configuration properties based on an embedded `application.yml` can now recognize settings based on active profiles via `classpath:/application-{profile}.yml` configuration files.
 
-## Library Upgrades
+### Git服务注册组
 
-- Cassandra Driver
-- Oshi
-- Twilio
-- JUnit
-- SnakeYAML
-- Eureka
-- Apache Tomcat
-- Spring
-- Spring Boot
-- Spring Data
-- JGit
-- Mockito
-- Spring Security
-- Spring Cloud
+[Git Service Registry](../services/Git-Service-Management.html) 管理的服务定义提供了一个选项，默认情况下为 ，该选项可以按服务定义的类型来定位和分组服务定义，并将它们存储在专用文件夹中，以便于管理。
+
+
+
+### 注册服务属性
+
+现在，将 [自定义属性](../services/Configuring-Service-Custom-Properties.html) 分配给已注册的服务定义 可以利用 [Spring Expressions](../configuration/Configuration-Spring-Expressions.html)优势。
+
+
+
+## 其他的东西
+
+- 密码重置验证尝试现在可以正确处理身份验证Webflow中过期或无效的重置尝试。
+- 现在，已记录的ascii-art语句将路由到其专用的 `AsciiArt` 记录类别。
+- 如果将CAS设置为根据上下文自动配置cookie路径，则可以更正配置分布式会话存储及其对OAuth，OpenID Connect和委派身份验证的复制，以自动确定cookie路径。 `autoConfigureCookiePath` 设置为false，则该项目特别适用。
+- 可以指定多个LDAP base-dn，并使用特殊的定界符将它们合并为一个LDAP配置块。
+- [与Ehcache](../ticketing/Ehcache-Ticket-Registry.html) 集成获得了一个新设置，以允许磁盘持久性。
+- 现在， `应用程序的CAS配置属性。yml` `classpath：/ application-{profile}` 配置文件 活动配置文件识别设置。
+
+
+
+## 图书馆升级
+
+- Cassandra驱动程序
+- 大志
+- 特威里奥
+- JUnit的
+- 蛇YAML
+- 尤里卡
+- 阿帕奇雄猫
+- 春天
+- 春季靴
+- 春季数据
+- 吉特
+- 莫基托
+- 春季安全
+- 春云
 
