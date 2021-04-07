@@ -1,20 +1,20 @@
 ---
-layout: default
-title: CAS - CAS REST Protocol
-category: Protocols
+layout: 默认
+title: CAS-CAS REST协议
+category: 通讯协定
 ---
 
-# REST Protocol
+# REST协议
 
-The REST protocol allows one to model applications as users, programmatically acquiring service tickets to authenticate to other applications. This means that other applications would be able to use a CAS client  to accept Service Tickets rather than to rely upon another technology such as client SSL certificates for application-to-application authentication of requests. This is achieved by exposing a way to REST-fully obtain a Ticket Granting Ticket and then use that to obtain a Service Ticket.
+REST协议允许人们将应用程序建模为用户，以编程方式获取 张服务凭单以对其他应用程序进行身份验证。 这意味着其他应用程序将能够 使用CAS客户端来接受服务票证，而不是依靠另一种技术（例如 客户端SSL证书）来进行请求的应用程序到应用程序身份验证。 通过公开一种REST完全获取票证授予票证，然后使用该方法来获取服务票证的方法，可以将其实现为 
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>The REST endpoint may
- become a tremendously convenient target for brute force dictionary attacks on CAS server. Consider
- enabling throttling support to ensure brute force attacks are prevented upon authentication failures.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>REST终结点可能为
+ 成为CAS服务器上蛮力字典攻击的极为方便的目标。 考虑将
+ 启用节流支持，以确保在身份验证失败时防止暴力攻击。</p></div>
 
-## Configuration
+## 配置
 
-Support is enabled by including the following to the overlay:
+通过在叠加层中包含以下内容来启用支持：
 
 ```xml
 <dependency>
@@ -24,198 +24,198 @@ Support is enabled by including the following to the overlay:
 </dependency>
 ```
 
-## Request a Ticket Granting Ticket
+## 申请门票授予门票
 
 ```bash
-POST /cas/v1/tickets HTTP/1.0
-'Content-type': 'Application/x-www-form-urlencoded'
-username=battags&password=password&additionalParam1=paramvalue
+POST / CAS / V1 /车票HTTP / 1.0
+'内容类型'： '应用程序/ X WWW的窗体-urlencoded'
+的用户名= battags&密码=密码&additionalParam1 = paramvalue
 ```
 
-You may also specify a `service` parameter to verify whether the authenticated user may be allowed to access the given service.
+您还可以指定 `service` 参数来验证是否可以允许通过身份验证的用户访问给定的服务。
 
-### Successful Response
+### 成功回应
 
 ```bash
-201 Created
-Location: http://www.whatever.com/cas/v1/tickets/{TGT id}
+201创建了
+位置：http：//www.whatever.com/cas/v1/tickets/{TGT id}
 ```
 
-### Unsuccessful Response
+### 回应失败
 
-If incorrect credentials are sent, CAS will respond with a `401 Unauthorized`. A `400 Bad Request` error will be sent for missing parameters, etc. If you send a media type it does not understand, it will send the `415 Unsupported Media Type`.
+如果发送了错误的凭据，则CAS将以 `401未经授权`响应。 由于缺少参数等，将发送 `400错误请求` 如果发送的媒体类型无法识别，它将发送 `415不支持的媒体类型`。
 
-### JWT Ticket Granting Tickets
+### JWT门票授予门票
 
-Ticket-granting tickets created by the REST protocol may be issued as JWTs instead. Support is enabled by including the following in your overlay:
+可以将由REST协议创建的授予票证的票证作为JWT发行。 通过在叠加图中包括以下内容来启用支持：
 
 ```xml
 <dependency>
     <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-rest-tokens</artifactId>
+    <artifactId>cas服务器支持休息令牌</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To request a ticket-granting ticket as JWT next, ensure the `POST` request matches the following:
+接下来要以JWT形式请求授予票证的票证，请确保 `POST` 请求与以下内容匹配：
 
 ```bash
-POST /cas/v1/tickets HTTP/1.0
+POST / cas / v1 / tickets HTTP / 1.0
 
-username=battags&password=password&token=true&additionalParam1=paramvalue
+用户名= battags&密码=密码&令牌= true&AdditionalParam1 = paramvalue
 ```
 
-The `token` parameter may either be passed as a request parameter or a request header. The body of the response will include the ticket-granting ticket as a JWT. Note that JWTs created are typically signed and encrypted by default with pre-generated keys. To control settings or to see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jwt-tickets).
+`令牌` 参数可以作为请求参数或请求标头传递。 响应的主体将包括授予票证的票证作为JWT。 请注意，默认情况下，通常使用预先生成的密钥对创建的JWT进行签名和加密。 要控制设置或查看CAS属性的相关列表，请 [本指南](../configuration/Configuration-Properties.html#jwt-tickets)。
 
-## Authenticate Credentials
+## 认证凭证
 
-Similar to asking for ticket-granting tickets, this endpoint allows one to only verify the validity of provided credentials as they are extracted from the request body:
+类似于索取授予票证的票证，此端点仅允许一个人验证从请求正文中提取的所提供凭证的有效性：
 
 ```bash
-POST /cas/v1/users HTTP/1.0
+POST / cas / v1 /用户HTTP / 1.0
 
-username=battags&password=password
+用户名= battags&密码=密码
 ```
 
-You may also specify a `service` parameter to verify whether the authenticated user may be allowed to access the given service. While the above example shows `username` and `password` as the provided credentials, you are practically allowed to provide multiple sets and different types of credentials provided CAS is equipped to extract and recognize those from the request body. See [this  for more info](#multiple-credentials).
+您还可以指定 `service` 参数来验证是否可以允许通过身份验证的用户访问给定的服务。 虽然上面的示例显示了 `用户名` 和 `密码` 作为提供的凭据，但是实际上允许您提供多组凭据和不同类型的凭据，前提是CAS具备从请求正文中提取和识别那些凭据的能力。 有关更多信息，请参见 [](#multiple-credentials)。
 
-A successful response will produce a `200 OK` status code along with a JSON representation of the authentication result, which may include the authentication object, authenticated principal along with any captured attributes and/or metadata fetched for the authenticated user.
+成功的响应将产生 `200 OK` 状态代码以及身份验证结果的JSON表示，其中可能包括身份验证对象，已身份验证的主体以及为身份验证的用户获取的任何捕获的属性和/或元数据。
 
-## Request a Service Ticket
+## 索取服务票
 
-The below snippets show one might request a service ticket using the semantics of the CAS protocol:
+以下代码片段显示了一个可能会使用CAS协议的语义来请求服务票证的情况：
 
 ```bash
-POST /cas/v1/tickets/{TGT id} HTTP/1.0
+POST / cas / v1 / tickets /{TGT id} HTTP / 1.0
 
-service={form encoded parameter for the service url}
+服务={form encoded parameter for the service url}
 ```
 
-You may also specify a `renew` parameter to obtain a service ticket that can be accepted by a service that only wants tickets issued from the presentation of the user's primary credentials. In that case, user credentials have to be passed in the request, for example, as `username` and `password` parameters.
+您还可以指定 `renew` 参数以获得服务票证，该服务票证只能由仅希望从用户主要凭据的显示中发出的票证的服务接受。 在这种情况下，必须在请求中传递用户凭据，例如，将其作为 `用户名` 和 `密码` 参数。
 
 ```bash
-POST /cas/v1/tickets/{TGT id} HTTP/1.0
+POST / cas / v1 / tickets /{TGT id} HTTP / 1.0
 
-service={form encoded parameter for the service url}&renew=true&username=battags&password=password
+服务={form encoded parameter for the service url}&续订= true&用户名= battags&密码=密码
 ```
 
-You may also submit service ticket requests using the semantics [SAML1 protocol](SAML-Protocol.html).
+您还可以使用语义 [SAML1协议](SAML-Protocol.html)提交服务票证请求。
 
-### Successful Response
+### 成功回应
 
 ```bash
 200 OK
 ST-1-FFDFHDSJKHSDFJKSDHFJKRUEYREWUIFSD2132
 ```
 
-### JWT Service Tickets
+### JWT服务票
 
-Service tickets created by the REST protocol may be issued as JWTs instead. See [this guide](../installation/Configure-ServiceTicket-JWT.html) to learn more.
+可以将由REST协议创建的服务票证作为JWT发行。 请参阅 [本指南](../installation/Configure-ServiceTicket-JWT.html) 以了解更多信息。
 
-Support is enabled by including the following in your overlay:
+通过在叠加图中包括以下内容来启用支持：
 
 ```xml
 <dependency>
     <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-rest-tokens</artifactId>
+    <artifactId>cas服务器支持休息令牌</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-Note that JWTs created are typically signed and encrypted by default with pre-generated keys. To control settings or to see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jwt-tickets).
+请注意，默认情况下，通常使用预先生成的密钥对创建的JWT进行签名和加密。 要控制设置或查看CAS属性的相关列表，请 [本指南](../configuration/Configuration-Properties.html#jwt-tickets)。
 
-## Validate Service Ticket
+## 验证服务票
 
-Service ticket validation is handled through the [CAS Protocol](CAS-Protocol.html) via any of the validation endpoints such as `/p3/serviceValidate`.
-
-```bash
-GET /cas/p3/serviceValidate?service={service url}&ticket={service ticket}
-```
-
-### Unsuccessful Response
-
-CAS will send a 400 Bad Request. If an incorrect media type is sent, it will send the 415 Unsupported Media Type.
-
-## Logout
-
-Destroy the SSO session by removing the issued ticket:
+服务票证验证是通过 [CAS协议](CAS-Protocol.html) 通过任何验证端点（例如 `/ p3 / serviceValidate`。
 
 ```bash
-DELETE /cas/v1/tickets/TGT-fdsjfsdfjkalfewrihfdhfaie HTTP/1.0
+GET / cas / p3 / serviceValidate？service ={service url}&票={service ticket}
 ```
 
-## Ticket Status
+### 回应失败
 
-Verify the status of an obtained ticket to make sure it still is valid and has not yet expired.
+CAS将发送400错误请求。 如果发送了错误的媒体类型 ，它将发送415不支持的媒体类型。
+
+## 登出
+
+通过删除已发行的票证来破坏SSO会话：
 
 ```bash
-GET /cas/v1/tickets/TGT-fdsjfsdfjkalfewrihfdhfaie HTTP/1.0
+删除/ cas / v1 / tickets / TGT-fdsjfsdfjkalfewrihfdhfaie HTTP / 1.0
 ```
 
-### Successful Response
+## 票务状态
+
+验证获取的票证的状态，以确保其仍为有效 且尚未过期。
+
+```bash
+GET / cas / v1 / tickets / TGT-fdsjfsdfjkalfewrihfdhfaie HTTP / 1.0
+```
+
+### 成功回应
 
 ```bash
 200 OK
 ```
 
-### Unsuccessful Response
+### 回应失败
 
 ```bash
-404 NOT FOUND
+404未找到
 ```
 
-## Add Service
+## 添加服务
 
-Support is enabled by including the following in your overlay:
+通过在叠加图中包括以下内容来启用支持：
 
 ```xml
 <dependency>
     <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-rest-services</artifactId>
+    <artifactId>cas服务器支持休息服务</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-Invoke CAS to register applications into its own service registry. The REST call must be authenticated using basic authentication where credentials are authenticated and accepted by the existing CAS authentication strategy, and furthermore the authenticated principal must be authorized with a pre-configured role/attribute name and value that is designated in the CAS configuration via the CAS properties. The body of the request must be the service definition that shall be registered in JSON format and of course, CAS must be configured to accept the particular service type defined in the body. The accepted media type for this request is `application/json`.
+调用CAS将应用程序注册到其自己的服务注册表中。 REST调用必须使用基本身份验证进行身份验证，其中凭据由现有CAS身份验证策略进行身份验证并接受，此外，还必须使用通过CAS配置在CAS配置中指定的预配置角色/属性名称和值来授权已身份验证的主体CAS属性。 请求的主体必须是应以JSON格式注册的服务定义，并且当然，必须将CAS配置为接受在主体中定义的特定服务类型。 此请求接受的媒体类型为 `application / json`。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#rest-api).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#rest-api)。
 
 ```bash
-POST /cas/v1/services HTTP/1.0
+POST / cas / v1 / services HTTP / 1.0
 ```
 
-...where body of the request may be:
+...请求的正文可能是：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "...",
-  "name" : "...",
-  "id" : 1,
-  "description": "..."
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ ...”，
+  “ name”：“ ...”，
+  “ id”：
+  “描述”： ”...”
 }
 ```
 
-A successful response will produce a `200` status code in return.
+成功的响应将 `200` 状态码。
 
-## X.509 Authentication
+## X.509验证
 
-The feature extends the CAS REST API communication model to non-interactive X.509 authentication where REST credentials may be retrieved from a certificate embedded in the request rather than the usual and default username/password.
+该特征延长了CAS REST API通信模型到非交互式认证X.509 其中REST凭证可以从嵌入在该请求，而不是一个证书被检索 的常用和默认用户名/密码。
 
-This pattern may be of interest in cases where the internal network architecture hides the CAS server from external users behind firewall, reverse proxy, or a messaging bus and allows only trusted applications to connect directly to the CAS server.
+的CAS服务器对外部用户隐藏在防火墙，反向代理或消息传递总线后面，而 仅允许受信任的应用程序直接连接到CAS服务器，则这种模式可能会引起人们的兴趣。
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>The X.509 feature over REST
-using a body parameter or a http header provides a tremendously convenient target for claiming
-user identities or obtaining TGTs without proof of private key ownership.
-To securely use this feature, network configuration <strong>MUST</strong> allow connections
-to the CAS server only from trusted hosts which in turn have strict security limitations and
-logging.
-It is also recommended to make sure that the body parameter or the http header can only come
-from trusted hosts and not from the original authenticating client.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>使用主体参数或http标头的
+的X.509功能
+用户身份或获取TGT（无需证明私钥所有权）提供了极为方便的目标。
+为了安全地使用此功能，网络配置 <strong>必须</strong> 允许
+，而受信任的主机又具有严格的安全性限制和
+日志记录。
+此外，还建议，以确保身体参数或HTTP头只能来自
+可信任主机从原来的身份验证客户端，而不是。</p></div>
 
-It is also possible to let the servlet container validate the TLS client key / X.509 certificate during TLS handshake, and have CAS server retrieve the certificate from the container.
+也可以让servlet容器在TLS握手期间验证TLS客户端密钥/ X.509证书 ，并让CAS服务器从容器中检索证书。
 
-Support is enabled by including the following in your overlay:
+通过在叠加图中包括以下内容来启用支持：
 
 ```xml
 <dependency>
@@ -225,37 +225,37 @@ Support is enabled by including the following in your overlay:
 </dependency>
 ```
 
-### Request a Ticket Granting Ticket (Proxy TLS Client Authentication using a body parameter)
+### 请求票证授予票证（使用body参数的代理TLS客户端身份验证）
 
 ```bash
-POST /cas/v1/tickets HTTP/1.0
-cert=<ascii certificate>
+POST / cas / v1 / tickets HTTP / 1.0
+cert =<ascii certificate>
 ```
 
-### Request a Ticket Granting Ticket (Proxy TLS Client Authentication using a http header)
+### 请求票证授予票证（使用http标头的代理TLS客户端身份验证）
 
-The cas server should be configured for X509 authentication on the login page for this to function properly.
+应该在登录页面上将cas服务器配置为进行X509身份验证，以使其正常运行
 
-### Request a Ticket Granting Ticket (TLS Client Authentication from the servlet container)
+### 请求票证授予票证（来自Servlet容器的TLS客户端身份验证）
 
-The cas server should be configured for X509 authentication on the login page for this to function properly.
+应该在登录页面上将cas服务器配置为进行X509身份验证，以使其正常运行
 
-#### Successful Response
+#### 成功回应
 
 ```bash
-201 Created
-Location: http://www.whatever.com/cas/v1/tickets/{TGT id}
+201创建了
+位置：http：//www.whatever.com/cas/v1/tickets/{TGT id}
 ```
 
-## Multiple Credentials
+## 多个凭证
 
-The CAS REST API machinery has the ability to use multiple *credential extractors* that are tasked with analyzing the request body in order to fetch credentials and pass them along. While by default expected credentials that may be extracted are based on username/password, additional modules automatically lend themselves into this design and inject their opinionated credential extractor into the REST engine automatically so that the final collection of credentials may be used for issuing tickets, etc. This is, in a sense, how the [X.509 authentication](#x509-authentication) is integrated with the CAS REST Protocol.
+CAS REST API机械具有使用多个 *凭证提取器* 的能力，这些凭证提取器1负责分析请求主体，以获取凭证并将其传递。 虽然默认情况下可以提取的预期凭据基于用户名/密码，但是其他模块会自动将其自身引入此设计，并将其自认为的凭据提取器自动注入REST引擎，以便可以将凭据的最终集合用于发行票证等。 。 从某种意义上讲，这就是 [X.509身份验证](#x509-authentication) 与CAS REST协议集成在一起的方式。
 
-This indicates that you may pass along multiple credentials to the REST protocol in the request body and so long as CAS is configured to understand and extract those credentials and the authentication machinery is configured to also execute and validate those credentials. For instance, you may deliver a use case where two sets of credentials in form of username/password and OTP are provided to the REST protocol and CAS would then attempt to authenticate both credentials and produce a response on a successful validation, assuming that authentication strategies for username/password and OTP are properly configured in CAS.
+这表明您可以将多个凭据传递给请求正文中的REST协议，只要将CAS配置为理解和提取那些凭据，并且将身份验证机制配置为还执行和验证那些凭据即可。 例如，您可能会提供一个用例，其中向REST协议提供了两组以用户名/密码和OTP形式提供的凭据，然后CAS将尝试对这两个凭据进行身份验证，并在成功进行验证的情况下产生响应，并假定身份验证策略用户名/密码和OTP的密码已在CAS中正确配置。
 
-## CAS REST Clients
+## CAS REST客户端
 
-In order to interact with the CAS REST API, a REST client must be used to submit credentials, receive tickets and validate them. The following Java REST client is available by [pac4j](https://github.com/pac4j/pac4j):
+为了与CAS REST API进行交互，必须使用REST客户端提交凭据， 接收票证并对其进行验证。 以下Java REST客户端 [pac4j](https://github.com/pac4j/pac4j)：
 
 ```java
 import org.pac4j.cas.profile.CasRestProfile;
@@ -310,12 +310,12 @@ public class RestTestClient {
 
 ```
 
-## Throttling
+## 节流
 
-To understand how to throttling works in CAS, please review [the available options](../installation/Configuring-Authentication-Throttling.html). By default, throttling REST requests is turned off. To activate this functionality, you will need to choose an appropriate throttler and activate it by declaring the relevant module. The same throttling mechanism that handles the usual CAS server endpoints for authentication and ticket validation, etc is then activated for the REST endpoints that are supported for throttling.
+要了解如何在CAS，节流作品 请查看 [可用的选项](../installation/Configuring-Authentication-Throttling.html)。 默认情况下，限制REST请求处于关闭状态。 要激活此功能，您将需要选择合适的节流阀并通过声明相关模块来激活它。 然后，为支持节流的REST端点激活与通常的CAS服务器端点进行身份验证
 
-To see the relevant options, [please review this guide](../configuration/Configuration-Properties.html#rest-api).
+要查看相关选项， [查看本指南](../configuration/Configuration-Properties.html#rest-api)。
 
 ## Swagger API
 
-CAS REST API may be automatically integrated with Swagger. [See this guide](../integration/Swagger-Integration.html) for more info.
+CAS REST API可能会自动与Swagger集成。 [有关更多信息，请参见本指南](../integration/Swagger-Integration.html)
