@@ -1,21 +1,21 @@
 ---
-layout: default
-title: CAS - JMX Integration
-category: Integration
+layout: 默认
+title: CAS-JMX集成
+category: 一体化
 ---
 
-# JMX Integration
+# JMX整合
 
-The JMX support in CAS provides you with the features to easily and transparently integrate your CAS deployment into a JMX infrastructure. These features are designed to work without coupling CAS components to either Spring or JMX interfaces and classes. CAS components need not be aware of either JMX in order to take advantage of the Spring JMX features. Invoking JMX operations provided by CAS managed resources can be done via the likes of Java's `jconsole` tool.
+CAS中的JMX支持为您提供了轻松透明地将CAS部署集成到JMX基础结构中的功能。 这些功能被 ，无需将CAS组件耦合到Spring或JMX接口和类即可工作。 为了利用Spring JMX功能，CAS组件不需要知道任何一个JMX `jconsole` 工具来调用由CAS管理的资源提供的JMX操作。
 
-The following *wrapper* components are registered into a JMX infrastructure and sit on top of a well-defined CAS feature, concept or component to provide remote operations or insight:
+以下 *包装器* 组件已注册到JMX基础结构中，并位于定义良好的CAS功能， 概念或组件之上，以提供远程操作或洞察力：
 
-- A JMX managed resource for the CAS services management facility
-- A JMX managed resource for the CAS ticket registry
+- 用于CAS服务管理工具的JMX托管资源
+- 用于CAS票证注册表的JMX托管资源
 
-Additional wrappers and components will be worked out and added iteratively.
+额外的包装器和组件将被反复设计和添加。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
