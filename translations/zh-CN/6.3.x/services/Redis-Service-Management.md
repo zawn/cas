@@ -1,27 +1,27 @@
 ---
-layout: default
-title: CAS - Redis Service Registry
-category: Services
+layout: 违约
+title: CAS - 雷迪斯服务注册处
+category: 服务业
 ---
 
-# Redis Service Registry
+# 重新分配服务注册表
 
-This service registry stores tickets in one or more [Redis](http://redis.io/) instances. The [spring data redis](http://projects.spring.io/spring-data-redis/) library used by this component presents Redis as a key/value store that accepts `String` keys and CAS service definition objects as values. The key is started with `CAS_SERVICE:`.
+此服务注册表在一个或多个 [雷迪斯](http://redis.io/) 实例中存储门票。 此组件使用的 [弹簧数据重新](http://projects.spring.io/spring-data-redis/) 库将 Redis 显示为 密钥/值存储，接受 `字符串` 密钥和 CAS 服务定义对象为值。 关键是从 `CAS_SERVICE开始：`。
 
-The Redis service registry supports Redis Sentinel, which provides high availability for Redis. In practical terms this means that using Sentinel you can create a Redis deployment that resists without human intervention to certain kind of failures. Redis Sentinel also provides other collateral tasks such as monitoring, notifications and acts as a configuration provider for clients.
+雷迪斯服务注册表支持雷迪斯哨兵，它为雷迪斯提供了高可用性。 实际上，这意味着使用哨兵可以创建一个 Redis 部署，无需人工干预即可抵抗某些类型的故障。 Redis Sentinel 还提供其他附带任务，如监控、通知和充当客户配置提供商。
 
-Support is enabled by including the following dependency in the overlay:
+支持通过在叠加中包括以下依赖关系而启用：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-redis-service-registry</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>卡-服务器-支持-重新-服务-注册</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#redis-service-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#redis-service-registry)。
 
-## Auto Initialization
+## 自动初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+在启动和配置允许的情况下，注册表能够自动从 CAS 可用的默认 JSON 服务定义中初始化。 有关详细信息，请参阅本指南</a> 。</p>
