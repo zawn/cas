@@ -1,25 +1,25 @@
 ---
-layout: default
-title: CAS - Configuring Principal Resolution
-category: Configuration
+layout: 默认
+title: CAS-配置主体分辨率
+category: 配置
 ---
 
-# Overview
-Principal resolution converts information in the authentication credential into a security principal that commonly contains additional metadata attributes (i.e. user details such as affiliations, group membership, email, display name).
+# 概述
+主体解析将身份验证凭据中的信息转换为安全主体 ，该主体通常包含其他 元数据属性（即，用户详细信息，例如从属关系，组成员身份，电子邮件，显示名称）。
 
-A CAS principal contains a unique identifier by which the authenticated user will be known to all requesting services. A principal also contains optional [attributes that may be released](../integration/Attribute-Release.html) to services to support authorization and personalization. Principal resolution is a requisite part of the authentication process that happens after credential authentication.
+CAS主体包含一个唯一的标识符，通过该标识符，所有请求 服务都将知道已认证的用户。 主体还包含可选的 [属性，可以将这些属性](../integration/Attribute-Release.html) 释放给服务以支持授权和个性化。 主体解析是凭据身份验证后发生
 
-CAS `AuthenticationHandler` components provide basic principal resolution machinery by default. For example, the `LdapAuthenticationHandler` component supports fetching attributes and setting the principal ID attribute from an LDAP query. In all cases principals are resolved from the same store as that which provides authentication.
+默认情况下，CAS `AuthenticationHandler` 组件提供基本的主体解析机制。 例如， `LdapAuthenticationHandler` 组件支持获取属性并从 LDAP查询中设置主体ID属性。 在所有情况下，都从与提供身份验证的存储库相同的存储库中解析主体。
 
-In many cases it is necessary to perform authentication by one means and resolve principals by another. The `PrincipalResolver` component provides this functionality. A common use case for this this mix-and-match strategy arises with X.509 authentication. It is common to store certificates in an LDAP directory and query the directory to resolve the principal ID and attributes from directory attributes. The `X509CertificateAuthenticationHandler` may be be combined with an LDAP-based principal resolver to accommodate this case.
+在许多情况下，有必要通过一种方式执行身份验证，并通过另一种方式解析主体。 `PrincipalResolver` 组件提供了此功能。 这种混合匹配策略 的常见用例是X.509身份验证。 通常将证书存储在LDAP目录中，并将目录查询为 从目录属性中解析主体ID和属性。 `X509CertificateAuthenticationHandler` 可以 与基于LDAP的主体解析器组合以适应这种情况。
 
-## Configuration
+## 配置
 
-CAS uses the Person Directory library to provide a flexible principal resolution services against a number of data sources. The key to configuring `PersonDirectoryPrincipalResolver` is the definition of an `IPersonAttributeDao` object.
+CAS使用人员目录库针对多个数据 源提供灵活的主体解析服务。 `PersonDirectoryPrincipalResolver` 的关键 `IPersonAttributeDao` 对象的定义。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#principal-resolution).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#principal-resolution)。
 
-## PrincipalResolver vs. AuthenticationHandler
+## PrincipalResolver与AuthenticationHandler
 
-The principal resolution machinery provided by `AuthenticationHandler` components should be used in preference to `PrincipalResolver` in any situation where the former provides adequate functionality. If the principal that is resolved by the authentication handler suffices, then a `null` value may be passed in place of the resolver bean id in the final map.
+在前者提供足够功能的任何情况下，应优先使用 `AuthenticationHandler` 组件提供的主要解析机制 `PrincipalResolver` 如果由身份验证处理程序 解析的委托人就足够了，那么 `null` 值来代替解析器bean id。
 
