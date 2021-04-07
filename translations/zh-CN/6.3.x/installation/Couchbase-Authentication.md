@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Couchbase Authentication
-category: Authentication
+layout: 默认
+title: CAS-Couchbase身份验证
+category: 验证
 ---
 
-# Couchbase Authentication
+# Couchbase身份验证
 
-Verify and authenticate credentials using [Couchbase](http://www.couchbase.com/).
+[Couchbase](http://www.couchbase.com/)验证和认证凭据。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,8 +18,8 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-The authentication strategy is able to fetch user attributes as part of the authentication event. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchbase-authentication).
+身份验证策略能够获取用户属性作为身份验证事件的一部分。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchbase-authentication)。
 
-## Couchbase Principal Attributes
+## Couchbase主要属性
 
-The above dependency may also be used, in the event that principal attributes need to be fetched from a Couchbase database without necessarily authenticating credentials against Couchbase. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchbase).
+在需要从Couchbase数据库获取主体属性而不必针对Couchbase认证凭据的情况下，也可以使用上述依赖关系。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchbase)。
