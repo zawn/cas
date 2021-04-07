@@ -1,63 +1,63 @@
 ---
-layout: default
-title: CAS - Groovy Authentication
-category: Authentication
+layout: 违约
+title: CAS - 沟槽认证
+category: 认证
 ---
 
-# Groovy Authentication
+# 沟槽身份验证
 
-Verify and authenticate credentials using Groovy scripts. The task of credential verification, principal transformation, handling password policy and all other related matters are the sole responsibility of the Groovy script.
+使用 Groovy 脚本验证和验证凭据。 证书验证、主要转换、 处理密码政策等相关事项的任务均由 Groovy 脚本承担全部责任。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-generic</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>套机服务器支持通用</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#groovy-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#groovy-authentication)。
 
-The Groovy script may be designed as:
+Groovy 脚本可设计为：
 
 ```groovy
-import org.apereo.cas.authentication.*
-import org.apereo.cas.authentication.credential.*
-import org.apereo.cas.authentication.metadata.*
+进口组织.apereo.cas.认证.*
+进口组织.apereo.cas.认证.*
+进口组织.apereo.cas.认证.元数据.*
 
-import javax.security.auth.login.*
+进口 javax.安全.auth.登录.*
 
-def authenticate(final Object... args) {
-    def authenticationHandler = args[0]
-    def credential = args[1]
-    def servicesManager = args[2]
-    def principalFactory = args[3]
-    def logger = args[4]              
+验证（最终对象...args）{
+    定义身份验证员=args[0]
+    def凭据=args[1]
+    除法服务管理器=args[2]
+    def主要工厂=args[3]
+    d def记录器=args[4]              
 
     /*
-     * Figure out how to verify credentials...
+     *找出如何验证凭据。。。
      */
-    if (authenticationWorksCorrectly()) {
-        def principal = principalFactory.createPrincipal(credential.username);
-        return new DefaultAuthenticationHandlerExecutionResult(authenticationHandler,
-                new BasicCredentialMetaData(credential),
-                principal,
-                new ArrayList<>(0));
-    }
-    throw new FailedLoginException();
+    如果（认证工作正确）=
+        定义本金=主要工厂。创建原则（凭据.用户名）：
+        返回新的默认验证汉德勒执行结果（认证手勒，
+                新的基本信用元数据（凭据），
+                本金，
+                新的阵列列表<>（0）;
+    =
+    抛出新的失败记录除名（）：
+=
+
+定义支持信用（最终对象。。。args）{
+    分级证书=args[0]
+    def记录器=args[1]
+    返回凭据！=空
 }
 
-def supportsCredential(final Object... args) {
-    def credential = args[0]
-    def logger = args[1]
-    return credential != null
-}
-
-def supportsCredentialClass(final Object... args) {
-    def credentialClazz = args[0]
-    def logger = args[1]
-    return credentialClazz == UsernamePasswordCredential.class
+防御支持信用类（最终对象。。。args）{
+    def凭据Clazz=args[0]
+    定义记录器=args[1]
+    返回凭据Clazz==用户名密码信用.class
 }
 ```
