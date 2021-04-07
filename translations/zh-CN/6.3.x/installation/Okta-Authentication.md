@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - Okta Authentication
-category: Authentication
+layout: 默认
+title: CAS-Okta身份验证
+category: 验证
 ---
 
-# Okta Authentication
+# Okta身份验证
 
-The integration with Okta is a convenience wrapper around [Okta's Authentication API](https://developer.okta.com/docs/api/resources/authn.html) and is useful if you need to accept and validate credentials managed by Okta.
+与Okta的集成是一个方便的包装，可以将 [封装起来。Okta的Authentication API](https://developer.okta.com/docs/api/resources/authn.html) 和 在您需要接受和验证Okta管理的凭据时非常有用。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -20,4 +20,4 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#okta-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#okta-authentication)。
