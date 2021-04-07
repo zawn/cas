@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - SysLog Logging Configuration
-category: Logs & Audits
+layout: 默认
+title: CAS-SysLog日志记录配置
+category: 记录 & 审核
 ---
 
-# SysLog Logging
+# SysLog记录
 
-CAS logging framework does have the ability to route messages to an external syslog instance. To configure this, you first to configure the `SysLogAppender` and then specify which messages needs to be routed over to this instance:
+CAS日志记录框架确实具有将消息路由到外部 syslog实例的功能。 要配置此属性，请先配置 ，然后再 `` 消息路由到此实例：
 
 ```xml
 ...
@@ -24,7 +24,7 @@ CAS logging framework does have the ability to route messages to an external sys
 
 ```
 
-You can also configure the remote destination output over SSL and specify the related keystore configuration:
+SSL配置远程目标输出，并指定相关的密钥库配置：
 
 ```xml
 ...
