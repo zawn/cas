@@ -1,36 +1,36 @@
 ---
-layout: default
-title: CAS - Spring Expressions
-category: Installation
+layout: 默认
+title: CAS-春季表达
+category: 安装
 ---
 
-# Spring Expression Language
+# 春季表达语言
 
-A number of components in CAS are able to take advantage of the [Spring Expression Language](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions) syntax for their internal configuration. This is primarily useful when the component wishes to have access to system variables, environment properties or in general requires a more dynamic or programmatic strategy before it can be fully functional.
+CAS中的许多组件都可以利用 即 [Spring Expression Language](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions) 语法 进行内部配置。 希望访问系统变量，环境属性或通常需要更具动态性或 编程策略才能完全起作用时，这尤其有用。
 
-Expressions are expected to be encapsulated inside the `${...}` syntax. Predefined variables are expected to be preceded with the `#` character. The following predefined variables are available:
+表达式应封装在 `${...}` 语法内。 预定义变量 应该以 `＃` 字符开头。 以下预定义变量可用：
 
-| Variable               | Description                                                     |
-| ---------------------- | --------------------------------------------------------------- |
-| `systemProperties`     | Map of system properties, loaded once typically on startup.     |
-| `sysProps`             | Same as above.                                                  |
-| `environmentVars`      | Map of environment variables, loaded once typically on startup. |
-| `environmentVariables` | Same as above.                                                  |
-| `envVars`              | Same as above.                                                  |
-| `env`                  | Same as above.                                                  |
-| `tempDir`              | Path to the temp directory.                                     |
-| `uuid`                 | Auto-generated `UUID` value.                                    |
-| `randomNumber2`        | 2-digit random number.                                          |
-| `randomNumber4`        | 4-digit random number.                                          |
-| `randomNumber6`        | 6-digit random number.                                          |
-| `randomNumber8`        | 8-digit random number.                                          |
-| `randomString4`        | 4-character random word.                                        |
-| `randomString6`        | 6-character random word.                                        |
-| `randomString8`        | 8-character random word.                                        |
+| 多变的             | 描述                  |
+| --------------- | ------------------- |
+| `系统属性`          | 系统属性映射，通常在启动时加载一次。  |
+| `系统道具`          | 与上述相同。              |
+| `各种`            | 环境变量的映射，通常在启动时加载一次。 |
+| `环境变量`          | 与上述相同。              |
+| `信封`            | 与上述相同。              |
+| `环保`            | 与上述相同。              |
+| `临时目录`          | 临时目录的路径。            |
+| `乌伊德`           | 自动生成的 `UUID` 值。     |
+| `randomNumber2` | 2位随机数。              |
+| `randomNumber4` | 4位随机数。              |
+| `randomNumber6` | 6位随机数。              |
+| `randomNumber8` | 8位随机数。              |
+| `randomString4` | 4个字符的随机词。           |
+| `randomString6` | 6个字符的随机词。           |
+| `randomString8` | 8个字符的随机词。           |
 
-## Examples
+## 例子
 
-- Assuming system property `tier` with a value of `production` is available, the configuration value `file://${#systemProperties['tier']}/file.json` translates to `file://production/file.json`
-- Assuming environment variable `tier` with a value of `qa` is available, the configuration value `file://${#environmentVariables['tier']}/file.json` translates to `file://qa/file.json`
-- Using `${#randomString6}` translates to a 6-character random word, such as `qemguz`.
-- Using `${#randomNumber8}` translates to a 8-digit random number, such as `75915283`.
+- 假设系统属性 `层` 的值为 `生产` ，则配置 值 `file：// $ {#systemProperties ['tier']} /file.json` 转换为 `file：// production / file .json`
+- 假设值为 `qa` 环境变量 `tier` 可用，则配置 值为 `file：// $ {#environmentVariables ['tier']} /file.json` 转换为 `file：// qa / file .json`
+- 使用 `${#randomString6}` 转换为6个字符的随机单词，例如 `qemguz`。
+- 使用 `${#randomNumber8}` 转换为8位随机数，例如 `75915283`。
