@@ -1,26 +1,32 @@
 ---
-layout: default
-title: CAS - Monitoring
-category: Monitoring & Statistics
+layout: 默认
+title: CAS-监控
+category: 监控 & 统计
 ---
 
-# CAS Spring Boot Administration
+# CAS Spring Boot管理
 
-CAS takes advantage of the [Spring Boot Admin][bootadmindocs] to manage and monitor its internal state visually. As a Spring Boot Admin client, CAS registers itself with the Spring Boot Admin server over HTTP and reports back its status and health to the server's web interface.
+CAS利用 [Spring Boot Admin][bootadmindocs] 来可视化地管理和监视其内部状态。 作为Spring Boot Admin客户端，CAS通过HTTP向Spring Boot Admin服务器注册，并将其状态和运行状况报告给服务器的Web界面。
 
-## Administration Server
+## 管理服务器
 
-To run the Spring Boot Admin server, please use [this WAR overlay](https://github.com/apereo/cas-bootadmin-overlay).
+要运行Spring Boot Admin服务器，请使用 [此WAR叠加层](https://github.com/apereo/cas-bootadmin-overlay)。
 
-<div class="alert alert-warning"><strong>Secure Endpoints</strong><p>Note that the admin server's API endpoints MUST be secured. It is also best to run both the Admin server and the registering CAS server node under HTTPS, specially if credentials are used to authenticate into endpoints.</p></div>
+<div class="alert alert-warning"><strong>安全端点</strong><p>请注意，必须确保管理服务器的API端点是安全的。 最好同时在HTTPS下运行管理服务器和正在注册的CAS服务器节点，尤其是在使用凭据对端点进行身份验证的情况下。</p></div>
 
-To learn more about options, please [see this guide][bootadmindocs].
+要了解有关选项的更多信息，请参见本指南</a>
 
-## CAS Server as Client
+。</p> 
 
-Each individual CAS server is given the ability to auto-register itself with the admin server, provided configuration is made available to instruct the CAS server how to locate and connect to the admin server.
 
-Support is added by including the following dependency in the WAR overlay:
+
+## CAS服务器作为客户端
+
+每个单独的CAS服务器都具有向管理服务器自动注册的能力，前提是可以进行配置以指示CAS服务器如何定位和连接到管理服务器。
+
+通过在WAR叠加中包含以下依赖关系来添加支持：
+
+
 
 ```xml
 <dependency>
@@ -30,11 +36,14 @@ Support is added by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-Note that CAS server's actuator endpoints are by default secured. In order to allow secure communication between the CAS server and the Spring Boot Admin server, [please see guide][bootadmindocs].
 
-## Configuration
+请注意，默认情况下，CAS服务器的执行器端点是安全的。 为了允许CAS服务器和Spring Boot Admin服务器之间的安全通信，请使用 [][bootadmindocs]。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#spring-boot-admin-server).
+
+
+## 配置
+
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#spring-boot-admin-server)。
 
 [bootadmindocs]: https://codecentric.github.io/spring-boot-admin/current/
 
