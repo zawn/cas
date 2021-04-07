@@ -1,84 +1,102 @@
 ---
-layout: default
-title: CAS - Ehcache Ticket Registry
-category: Ticketing
+layout: 违约
+title: CAS - 埃卡奇票务注册处
+category: 票务
 ---
 
-# Ehcache v3 Ticket Registry
+# 埃卡奇v3票务登记处
 
-Ehcache 3.x integration is enabled by including the following dependency in the WAR overlay:
+Ehcache 3.x 集成通过在 WAR 叠加中包括以下依赖关系而实现：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-ehcache3-ticket-registry</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-埃卡切3-票证注册</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-This registry stores tickets using the [Ehcache 3.x](http://ehcache.org/) caching library and [an optional Terracotta cluster](https://www.ehcache.org/documentation/3.3/clustered-cache.html).
+这个登记处存储门票使用 [Ehcache 3.x](http://ehcache.org/) 缓存库 和 [一个可选的兵器集群](https://www.ehcache.org/documentation/3.3/clustered-cache.html)。
 
-## In-memory store with disk persistence
+## 内存存储与磁盘持久性
 
-Ehcache 3.x doesn't support distributing caching without Terracotta so using it without pointing at a Terracotta server or cluster doesn't support using more than one CAS server at a time. The location and size of the disk caches can be configured using the root-directory and per-cache-size-on-disk properties. If the persist-on-disk property is set to true then the caches will survive a restart.
+Ehcache 3.x 不支持在没有兵器的情况下分发缓存，因此无需指向兵马甲 服务器或群集即可使用它，因此不支持一次使用多个 CAS 服务器。 磁盘缓存的位置和大小 可以使用根目录和每个缓存大小的磁盘属性进行配置。 如果磁盘上的持久属性 设置为真，则缓存将在重新启动后存活下来。
 
-### Terracotta Clustering
+### 兵器聚类
 
-By pointing this Ehcache module at a Terracotta server then multiple CAS servers can share tickets. CAS uses `autocreate` to create the Terracotta cluster configuration. An easy way to run a Terracotta server is to use the [docker container](https://github.com/Terracotta-OSS/docker).
+通过将此 Ehcaache 模块指向兵马甲服务器，然后多个 CAS 服务器可以共享门票。 CAS使用 `自动创建` 来创建兵马甲群组配置。 运行兵器服务器的一个简单方法是使用 [码头](https://github.com/Terracotta-OSS/docker)容器。
 
 ```bash
-docker run --rm --name tc-server -p 9410:9410 -d \
- --env OFFHEAP_RESOURCE1_NAME=main \
- --env OFFHEAP_RESOURCE2_NAME=extra \
- --env OFFHEAP_RESOURCE1_SIZE=256 \
- --env OFFHEAP_RESOURCE2_SIZE=16 \
-terracotta/terracotta-server-oss:5.6.4
+码头运行-rm-名称tc服务器-p 9410：9410-d=
+ -env OFFHEAP_RESOURCE1_NAME]主-
+ -env OFFHEAP_RESOURCE2_NAME=额外-
+
+-env OFFHEAP_RESOURCE1_SIZE=256 [
+ - env OFFHEAP_RESOURCE2_SIZE=16 ]  赤陶/陶器服务器-oss：5.6.4
 ```
 
-Running a Terracotta cluster on Kubernetes can be done easily using the Terracotta [helm chart](https://github.com/helm/charts/tree/master/stable/terracotta).
+使用</a>的兵马
+掌舵图，可以在库伯内特斯上运行兵器群。</p> 
 
-#### Configuration
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ehcache-3-ticket-registry). CAS currently doesn't support or require an XML configuration to configure Ehcache.
 
-### Eviction Policy
+#### 配置
 
-Ehcache can be configured as "eternal" in which case CAS's regular cleaning process will remove expired tickets. If the eternal property is set to false then storage timeouts will be set based on the metadata for the individual caches.
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ehcache-3-ticket-registry)。 CAS目前不支持或需要XML配置来配置埃卡奇。 
 
-# Ehcache v2 Ticket Registry
 
-Due to the relatively unsupported status of the Ehcache 2.x code base, this module is deprecated and will likely be removed in a future CAS release. Unlike the Ehcache 3.x library, it can replicate directly between CAS servers without needing an external cache cluster (e.g. Terracotta in Ehcache 3.x).
 
-<div class="alert alert-warning"><strong>Usage</strong>
-<p><strong>This feature is deprecated and is scheduled to be removed in the future.</strong> If you can, consider using
-the Ehcache v3 ticket registry functionality in CAS to handle this integration.</p>
+### 驱逐政策
+
+Ehcaache 可以配置为 "永恒"， 在这种情况下， Cas 的常规清洁过程将删除过期的门票。 如果 永恒属性设置为错误，则存储超时将基于单个缓存的元数据设置。
+
+
+
+# 埃卡奇v2票务登记处
+
+由于 Ehcache 2.x 代码库的相对不受支持的状态，此模块被弃用，并可能在未来的 CAS 版本中 删除。 与 Ehcache 3.x 库不同，它可以在 CAS 服务器之间直接复制，而无需 需要外部缓存群集（例如 Ehcache 3.x 中的兵器）。
+
+<div class="alert alert-warning"><strong>用法</strong>
+<p><strong>此功能被弃用，并计划在未来删除。</strong> 如果可以，请考虑使用 CAS 中的 Ehcache v3 票证注册功能
+来处理此集成。</p>
 </div>
 
-Ehcache integration is enabled by including the following dependency in the WAR overlay:
+通过在战争覆盖中包括以下依赖性，实现了 Ehcache 集成：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-ehcache-ticket-registry</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 埃卡切 - 票务注册</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-This registry stores tickets using [Ehcache](http://ehcache.org/) version 2.x library.
 
-## Distributed Cache
+此注册表使用 [Ehcache](http://ehcache.org/) 版本 2.x 库存储门票。
 
-Distributed caches are recommended for HA architectures since they offer fault tolerance in the ticket storage subsystem. A single cache instance is created to house all types of tickets, and is synchronously replicated across the cluster of nodes that are defined in the configuration.
 
-### RMI Replication
 
-Ehcache supports [RMI](https://docs.oracle.com/javase/tutorial/rmi/index.html) replication for distributed caches composed of two or more nodes. To learn more about RMI replication with Ehcache, [see this resource](https://www.ehcache.org/documentation/2.8/replication/rmi-replicated-caching.html).
+## 分布式缓存
 
-#### Configuration
+HA 架构推荐分布式缓存，因为它们在票证存储 子系统中提供故障耐受性。 创建一个缓存实例来存放所有类型的票证，并在配置中定义的节点群中同步复制 。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ehcache-ticket-registry).
 
-The Ehcache configuration for `ehcache-replicated.xml` mentioned in the config follows. Note that `${ehcache.otherServer}` would be replaced by a system property: `-Dehcache.otherserver=cas2`.
+
+### RMI 复制
+
+Ehcache 支持由两个或多个节点组成的分布式缓存的 [RMI](https://docs.oracle.com/javase/tutorial/rmi/index.html) 复制。 要了解有关 RMI 与 Ehcache 复制的更多信息， [请参阅此资源](https://www.ehcache.org/documentation/2.8/replication/rmi-replicated-caching.html)。
+
+
+
+#### 配置
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ehcache-ticket-registry)。
+
+下面提到的配置为 `个埃卡奇复制.xml` 的Ehcache配置。 请注意， `${ehcache.otherServer}` 将被系统属性所取代： `-德卡奇.其他服务器+cas2`。
+
+
 
 ```xml
 <ehcache name="ehCacheTicketRegistryCache"
@@ -86,17 +104,12 @@ The Ehcache configuration for `ehcache-replicated.xml` mentioned in the config f
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
 
-    <diskStore path="java.io.tmpdir/cas"/>
-
-    <!-- Automatic Peer Discovery
+    <diskStore path="java.io.tmpdir/cas"/><!--自动同行发现
     <cacheManagerPeerProviderFactory
     class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
     properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1, multicastGroupPort=4446, timeToLive=32"
     propertySeparator="," />
-    -->
-
-    <!-- Manual Peer Discovery -->
-    <cacheManagerPeerProviderFactory
+    -- --><!--手动同行发现 -- --><cacheManagerPeerProviderFactory
         class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
         properties="peerDiscovery=manual,rmiUrls=//${ehcache.otherServer}:41001/proxyGrantingTicketsCache| \
             //${ehcache.otherServer}:41001/ticketGrantingTicketsCache|//${ehcache.otherServer}:41001/proxyTicketsCache| \
@@ -112,15 +125,24 @@ The Ehcache configuration for `ehcache-replicated.xml` mentioned in the config f
 </ehcache>
 ```
 
-### Eviction Policy
 
-Ehcache manages the internal eviction policy of cached objects via the idle and alive settings. These settings control the general policy of the cache that is used to store various ticket types. In general, you need to ensure the cache is alive long enough to support the individual expiration policy of tickets, and let CAS clean the tickets as part of its own cleaner.
 
-### Troubleshooting Guidelines
 
-* You will need to ensure that network communication across CAS nodes is allowed and no firewall or other component is blocking traffic.
+### 驱逐政策
 
-* If you are running this on a server with active firewalls, you will probably need to specify a fixed `remoteObjectPort`, within the `cacheManagerPeerListenerFactory`.
-* Depending on environment settings and version of Ehcache used, you may also have to adjust the `shared` setting .
-* Ensure that each cache manager specified a name that matches the Ehcache configuration itself.
-* You may also need to adjust your expiration policy to allow for a larger time span, specially for service tickets depending on network traffic and communication delay across CAS nodes particularly in the event that a node is trying to join the cluster.
+Ehcaache 通过闲置和活的设置管理缓存对象的内部驱逐策略。 这些设置控制用于存储各种票务类型的缓存的一般策略。 一般来说， ，你需要确保缓存是活的足够长的时间，以支持门票的个人到期政策，并让 CAS清洁门票作为自己的清洁剂的一部分。
+
+
+
+### 故障排除指南
+
+* 您需要确保允许跨 CAS 节点进行网络通信，并且没有防火墙或其他组件 阻止流量。
+
+* 如果您在具有活动防火墙的服务器上运行此功能，则可能需要在 `缓存管理器"`"中指定固定 `远程目标端口` 。
+
+* 根据所使用的环境设置和 Ehcache 版本，您可能还必须调整共享</code> 设置 。</p></li>
+<li><p spaces-before="0">确保每个缓存管理器指定与 Ehcache 配置本身匹配的名称。</p></li>
+<li>您可能还需要调整您的到期策略，以便延长时间跨度，特别是服务票
+，具体取决于 CAS 节点的网络流量和通信延迟，尤其是在节点尝试加入群集时
+。</li>
+</ul>
