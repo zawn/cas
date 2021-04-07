@@ -1,21 +1,21 @@
 ---
-layout: 默认
-title: CAS-主页
+layout: default
+title: CAS - 首页
 ---
 
 # CAS企业单点登录
 
-欢迎来到Apereo中央身份验证服务项目（通常更称为CAS）的主页。 CAS是 多语言单点登录解决方案，它试图成为满足身份验证 和授权需求的综合平台。
+欢迎来到Apereo中央认证服务项目，该项目通常称为CAS。 CAS是一个提供身份验证和授权的多语言单点登录解决方案。
 
-CAS是一个开放且有据可查的身份验证协议。 该协议的主要实现是在此处托管的具有相同名称的开源Java服务器组件 其他身份验证协议和功能。
+CAS是一个开放且文档丰富的身份验证协议。 当前项目是CAS协议Java服务端功能的主要实现，同时当前项目也支持大量其他身份验证协议和功能。
 
-以下各项包括CAS项目介绍的功能和技术的摘要：
+以下各项是CAS项目所包含的功能要点和技术摘要：
 
 * [Spring Webflow](webflow/Webflow-Customization.html)/ Spring Boot [Java服务器组件](planning/Architecture.html)。
-* [可插拔认证支持](installation/Configuring-Authentication-Components.html) （[LDAP](installation/LDAP-Authentication.html)， [的数据库](installation/Database-Authentication.html)， [X.509](installation/X509-Authentication.html)， [SPNEGO](installation/SPNEGO-Authentication.html)， [JAAS](installation/JAAS-Authentication.html)， [JWT](installation/JWT-Authentication.html)， [RADIUS](mfa/RADIUS-Authentication.html)， [的MongoDB](installation/MongoDb-Authentication.html)等）
-* 支持多种协议（[CAS](protocol/CAS-Protocol.html)， [SAML](protocol/SAML-Protocol.html)， [WS联盟](protocol/WS-Federation-Protocol.html)， [的OAuth2](protocol/OAuth-Protocol.html)， [的OpenID](protocol/OpenID-Protocol.html)， [ID连接](protocol/OIDC-Protocol.html)， [REST](protocol/REST-Protocol.html)）
-* 为支持 [多因素认证](mfa/Configuring-Multifactor-Authentication.html) 经由各种 提供商（[朵安全](mfa/DuoSecurity-Authentication.html)， [FIDO U2F](mfa/FIDO-U2F-Authentication.html)， [YubiKey](mfa/YubiKey-Authentication.html)， [谷歌身份验证器](mfa/GoogleAuthenticator-Authentication.html)， [Authy](mfa/AuthyAuthenticator-Authentication.html)， [Acceptto](mfa/Acceptto-Authentication.html)等）
-* 支持向外部提供者（例如 [ADFS](integration/ADFS-Integration.html)，Facebook，Twitter，SAML2 IdP等） [委派身份验证](integration/Delegate-Authentication.html)
+* [可接入的验证方式](installation/Configuring-Authentication-Components.html) ([LDAP](installation/LDAP-Authentication.html)， [数据库](installation/Database-Authentication.html)， [X.509](installation/X509-Authentication.html)， [SPNEGO](installation/SPNEGO-Authentication.html)， [JAAS](installation/JAAS-Authentication.html)， [JWT](installation/JWT-Authentication.html)， [RADIUS](mfa/RADIUS-Authentication.html)， [MongoDB](installation/MongoDb-Authentication.html)等)
+* 支持多种协议 ([CAS](protocol/CAS-Protocol.html)， [SAML](protocol/SAML-Protocol.html)， [WS-Federation](protocol/WS-Federation-Protocol.html)， [OAuth2](protocol/OAuth-Protocol.html)， [OpenID](protocol/OpenID-Protocol.html)， [OpenID连接](protocol/OIDC-Protocol.html)， [REST](protocol/REST-Protocol.html))
+* 支持 [多因素验证](mfa/Configuring-Multifactor-Authentication.html) ([Duo Security](mfa/DuoSecurity-Authentication.html), [FIDO U2F](mfa/FIDO-U2F-Authentication.html), [YubiKey](mfa/YubiKey-Authentication.html), [Google身份验证器](mfa/GoogleAuthenticator-Authentication.html), [Authy](mfa/AuthyAuthenticator-Authentication.html), [Acceptto](mfa/Acceptto-Authentication.html), etc.)
+* 支持第三方 [委托验证](integration/Delegate-Authentication.html)（例如 [ADFS](integration/ADFS-Integration.html)，Facebook，Twitter，SAML2 IdP等）
 * 内置支持为 [密码管理](password_management/Password-Management.html)， [通知](webflow/Webflow-Customization-Interrupt.html)， [使用条件](webflow/Webflow-Customization-AUP.html) 和 [模拟](installation/Surrogate-Authentication.html)。
 * 支持 [属性版本](integration/Attribute-Release.html) 包括 [用户同意](integration/Attribute-Release-Consent.html)。
 * [实时监视和跟踪](monitoring/Monitoring-Statistics.html) 应用程序的行为，统计信息和日志。
