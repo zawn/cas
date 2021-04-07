@@ -1,158 +1,158 @@
 ---
-layout: default
-title: CAS - Multifactor Authentication
-category: Multifactor Authentication
+layout: 违约
+title: CAS - 多因素认证
+category: 多因素认证
 ---
 
-# Multifactor Authentication (MFA)
+# 多因素认证 （MFA）
 
-CAS provides support for a variety of multifactor authentication providers and options, while allowing one to design their own. The secondary authentication factor always kicks in *after* the primary step and existing authentication sessions will be asked to step-up to the needed multifactor authentication factor, should the request or trigger require it. The satisfied authentication context is communicated back to the application as well to denote a successful multifactor authentication event.
+CAS 为各种多因素身份验证提供商和选项提供支持，同时允许其自行设计。 次要身份验证因子在</em> 主要步骤后始终处于 *，如果请求或触发需要，将要求现有身份验证会话向所需的多因素身份验证因子加强。 满意的身份验证上下文被传达回应用程序，以及表示成功的多因素身份验证事件。</p>
 
-At a minimum, you need answer the following questions:
+至少，您需要回答以下问题：
 
-- Which provider(s) are we using for multifactor authentication?
-- How and for whom are we triggering multifactor authentication?
+- 我们使用的是哪个提供商进行多因素身份验证？
+- 我们如何以及为谁触发多因素身份验证？
 
-## Supported Providers
+## 支持提供商
 
-The following multifactor providers are supported by CAS.
+以下多因素提供者由中科院支持。
 
-| Provider             | Id             | Instructions                                               |
-| -------------------- | -------------- | ---------------------------------------------------------- |
-| Duo Security         | `mfa-duo`      | [See this guide](DuoSecurity-Authentication.html).         |
-| Authy Authenticator  | `mfa-authy`    | [See this guide](AuthyAuthenticator-Authentication.html).  |
-| Acceptto             | `mfa-acceptto` | [See this guide](Acceptto-Authentication.html).            |
-| YubiKey              | `mfa-yubikey`  | [See this guide](YubiKey-Authentication.html).             |
-| RSA/RADIUS           | `mfa-radius`   | [See this guide](RADIUS-Authentication.html).              |
-| WiKID                | `mfa-radius`   | [See this guide](RADIUS-Authentication.html).              |
-| Google Authenticator | `mfa-gauth`    | [See this guide](GoogleAuthenticator-Authentication.html). |
-| FIDO U2F             | `mfa-u2f`      | [See this guide](FIDO-U2F-Authentication.html).            |
-| FIDO2 WebAuthN       | `mfa-webauthn` | [See this guide](FIDO2-WebAuthn-Authentication.html).      |
-| CAS Simple           | `mfa-simple`   | [See this guide](Simple-Multifactor-Authentication.html).  |
-| Swivel Secure        | `mfa-swivel`   | [See this guide](SwivelSecure-Authentication.html).        |
-| Custom               | Custom         | [See this guide](../mfa/Custom-MFA-Authentication.html).   |
+| 供应商      | ID          | 指示                                               |
+| -------- | ----------- | ------------------------------------------------ |
+| 双安全      | `姆法杜`       | [见本指南](DuoSecurity-Authentication.html)。         |
+| 奥蒂认证器    | `姆法奥蒂`      | [见本指南](AuthyAuthenticator-Authentication.html)。  |
+| 接受托托     | `姆法 -接受托`   | [见本指南](Acceptto-Authentication.html)。            |
+| 尤比基      | `姆法 - 尤比基`  | [见本指南](YubiKey-Authentication.html)。             |
+| RSA/拉迪乌斯 | `姆法半径`      | [见本指南](RADIUS-Authentication.html)。              |
+| 威基德      | `姆法半径`      | [见本指南](RADIUS-Authentication.html)。              |
+| 谷歌身份验证器  | `姆法高斯`      | [见本指南](GoogleAuthenticator-Authentication.html)。 |
+| 菲多U2F    | `姆法-乌2f`    | [见本指南](FIDO-U2F-Authentication.html)。            |
+| FIDO2网络网 | `姆法 - 韦伯恩`  | [见本指南](FIDO2-WebAuthn-Authentication.html)。      |
+| CAS 简单   | `姆法简单`      | [见本指南](Simple-Multifactor-Authentication.html)。  |
+| 旋转安全     | `姆法 - 斯威维尔` | [见本指南](SwivelSecure-Authentication.html)。        |
+| 习惯       | 习惯          | [见本指南](../mfa/Custom-MFA-Authentication.html)。   |
 
-## Triggers
+## 触发器
 
-Multifactor authentication can be activated via a number of triggers. To learn more, [please see this guide](Configuring-Multifactor-Authentication-Triggers.html).
+多因素身份验证可以通过多个触发器激活。 要了解更多，请 [请参阅本指南](Configuring-Multifactor-Authentication-Triggers.html)。
 
-## Bypass Rules
+## 旁路规则
 
-Each multifactor provider is equipped with options to allow for MFA bypass. To learn more, [please see this guide](../mfa/Configuring-Multifactor-Authentication-Bypass.html).
+每个多因素提供商都配备了允许 MFA 旁路的选项。 要了解更多，请 [请参阅本指南](../mfa/Configuring-Multifactor-Authentication-Bypass.html)。
 
-## Failure Modes
+## 故障模式
 
-The authentication policy by default supports fail-closed mode, which means that if you attempt to exercise a particular provider available to CAS and the provider cannot be reached, authentication will be stopped and an error will be displayed. You can of course change this behavior so that authentication proceeds without exercising the provider functionality, if that provider cannot respond.
+默认情况下，身份验证策略支持故障关闭模式，这意味着如果您尝试行使 CAS 和提供商可用的特定 提供商，则将停止身份验证并显示错误 。 当然，如果提供商无法响应，您可以更改此行为，以便在不行使提供商 功能的情况下进行身份验证。
 
-The following failure modes are supported:
+支持以下故障模式：
 
-| Field     | Description                                                                                             |
-| --------- | ------------------------------------------------------------------------------------------------------- |
-| `CLOSED`  | Authentication is blocked if the provider cannot be reached.                                            |
-| `OPEN`    | Authentication proceeds yet requested MFA is NOT communicated to the client if provider is unavailable. |
-| `PHANTOM` | Authentication proceeds and requested MFA is communicated to the client if provider is unavailable.     |
-| `NONE`    | Do not contact the provider at all to check for availability. Assume the provider is available.         |
+| 田    | 描述                                 |
+| ---- | ---------------------------------- |
+| `闭`  | 如果无法联系到提供商，则身份验证将被阻止。              |
+| `打开` | 如果提供商不可用，则未向客户传达尚未请求的 MFA 的身份验证收益。 |
+| `幽灵` | 如果提供商不可用，则向客户传达身份验证收益和请求的 MFA。     |
+| `没有` | 根本不联系提供商以检查可用性。 假设提供程序可用。          |
 
-### Failure Mode Selection
+### 故障模式选择
 
-CAS will consult the current configuration in the event that the provider being requested is unreachable to determine how to proceed.  
-The failure mode can be configured at these locations and CAS will use the first defined failure mode in this order:
+CAS 将在请求提供商无法联系到的情况下咨询当前配置，以确定如何继续。  
+故障模式可以在这些位置进行配置，CAS 将按此顺序使用第一个定义的故障模式：
 
-- Registered Service Multifactor Authentication Policy
-- Multifactor Authentication Provider Configuration
-- Global Multifactor Authentication Configuration
+- 注册服务多因素认证政策
+- 多因素身份验证提供商配置
+- 全球多因素身份验证配置
 
-If no actionable failure mode is encountered the user will be shown a generic "Authentication Failed" message.
+如果没有遇到可操作的失败模式，用户将看到一条通用的"认证失败"消息。
 
-### Failure Mode by Registered Service
+### 按注册服务分的故障模式
 
-Set as part of the "multifactorPolicy".  This location will override a failure a mode set at any other location.
+设置为"多因素政策"的一部分。  此位置将覆盖在任何其他位置设置的模式的故障。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "id" : 100,
-  "multifactorPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy",
-    "multifactorAuthenticationProviders" : [ "java.util.LinkedHashSet", [ "mfa-duo" ] ],
-    "failureMode" : "CLOSED"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："^（https|图片）"，
+  "id"：100，
+  "多因素政策"：{
+    "@class"："org.apereo.cas.服务。默认注册服务多因素政策"，
+    "多因素授权提供者"："java.uled.使用。领英哈什集"，"mfa-duo"]，
+    "失败模"："关闭"
   }
 }
 ```
 
-### Failure Mode by Multifactor Authentication Provider
+### 多因素身份验证提供商的失败模式
 
-Each defined multifactor authentication provider can set its own failure mode policy. Failure modes set at this location will override the global failure mode, but defer to any failure mode set by the registered service.
+每个定义的多因素身份验证提供商都可以设置自己的故障模式策略。 在此位置设置的故障模式将覆盖全球故障模式，但将推迟到注册服务设置的任何故障模式。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties-Common.html#multifactor-authentication-providers).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties-Common.html#multifactor-authentication-providers)。
 
-### Global Failure Mode
+### 全球故障模式
 
-A default failure mode can be specified globally via CAS properties and will be used in the case where no failure mode is set in either the provider or the registered service.
+默认故障模式可以通过 CAS 属性在全球指定，并将在提供商或注册服务中未设置故障模式的情况下使用。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#multifactor-authentication)。
 
-## Multiple Provider Selection
+## 多个提供商选择
 
-In the event that multiple multifactor authentication providers are determined for a multifactor authentication transaction, by default CAS will attempt to sort the collection of providers based on their rank and will pick one with the highest priority. This use case may arise if multiple triggers are defined where each decides on a different multifactor authentication provider, or the same provider instance is configured multiple times with many instances.
+如果确定多个多因素身份验证提供商进行多因素身份验证交易，默认情况下，CAS 将尝试根据供应商的排名对提供商的集合进行排序，并将选择具有最高优先级的集合。 如果在每个触发器决定不同的多因素身份验证提供商时定义多个触发器，或者使用许多实例多次配置同一提供商实例，则可能会出现此使用案例。
 
-Provider selection may also be carried out using Groovy scripting strategies more dynamically. The following example should serve as an outline of how to select multifactor providers based on a Groovy script:
+提供商选择也可以更动态地使用 Groovy 脚本策略进行。 以下示例应作为如何根据 Groovy 脚本选择多因素提供商的轮廓：
 
 ```groovy
-import java.util.*
+导入java.util.*
 
-class SampleGroovyProviderSelection {
-    def String run(final Object... args) {
-        def service = args[0]
-        def principal = args[1]
-        def providersCollection = args[2]
-        def logger = args[3]
+类示例流明程序提供者选择=
+    d def字符串运行（最终对象。。。args）{
+        定义服务=args[0]
+        def本金=args[1]
+        防御供应商收集=args[2]
+        除伐木机=args[3]
         ...
-        return "mfa-duo"
+        返回"姆法杜"
     }
 }
 ```
 
-The parameters passed are as follows:
+通过的参数如下：
 
-| Parameter             | Description                                                                                              |
-| --------------------- | -------------------------------------------------------------------------------------------------------- |
-| `service`             | The object representing the incoming service provided in the request, if any.                            |
-| `principal`           | The object representing the authenticated principal along with its attributes.                           |
-| `providersCollection` | The object representing the collection of candidate multifactor providers qualified for the transaction. |
-| `logger`              | The object responsible for issuing log messages such as `logger.info(...)`.                              |
+| 参数      | 描述                                |
+| ------- | --------------------------------- |
+| `服务`    | 表示请求中提供的传入服务的对象（如果有的话）。           |
+| `主要`    | 表示经过验证的主体及其属性的对象。                 |
+| `供应商收集` | 代表符合交易资格的候选多因素提供商的集合的对象。          |
+| `记录`    | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
 
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+要查看 CAS 物业的相关列表，请 [](../configuration/Configuration-Properties.html#multifactor-authentication)查看本指南。
 
-## Ranking Providers
+## 排名提供商
 
-At times, CAS needs to determine the correct provider when step-up authentication is required. Consider for a moment that CAS already has established an SSO session with/without a provider and has reached a level of authentication. Another incoming request attempts to exercise that SSO session with a different and often competing authentication requirement that may differ from the authentication level CAS has already established. Concretely, examples may be:
+有时，CAS 需要在需要加强认证时确定正确的提供商。 试想一下，CAS 已经建立了一个SSO会话与/没有供应商，并已达到认证水平。 另一个传入的 请求尝试使用 SSO 会话，该会话具有不同且经常相互竞争的认证要求，该要求可能与 CAS 已建立的身份验证级别不同 。 具体来说，例子可能是：
 
-- CAS has achieved an SSO session, but a separate request now requires step-up authentication with DuoSecurity.
-- CAS has achieved an SSO session with an authentication level satisfied by DuoSecurity, but a separate request now requires step-up authentication with YubiKey.
+- CAS 已实现 SSO 会话，但单独的请求现在需要通过 DuoSecurity 进行加强认证。
+- CAS 已实现由 DuoSecurity 满意的认证级别的 SSO 会话，但现在需要使用 YubiKey 进行升级认证。
 
-In certain scenarios, CAS will attempt to rank authentication levels and compare them with each other. If CAS already has achieved a level that is higher than what the incoming request requires, no step-up authentication will be performed. If the opposite is true, CAS will route the authentication flow to the required authentication level and upon success, will adjust the SSO session with the new higher authentication level now satisfied.
+在某些情况下，CAS 将尝试对认证级别进行排名并相互比较。 如果 CAS 已达到高于应入请求要求的水平 ，则不会执行进一 步认证。 如果情况正好相反，中科院将 将认证流程路由到所需的认证级别，并在成功后，将调整SSO会话与新的更高的 认证水平现在满意。
 
-Ranking of authentication methods is done per provider via specific properties for each in CAS settings. Note that the higher the rank value is, the higher on the security scale it remains. A provider that ranks higher with a larger weight value trumps and override others with a lower value.
+认证方法的排名是每个提供商通过 CAS 设置中每个提供商的特定属性完成的。 请注意， 级别值越高，它所保持的安全级别就越高。 具有较大权重值的较高排名提供商胜过 并超越价值较低的其他提供商。
 
-## Provider Selection Menu
+## 提供商选择菜单
 
-If more than one multifactor authentication provider qualifies for the authentication request, CAS may be configured to present all choices to the user, allowing them to select a provider that makes the most sense at a given time. This approach is an alternative strategy to ranking providers.
+如果多个多因素身份验证提供商符合身份验证请求，CAS 可以配置为 向用户提供所有选项，允许他们选择在给定时间最有意义的提供商。 这种方法是排名提供商的替代策略。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#multifactor-authentication)。
 
-## Trusted Devices/Browsers
+## 受信任的设备/浏览器
 
-CAS is able to natively provide trusted device/browser features as part of any multifactor authentication flow. While certain providers tend to support this feature as well, this behavior is now put into CAS directly providing you with exact control over how devices/browsers are checked, how is that decision remembered for subsequent requests and how you might allow delegated management of those trusted decisions both for admins and end-users.
+CAS 能够作为任何多因素身份验证流程的一部分，以本地为本地提供受信任的设备/浏览器功能。 虽然某些提供商也倾向于支持此功能，但此行为现在已直接提交 CAS，为您提供设备/浏览器检查方式的精确控制，该决策如何记住后续请求，以及您如何允许授权管理这些受信任的决策，无论是管理员还是最终用户。
 
-[See this guide for more info](Multifactor-TrustedDevice-Authentication.html).
+[请参阅本指南了解更多信息](Multifactor-TrustedDevice-Authentication.html)。
 
 ## 2FA vs. MFA
 
-Multifactor authentication in CAS mostly presents itself in form of two-factor authentication when deployed. The framework however is designed in such a way to allow additional chaining of other providers into an existing authentication experience. If you have a need to string along multiple factors together one after another, it is likely that you may need to adjust and extend the existing authentication workflows to deliver the use case.
+CAS 中的多因素身份验证在部署时大多以双重身份验证的形式出现。 但是，该框架的设计方式允许将其他提供商的额外链条链接到现有的身份验证体验中。 如果您需要将多个因素一个接一个地串在一起，则可能需要调整和扩展现有身份验证工作流程以交付使用案例。
 
-## Settings
+## 设置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#multifactor-authentication)。
