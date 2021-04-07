@@ -1,61 +1,72 @@
 ---
-layout: default
-title: CAS - Messaging (JMS) Ticket Registry
-category: Ticketing
+layout: 违约
+title: CAS - 消息传递 （JMS） 票务注册处
+category: 票务
 ---
 
-# JMS Ticket Registry
+# JMS 票务注册处
 
-CAS can be enabled with a variety of messaging systems in order to distribute and share ticket data: from simplified use of the JMS API to a complete infrastructure to receive messages asynchronously. Integration with messaging systems is entirely built on top of [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-messaging.html).
+CAS 可以通过各种消息传递系统进行启用，以便分发和共享票证数据：从简化使用 JMS API 到全套基础设施以异步接收消息， 。 与消息系统的集成完全建立在 [春靴](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-messaging.html) 顶部。
 
-Support is enabled by including the following dependency in the overlay:
+支持通过在叠加中包括以下依赖关系而启用：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-jms-ticket-registry</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - jms - 票证注册</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-This registry is very much an extension of the [default ticket registry](Default-Ticket-Registry.html). The difference is that ticket operations applied to the registry are broadcasted using a messaging queue to other listening CAS nodes on the queue. Each node keeps copies of ticket state on its own and only instructs others to keep their copy accurate by broadcasting messages and data associated with each. Each message and ticket registry instance running inside a CAS node in the cluster is tagged with a unique identifier in order to avoid endless looping behavior and recursive needless inbound operations.
+此注册表在很大程度上是 [默认票证注册表](Default-Ticket-Registry.html)的延伸。 不同的是，适用于注册表的票务操作使用 到队列上其他收听 CAS 节点的消息传递队列进行广播。 每个节点都自行保存票证状态的副本，只有 指示其他人通过广播与每个节点相关的消息和数据来保持其副本的准确性。 在群集的 CAS 节点内运行的每个消息和票证注册实例都标有唯一的 标识符，以避免无休止的循环行为和递归不必要的入站操作。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jms-ticket-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#jms-ticket-registry)。
 
-## ActiveMQ
+## 主动MQ
 
-CAS can configure the ticket registry when it detects that ActiveMQ is available on the classpath. If the broker is present, an embedded broker is started and configured automatically, as long as no broker URL is specified through configuration. By default, ActiveMQ creates a destination if it does not exist yet, so destinations are resolved against their provided names.
+CAS 可以在检测到类路径上可用的 ActiveMQ 时配置票证注册表。 如果经纪人在场，则启动嵌入式经纪商，并自动 配置，只要没有通过配置指定经纪商 URL。 默认情况下，ActiveMQ 会在尚未存在时创建目的地，因此目的地会根据其提供的名称进行解决。
 
-ActiveMQ configuration is controlled by external configuration properties in [CAS settings](../configuration/Configuration-Properties.html#jms-ticket-registry).
+主动MQ配置由中科院</a>外部配置属性控制。</p> 
 
-The default setting for ActiveMQ is that all persistent messages outside of a transaction are sent to a broker are synchronous. This means that the send method is blocked until the message is received by the broker, its then written to disk - then a response is returned to the client and the `send()` unblocks with success or throws an error if the send could not complete (e.g. due to a security exception).
+ActiveMQ 的默认设置是，交易 之外的所有持久消息都同步发送给经纪人。 这意味着发送方法被阻止，直到 消息被经纪人接收，然后写到磁盘 - 然后响应返回 客户端和 `发送（）` 解除阻止与成功或抛出错误，如果发送不能完成（例如，由于安全例外）。
 
-## Artemis
 
-CAS can auto-configure the ticket registry when it detects that [Artemis](https://activemq.apache.org/artemis/) is available on the classpath. If the broker is present, an embedded broker is started and configured automatically (unless the mode property has been explicitly set). The supported modes are: embedded (to make explicit that an embedded broker is required and should lead to an error if the broker is not available in the classpath), and native to connect to a broker using the netty transport protocol. When the latter is configured, CAS configures the registry connecting to a broker running on the local machine with the default settings.
 
-Support is enabled by including the following dependency in the overlay:
+## 忒
+
+CAS 在检测到类路径上可用 [阿特米斯](https://activemq.apache.org/artemis/) 时，可以自动配置票证注册表。 如果经纪人在场，则启动嵌入式经纪商并自动 配置（除非已明确设置模式属性）。 支持的模式是： 嵌入式（以明确说明需要嵌入式经纪商，如果 在类路径中不可用，则应导致错误），并且原生使用 netty 传输协议连接到经纪商。 当配置后者时，CAS 会用默认设置配置连接到本地机器上运行的经纪商的注册表。
+
+支持通过在叠加中包括以下依赖关系而启用：
+
+
 
 ```xml
 <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-artemis</artifactId>
+    <groupId>组织.弹簧框架.启动</groupId>
+    <artifactId>春靴启动器-青霉素</artifactId>
     <version>${springboot.version}</version>
 </dependency>
 ```
 
-Artemis configuration is controlled by external configuration properties in [CAS settings](../configuration/Configuration-Properties.html#jms-ticket-registry).
 
-## JNDI
-
-If you are [running CAS in an application server](../installation/Configuring-Servlet-Container.html), CAS will attempt to locate a JMS connection using JNDI. By default, the locations `java:/JmsXA` and `java:/XAConnectionFactory` will be checked. Of course, alternative locations may be specified using [CAS settings](../configuration/Configuration-Properties.html#jms-ticket-registry).
+</a>，在CAS的 设置中，阿特米斯配置由外部配置属性控制。</p> 
 
 
-## Troubleshooting
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+## 詹迪
+
+如果您 [在应用服务器](../installation/Configuring-Servlet-Container.html)中运行 CAS， CAS 将尝试使用 JNDI 找到 JMS 连接。 默认情况下，将检查 `爪哇：/JmsXA` 和 `java：/XA 连接工厂` 的位置。 当然，其他地点可以 指定使用 [CAS设置](../configuration/Configuration-Properties.html#jms-ticket-registry)。
+
+
+
+
+## 故障 排除
+
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
+
+
 
 ```xml
 ...
