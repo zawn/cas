@@ -1,408 +1,473 @@
 ---
-layout: default
-title: CAS - Configuring Service Access Strategy
-category: Services
+layout: 违约
+title: CAS - 配置服务访问策略
+category: 服务业
 ---
 
-# Configure Service Access Strategy
+# 配置服务访问策略
 
-The access strategy of a registered service provides fine-grained control over the service authorization rules. It describes whether the service is allowed to use the CAS server, allowed to participate in single sign-on authentication, etc. Additionally, it may be configured to require a certain set of principal attributes that must exist before access can be granted to the service. This behavior allows one to configure various attributes in terms of access roles for the application and define rules that would be enacted and validated when an authentication request from the application arrives.
+注册服务的访问策略对服务授权规则进行了细微的控制。 它描述了是否允许该服务使用 CAS 服务器、是否允许参与 单个登录身份验证等。 此外，它可能被配置为需要一组在授予服务访问权限之前必须存在的特定 属性。 此行为允许一个人在应用程序的访问角色方面配置 各种属性，并定义规则，这些规则将在应用程序的身份验证请求到达时颁布并 验证。
 
-## Default Strategy
+## 默认策略
 
-The default strategy allows one to configure a service with the following properties:
+默认策略允许使用以下属性配置服务：标记切换以控制所需属性的行为。 默认 `真实`，这意味着所有必需的属性名称必须存在。 否则，至少一个匹配的属性名称可能就足够了。 请注意，此标志仅控制必须</strong> **名称的属性和数量。 如果属性名称满足 CAS 配置，则下一步访问策略至少需要一个匹配的属性值才能成功进行。</td> </tr> 
 
-| Field                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `enabled`                 | Flag to toggle whether the entry is active; a disabled entry produces behavior equivalent to a non-existent entry.                                                                                                                                                                                                                                                                                                                                                              |
-| `ssoEnabled`              | Set to `false` to force users to authenticate to the service regardless of protocol flags (e.g. `renew=true`).                                                                                                                                                                                                                                                                                                                                                                  |
-| `requiredAttributes`      | A `Map` of required principal attribute names along with the set of values for each attribute. These attributes **MUST** be available to the authenticated Principal and resolved before CAS can proceed, providing an option for role-based access control from the CAS perspective. If no required attributes are presented, the check will be entirely ignored.                                                                                                              |
-| `requireAllAttributes`    | Flag to toggle to control the behavior of required attributes. Default is `true`, which means all required attribute names must be present. Otherwise, at least one matching attribute name may suffice. Note that this flag only controls which and how many of the attribute **names** must be present. If attribute names satisfy the CAS configuration, at the next step at least one matching attribute value is required for the access strategy to proceed successfully. |
-| `unauthorizedRedirectUrl` | Optional url to redirect the flow in case service access is not allowed.                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `caseInsensitive`         | Indicates whether matching on required attribute values should be done in a case-insensitive manner. Default is `false`                                                                                                                                                                                                                                                                                                                                                         |
-| `rejectedAttributes`      | A `Map` of rejected principal attribute names along with the set of values for each attribute. These attributes **MUST NOT** be available to the authenticated Principal so that access may be granted. If none is defined, the check is entirely ignored.                                                                                                                                                                                                                      |
+</tbody> </table>
 
-<div class="alert alert-info"><strong>Are we sensitive to case?</strong><p>Note that comparison of principal/required attribute <strong>names</strong> is
-case-sensitive. Exact matches are required for any individual attribute name.</p></div>
+<div class="alert alert-info"><strong>我们对案件敏感吗？</strong><p>请注意，将主属性/所需属性 <strong>名称进行比较</strong>
+个案敏感。 任何单个属性名称都需要精确匹配。</p></div>
 
-<div class="alert alert-info"><strong>Released Attributes</strong><p>Note that if the CAS server is configured to cache attributes upon release, all required attributes must also be released to the relying party. <a href="../integration/Attribute-Release.html">See this guide</a> for more info on attribute release and filters.</p></div>
+<div class="alert alert-info"><strong>已发布的属性</strong><p>请注意，如果 CAS 服务器在发布时配置为缓存属性，则所有所需属性也必须发布给依赖方。 <a href="../integration/Attribute-Release.html">有关属性发布和筛选器的更多信息，请参阅本指南</a> 。</p></div>
 
-### Examples
+### 例子
 
-The following examples demonstrate access policy enforcement features of CAS.
+以下示例显示了 CAS 的访问策略执行功能。
 
-#### Disable Service Access
 
-Service is not allowed to use CAS:
+
+#### 禁用服务访问
+
+不允许使用 CAS 服务：
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "enabled" : false,
-    "ssoEnabled" : true
+•
+  "@class"： "org. apereo. cas. 服务. 注册服务"，
+  "服务 Id"： "测试"，
+  "名称"："测试"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。默认注册服务访问战略"，
+    "启用"：虚假，
+    "可访问"：真正的
   }
+
+```
+
+
+
+
+#### 强制属性
+
+要访问该服务，本金必须具有具有 `管理员` **值的 `cn` 属性，并** 具有 `管理员`值的 `` 属性：
+
+
+
+```json
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："测试"，
+  "名称"："测试"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。服务。默认注册服务访问"，
+    "启用"：真实，
+    "可以"：真实的，
+    "必需的属性"：{
+      "@class"："java.il.il.哈希马普"，
+      "cn"：["java.4"
+    [
+  ]
+
+
+```
+
+
+要访问该服务，本金必须具有具有 `管理员` **值的 `cn` 属性，或** 具有 `管理员`值的 `` 属性：
+
+
+
+```json
+•
+  "@class"： "org. apereo. cas. 服务. 注册服务"，
+  "服务 Id"： "测试"，
+  "名称"： "测试"，
+  "id"： 1，
+  "访问战略"： [
+    "@class"： "org. apereo. cas. 服务. 默认注册服务访问战略"，
+    "启用"： 真实，
+    "成功"： 真实，
+    "要求所有属性"： 虚假的，
+    的 "要求属性"： [
+      "@class"： "java. util. hashmap"，
+      "cn"： [ "java.
+      "给定名称"，"java.利用"，"哈希集"，"管理员"]
+    [
+  ]
 }
 ```
 
-#### Enforce Attributes
 
-To access the service, the principal must have a `cn` attribute with the value of `admin` **AND** a `givenName` attribute with the value of `Administrator`:
+要访问该服务，委托人必须具有 `cn` 属性，其价值 `管理`、 `管理员` 或 `管理员`。
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "enabled" : true,
-    "ssoEnabled" : true,
-    "requiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "cn" : [ "java.util.HashSet", [ "admin" ] ],
-      "givenName" : [ "java.util.HashSet", [ "Administrator" ] ]
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："测试"，
+  "名称"："测试"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。服务。默认注册服务访问"，
+    "启用"：真实，
+    "可以"：真实，
+    "必需属性"：{
+      "@class"："java.util.HashMap"，
+      "cn"："java.util.HashSet"，"管理员"，"管理员"，"管理员"][
+    ][
+  ]
+
+```
+
+
+
+
+#### 静态未授权重定向网址
+
+如果本金没有 ** 具有包含超用户</code>值的 `cn` 属性 `，则拒绝访问服务。 如果是这样，
+用户将被重定向到 <code>https://www.github.com` 。
+
+
+
+```json
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务"："测试"，
+  "名称"："测试"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。
+    "未经授权的转载"："https://www.github.com"，
+    "必需属性"：{
+      "@class"："java.util.HashMap"，
+      "cn"："java.util.HashSet"，"超级用户"[
+    ]
+  =
+
+```
+
+
+
+
+#### 动态未授权重定向网址
+
+如果本金没有 ** 具有包含超用户</code>值的 `cn` 属性 `，则拒绝访问服务。 如果是这样，将根据指定的 Groovy 脚本的结果动态确定重定向 URL
+。</p>
+
+<pre><code class="json">•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："测试"，
+  "名称"："测试"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。默认注册服务访问战略"，
+    "未经授权的转载"："文件：/等/卡/配置/非授权重定向-url.groovy"，
+    "要求属性"：\
+      "@class" ："java.ul.il.哈希马普"，
+      "cn"："java.利用"，"哈希集"，"超级用户"]]
     }
   }
 }
-```
+`</pre> 
 
-To access the service, the principal must have a `cn` attribute with the value of `admin` **OR** a `givenName` attribute with the value of `Administrator`:
+脚本本身将采取以下形式：
 
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "enabled" : true,
-    "ssoEnabled" : true,
-    "requireAllAttributes": false,
-    "requiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "cn" : [ "java.util.HashSet", [ "admin" ] ],
-      "givenName" : [ "java.util.HashSet", [ "Administrator" ] ]
-    }
-  }
-}
-```
 
-To access the service, the principal must have a `cn` attribute whose value is either of `admin`, `Admin` or `TheAdmin`.
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "enabled" : true,
-    "ssoEnabled" : true,
-    "requiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "cn" : [ "java.util.HashSet", [ "admin", "Admin", "TheAdmin" ] ]
-    }
-  }
-}
-```
-
-#### Static Unauthorized Redirect URL
-
-Service access is denied if the principal does *not* have a `cn` attribute containing the value `super-user`. If so, the user will be redirected to `https://www.github.com` instead.
-
-```json
-{
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id": 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "unauthorizedRedirectUrl" : "https://www.github.com",
-    "requiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "cn" : [ "java.util.HashSet", [ "super-user" ] ]
-    }
-  }
-}
-```
-
-#### Dynamic Unauthorized Redirect URL
-
-Service access is denied if the principal does *not* have a `cn` attribute containing the value `super-user`. If so, the redirect URL will be dynamically determined based on outcome of the specified Groovy script.
-
-```json
-{
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id": 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "unauthorizedRedirectUrl" : "file:/etc/cas/config/unauthz-redirect-url.groovy",
-    "requiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "cn" : [ "java.util.HashSet", [ "super-user" ] ]
-    }
-  }
-}
-```
-
-The script itself will take the following form:
 
 ```groovy
-import org.apereo.cas.*
-import org.apereo.cas.web.support.*
-import java.util.*
-import java.net.*
-import org.apereo.cas.authentication.*
+进口组织.apereo.cas.*
+进口组织.apereo.cas.web.支持.*
+进口 java.util.*
+进口 java.net.*
+进口组织.apereo.cas.认证.*
 
-def URI run(final Object... args) {
-    def registeredService = args[0]
-    def requestContext = args[1]
-    def applicationContext = args[2]
-    def logger = args[3]
+def URI 运行（最终对象...args）{
+    def注册服务=args[0]
+    def请求文本=args[1]
+    def应用程序文本=args[2]
+    def记录器=args[3]
 
-    logger.info("Redirecting to somewhere, processing [{}]", registeredService.name)
+    logger.info（"重定向到某处，处理[{}]"，registeredService.name）
     /**
-     * Stuff Happens...
+     *事情发生。。。
      */
-    return new URI("https://www.github.com");
+    返回新的URI（"https://www.github.com"）：
 }
 ```
 
-The following parameters are provided to the script:
 
-| Field                | Description                                                                 |
-| -------------------- | --------------------------------------------------------------------------- |
-| `registeredService`  | The object representing the matching registered service in the registry.    |
-| `requestContext`     | The object representing the Spring Webflow `RequestContext`.                |
-| `applicationContext` | The object representing the Spring `ApplicationContext`.                    |
-| `logger`             | The object responsible for issuing log messages such as `logger.info(...)`. |
+向脚本提供以下参数：
 
-#### Enforce Combined Attribute Conditions
+| 田       | 描述                                |
+| ------- | --------------------------------- |
+| `注册服务`  | 表示注册表中匹配注册服务的对象。                  |
+| `请求康德信` | 代表春季网络流的对象 `请求信`。                 |
+| `应用康德信` | 代表春季 `应用信的对象`。                    |
+| `记录`    | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
 
-To access the service, the principal must have a `cn` attribute whose value is either of `admin`, `Admin` or `TheAdmin`, **OR** the principal must have a `member` attribute whose value is either of `admins`, `adminGroup` or `staff`.
+
+
+
+#### 强制执行组合属性条件
+
+要访问该服务， 本金必须具有 `cn` 属性，其价值为 `管理`、 `管理员` 或 `管理员`、 **或 或** 本金必须具有 `成员` 属性，其价值</code>为 `管理员、 <code>管理组` 或 `员工`。
+
+
 
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "enabled" : true,
-    "requireAllAttributes" : false,
-    "ssoEnabled" : true,
-    "requiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "cn" : [ "java.util.HashSet", [ "admin", "Admin", "TheAdmin" ] ],
-      "member" : [ "java.util.HashSet", [ "admins", "adminGroup", "staff" ] ]
+•
+  "@class"： "组织. apereo. cas. 服务. 注册服务"，
+  "服务"："测试"，
+  "名称"："测试"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。默认注册服务访问战略"，
+    "启用"：真实，
+    "要求所有归因"：虚假的，
+    的"可归因"：真实的，
+    的"要求属性"：{
+      "@class"："java.util.hashMap"，
+      "cn"："java.util.HashSet"，"管理员"，"管理员"，"管理员"，"管理员"]]，
+      "成员"："java.util.HashSet"，"管理员"，"管理员组"，"工作人员"[]
+    [
+  ]
+}
+```
+
+
+
+
+#### 强制执行必须拥有的属性
+
+要访问该服务， 本金必须具有 `cn` 属性，其价值为 `管理`、 `管理员` 或 `管理员`， </code>或委托人必须具有 `成员` 属性，其价值不是 `管理`， `管理集团` 或 `工作人员。 本金
+也不得具有价值与模式相符的属性"角色" <code>`否认。
+
+
+
+
+```json
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："testId"，
+  "名称"："测试"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。服务。默认注册服务访问"，
+    "启用"：真实，
+    "要求所有属性"： 虚假的，
+    "可归因"： 真实，
+    "必需属性"： \
+      "@class"： "java. util. Hashmap"，
+      "cn"： [ java. util. 哈希集"， ["管理员"、"管理员"、"管理员"[]，
+      "成员"："java.利用"，"哈希集"，"管理员组"，"工作人员"]]
+    }，
+    "拒绝属性" "："
+      "@class"："java.il.哈希马普"，
+      "角色"："java.利用"，"哈希塞特"，"拒绝"。+"]
     }
   }
 }
 ```
 
-#### Enforce Must-Not-Have Attributes
 
-To access the service, the principal must have a `cn` attribute whose value is either of `admin`, `Admin` or `TheAdmin`, OR the principal must have a `member` attribute whose value is either of `admins`, `adminGroup` or `staff`. The principal also must not have an attribute "role" whose value matches the pattern `deny.+`.
+
+
+## 基于时间
+
+基于时间的访问策略是默认值的扩展，此外， 允许使用以下属性配置服务：
+
+| 田      | 描述                                                      |
+| ------ | ------------------------------------------------------- |
+| `开始时间` | 指示可授予服务访问的开始日期/时间。  （即 `2015-10-11T09：55：16.552-07：00`） |
+| `结束时间` | 指示可授予服务访问的结束日期/时间。  （即 `2015-10-20T09：55：16.552-07：00`） |
+
+
+服务访问仅允许在 `开始时` 和 `结束时间`：
+
 
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "enabled" : true,
-    "requireAllAttributes" : false,
-    "ssoEnabled" : true,
-    "requiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "cn" : [ "java.util.HashSet", [ "admin", "Admin", "TheAdmin" ] ],
-      "member" : [ "java.util.HashSet", [ "admins", "adminGroup", "staff" ] ]
-    },
-    "rejectedAttributes" : {
-      "@class" : "java.util.HashMap",
-      "role" : [ "java.util.HashSet", [ "deny.+" ] ]
-    }
-  }
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："^https://.+"，
+  "名称"："测试"，
+  "id"：62，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。
+    "启用"：真实，
+    "可启用"：真实，
+    "未经授权的转用"："https://www.github.com"，
+    "开始时间"："2015-11-01T13：19：5 4.132-07：00"，
+    "结束时间"："2015-11-10T13：19：54.248-07：00"
+  =
 }
 ```
 
-## Time-Based
 
-The time-based access strategy is an extension of the default which additionally, allows one to configure a service with the following properties:
 
-| Field              | Description                                                                                                    |
-| ------------------ | -------------------------------------------------------------------------------------------------------------- |
-| `startingDateTime` | Indicates the starting date/time whence service access may be granted.  (i.e. `2015-10-11T09:55:16.552-07:00`) |
-| `endingDateTime`   | Indicates the ending date/time whence service access may be granted.  (i.e. `2015-10-20T09:55:16.552-07:00`)   |
 
-Service access is only allowed within `startingDateTime` and `endingDateTime`:
+## 远程端点
+
+此策略是默认值的扩展，此外， 允许使用以下属性配置服务：
+
+| 田          | 描述                    |
+| ---------- | --------------------- |
+| `终点乌尔`     | 接收中科院认证委托人授权请求的终点。    |
+| `可接受的响应代码` | 逗号分离的响应代码，被视为为服务访问接受。 |
+
+
+此策略的目的是确保远程端点可以通过 接收 CAS 认证本金作为 `GET` 请求的 url 参数来做出服务访问决策。 然后，将 端点返回的响应代码与策略设置进行比较，如果找到匹配项，则授予访问权限。
+
+基于响应代码授权服务访问的远程端点访问策略：
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "test",
-  "id" : 62,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.TimeBasedRegisteredServiceAccessStrategy",
-    "enabled" : true,
-    "ssoEnabled" : true,
-    "unauthorizedRedirectUrl" : "https://www.github.com",
-    "startingDateTime" : "2015-11-01T13:19:54.132-07:00",
-    "endingDateTime" : "2015-11-10T13:19:54.248-07:00"
-  }
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："^https://.+"，
+  "id"： 1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务"，
+    "端点"："https://somewhere.example.org"，
+    "可接受的响应代码"："200，202"
+  =
 }
 ```
 
-## Remote Endpoint
 
-This strategy is an extension of the default which additionally, allows one to configure a service with the following properties:
 
-| Field                     | Description                                                                                |
-| ------------------------- | ------------------------------------------------------------------------------------------ |
-| `endpointUrl`             | Endpoint that receives the authorization request from CAS for the authenticated principal. |
-| `acceptableResponseCodes` | Comma-separated response codes that are considered accepted for service access.            |
 
-The objective of this policy is to ensure a remote endpoint can make service access decisions by receiving the CAS authenticated principal as url parameter of a `GET` request. The response code that the endpoint returns is then compared against the policy setting and if a match is found, access is granted.
+## 槽的
 
-Remote endpoint access strategy authorizing service access based on response code:
+此策略将委托给 Groovy 脚本，以动态决定 CAS 在运行时请求的访问规则：
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.RemoteEndpointServiceAccessStrategy",
-    "endpointUrl" : "https://somewhere.example.org",
-    "acceptableResponseCodes" : "200,202"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："[https://.+"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务"。Groovy注册服务访问战略"，
+    "凹槽脚本"："file:///etc/cas/config/access-strategy.groovy"
   }
-}
+
 ```
 
-## Groovy
 
-This strategy delegates to a Groovy script to dynamically decide the access rules requested by CAS at runtime:
+脚本本身可以通过在必要时覆盖所需的操作来设计：
 
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.GroovyRegisteredServiceAccessStrategy",
-    "groovyScript" : "file:///etc/cas/config/access-strategy.groovy"
-  }
-}
-```
 
-The script itself may be designed as such by overriding the needed operations where necessary:
 
 ```groovy
-import org.apereo.cas.services.*
-import java.util.*
+进口组织.apereo.cas.服务.*
+进口 java.util.*
 
-class GroovyRegisteredAccessStrategy extends DefaultRegisteredServiceAccessStrategy {
+类 Groovy 注册访问性扩展默认注册服务访问性=
     @Override
-    boolean isServiceAccessAllowed() {
+    布尔是服务访问 （） {
         ...
     }
 
     @Override
-    boolean isServiceAccessAllowedForSso() {
+    布尔是服务访问也（）{
         ...
-    }
+    [
 
     @Override
-    boolean doPrincipalAttributesAllowServiceAccess(String principal, Map<String, Object> attributes) {
+    布尔多普林原则属性低服务访问（字符串主，地图<String, Object> 属性）{
         ...
-    }
+    •
 }
 ```
 
-The configuration of this component qualifies to use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax. Refer to the CAS API documentation to learn more about operations and expected behaviors.
 
-## Grouper
+此组件的配置有资格使用 [弹簧表达语言](../configuration/Configuration-Spring-Expressions.html) 语法。 请参阅 CAS API 文档，以了解有关操作和预期行为的更多情况。
 
-The grouper access strategy is enabled by including the following dependency in the WAR overlay:
+
+
+## 石斑鱼
+
+通过在 WAR 叠加中包括以下依赖性，启用了分组访问策略：
+
+
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-grouper-core</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-群组核心</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-This access strategy attempts to locate [Grouper](https://incommon.org/software/grouper/) groups for the CAS principal. The groups returned by Grouper are collected as CAS attributes and examined against the list of required attributes for service access.
 
-The following properties are available:
+此访问策略试图为 CAS 负责人找到 [集团](https://incommon.org/software/grouper/) 组。 Grouper 返回的组以 CAS 属性收集，并根据服务访问所需的属性列表进行审核。
 
-| Field        | Description                                                                       | Values                                                      |
-| ------------ | --------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `groupField` | Attribute of the Grouper group used when converting the group to a CAS attribute. | `NAME`, `EXTENSION`, `DISPLAY_NAME` or `DISPLAY_EXTENSION`. |
+提供以下属性：
 
-You will also need to ensure `grouper.client.properties` is available on the classpath (i.e. `src/main/resources`) with the following configured properties:
+| 田    | 描述                     | 值                                                 |
+| ---- | ---------------------- | ------------------------------------------------- |
+| `组场` | 将组转换为 CAS 属性时使用的分组组属性。 | `名称`， `扩展`， `DISPLAY_NAME` 或 `DISPLAY_EXTENSION`。 |
+
+
+您还需要确保 `群组.客户端.属性` 可在类路径上提供（即 `src/主/资源`） 下列配置属性：
+
+
 
 ```properties
-grouperClient.webService.url = http://grouper.example.com/grouper-ws/servicesRest
-grouperClient.webService.login = banderson
-grouperClient.webService.password = password
+格特克莱恩. web 服务. url = http://grouper.example.com/grouper-ws/servicesRest
+格克莱恩. web 服务. 登录 = 班德森
+格克莱恩. web 服务. 密码 = 密码
 ```
 
-Grouper access strategy based on group's display extension:
+
+基于组显示扩展的分组访问策略：
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "test",
-  "id" : 62,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.grouper.services.GrouperRegisteredServiceAccessStrategy",
-    "enabled" : true,
-    "ssoEnabled" : true,
-    "requireAllAttributes" : true,
-    "requiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "grouperAttributes" : [ "java.util.HashSet", [ "faculty" ] ]
-    },
-    "groupField" : "DISPLAY_EXTENSION"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："[https://.+"，
+  "名称"："测试"，
+  "id"：62，
+  "访问战略"：{
+    "@class"："org.apereo.cas.grouper.服务.Grouper注册服务访问"，
+    "启用"：真实，
+    "可归因"：真实、
+    "要求所有归因"：真实、
+    "要求归因"：{
+      "@class"："java.util.HashMap"，
+      "组属性"："java.util.哈希塞特"，"教师"]]
+    }，
+    "群场"："DISPLAY_EXTENSION"
   }
 }
 ```
 
-While the `grouper.client.properties` is a hard requirement and must be presented, configuration properties can always be assigned to the strategy to override the defaults:
+
+虽然 `grouper.client.属性` 是一项硬性要求，必须提出，但配置属性始终可以分配给策略 以覆盖默认值： 
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "test",
-  "id" : 62,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.grouper.services.GrouperRegisteredServiceAccessStrategy",
-    "configProperties" : {
-      "@class" : "java.util.HashMap",
-      "grouperClient.webService.url" : "http://grouper.example.com/grouper-ws/servicesRest"
-    },
-    "groupField" : "DISPLAY_EXTENSION"
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："^https://.+"，
+  "名称"："测试"，
+  "id"：62，
+  "访问战略"：{
+    "@class"："org.apereo.cas.grouper.服务.Grouper注册服务访问战略"，
+    "配置"：{
+      "@class @class "
+    "："java.util.HashMap"，
+      "群星.web服务.url"："http://grouper.example.com/grouper-ws/servicesRest"}，
+    "群场"："DISPLAY_EXTENSION"
   }
 }
 ```
