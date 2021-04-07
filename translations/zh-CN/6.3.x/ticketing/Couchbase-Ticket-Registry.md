@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - Couchbase Ticket Registry
-category: Ticketing
+layout: 默认
+title: CAS-Couchbase票务注册表
+category: 售票处
 ---
 
-# Couchbase Ticket Registry
+# Couchbase票务注册表
 
-Couchbase integration is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用Couchbase集成：
 
 ```xml
 <dependency>
@@ -17,25 +17,25 @@ Couchbase integration is enabled by including the following dependency in the WA
 ```
 
 
-[Couchbase](http://www.couchbase.com) is a highly available, open source NoSQL database server based on [Erlang/OTP](http://www.erlang.org) and its mnesia database. The intention of this registry is to leverage the capability of Couchbase server to provide high availability to CAS.
+[Couchbase](http://www.couchbase.com) [Erlang / OTP](http://www.erlang.org) 及其mnesia数据库的高度可用的开源NoSQL数据库服务器。 该 注册表的目的是利用Couchbase服务器的功能为CAS提供高可用性。
 
-<div class="alert alert-info"><strong>Compatibility</strong><p>Couchbase support in CAS at the moment is limited to Couchbase v4.</p></div>
+<div class="alert alert-info"><strong>兼容性</strong><p>目前，CAS中对Couchbase的支持仅限于Couchbase v4。</p></div>
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchbase-ticket-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchbase-ticket-registry)。
 
-The Couchbase integration currently assumes that the ticket registries are stored in their own buckets. You may optionally set passwords for the buckets and optionally configure redundancy and replication as per normal Couchbase configuration.
+Couchbase集成当前假定票证注册表在其自己的存储桶 您可以根据常规Couchbase配置为存储桶设置密码，还可以选择配置
 
-The only truly mandatory setting is the list of nodes. The other settings are optional, but this is designed to store data in buckets so in reality the bucket property must also be set.
+唯一真正必需的设置是节点列表。 其他设置是可选的，但这是为了将数据存储在存储桶 而设计的，因此实际上也必须设置存储桶属性。
 
-## Expiration Policy
+## 过期政策
 
-You will need to remember that every document in Couchbase contains the `expiry` property. An expiration time-to-live value of `0` means that no expiration is set at all. The expiration time starts when the document has been successfully stored on the server, not when the document was created on the CAS server. In practice, the delta should be very very negligible. Any expiration time larger than `30` days in seconds is considered absolute (as in a Unix time stamp) and anything smaller is considered relative in seconds.
+您将需要记住，Couchbase中的每个文档都包含 `有效期` 属性。 到期生存时间值为 `0` 表示根本没有设置任何到期。 到期时间从文档成功存储在服务器上开始， 在CAS服务器上创建文档时开始。 实际上，增量应该非常小到可以忽略不计。 `30` 天（以秒为单位）的到期时间都被认为是绝对的（如Unix时间戳记） ，任何小于秒的相对时间都被视为相对的（以秒为单位）。
 
-## Troubleshooting
+## 故障排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他日志记录，请配置log4j配置文件以添加以下 级：
 
 ```xml
 ...
