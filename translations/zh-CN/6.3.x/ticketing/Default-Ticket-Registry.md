@@ -1,19 +1,19 @@
 ---
-layout: default
-title: CAS - Default Ticket Registry
-category: Ticketing
+layout: 默认
+title: CAS-默认票务注册表
+category: 售票处
 ---
 
-# Default Ticket Registry
+# 默认票务注册表
 
-The default registry uses a memory-backed internal concurrent map for ticket storage and retrieval, though there is also the option to use an implementation that is backed by a caching engine to gain slightly better performance when it comes to evicting expired tickets.
+默认注册表使用内存支持的内部并发映射进行故障单的存储和检索，但是在收回过期故障单时，还可以选择使用由缓存引擎支持的实现，以获得更好的性能。
 
-This component does not preserve ticket state across restarts and is not a suitable solution for clustered CAS environments that are deployed in active/active mode.
+对于在主动/主动模式下部署的集群CAS环境，此组件不会在重新启动后保留票证状态，也不是合适的解决方案
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#inmemory-ticket-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#inmemory-ticket-registry)。
 
-### Eviction Policy
+### 驱逐政策
 
-This ticket registry relies on a background job that is automatically scheduled to clean up after the registry and remove expired tickets. The cleaner will periodically examine the state of the registry to identify expired tickets, remove them from the registry and then execute relevant logout operations.
+该票证注册表依赖于一个后台作业，该作业将自动计划在注册表后清理并删除过期的票证。 清理程序将定期检查注册表的状态以标识过期的凭单，将其从注册表中删除，然后执行相关的注销操作。
 
-In the event that the ticket registry is configured to use caching engine, CAS configured the cache store automatically such that each ticket put into the cache is given the ability to automatically expire based on the expiration policies defined for each ticket. The cache is constantly on its own monitoring for eviction events and once an item is deemed expired and evicted, CAS will take over to run logout operations. This means that running the default registry in this mode does not require CAS to schedule and maintain a background job to look after ticket state given the cache cleans up after itself.
+如果票证注册表配置为使用缓存引擎，CAS将自动配置高速缓存存储库，从而使放入高速缓存的每个票证都具有基于为每个票证定义的过期策略自动过期的能力。 缓存将持续不断地对其驱逐事件进行监控，并且一旦某个项目被视为过期并逐出，CAS将接管运行注销操作。 这意味着在此模式下运行默认注册表不需要CAS安排和维护后台作业来照顾凭单状态，因为缓存将在其自身清理后进行清理。
