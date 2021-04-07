@@ -1,135 +1,178 @@
 ---
-layout: default
-title: CAS - OS Service Deployment
-category: Installation
+layout: 违约
+title: CAS - 操作系统服务部署
+category: 安装
 ---
 
-# OS Service Deployment
+# 操作系统服务部署
 
-CAS can be easily started as Unix/Linux services using either `init.d` or `systemd`. Windows support is also made available via an external daemon. Note that most if not all of the below strategies attempt to run CAS via an embedded servlet container whose configuration is [explained here](Configuring-Servlet-Container.html#embedded).
+CAS 可以很容易地开始作为 Unix/Linux 服务使用 `init.d` 或 `系统`。 ，还可通过外部护蒙提供 Windows 支持。 请注意，以下大多数（如果不是全部）策略都试图通过嵌入式 服务器容器运行 CAS，其配置 [此处解释](Configuring-Servlet-Container.html#embedded)。
 
-## `init.d` Service
+## `` 服务
 
-If CAS is built and run as [a fully executable web application](Configuring-Servlet-Container.html), then it can be used as an `init.d` service. Simply `symlink` the web application file to `init.d` to support the standard `start`, `stop`, `restart` and `status` commands.
+如果CAS是作为一个完全可执行的web应用程序</a>
 
-The configuration built into CAS allows it to interact with the OS system configuration as such:
+建立和运行的，那么 就可以用作 `it.d` 服务。 只需 `` 网络应用程序文件 `` 支持标准 `启动`， `停止`， `重新启动` ，并 `状态` 命令。</p> 
 
-- Start the service as the user that owns the jar file
-- Track CAS web applications' PID using `/var/run/cas/cas.pid`
-- Write console logs to `/var/log/cas.log`
+CAS 内置的配置允许它与操作系统配置进行交互：
 
-To install CAS as an `init.d` service simply create a symlink:
+- 作为拥有罐子文件的用户开始服务
+- 使用 `/var/运行/cas/cas.pid`跟踪CAS Web应用程序的PID
+- 将控制台日志写到 `/瓦尔/日志/cas.log`
 
-```bash
-sudo ln -s /path/to/cas.war /etc/init.d/cas
-service cas start
-```
+将 CAS 安装为 `init.d` 服务只需创建一个符号链接：
 
-You can also flag the application to start automatically using your standard operating system tools. For example, on Debian:
+
 
 ```bash
-update-rc.d myapp defaults <priority>
+苏多 ln / 路径 / 到 / 卡斯战争 / 等 / init. d / cas
+服务卡开始
 ```
 
-### Security
 
-When executed as `root`, as is the case when `root` is being used to start an `init.d` service, the CAS default executable script will run the web application as the user which owns the web application file. You should **never** run CAS as `root` so the web application file should never be owned by `root`. Instead, create a specific user to run CAS and use `chown` to make it the owner of the file. For example:
+您还可以标记应用程序，以便使用您的标准操作系统工具自动启动。 例如，在德比安：
+
+
 
 ```bash
-chown bootapp:bootapp /path/to/cas.war
+更新-rc.d我的应用程序默认 <priority>
 ```
 
-You may also take steps to prevent the modification of the CAS web application file. Firstly, configure its permissions so that it cannot be written and can only be read or executed by its owner:
+
+
+
+### 安全
+
+当执行为 `根`时，如使用 `根` 启动 `init.d` 服务时，CAS 默认 可执行脚本将作为拥有 Web 应用程序文件的用户运行 Web 应用程序。 您 **切勿** 将CAS作为 `根` 运行，因此网络应用文件绝不应归 `根`所有。 相反，创建一个特定的用户来运行 CAS，并使用 `` 使其成为文件的所有者。 例如：
+
+
 
 ```bash
-chmod 500 /path/to/cas.war
+乔恩启动应用程序： 启动应用程序 / 路径 / 到 / cas. 战争
 ```
 
-Additionally, you should also take steps to limit the damage if the CAS web application or the account that’s running it is compromised. If an attacker does gain access, they could make the web application file writable and change its contents. One way to protect against this is to make it immutable using `chattr`:
+
+您还可以采取措施防止 CAS 网络应用程序文件的修改。 首先， 其权限进行配置，使其无法书写，只能由其所有者读取或执行：
+
+
 
 ```bash
-sudo chattr +i /path/to/cas.war
+奇莫德 500 /路径 / 到 / 卡斯. 战争
 ```
 
-This will prevent any user, including `root`, from modifying the file.
 
-## `systemd` Service
+此外，如果 CAS 网络应用程序或 运行该帐户的帐户遭到破坏，您还应采取措施限制损坏。 如果攻击者确实获得了访问权限，他们可以使 Web 应用程序 文件可令状并更改其内容。 防止这种情况的一种方法是使用 `喋喋不休的`：
 
-To install CAS as a `systemd` service create a script named `cas.service` using the following example and place it in `/etc/systemd/system` directory:
+
+
+```bash
+苏多聊天 +i / 路径 / 到 / 卡斯. 战争
+```
+
+
+这将阻止任何用户，包括 `根`，修改文件。
+
+
+
+## `系统化` 服务
+
+将 CAS 安装为 `系统` 服务，则使用以下示例创建名为 `cas.服务` 的脚本，并将其放在 `/等/系统/系统` 目录中：
+
+
 
 ```ini
 [Unit]
-Description=CAS
-After=syslog.target
+描述=CAS
+后记录.目标
 
 [Service]
-User=bootapp
-ExecStart=/path/to/cas.war
-SuccessExitStatus=143
+用户=启动应用程序
+执行启动=/路径/到/cas.战争
+成功exitstatus=143
 
 [Install]
-WantedBy=multi-user.target
+通缉比多用户。目标
 ```
 
-<div class="alert alert-info"><strong>Not So Fast</strong><p>Remember to change the <code>Description</code>, <code>User</code> and <code>ExecStart</code> fields for your deployment.</p></div>
+<div class="alert alert-info"><strong>没那么快</strong><p>请记住更改 <code>描述</code>， <code>用户</code> 和 <code>执行启动</code> 字段进行部署。</p></div>
 
-The user that runs the CAS web application, PID file and console log file are managed by `systemd` itself and therefore must be configured using appropriate fields in `service` script. Consult [the service unit configuration man page](https://www.freedesktop.org/software/systemd/man/systemd.service.html) for more details.
+运行 CAS Web 应用程序、PID 文件和控制台日志文件的用户由 `系统` 本身进行管理，因此必须在 `服务` 脚本中使用适当的字段进行配置。 请咨询 [服务单元配置人员页面](https://www.freedesktop.org/software/systemd/man/systemd.service.html) 了解更多详细信息。
 
-To flag the application to start automatically on system boot use the following command:
+要标记在系统启动时自动启动的应用程序，请使用以下命令：
+
+
 
 ```bash
-systemctl enable cas.service
+系统启用案例服务
 ```
 
-Refer to `man systemctl` for more details.
 
-## Upstart
+有关更多详细信息，请参阅 `个人系统` 。
 
-[Upstart](http://upstart.ubuntu.com/) is an event-based service manager, a potential replacement for the System V init that offers more control on the behavior of the different daemons. When using Ubuntu you probably have it installed and configured already (check if there are any jobs with a name starting with `cas` in `/etc/init`).
 
-We create a job `cas.conf` to start the CAS web application:
+
+## 暴发户
+
+[暴发户](http://upstart.ubuntu.com/) 是一个基于事件的服务经理，一个潜在的替代系统V init，提供更多控制不同护身符的行为。 使用 Ubuntu 时，您可能已经安装并配置了它（检查是否有以 `/等/init`中</code> 开 `cas 开开的名称的工作）。</p>
+
+<p spaces-before="0">我们 <code>cas.com` 创建一个开始 CAS 网络应用程序的工作：
+
+
 
 ```bash
-# Place in /home/{user}/.config/cas
-description "CAS web application"
-# attempt service restart if stops abruptly
-respawn
-exec java -jar /path/to/cas.war
+#放置在/家庭/{user}/。配置/cas
+描述"CAS网络应用程序"
+#尝试服务重新启动，如果突然停止
+重生
+执行java-jar/路径/到/cas.war
 ```
 
-Now run `start cas` and your service will start. Upstart offers many job configuration options and you can find [most of them here](http://upstart.ubuntu.com/cookbook/).
 
-## Windows Service
+现在运行 `开始cas` 和您的服务将开始。 暴发户提供了许多工作配置选项，你可以找到 [他们中的大多数在这里](http://upstart.ubuntu.com/cookbook/)。
 
-### Windows Service Wrapper
 
-CAS may be started as Windows service using [winsw](https://github.com/kohsuke/winsw).
 
-Winsw provides programmatic means to `install/uninstall/start/stop` a service. In addition, it may be used to run any kind of executable as a service under Windows.
+## 视窗服务
 
-Once you have downloaded the Winsw binaries, the `cas.xml` configuration file that defines our Windows service should look like this:
+
+
+### 窗口服务包装
+
+CAS可能开始作为窗口服务使用 [winw](https://github.com/kohsuke/winsw)。 
+
+Winsw 提供程序化手段， `安装/卸载/启动/停止` 服务。 此外，它可用于在 Windows 下运行任何类型的可执行服务。
+
+下载了 Winsw 二进制文件后，定义我们 Windows 服务的 `cas.xml` 配置文件应看起来像这样：
+
+
 
 ```xml
 <service>
     <id>cas</id>
-    <name>CAS</name>
-    <description>CAS web application.</description>
-    <executable>java</executable>
-    <arguments>-Xmx2048m -jar "path\to\cas.war"</arguments>
-    <logmode>rotate</logmode>
+    <name>中科院</name>
+    <description>CAS网络应用。</description>
+    <executable>爪哇</executable>
+    <arguments>-Xmx2048m-jar"路径\to\cas.war"</arguments>
+    <logmode>旋转</logmode>
 </service>
 ```
 
-Finally, you have to rename the `winsw.exe` to `cas.exe` so that its name matches with the `cas.xml` configuration file. Thereafter you can install the service like so:
+
+最后，你必须重命名 `winw.exe` `cas.exe` 使其名称与 `cas.xml` 配置文件匹配。 此后，您可以这样安装服务：
+
+
 
 ```bash
-cas.exe install
+卡斯.exe安装
 ```
 
-Similarly, you may use `uninstall`, `start`, `stop`, etc.
 
-Refer to [this example](https://github.com/snicoll-scratches/spring-boot-daemon) to learn more.
+同样，您可以使用卸载 ``， `开始`， `停止`等。
 
-### Others
+请参阅此示例 [](https://github.com/snicoll-scratches/spring-boot-daemon) 了解更多。
 
-CAS web applications may also be started as Windows service using [Procrun](http://commons.apache.org/proper/commons-daemon/procrun.html) of the [Apache Commons Daemon project](http://commons.apache.org/daemon/index.html). Procrun is a set of applications that allow Windows users to wrap Java applications as Windows services. Such a service may be set to start automatically when the machine boots and will continue to run without any user being logged on.
+
+
+### 别人
+
+CAS网络应用也可以开始作为Windows服务使用 [宝润](http://commons.apache.org/proper/commons-daemon/procrun.html) [阿帕奇公地戴蒙项目](http://commons.apache.org/daemon/index.html)。 宝洁是一组应用程序，允许 Windows 用户将 Java 应用程序包装为 Windows 服务。 当机器启动时，此类服务可能会自动启动，并且将继续运行，而无需登录任何用户。
