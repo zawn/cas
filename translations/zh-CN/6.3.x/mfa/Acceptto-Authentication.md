@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - Acceptto Authentication
-category: Multifactor Authentication
+layout: 默认
+title: CAS-接受身份验证
+category: 多因素身份验证
 ---
 
-# Acceptto Authentication
+# 接受身份验证
 
-Secure your workforce identity with [Acceptto](https://www.acceptto.com) end-to-end risk-based multiFactor authentication.
+[Acceptto](https://www.acceptto.com) 端到端基于风险的multiFactor身份验证来保护您的员工身份。
 
-Start by visiting the [Acceptto documentation](https://www.acceptto.com/acceptto-mfa-rest-api/).
+首先访问 [Acceptto文档](https://www.acceptto.com/acceptto-mfa-rest-api/)。
 
-Support is enabled by including the following module in the overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -20,12 +20,12 @@ Support is enabled by including the following module in the overlay:
 </dependency>
 ```
 
-The integration adds support for both multifactor authentication and QR passwordless authentication.
+该集成增加了对多因素身份验证和QR无密码身份验证的支持。
 
-## Integration with DBFP
+## 与DBFP集成
 
-The integration is able to handle the integration with DBFP and will set a cookie named `jwt` that is passed to the Acceptto API. This parameter contains a value that the server uses to assess the risk of authentication request including browser fingerprint, IP address of user and GPS location of the user’s browser. The server compares this data with the history of user behavior data to detect anomalies.
+集成能够处理与DBFP的集成，并将设置一个名为 `jwt` 的cookie，该cookie会传递给Acceptto API。 该参数包含服务器用来评估身份验证请求风险的值，包括浏览器指纹，用户的IP地址和用户浏览器的GPS位置。 服务器将此数据与用户行为数据的历史记录进行比较，以检测异常。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptto).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptto)。
