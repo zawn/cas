@@ -1,17 +1,17 @@
 ---
-layout: default
-title: CAS - High Availability Performance Testing
-category: High Availability
+layout: 默认
+title: CAS-高可用性性能测试
+category: 高可用性
 ---
 
-# High Availability Performance Testing
+# 高可用性性能测试
 
-Load testing is an important part of ensuring that the CAS server deployment is ready for prime time production use. This page outlines a number of strategies and tools you may use to run performance tests on your deployment and observe results.
+负载测试是确保CAS服务器部署准备好用于黄金时间生产的重要部分。 此页面概述了可用于在部署上运行性能测试并观察结果的许多策略和工具。
 
-## Locust
+## 刺槐
 
-[Locust](http://locust.io/) is an easy-to-use, distributed, user load testing tool. It is intended for load-testing web sites (or other systems) and figuring out how many concurrent users a system can handle. [See this guide](Performance-Testing-Locust.html) for more info.
+[Locust](http://locust.io/) 是易于使用的分布式用户负载测试工具。 它旨在对网站（或其他系统）进行负载测试，并弄清一个系统可以处理多少个并发用户。 [有关更多信息，请参见本指南](Performance-Testing-Locust.html)
 
-## JMeter
+## 杰米特
 
-Apache JMeter is a great performance testing tool that is used heavily within the Java community. [See this guide](Performance-Testing-JMeter.html) for more info.
+Apache JMeter是一个出色的性能测试工具，在Java社区中大量使用。 [有关更多信息，请参见本指南](Performance-Testing-JMeter.html)
