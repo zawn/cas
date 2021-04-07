@@ -1,55 +1,60 @@
 ---
-layout: default
-title: CAS - SAML2 Authentication
-category: Protocols
+layout: 违约
+title: CAS - SAML2 认证
+category: 协议
 ---
 
-# SAML2 Authentication
+# SAML2 身份验证
 
-CAS can act as a SAML2 identity provider accepting authentication requests and producing SAML assertions.
+CAS 可以充当 SAML2 身份提供商，接受身份验证请求并生成 SAML 断言。
 
-If you intend to allow CAS to delegate authentication to an external SAML2 identity provider, you need to [review this guide](../integration/Delegate-Authentication.html).
+如果您打算允许 CAS 将身份验证委托给外部 SAML2 身份提供商，则需要 [查看本指南](../integration/Delegate-Authentication.html)。
 
-<div class="alert alert-info"><strong>SAML Specification</strong><p>This document solely focuses on what one might do to turn on SAML2 support inside CAS. It is not to describe/explain the numerous characteristics of the SAML2 protocol itself. If you are unsure about the concepts referred to on this page, please start with reviewing the <a href="http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html">SAML2 Specification</a>.</p></div>
+<div class="alert alert-info"><strong>萨姆尔规格</strong><p>本文档仅侧重于如何打开 CAS 内部的 SAML2 支持。 它不是描述/解释SAML2协议本身的许多特征。 如果您不确定本页中提及的概念，请从查看 SAML2 规范</a><a href="http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html">开始。</p></div>
 
-## Federation Interop Evaluation
+## 联邦互联评估
 
-The CAS project strives to conform to the [SAML V2.0 Implementation Profile for Federation Interoperability](https://kantarainitiative.github.io/SAMLprofiles/fedinterop.html). An evaluation of the requirements against the current CAS release is available [here](https://docs.google.com/spreadsheets/d/1NYN5n6AaNxz0UxwkzIDuXMYL1JUKNZZlSzLZEDUw4Aw/edit?usp=sharing). It is recommended that you view, evaluate and comment on functionality that is currently either absent or marked questionable where verification is needed.
+中科院项目力求符合 [SAML V2.0实施简介，为联邦互操作性](https://kantarainitiative.github.io/SAMLprofiles/fedinterop.html)。 </a>，这里可以评估对当前 CAS 版本的要求。 建议您查看、评估和评论当前在需要验证时不存在或标记有问题的功能。</p> 
 
-## SAML Endpoints
 
-The following CAS endpoints respond to supported SAML2 profiles:
 
-- `/idp/profile/SAML2/Redirect/SSO`
-- `/idp/profile/SAML2/POST/SSO`
-- `/idp/profile/SAML2/POST-SimpleSign/SSO`
-- `/idp/profile/SAML2/POST/SLO`
-- `/idp/profile/SAML2/Redirect/SLO`
-- `/idp/profile/SAML2/Unsolicited/SSO`
-- `/idp/profile/SAML2/SOAP/ECP`
-- `/idp/profile/SAML2/SOAP/AttributeQuery`
-- `/idp/profile/SAML1/SOAP/ArtifactResolution`
+## 萨姆尔终点
 
-## IdP Metadata
+以下 CAS 端点响应支持的 SAML2 配置文件：
 
-The following CAS endpoints handle the generation of SAML2 metadata:
+- `/idp/配置文件/萨姆尔2/重定向/SSO`
+- `/idp/配置文件/萨姆尔2/开机自检/SSO`
+- `/idp/配置文件/萨姆尔2/邮政简单签名/SSO`
+- `/idp/配置文件/萨姆尔2/开机自检/斯洛`
+- `/idp/配置文件/萨姆尔2/重定向/斯洛`
+- `/idp/配置文件/萨姆尔2/主动/SSO`
+- `/idp/配置文件/萨姆尔2/肥皂/欧洲经委会`
+- `/idp/配置文件/萨姆尔2/肥皂/属性奎里`
+- `/idp/配置文件/SAML1/肥皂/文物恢复`
 
-- `/idp/metadata`
 
-This endpoint will display the CAS IdP SAML2 metadata upon receiving a GET request. If metadata is already available and generated, it will be displayed. If metadata is absent, one will be generated automatically. CAS configuration below dictates where metadata files/keys will be generated and stored.
 
-Note that the endpoint can accept a `service` parameter either by entity id or numeric identifier. This parameter is matched against the CAS service registry allowing the endpoint to calculate and combine any identity provider metadata overrides that may have been specified.
+## IDP元数据
 
-Here is a generated metadata file as an example:
+以下 CAS 端点处理 SAML2 元数据的生成：
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
+- `/idp/元数据`
+
+此端点将在收到 GET 请求后显示 CAS IDP SAML2 元数据。 如果元数据已可用并生成，则将显示 元数据。 如果元数据不存在，将自动生成元数据。 下面的 CAS 配置规定了元数据文件/密钥的生成和存储位置。
+
+请注意，端点可以接受按实体 ID 或数字标识符</code> 参数的 `服务。 此参数
+与 CAS 服务注册表匹配，允许端点计算和合并任何身份提供商 
+可能已指定的元数据覆盖。</p>
+
+<p spaces-before="0">下面是生成的元数据文件作为示例：</p>
+
+<pre><code class="xml"><？xml 版本="1.0"编码="UTF-8"？>
 <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
                 xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:xml="http://www.w3.org/XML/1998/namespace"
                 xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" entityID="ENTITY_ID">
     <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
         <Extensions>
-            <shibmd:Scope regexp="false">SCOPE</shibmd:Scope>
+            <shibmd:Scope regexp="false">范围</shibmd:Scope>
         </Extensions>
         <KeyDescriptor use="signing">
             <ds:KeyInfo>
@@ -66,8 +71,8 @@ Here is a generated metadata file as an example:
             </ds:KeyInfo>
         </KeyDescriptor>
 
-        <NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
-        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        <NameIDFormat>骨灰盒：mace：石器：1.0：名称识别器</NameIDFormat>
+        <NameIDFormat>骨灰盒：绿洲：名称：tc：SAML：2.0：名称格式：瞬态</NameIDFormat>
 
         <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
                              Location="https://HOST_NAME/cas/idp/profile/SAML2/POST/SLO"/>
@@ -77,176 +82,208 @@ Here is a generated metadata file as an example:
                              Location="https://HOST_NAME/cas/idp/profile/SAML2/Redirect/SSO"/>
     </IDPSSODescriptor>
 </EntityDescriptor>
-```
+`</pre> 
 
-SAML2 identity provider metadata can be managed in dynamics ways as well. To learn more, please [review this guide](Configuring-SAML2-DynamicMetadata.html).
+SAML2 身份提供商元数据也可以以动态方式进行管理。 要了解更多，请 [本指南](Configuring-SAML2-DynamicMetadata.html)。
 
-### Per Service
 
-Identity provider metadata, certificates and keys can also be defined on a per-service basis to override the global defaults. Metadata artifacts that would be applicable to a specific service definition and managed via the file system need to be stored in a directory location named after the service definition's name and numeric identifier inside the canonical metadata directory. For example, if global metadata artifacts are managed on disk at `/etc/cas/config/saml/metadata`, then metadata applicable to a service definition whose name is configured as `SampleService` with an id of `1000` are expected to be found at `/etc/cas/config/saml/metadata/SampleService-1000`.
 
-SAML2 identity provider metadata can be managed in dynamics ways as well. To learn more, please [review this guide](Configuring-SAML2-DynamicMetadata.html).
+### 每种服务
 
-## Configuration
+身份提供商元数据、证书和密钥也可以在每个服务的基础上定义，以覆盖全球默认值。 适用于特定服务定义并通过文件系统进行管理的元数据工件需要存储 以服务定义名称和数字标识符命名的目录位置， 在规范元数据目录内。 例如， ，如果将全球元数据工件管理在磁盘上 `/等/cas/config/saml/元数据`，则元数据适用于名称被配置为 `示例的服务定义
+服务` 的id `1000` 预计将在 `/等/cas/配置/萨姆尔/元数据/样品服务-1000`找到。
 
-Support is enabled by including the following dependency in the WAR overlay:
+SAML2 身份提供商元数据也可以以动态方式进行管理。 要了解更多，请 [本指南](Configuring-SAML2-DynamicMetadata.html)。
+
+
+
+## 配置
+
+支持通过在 WAR 叠加中包括以下依赖性来启用：
+
+
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-saml-idp</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - 萨姆尔 - 伊德普</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-You may also need to declare the following repository in your CAS overlay to be able to resolve dependencies:
+
+您可能需要在 CAS 叠加 中申报以下存储库，以解决依赖关系：
+
+
 
 ```groovy
-repositories {
-    maven { 
-        mavenContent { releasesOnly() }
-        url "https://build.shibboleth.net/nexus/content/repositories/releases" 
+存储库{
+    maven{ 
+        马文康顿{发布（）=
+        网址"https://build.shibboleth.net/nexus/content/repositories/releases" 
     }
 }
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#saml-idp).
 
-### Administrative Endpoints
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#saml-idp)。
 
-The following endpoints are provided by CAS:
 
-| Endpoint                  | Description                                                                                         |
-| ------------------------- | --------------------------------------------------------------------------------------------------- |
-| `samlPostProfileResponse` | Obtain a SAML2 response payload by supplying a `username`, `password` and `entityId` as parameters. |
 
-### SAML Services
+### 行政终点
 
-SAML relying parties and services must be registered within the CAS service registry similar to the following example:
+CAS 提供以下端点：
+
+| 端点          | 描述                                              |
+| ----------- | ----------------------------------------------- |
+| `萨姆波斯特档案回应` | 通过提供 `用户名`、 `密码` 和 `实体id作为参数` 来获得 SAML2 响应有效载荷。 |
+
+
+
+
+### 山姆服务
+
+SAML 依赖方和服务必须在 CAS 服务注册册中注册，类似于以下示例：
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId" : "the-entity-id-of-the-sp",
-  "name" : "SAMLService",
-  "id" : 10000003,
-  "evaluationOrder" : 10,
-  "metadataLocation" : "https://url/to/metadata.xml"
+•
+  "@class"："组织.apereo.cas.支持.萨姆尔.服务.萨姆注册服务"，
+  "服务ID"："实体-id-sp"，
+  "名称"："SAML服务"，
+  "id"：1000003，
+  "评估"：10，
+  "元数据定位"："https://url/to/metadata.xml"
 }
 ```
 
-The following fields are available for SAML services:
 
-| Field                                             | Description                                                                                                                                                                                                                                                                                                                                                          |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `metadataLocation`                                | Location of service metadata defined from system files, classpath, directories or URL resources.                                                                                                                                                                                                                                                                     |
-| `metadataProxyLocation`                           | Proxy endpoint (`https://proxy-address:8901`) to fetch service metadata from URL resources.                                                                                                                                                                                                                                                                          |
-| `metadataSignatureLocation`                       | Location of the metadata signing certificate/public key to validate the metadata which must be defined from system files or classpath. If defined, will enforce the `SignatureValidationFilter` validation filter on metadata.                                                                                                                                       |
-| `metadataExpirationDuration`                      | If defined, will expire metadata in the cache after the indicated duration which will force CAS to retrieve and resolve the metadata again.                                                                                                                                                                                                                          |
-| `requireSignedRoot`                               | Whether incoming metadata's root element is required to be signed. Default is `true`.                                                                                                                                                                                                                                                                                |
-| `signUnsolicitedAuthnRequest`                     | When dealing with Unsolicited SSO, determine whether the authentication request should be forcefully signed.                                                                                                                                                                                                                                                         |
-| `signAssertions`                                  | Whether assertions should be signed. Default is `false`.                                                                                                                                                                                                                                                                                                             |
-| `signResponses`                                   | Whether responses should be signed. Default is `true`.                                                                                                                                                                                                                                                                                                               |
-| `encryptionOptional`                              | Encrypt whenever possible (i.e a compatible key is found in the peer's metadata) or skip encryption otherwise. Default is `false`.                                                                                                                                                                                                                                   |
-| `encryptAssertions`                               | Whether assertions should be encrypted. Default is `false`.                                                                                                                                                                                                                                                                                                          |
-| `encryptAttributes`                               | Whether assertion attributes should be encrypted. Default is `false`.                                                                                                                                                                                                                                                                                                |
-| `encryptableAttributes`                           | Set of attributes nominated for encryption, disqualifying others absent in this collection. Default (i.e. `*`) is to encrypt all once `encryptAttributes` is true.                                                                                                                                                                                                   |
-| `requiredAuthenticationContextClass`              | If defined, will specify the SAML authentication context class in the final response. If undefined, the authentication class will either be `urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified` or `urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport` depending on the SAML authentication request.                                                |
-| `requiredNameIdFormat`                            | If defined, will force the indicated Name ID format in the final SAML response.                                                                                                                                                                                                                                                                                      |
-| `skewAllowance`                                   | If defined, indicates number of seconds used to skew authentication dates such as valid-from and valid-until elements, etc.                                                                                                                                                                                                                                          |
-| `metadataCriteriaPattern`                         | If defined, will force an entity id filter on the metadata aggregate based on the `PredicateFilter` to include/exclude specific entity ids based on a valid regex pattern.                                                                                                                                                                                           |
-| `metadataCriteriaDirection`                       | If defined, will force an entity id filter on the metadata aggregate based on `PredicateFilter`. Allowed values are `INCLUDE`,`EXCLUDE`.                                                                                                                                                                                                                             |
-| `metadataCriteriaRoles`                           | If defined, will allow the defined metadata roles (i.e. `SPSSODescriptor`, `IDPSSODescriptor`). Default is `SPSSODescriptor`.                                                                                                                                                                                                                                        |
-| `metadataCriteriaRemoveEmptyEntitiesDescriptors`  | Controls whether to keep entities descriptors that contain no entity descriptors. Default is `true`.                                                                                                                                                                                                                                                                 |
-| `metadataCriteriaRemoveRolelessEntityDescriptors` | Controls whether to keep entity descriptors that contain no roles. Default is `true`.                                                                                                                                                                                                                                                                                |
-| `attributeNameFormats`                            | Map that defines attribute name formats for a given attribute name to be encoded in the SAML response.                                                                                                                                                                                                                                                               |
-| `attributeFriendlyNames`                          | Map that defines attribute friendly names for a given attribute name to be encoded in the SAML response.                                                                                                                                                                                                                                                             |
-| `attributeValueTypes`                             | Map that defines the type of attribute values for a given attribute name.                                                                                                                                                                                                                                                                                            |
-| `nameIdQualifier`                                 | If defined, will overwrite the `NameQualifier` attribute of the produced subject's name id.                                                                                                                                                                                                                                                                          |
-| `logoutResponseBinding`                           | If defined, will overwrite the binding used to prepare logout responses for the service provider.                                                                                                                                                                                                                                                                    |
-| `issuerEntityId`                                  | If defined, will override the issue value with the given identity provider entity id. This may be useful in cases where CAS needs to maintain multiple identity provider entity ids.                                                                                                                                                                                 |
-| `assertionAudiences`                              | Comma-separated list of audience urls to include in the assertion, in the addition to the entity id.                                                                                                                                                                                                                                                                 |
-| `serviceProviderNameIdQualifier`                  | If defined, will overwrite the `SPNameQualifier` attribute of the produced subject's name id.                                                                                                                                                                                                                                                                        |
-| `skipGeneratingAssertionNameId`                   | Whether generation of a name identifier should be skipped for assertions. Default is `false`.                                                                                                                                                                                                                                                                        |
-| `skipGeneratingTransientNameId`                   | Whether transient name identifier generation should be skipped. Default is `false`.                                                                                                                                                                                                                                                                                  |
-| `skipGeneratingSubjectConfirmationInResponseTo`   | Whether generation of the `InResponseTo` element should be skipped for subject confirmations. Default is `false`.                                                                                                                                                                                                                                                    |
-| `skipGeneratingSubjectConfirmationNotOnOrAfter`   | Whether generation of the `NotOnOrBefore` element should be skipped for subject confirmations. Default is `false`.                                                                                                                                                                                                                                                   |
-| `skipGeneratingSubjectConfirmationRecipient`      | Whether generation of the `Recipient` element should be skipped for subject confirmations. Default is `false`.                                                                                                                                                                                                                                                       |
-| `skipGeneratingSubjectConfirmationNotBefore`      | Whether generation of the `NotBefore` element should be skipped for subject confirmations. Default is `true`.                                                                                                                                                                                                                                                        |
-| `skipGeneratingSubjectConfirmationNameId`         | Whether generation of the `NameID` element should be skipped for subject confirmations. Default is `true`.                                                                                                                                                                                                                                                           |
-| `signingCredentialFingerprint`                    | `SHA-1` digest of the signing credential's public key, parsed as a regular expression, used for the purposes of key rotation when dealing with multiple credentials.                                                                                                                                                                                                 |
-| `signingCredentialType`                           | Acceptable values are `BASIC` and `X509`. This setting controls the type of the signature block produced in the final SAML response for this application. The latter, being the default, encodes the signature in `PEM` format inside a `X509Data` block while the former encodes the signature based on the resolved public key under a `DEREncodedKeyValue` block. |
-| `signingSignatureReferenceDigestMethods`          | Collection of signing signature reference digest methods, if any, to override the global defaults.                                                                                                                                                                                                                                                                   |
-| `signingKeyAlgorithm`                             | Signing key algorithm to forcibly use for signing operations when loading the private key. Default is `RSA`.                                                                                                                                                                                                                                                         |
-| `signingSignatureAlgorithms`                      | Collection of signing signature algorithms, if any, to override the global defaults.                                                                                                                                                                                                                                                                                 |
-| `signingSignatureBlackListedAlgorithms`           | Collection of rejected signing signature algorithms, if any, to override the global defaults.                                                                                                                                                                                                                                                                        |
-| `signingSignatureWhiteListedAlgorithms`           | Collection of allowed signing signature algorithms, if any, to override the global defaults.                                                                                                                                                                                                                                                                         |
-| `signingSignatureCanonicalizationAlgorithm`       | The signing signature canonicalization algorithm, if any, to override the global defaults.                                                                                                                                                                                                                                                                           |
-| `encryptionDataAlgorithms`                        | Collection of encryption data algorithms, if any, to override the global defaults.                                                                                                                                                                                                                                                                                   |
-| `encryptionKeyAlgorithms`                         | Collection of encryption key transport algorithms, if any, to override the global defaults.                                                                                                                                                                                                                                                                          |
-| `encryptionBlackListedAlgorithms`                 | Collection of rejected encryption algorithms, if any, to override the global defaults.                                                                                                                                                                                                                                                                               |
-| `encryptionWhiteListedAlgorithms`                 | Collection of allowed encryption algorithms, if any, to override the global defaults.                                                                                                                                                                                                                                                                                |
-| `whiteListBlackListPrecedence`                    | Preference value indicating which should take precedence when both whitelist and blacklist are non-empty. Accepted values are `WHITELIST` or `BLACKLIST`. Default is `WHITELIST`.                                                                                                                                                                                    |
+SAML 服务提供以下字段：
 
-<div class="alert alert-info"><strong>Keep What You Need!</strong><p>You are encouraged to only keep and maintain properties and settings needed for a 
-particular integration. It is UNNECESSARY to grab a copy of all service fields and try to configure them yet again based on their default. While 
-you may wish to keep a copy as a reference, this strategy would ultimately lead to poor upgrades increasing chances of breaking changes and a messy 
-deployment at that.</p></div>
+| 田                 | 描述                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `元数据定位`           | 从系统文件、类路径、目录或 URL 资源定义的服务元数据的位置。                                                                                                           |
+| `元数据氧化定位`         | 代理端点（`https://proxy-address:8901`）从URL资源获取服务元数据。                                                                                           |
+| `元数据签名位置`         | 元数据签名证书/公钥的位置，以验证必须从系统文件或类路径定义的元数据。 如果定义，将强制执行元数据上的 `签名验证过滤器` 验证过滤器。                                                                       |
+| `元数据解释`           | 如果定义，将在指示的持续时间后在缓存中过期元数据，这将迫使 CAS 再次检索和解决元数据。                                                                                              |
+| `需要签名的根`          | 是否需要签名传入元数据的根元素。 默认值 `真实`。                                                                                                                 |
+| `签名不请自来`          | 在处理未经请求的 SSO 时，确定是否应强制签署身份验证请求。                                                                                                            |
+| `符号附录`            | 是否应签署断言。 违约 `虚假`。                                                                                                                          |
+| `符号响应`            | 是否应签署答复。 默认值 `真实`。                                                                                                                         |
+| `加密选项`            | 尽可能加密（即在同行的元数据中找到兼容密钥），或者跳过加密。 违约 `虚假`。                                                                                                    |
+| `加密附录`            | 是否应加密断言。 违约 `虚假`。                                                                                                                          |
+| `加密属性`            | 是否应加密断言属性。 违约 `虚假`。                                                                                                                        |
+| `可加密属性`           | 为加密指定的属性集，取消此集合中不存在的其他属性的资格。 默认值（即 `*`）是加密所有一旦 `加密归因` 是真实的。                                                                                |
+| `要求授权机密类`         | 如果定义，将在最终响应中指定 SAML 身份验证上下文类。 如未定义，认证类将 `骨灰盒：绿洲：名称：tc：SAML：2.0：ac：类：未指定的` 或 `骨灰盒：绿洲：名称：tc：SAML：2.0：ac：类：密码保护运输` 取决于SAFL认证请求。               |
+| `所需名模表`           | 如果定义，将强制在最终SAML响应中注明姓名ID格式。                                                                                                                |
+| `偏斜`              | 如果定义，则表示用于偏斜身份验证日期的秒数，例如有效日期和有效直至元素等。                                                                                                      |
+| `元数据克里特里亚数据`      | 如果定义，将强制基于 `谓词过滤器` 对元数据聚合的实体 ID 过滤器根据有效的 regex 模式包含/排除特定实体 ID。                                                                             |
+| `元数据克里特里亚方向`      | 如果定义，将强制基于 `谓词过滤器`对元数据聚合体进行实体 ID 筛选。 允许的值 `包括`、`排除`。                                                                                       |
+| `元数据克里特里亚罗尔斯`     | 如果定义，将允许定义元数据角色（即 ``， ``）。 默认值 `SPS索德脚本`。                                                                                                  |
+| `元数据克里特里亚移动空位描述符` | 控制是否保留不包含实体描述符的实体描述符。 默认值 `真实`。                                                                                                            |
+| `元数据克里特里亚移动无序描述符` | 控制是否保留不包含角色的实体描述符。 默认值 `真实`。                                                                                                               |
+| `属性名表`            | 为在 SAML 响应中编码的给定属性名称定义属性名称格式的地图。                                                                                                           |
+| `属性友好名`           | 为在 SAML 响应中编码的给定属性名称定义属性友好名称的地图。                                                                                                           |
+| `属性价值类型`          | 定义给定属性名称属性值类型的地图。                                                                                                                          |
+| `名称识别器`           | 如果定义，将覆盖生成主体名称 ID 的 `名称资格` 属性。                                                                                                             |
+| `注销响应绑定`          | 如果定义，将覆盖用于为服务提供商准备注销响应的绑定。                                                                                                                 |
+| `发行人`             | 如果定义，将用给定的身份提供商实体 ID 覆盖问题值。 在 CAS 需要维护多个身份提供商实体 ID 的情况下，这可能很有用。                                                                            |
+| `断言`              | 逗号分离的受众网址列表，除实体 ID 外，还包含在断言中。                                                                                                              |
+| `服务提供者名称资格认证器`    | 如果定义，将覆盖所生成主体名称 ID 的 `SP 名称资格` 属性。                                                                                                         |
+| `跳过生成的生成名`        | 是否应跳过名称标识符的生成以进行断言。 违约 `虚假`。                                                                                                               |
+| `跳过生成递质名Id`       | 是否应该跳过瞬态名称标识符生成。 违约 `虚假`。                                                                                                                  |
+| `跳过生成主体确认响应到`     | 应跳过 `响应到` 元素的生成以进行主题确认。 违约 `虚假`。                                                                                                           |
+| `跳过生成主体确认不或后`     | 是否生成 `Notonor 之前` 元素应跳过主题确认。 违约 `虚假`。                                                                                                      |
+| `跳过生成主体确认启动`      | 是否应跳过 `接收者` 元素的生成以进行主题确认。 违约 `虚假`。                                                                                                         |
+| `跳过生成主体确认之前不`     | 是否应该跳过 `不之前` 元素的生成，以进行主题确认。 默认值 `真实`。                                                                                                      |
+| `跳过生成主体确认名Id`     | 是否应跳过 `nameID` 元素的生成以进行主题确认。 默认值 `真实`。                                                                                                     |
+| `签署信用手指打印`        | `SHA-1` 签名凭证的公钥摘要，作为常规表达式解析，用于处理多个凭据时的关键旋转。                                                                                                |
+| `签署信用类型`          | 可接受的值 `基本` 和 `X509`。 此设置控制此应用程序的最终 SAML 响应中生成的签名块的类型。 后者作为默认值，在 `X509Data` 块内以 `PEM` 格式编码签名，而前者则根据已解决的公共密钥在 `DEREncodeKeyValue` 块下对签名进行编码。 |
+| `签署签名参考最美的`       | 收集签名参考摘要方法（如果有的话）以覆盖全球默认值。                                                                                                                 |
+| `签署基阿戈里特姆`        | 在加载私钥时强制用于签名操作的签名关键算法。 默认值 `RSA`。                                                                                                          |
+| `签署签名`            | 收集签名算法（如果有的话）以覆盖全球默认值。                                                                                                                     |
+| `签署签名黑色列表阿戈里特姆斯`  | 收集被拒绝的签名算法（如果有的话）以覆盖全球默认值。                                                                                                                 |
+| `签署签名白名单阿戈里特姆斯`   | 收集允许的签名算法（如果有的话）以覆盖全球默认值。                                                                                                                  |
+| `签署签名加拿大化阿戈里特姆`   | 签名签名规范算法（如果有的话）可覆盖全球默认值。                                                                                                                   |
+| `加密数据`            | 收集加密数据算法（如果有的话）以覆盖全球默认值。                                                                                                                   |
+| `加密键自动`           | 收集加密密钥传输算法（如果有的话）以覆盖全球默认值。                                                                                                                 |
+| `加密黑列表的自动取款机`     | 收集被拒绝的加密算法（如果有的话）以覆盖全球默认值。                                                                                                                 |
+| `加密白名单的方解密`       | 收集允许的加密算法（如果有的话）以覆盖全球默认值。                                                                                                                  |
+| `白名单黑名单预演`        | 首选项值表示当白名单和黑名单均为非空时，应优先于哪个优先级。 接受的值 `白名单` 或 `黑名单`。 默认值 `白名单`。                                                                              |
 
-### Metadata Aggregates
+<div class="alert alert-info"><strong>保留您需要的！</strong><p>我们鼓励您只保留和维护特定集成所需的属性和设置， 
+特定集成。 获取所有服务字段的副本并尝试根据它们的默认值再次配置它们是不必要的。 虽然 
+您可能希望保留副本作为参考，但此策略最终会导致升级不力，从而增加打破更改的机会，并导致混乱的 
+部署。</p></div>
 
-CAS services are fundamentally recognized and loaded by service identifiers taught to CAS typically via regular expressions. This allows for common groupings of applications and services by url patterns (i.e. "Everything that belongs to `example.org` is registered with CAS). With aggregated metadata, CAS essentially does double authorization checks because it will first attempt to find the entity id in its collection of resolved metadata components and then it looks to see if that entity id is authorized via the pattern that is assigned to that service definition. This means you can do one of several things:
+### 元数据聚合
 
-1. Open up the pattern to allow everything that is authorized in the metadata.
-2. Restrict the pattern to only a select few entity ids found in the metadata. This is essentially the same thing as defining metadata criteria to filter down the list of resolved relying parties and entity ids except that its done after the fact once the metadata is fully loaded and parsed.
-3. You can also instruct CAS to filter metadata entities by a defined criteria at resolution time when it reads the metadata itself. This is essentially the same thing as forcing the pattern to match entity ids, except that it's done while CAS is reading the metadata and thus load times are improved.
+CAS 服务通常通过 常规表达式向 CAS 传授的服务标识符进行基本识别和加载。 这允许通过 网址模式（即"属于 `example.org` 的所有内容均在 CAS 注册）对应用程序和服务进行常见分组。 对于聚合元数据，CAS 基本上会进行双重 授权检查，因为它将首先尝试在其已解决元数据组件的集合中查找实体 ID ，然后 查看该实体 ID 是否通过分配给该服务定义 模式获得授权。 这意味着您可以做几件事情之一：
 
-### Metadata Resolution
+1. 打开模式，允许元数据中授权的所有内容。
+2. 将模式限制为仅在 元数据中找到的少数实体 ID。 这与定义元数据标准 过滤已解决的依赖方和实体 ID 列表大致相同，只是一旦元数据完全加载并解析，其完成 。
 
-Service provider metadata is fetched and loaded on demand for every service and then cached in a global cache for a configurable duration. Subsequent requests for service metadata will always consult the cache first and if missed, will resort to actually resolving the metadata by loading or contacting the configured resource. Each service provider definition that is registered with CAS may optionally also specifically an expiration period of metadata resolution to override the default global value.
+3. 您还可以指示 CAS 在读取 元数据本身时，通过定义的标准对元数据 实体进行筛选。 这与强制模式 匹配实体 ID 大致相同，只是在 CAS 读取 元数据时完成，因此加载时间得到改进。
 
-#### Dynamic Metadata Resolution
 
-In addition to the more traditional means of managing service provider metadata such as direct XML files or URLs, CAS provides support for a number of other strategies to fetch metadata more dynamically with the likes of MDQ and more. To learn more, please [review this guide](Configuring-SAML2-DynamicMetadata.html).
 
-### Security Configuration
+### 元数据分辨率
 
-There are several levels of configuration that control the security configuration of objects that are signed, encrypted, etc. These configurations include things like the keys to use, preferred/default algorithms, and algorithms to allow, enforce or reject.
+服务提供商元数据会根据每个服务的需求进行提取和加载，然后在全球缓存中缓存 可配置的持续时间。 后续的服务元数据请求始终会首先咨询缓存，如果错过， 将诉诸于通过加载或联系配置的资源来实际解决元数据。 在 CAS 注册的每个服务提供商定义也可以选择 元数据分辨率的到期期，以覆盖默认的全球值。
 
-The configurations are generally determined based on the following order:
 
-- Service provider metadata
-- Per-service configuration overrides
-- Global CAS default settings
-- OpenSAML initial defaults
 
-In almost all cases, you should leave the defaults in place.
+#### 动态元数据分辨率
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#saml-algorithms--security).
+除了管理服务提供商元数据（如直接 XML 文件或网址）的更传统方法外，CAS 还支持许多其他策略，以更动态地获取元数据，例如 MDQ 等。 要了解更多，请 [本指南](Configuring-SAML2-DynamicMetadata.html)。
 
-#### Encryption
 
-The following examples demonstrate encryption security configuration overrides per service provider.
 
-#### CBC
+### 安全配置
 
-The following example demonstrates how to configure CAS to use `CBC` encryption for a particular service provider:
+有几个级别的配置可以控制已签名、加密等对象的安全配置。 这些配置包括 的东西，如要使用的密钥、首选/默认算法以及允许、执行或拒绝的算法。 
+
+配置通常根据以下顺序确定：
+
+- 服务提供商元数据
+- 每种服务配置覆盖
+- 全球 CAS 默认设置
+- 打开萨姆初始默认值
+
+在几乎所有情况下，您都应该保留默认值。
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#saml-algorithms--security)。
+
+
+
+#### 加密
+
+以下示例显示每个服务提供商的加密安全配置覆盖。
+
+
+
+#### 加拿大广播公司
+
+以下示例演示了如何为特定服务提供商配置 CAS `CBC` 加密：
+
+
 
 ```json
-{
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "sp.example.org",
-  "name": "SAML",
-  "id": 1,
-  "metadataLocation": "/path/to/sp-metadata.xml",
-  "encryptionDataAlgorithms": [
-    "java.util.ArrayList",
+•
+  "@class"："org.apereo.cas.支持.saml.服务"，
+  "服务id"："sp.example.org"，
+  "名称"："SAML"，
+  "id"：1，
+  "元数据定位"："/路径/到/sp元数据.xml"
+  "加密数据algorithms"：[
+    "java.ul.Arraylist"，
     [
       "http://www.w3.org/2001/04/xmlenc#aes128-cbc"
     ]
-  ],
-  "encryptionKeyAlgorithms": [
-    "java.util.ArrayList",
+  ]，
+
+    "java.ul.Arraylist"，
     [
       "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"
     ]
@@ -254,56 +291,68 @@ The following example demonstrates how to configure CAS to use `CBC` encryption 
 }
 ```
 
-#### GCM
 
-The following example demonstrates how to configure CAS to use `GCM` encryption for a particular service provider:
+
+
+#### 全科
+
+以下示例演示了如何为特定服务提供商配置 CAS `GCM` 加密：
+
+
 
 ```json
-{
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "sp.example.org",
-  "name": "SAML",
-  "id": 1,
-  "metadataLocation": "/path/to/sp-metadata.xml",
-  "encryptionDataAlgorithms": [
-    "java.util.ArrayList",
+•
+  "@class"："org.apereo.cas.支持.saml.服务"，
+  "服务id"："sp.example.org"，
+  "名称"："SAML"，
+  "id"：1，
+  "元数据定位"："/路径/到/sp元数据.xml"
+  "加密数据algorithms"：[
+    "java.ul.Arraylist"，
     [
       "http://www.w3.org/2009/xmlenc11#aes128-gcm"
     ]
-  ],
-  "encryptionKeyAlgorithms": [
-    "java.util.ArrayList",
+  ]，
+
+"加密钥匙词"：[
+    "java.ul.ul.Arraylist"，
     [
       "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"
     ]
-  ]
-}
+  ]}
 ```
 
-#### Signing
 
-The following examples demonstrate signing security configuration overrides per service provider.
 
-##### SHA-1
 
-The following example demonstrates how to configure CAS to use `SHA-1` signing and digest algorithms for a particular service provider:
+#### 签署
+
+以下示例显示每个服务提供商的签名安全配置覆盖。
+
+
+
+##### 沙-1
+
+以下示例演示了如何配置 CAS 以使用 `SHA-1` 特定服务提供商的签名和摘要算法：
+
+
 
 ```json
-{
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "sp.example.org",
-  "name": "SAML",
-  "id": 1,
-  "metadataLocation": "/path/to/sp-metadata.xml",
-  "signingSignatureAlgorithms": [
-    "java.util.ArrayList",
+•
+  "@class"："org.apereo.cas.支持.saml.服务"，
+  "服务id"："sp.example.org"，
+  "名称"："SAML"，
+  "id"：1，
+  "元数据定位"："/路径/到/到/p元数据.xml"
+  "签名"："
+    "java.ul.Arraylist"，
     [
-      "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+      "http://www.w3.org/2000/09/xmldsig#rsa-sha1"，
       "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"
     ]
-  ],
-  "signingSignatureReferenceDigestMethods": [
-    "java.util.ArrayList",
+  ] ，
+  "签名参考"："
+    "java.ul.Arraylist"，
     [
       "http://www.w3.org/2000/09/xmldsig#sha1"
     ]
@@ -311,170 +360,211 @@ The following example demonstrates how to configure CAS to use `SHA-1` signing a
 }
 ```
 
-##### SHA-256
 
-The following example demonstrates how to configure CAS to use `SHA-256` signing and digest algorithms for a particular service provider:
+
+
+##### 沙-256
+
+以下示例演示了如何配置 CAS 以使用 `SHA-256` 特定服务提供商的签名和摘要算法：
+
+
 
 ```json
-{
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "sp.example.org",
-  "name": "SAML",
-  "id": 1,
-  "metadataLocation": "/path/to/sp-metadata.xml",
-  "signingSignatureAlgorithms": [
-    "java.util.ArrayList",
+•
+  "@class"："org.apereo.cas.支持.saml.服务"，
+  "服务ID"："sp.example.org"，
+  "名称"："SAML"，
+  "id"：1，
+  "元数据定位"："/路径/到/p-元数据.xml"
+  "签名"："
+    "java.ul.Arraylist"，
     [
-      "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+      "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"，
       "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"
     ]
-  ],
-  "signingSignatureReferenceDigestMethods": [
-    "java.util.ArrayList",
+  ]，
+  "签署签名参考最小"：[
+    "java.ul.Arraylist"，
     [
       "http://www.w3.org/2001/04/xmlenc#sha256"
     ]
   ]
+]
+```
+
+
+
+
+### 属性释放
+
+属性筛选和发布策略是根据 SAML 服务定义的。 有关详细信息，请参阅本指南</a> 。</p> 
+
+
+
+### 姓名 ID 选择
+
+每项服务均可指定所需的姓名 ID 格式。 如果未定义，将咨询元数据以查找正确的格式。 名称 ID 值始终是设计为返回此服务的经过验证的用户。 换句话说，如果您 决定将 CAS 将特定属性 [此服务的经过验证的用户名](../integration/Attribute-Release-PrincipalId.html)返回，则该值 将用于构建名称 ID 以及正确的格式。
+
+
+
+#### 例子
+
+下列服务定义指示中科院使用 `骨灰盒：绿洲：名称：tc：SAML：1.1：名称格式：电子邮件地址` 作为最终名称ID格式， 并使用 `邮件` 属性值作为最终名称ID值。
+
+
+
+```json
+•
+  "@class"： "组织. apereo. cas. 支持. saml. 服务. 萨姆注册服务"，
+  "服务id"："实体-id-sp"，
+  "名称"："SAML服务"，
+  "元数据定位"："/路径/到/sp-元数据.xml"，
+  "id"：1，
+  "要求名称"："urn：绿洲：名称：tc：SAML：1.1：名称格式：电子邮件地址"，
+  "用户名归因提供者"：{
+    @class："org.apereo.cas.服务.委托注册服务用户"，
+    "用户名归因"："邮件"，
+  =
 }
 ```
 
-### Attribute Release
 
-Attribute filtering and release policies are defined per SAML service. See [this guide](Configuring-SAML2-Attribute-Release.html) for more info.
+下列服务定义指示中科院使用 `骨灰盒：绿洲：名称：tc：SAML：2.0：名称格式：瞬态` 为最终名称ID格式， ，并使用 `cn` 属性值作为上部最终名称 ID 值，跳过按所需格式生成瞬态值。
 
-### Name ID Selection
 
-Each service may specify a required Name ID format. If left undefined, the metadata will be consulted to find the right format. The Name ID value is always the authenticated user that is designed to be returned to this service. In other words, if you decide to configure CAS to return a particular attribute as [the authenticated user name for this service](../integration/Attribute-Release-PrincipalId.html), that value will then be used to construct the Name ID along with the right format.
 
-#### Examples
+```json
+•
+  "@class"："组织.apereo.cas.支持.萨姆尔.服务。萨姆注册服务"，
+  "服务id"："实体-id-sp"，
+  "名称"："SAML服务"，
+  "元数据定位"："/路径/到/sp-元数据.xml"，
+  "id"： 1，
+  "要求名称表"："urn：绿洲：名称：tc：SAML：2.0：名称格式：瞬态"，
+  "跳过生成递质名称"：真实，
+  "用户名归因提供者"：{
+    @class："org.apereo.cas.服务.委托属性注册服务用户提供者"，
+    "用户名归因"："cn"，
+    "规范化"："上"
+  =
+}
+```
 
-The following service definition instructs CAS to use the `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress` as the final Name ID format, and use the `mail` attribute value as the final Name ID value.
+
+以下服务定义指示 CAS 使用 `cn` 属性值创建持久名称 ID。
+
+
+
+```json
+•
+  "@class"："组织.apereo.cas.支持.萨姆尔.服务。萨姆注册服务"，
+  "服务id"："实体-id-sp"，
+  "名称"："SAML服务"，
+  "元数据定位"："/路径/到/sp-元数据.xml"，
+  "id"： 1，
+  "要求名称表"："urn：绿洲：名称：tc：SAML：2.0：名称格式：持久"，
+  "用户名归因提供者"：\
+    "@class"："org.apereo.cas.服务。匿名注册服务使用者"，
+    "持久生成器"： [
+      "@class"： "org. apereo. cas. 认证. 校长. 希博莱特兼容持久生成器"，
+      "盐"： "agvsbg93b3jsza="，
+      "属性"： "cn"
+    [
+  =
+
+```
+
+
+
+
+## 未经请求的 SSO
+
+SAML2 idP `主动/SSO` 配置文件支持以下参数：
+
+| 参数      | 描述                       |
+| ------- | ------------------------ |
+| `提供商Id` | 必填。 服务提供商的实体 ID。         |
+| `郡`     | 自选。 服务提供商的响应位置（ACS URL）。 |
+| `目标`    | 自选。 中继状态。                |
+| `时间`    | 自选。 扭曲身份验证请求。            |
+
+
+
+
+## 属性查询
+
+为了让 CAS 支持和响应属性查询，您需要确保生成的元数据已 启用了 `属性授权描述器` 元素，并启用了 `骨灰盒：绿洲：名称：tc：SAML：2.0：协议` 以及与 CAS 端点对应的相关绑定。 您还必须确保 `属性授权描述器` 标签列出所有用于签名和身份验证的 `键描述器` 元素和证书，特别是如果服务提供商 的 SOAP 客户端需要将 CAS 端点后面的证书与 `属性授权描述符`定义的证书进行交叉比较。 CAS 默认情况下 始终使用自己的签名证书来签署因属性查询而生成的响应。
+
+另请注意，需要明确启用对属性查询的支持，并且行为默认关闭，因为这将给 CAS 和基础票证注册表带来负担，以跟踪属性和响应作为票证，并让它们以后使用并查找。
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#saml-idp)。
+
+
+
+## 服务提供商集成
+
+一些 SAML2 服务提供商集成由 CAS 本地提供。 要了解更多，请 [本指南](../integration/Configuring-SAML-SP-Integrations.html)。
+
+
+
+## 服务提供商元数据
+
+如果您希望集成的SP不生成SAML元数据，您可以 使用此服务 [](https://www.samltool.com/sp_metadata.php) 创建元数据， 将其保存在 XML 文件中，然后向 CAS 引用并注册为 SP。
+
+或者，您也可以利用一个独立的 `saml-sp-元数据.json` 文件，该文件可能与 CAS 元数据工件在同一目录 中找到。 本文件的内容如下：
+
+
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "the-entity-id-of-the-sp",
-  "name": "SAML Service",
-  "metadataLocation": "/path/to/sp-metadata.xml",
-  "id": 1,
-  "requiredNameIdFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-  "usernameAttributeProvider" : {
-    "@class" : "org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider",
-    "usernameAttribute" : "mail",
+  "https://example.org/saml"：{
+    "实体"："https://example.org/saml"，
+    "证书"："MIIDUj.。。"，
+    "断言""https://example.org/sso/"
   }
 }
 ```
 
-The following service definition instructs CAS to use the `urn:oasis:names:tc:SAML:2.0:nameid-format:transient` as the final Name ID format, and use the `cn` attribute value in upper-case as the final Name ID value, skipping the generation of transient value per the required format.
+
+文件中的每个条目都由服务提供商实体 ID 标识，允许 CAS 动态定位并生成所需的元数据， 恢复身份验证流程。 对于那些仅为 集成提供 URL 和签名证书的服务提供商来说，这可能更容易，从而缓解您单独创建和管理 XML 元数据文件的困难。
+
+服务提供商在 CAS 服务注册处注册如下：
+
+
 
 ```json
-{
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "the-entity-id-of-the-sp",
-  "name": "SAML Service",
-  "metadataLocation": "/path/to/sp-metadata.xml",
-  "id": 1,
-  "requiredNameIdFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-  "skipGeneratingTransientNameId" : true,
-  "usernameAttributeProvider" : {
-    "@class" : "org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider",
-    "usernameAttribute" : "cn",
-    "canonicalizationMode" : "UPPER"
-  }
-}
+•
+  "@class"："org.apereo.cas.支持.saml.服务"，
+  "服务id"："https://example.org/saml"，
+  "名称"："SAML服务"，
+  "id"：1000003，
+  "元数据定位"："json://"
+
 ```
 
-The following service definition instructs CAS to use the `cn` attribute value to create a persistent Name ID.
+<div class="alert alert-info"><strong>元数据位置</strong><p>上述注册记录中的元数据位置需要指定为 <code>json://</code> 向 CAS 发出信号，即注册服务提供商的 SAML 元数据必须从指定的 JSON 文件中提取。</p></div>
 
-```json
-{
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "the-entity-id-of-the-sp",
-  "name": "SAML Service",
-  "metadataLocation": "/path/to/sp-metadata.xml",
-  "id": 1,
-  "requiredNameIdFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-  "usernameAttributeProvider" : {
-    "@class" : "org.apereo.cas.services.AnonymousRegisteredServiceUsernameAttributeProvider",
-    "persistentIdGenerator" : {
-      "@class" : "org.apereo.cas.authentication.principal.ShibbolethCompatiblePersistentIdGenerator",
-      "salt" : "aGVsbG93b3JsZA==",
-      "attribute": "cn"
-    }
-  }
-}
-```
+## 客户端库
 
-## Unsolicited SSO
+对于基于 Java 的应用程序，以下框架可用于将您的应用程序与作为 SAML2 身份提供商的 CAS 集成：
 
-SAML2 IdP `Unsolicited/SSO` profile supports the following parameters:
+- [春季安全山姆尔](http://projects.spring.io/spring-security-saml/)
+- [帕克4j](http://www.pac4j.org/docs/clients/saml.html)
 
-| Parameter    | Description                                                    |
-| ------------ | -------------------------------------------------------------- |
-| `providerId` | Required. Entity ID of the service provider.                   |
-| `shire`      | Optional. Response location (ACS URL) of the service provider. |
-| `target`     | Optional. Relay state.                                         |
-| `time`       | Optional. Skew the authentication request.                     |
 
-## Attribute Queries
 
-In order to allow CAS to support and respond to attribute queries, you need to make sure the generated metadata has the `AttributeAuthorityDescriptor` element enabled, with protocol support enabled for `urn:oasis:names:tc:SAML:2.0:protocol` and relevant binding that corresponds to the CAS endpoint(s). You also must ensure the `AttributeAuthorityDescriptor` tag lists all `KeyDescriptor` elements and certificates that are used for signing as well as authentication, specially if the SOAP client of the service provider needs to cross-compare the certificate behind the CAS endpoint with what is defined for the `AttributeAuthorityDescriptor`. CAS by default will always use its own signing certificate for signing of the responses generated as a result of an attribute query.
+## 示例客户端应用程序
 
-Also note that support for attribute queries need to be explicitly enabled and the behavior is off by default, given it imposes a burden on CAS and the underlying ticket registry to keep track of attributes and responses as tickets and have them be later used and looked up.
+- [春季安全山姆样本网络应用程序](https://github.com/cas-projects/saml2-sample-java-webapp)
+- [奥克塔](https://developer.okta.com/standards/SAML/setting_up_a_saml_application_in_okta)
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#saml-idp).
 
-## Service Provider Integrations
 
-A number of SAML2 service provider integrations are provided natively by CAS. To learn more, please [review this guide](../integration/Configuring-SAML-SP-Integrations.html).
+## 故障 排除
 
-## Service Provider Metadata
+要启用其他日志，请修改记录配置文件以添加以下：
 
-If the SP you wish to integrate with does not produce SAML metadata, you may be able to use [this service](https://www.samltool.com/sp_metadata.php) to create the metadata, save it in an XML file and then reference and register it with CAS for the SP.
 
-Alternatively, you may take advantage of a standalone `saml-sp-metadata.json` file that may be found in the same directory as the CAS metadata artifacts. The contents of this file may be as follows:
-
-```json
-{
-  "https://example.org/saml": {
-    "entityId": "https://example.org/saml",
-    "certificate": "MIIDUj...",
-    "assertionConsumerServiceUrl": "https://example.org/sso/"
-  }
-}
-```
-
-Each entry in the file is identified by the service provider entity id, allowing CAS to dynamically locate and build the required metadata on the fly to resume the authentication flow. This may prove easier for those service providers that only present a URL and a signing certificate for the integration relieving you from creating and managing XML metadata files separately.
-
-The service providers are registered with the CAS service registry as such:
-
-```json
-{
-  "@class" : "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId" : "https://example.org/saml",
-  "name" : "SAMLService",
-  "id" : 10000003,
-  "metadataLocation" : "json://"
-}
-```
-
-<div class="alert alert-info"><strong>Metadata Location</strong><p>The metadata location in the registration record above needs to be specified as <code>json://</code> to signal to CAS that SAML metadata for registered service provider must be fetched from the designated JSON file.</p></div>
-
-## Client Libraries
-
-For Java-based applications, the following frameworks may be used to integrate your application with CAS acting as a SAML2 identity provider:
-
-- [Spring Security SAML](http://projects.spring.io/spring-security-saml/)
-- [Pac4j](http://www.pac4j.org/docs/clients/saml.html)
-
-## Sample Client Applications
-
-- [Spring Security SAML Sample Webapp](https://github.com/cas-projects/saml2-sample-java-webapp)
-- [Okta](https://developer.okta.com/standards/SAML/setting_up_a_saml_application_in_okta)
-
-## Troubleshooting
-
-To enable additional logging, modify the logging configuration file to add the following:
 
 ```xml
 <Logger name="org.opensaml" level="debug" additivity="false">
