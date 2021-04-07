@@ -1,47 +1,55 @@
 ---
-layout: default
-title: Overview - User Interface Customization - CAS
-category: User Interface
+layout: 违约
+title: 概述 - 用户界面定制 - CAS
+category: 用户界面
 ---
 
-# Overview
+# 概述
 
-Branding the CAS User Interface (UI) involves editing the CSS stylesheet and also a small collection of relatively simple HTML include files, also known as views. Optionally, you may also wish to modify the text displayed and/or add additional Javascript effects on these views.
+CAS 用户界面 （UI） 的品牌包括编辑 CSS 样式表，以及一小组相对简单的 HTML 包括文件（也称为视图）。 可选地，您可能还希望修改显示的文本和/或添加 这些视图的其他 Javascript 效果。
 
-# Browser Support
+# 浏览器支持
 
-CAS user interface should properly and comfortably lend itself to all major browser vendors:
+CAS 用户界面应适当且舒适地适合所有主要的浏览器供应商：
 
-* Google Chrome
-* Mozilla Firefox
-* Apple Safari
-* Microsoft Edge
-* Internet Explorer (v11 only)
+* 谷歌铬
+* 莫齐拉火狐
+* 苹果野生动物园
+* 微软边缘
+* 互联网浏览器（仅限 v11）
 
-Note that certain older version of IE, particularly IE 9 and below may impose additional difficulty in getting the right UI configuration in place. The libraries used for the user interface (Bootstrap and Material.io) do not support Internet Explorer 9 or below.
+请注意，某些较旧的 IE 版本，尤其是 IE 9 及以下版本可能会给实现正确的 UI 配置带来额外的困难。 用于用户界面（引导和 Material.io）的库不支持IE浏览器 9 或以下。
 
-<div class="alert alert-info"><strong>Supported Browsers</strong><p>The supported browsers listed here are in reference to the default CAS user interface. Customizations can be implemented to support other browsers using the overlay, themes, etc.</p></div>
+<div class="alert alert-info"><strong>支持浏览器</strong><p>此处列出的支持浏览器是指默认的 CAS 用户界面。 可实施自定义，以支持使用叠加、主题等的其他浏览器。</p></div>
 
-## Internet Explorer
+## 互联网浏览器
 
-To instruct CAS to render UI in compatibility mode, the following is added automatically to relevant UI components:
+要指示 CAS 在兼容性模式下呈现 UI，请自动将以下内容添加到相关 UI 组件中：
 
 ```html
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 ```
 
-# CSS & Javascript
+# Css & 爪哇脚本
 
-See [this guide](User-Interface-Customization-CSSJS.html) for more info.
+有关详细信息，请参阅本指南</a>
 
-# Views
+。</p> 
 
-See [this guide](User-Interface-Customization-Views.html) for more info.
 
-# Localization
 
-See [this guide](User-Interface-Customization-Localization.html) for more info.
+# 视图
 
-# Themes
+有关详细信息，请参阅本指南</a> 。</p> 
 
-See [this guide](User-Interface-Customization-Themes.html) for more info.
+
+
+# 地方化
+
+有关详细信息，请参阅本指南</a> 。</p> 
+
+
+
+# 主题
+
+有关详细信息，请参阅本指南</a> 。</p>
