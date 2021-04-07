@@ -1,156 +1,156 @@
 ---
-layout: default
-title: CAS - Overlay Installation
-category: Installation
+layout: 违约
+title: CAS - 叠加安装
+category: 安装
 ---
 
-# Servlet Container Configuration
+# 塞尔莱特容器配置
 
-A number of container options are available to deploy CAS. The [WAR Overlay](WAR-Overlay-Installation.html) guide describes how to build and deploy CAS.
+可部署 CAS 的多个容器选项。 [WAR覆盖](WAR-Overlay-Installation.html) 指南 描述了如何建立和部署CAS。
 
-## How Do I Choose?
+## 如何选择？
 
-There are is a wide range of servlet containers and servers on the menu. The selection criteria is outlined below:
+菜单上有各种各样的伺服容器和服务器。 选择标准概述如下：
 
-- Choose a technology that you are most familiar with and have the skills and patience to troubleshoot, tune and scale for the win.
-- Choose a technology that does not force your CAS configuration to be tied to any individual servers/nodes in the cluster, as this will present auto-scaling issues and manual effort.
-- Choose a technology that works well with your network and firewall configuration and is performant and reliable enough based on your network topology.
-- Choose a technology that shows promising results under *your expected load*, having run [performance and stress tests](../high_availability/High-Availability-Performance-Testing.html).
-- Choose a technology that does not depend on outside processes, systems and manual work as much as possible, is self-reliant and self contained.
+- 选择您最熟悉的技术，并具有排除故障、调整和扩展以赢得胜利的技能和耐心。
+- 选择一种不会强制 CAS 配置与群集中的任何单个服务器/节点绑定的技术，因为这将显示自动缩放问题和手动工作。
+- 选择一种与您的网络和防火墙配置配合良好的技术，并且基于您的网络拓扑技术，该技术性能良好且足够可靠。
+- 选择一种技术，显示有希望的结果下， *你的预期负荷*，运行 [性能和压力测试](../high_availability/High-Availability-Performance-Testing.html)。
+- 选择一种不依赖于外部流程、系统和体力劳动的技术，是自力更生和自我控制的。
 
-## Production Quality
+## 生产质量
 
-All servlet containers presented here, embedded or otherwise, aim to be production ready. This means that CAS ships with useful defaults out of the box that may be overridden, if necessary and by default, CAS configures everything for you from development to production in today’s platforms. In terms of their production quality, there is almost no difference between using an embedded container vs. an external one.
+此处展示的所有伺服容器，无论是否嵌入，都旨在做好生产准备。 这意味着 CAS 开箱即用的默认船舶，如果必要且默认，CAS 可能会在 被推翻，从而为您配置从开发到生产 当今平台上的一切。 就生产质量而言，使用嵌入式容器与外部容器几乎没有区别。
 
-Unless there are specific, technical and reasonable objections, choosing an embedded servlet container is almost always the better choice.
+除非有具体、技术和合理的反对意见，否则选择嵌入式伺服容器几乎总是更好的选择。
 
-## Embedded
+## 嵌入式
 
-Note that CAS itself ships with a number of embedded containers that allow the platform to be self-contained as much as possible. These embedded containers are an integral part of the CAS software, are maintained and updated usually for every release and surely are meant to and can be used in production deployments. You **DO NOT** need to, but can if you want to, configure and deploy to an externally configured container. 
+请注意，CAS 本身会附带一些嵌入式容器，使平台尽可能 独立。 这些嵌入式容器是 CAS 软件不可分割的一部分，通常针对每个版本进行维护和 更新，并且肯定用于并可用于生产部署。 您 **不需要** ，但如果您愿意，可以将配置和部署到外部配置的容器中。 
 
-<div class="alert alert-info"><strong>Do Less</strong><p>Remember that most if not all aspects of the embedded 
-container can be controlled via the CAS properties. See <a href="../configuration/Configuration-Properties.html#embedded-apache-tomcat-container">this guide</a> for more info.</p></div>
+<div class="alert alert-info"><strong>少做点事</strong><p>请记住，嵌入式 
+容器的大部分（如果不是全部）可以通过 CAS 属性进行控制。 有关详细信息，请参阅本指南</a> <a href="../configuration/Configuration-Properties.html#embedded-apache-tomcat-container">。</p></div>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#embedded-container).
+要查看 CAS 物业的相关列表，请 [](../configuration/Configuration-Properties.html#embedded-container)查看本指南。
 
-### Execution
+### 执行
 
-The CAS web application, once built, may be deployed in place with the embedded container via the following command:
-
-```bash
-java -jar /path/to/cas.war
-```
-
-Additionally, it is also possible to run CAS as a fully executable web application:
+CAS 网络应用程序一旦构建，可以通过以下命令与嵌入式容器部署到位：
 
 ```bash
-# chmod +x /path/to/cas.war
-/path/to/cas.war
+爪哇 - 贾尔 / 路径 / 到 / 卡斯. 战争
 ```
 
-This is achieved via the build process of the deployment overlay where a launch script is *inserted* at the beginning of the web application artifact. If you wish to see and examine the script, simply run the following commands:
+此外，还可以将 CAS 作为完全可执行的 Web 应用程序运行：
+
+```bash
+• 奇莫德 +x / 路径 / 到 / 卡斯. 战争
+/ 路径 / 到 / 卡斯. 战争
+```
+
+这是通过部署叠加的构建过程实现的，其中启动脚本 *在 Web 应用工件的开头插入* 。 如果您 希望查看和检查脚本，只需运行以下命令：
 
  ```bash
- # X is the number of lines from the beginning of the file
- head -n X /path/to.cas.war
+ #X是文件开头的行数
+ 头-n X/路径/到.cas.war
  ```
 
-Note that running CAS as a standalone and fully executable web application is supported on most Linux and OS X distributions. Other platforms such as Windows may require custom configuration.
+请注意，在大多数 Linux 和 OS X 分布中支持将 CAS 作为独立且完全可执行的 Web 应用程序运行。 其他平台（如 Windows）可能需要自定义配置。
 
-### Apache Tomcat
+### 阿帕奇·汤姆卡特
 
-Note that by default, the embedded container attempts to enable the HTTP2 protocol.
+请注意，默认情况下，嵌入式容器尝试启用 HTTP2 协议。
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-webapp-tomcat</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器 - webapp - 汤姆卡特</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-#### IPv4 Configuration
+#### IPv4 配置
 
-In order to force Apache Tomcat to use IPv4, configure the following as a system property for your *run* command:
+为了强制 Apache Tomcat 使用 IPv4，请将以下属性配置为系统属性，以便您的 *运行* 命令：
 
 ```bash
--Djava.net.preferIPv4Stack=true 
+-贾瓦. net. 首选 Pv4 堆栈] 真实 
 ```
 
-The same sort of configuration needs to be applied to your `$CATALINA_OPTS` environment variable in case of an external container.
+在外部容器的情况下，需要将相同的配置应用于您的 `$CATALINA_OPTS` 环境变量。
 
-#### Faster Startup
+#### 更快的启动速度
 
-[This guide](https://cwiki.apache.org/confluence/display/TOMCAT/HowTo+FasterStartUp) provides several recommendations on how to make web applications and Apache Tomcat as a whole to start up faster.
+[本指南](https://cwiki.apache.org/confluence/display/TOMCAT/HowTo+FasterStartUp) 就如何使 网络应用程序和 Apache Tomcat 作为一个整体更快地启动提出了几项建议。
 
-#### Logging
+#### 伐木
 
-The embedded Apache Tomcat container is presently unable to display any log messages below `INFO` even if your CAS log configuration explicitly asks for `DEBUG` or `TRACE` level data. See [this bug report](https://github.com/spring-projects/spring-boot/issues/2923) to learn more.
+嵌入的 Apache Tomcat 容器目前无法在 INFO `以下显示任何日志消息` ，即使您的 CAS 日志 配置明确要求 `DEBUG` 或 `TRACE` 级数据。 请参阅此错误报告 [](https://github.com/spring-projects/spring-boot/issues/2923) 了解更多。
 
-While workarounds and fixes may become available in the future, for the time being, you may execute the following changes to get `DEBUG` level log data from the embedded Apache Tomcat. This is specially useful if you are troubleshooting the behavior of Tomcat's internal components such as valves, etc.
+虽然变通办法和修复可能会在未来可用，但目前，您可以执行以下 更改，以从嵌入的 Apache Tomcat 获取 `DEBUG` 级别日志数据。 如果您正在对 Tomcat 内部组件（如阀门等）的行为 进行故障排除，则此特别有用。
 
-- Design a `logging.properties` file as such:
+- 设计一个 `记录。属性` 文件如下：
 
 ```properties
-handlers = java.util.logging.ConsoleHandler
-.level = ALL
-java.util.logging.ConsoleHandler.level = FINER
-java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
+处理程序=java.util.logging.控制台
+.level=所有
+java.使用.登录.登录.控制台手。级别=精细
+java.使用.登录.控制台汉德勒.格式=java.使用.登录。记录。
 ```
 
-- Design a`java.util.logging.config.file` setting as a system/environment variable or command-line argument whose value is set to the `logging.properties` path. Use the setting when you launch and deploy CAS.
+- 将`java.util.logging.comig.文件` 设置设计为系统/环境变量或命令行 参数，其值设置为 `记录` 。 启动和部署 CAS 时使用该设置。
 
-For instance:
+例如：
 
 ```bash
-java -jar /path/to/cas.war -Djava.util.logging.config.file=/path/to/logging.properties
+java - jar / 路径 / 到 / 卡斯. 战争 - 贾瓦. 使用. 登录. 配置. 文件] / 路径 / 到 / 记录. 属性
 ```
 
-### Jetty
+### 码头
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-webapp-jetty</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器 - 网络应用程序 - 码头</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-### Undertow
+### 退波
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-webapp-undertow</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-网络应用程序-底层</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-## External
+## 外部
 
-A CAS deployment may be deployed to any number of external servlet containers. The container **MUST** support the servlet specification `v4.0.0` at a minimum. In these scenarios, the following vanilla CAS web application may be used, in the [WAR Overlay](WAR-Overlay-Installation.html) :
+CAS 部署可部署到任意数量的外部伺服容器中。 容器 **必须 最低 v4.0.0</code> `</strong> 支持。 在这些情况下，以下香草CAS网络应用程序
+可用于 <a href="WAR-Overlay-Installation.html">战争覆盖</a> ：</p>
 
-```xml
-<dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-webapp</artifactId>
+<pre><code class="xml"><dependency>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器 - web 应用程序</artifactId>
      <version>${cas.version}</version>
 </dependency>
-```
+`</pre>
 
-While there is no official project support, the following containers should be compatible with a CAS deployment:
+虽然没有官方项目支持，但以下容器应与 CAS 部署兼容：
 
-* [Apache Tomcat](http://tomcat.apache.org/) (At a minimum, Apache Tomcat 9 is required)
-* [JBoss](http://www.jboss.org/)
-* [Wildfly](http://wildfly.org/)
-* [Undertow](http://undertow.io/)
-* [Jetty](http://www.eclipse.org/jetty/) (At a minimum, Jetty 9.4 is required)
-* [GlassFish](http://glassfish.java.net/)
-* [WebSphere](http://www.ibm.com/software/websphere/)
+* [阿帕奇 · 汤姆卡特](http://tomcat.apache.org/) （至少需要阿帕奇 · 汤姆卡特 9 号）
+* [杰博斯](http://www.jboss.org/)
+* [野飞](http://wildfly.org/)
+* [退波](http://undertow.io/)
+* [码头](http://www.eclipse.org/jetty/) （至少需要码头 9.4）
+* [玻璃鱼](http://glassfish.java.net/)
+* [网圈](http://www.ibm.com/software/websphere/)
 
-Remember that an external container's configuration is **NEVER** automated by CAS in any way which means you are responsible for upgrades, maintenance and all other manners of configuration such as logging, SSL, etc. CAS does not provide official support and troubleshooting guidelines, etc for an external container's configuration or issues. Refer to the servlet container's own documentation for more info.
+请记住，外部容器的配置是 **永远不会** 自动化的CAS以任何方式，这意味着你 负责升级，维护和所有其他配置的方式，如伐木，SSL等。 CAS 不为外部容器的配置或问题提供官方支持和故障排除指南等。 有关详细信息，请参阅服务器容器自己的文档。
 
-Note for JBoss, Wildfly and EAP, you may need to add a `jboss-deloyment-structure.xml` file to `src/main/webapp/WEB-INF` in your overlay in order for CAS to start properly.
+注意 JBoss、野飞和 EAP，您可能需要添加一个 `jboss-脱衣结构.xml` 文件，以 `src/主/Webapp/WEB-INF` ，以便 CAS 能够正常启动。
 
 ```xml
 <jboss-deployment-structure>
@@ -162,31 +162,32 @@ Note for JBoss, Wildfly and EAP, you may need to add a `jboss-deloyment-structur
 </jboss-deployment-structure>
 ```
 
-### Configuration
+### 配置
 
-Support for external containers is enabled by including the following module in the overlay:
+通过在覆盖中包括以下模块，支持外部容器：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-webapp</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器 - web 应用程序</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-### Async Support
+### 不对称支持
 
-In the event that an external servlet container is used, you MAY need to make sure it's configured correctly to support asynchronous requests in the event you get related errors and your container requires this. This is typically handled by setting `<async-supported>true</async-supported>` inside the container's main `web.xml`  
-file (i.e. For Apache Tomcat, that would be `$CATALINA_HOME/conf/web.xml`).
+如果使用了外部servlet容器，您可能需要确保它配置正确，以便在您发现相关错误且容器需要此时 支持异步请求。 这通常通过在容器的主要 `网络内设置真实</async-supported>` `<async-supported>来 
+处理.xml`  
+文件（即 对于阿帕奇汤姆卡特，这将是 `$CATALINA_HOME/康夫/网络.xml`）。
 
-### Logging
+### 伐木
 
-When using an external container, you may need to ensure that logging configuration file that ships with CAS by default is disabled and turned into a no-op **specially** if the log configuration and location is to be controlled via CAS settings. This is required because initialization of the CAS web applications context inside an external servlet container tends to prematurely initialize the log configuration from classpath before CAS itself has had a chance to control logging via settings.
+使用外部容器时，您可能需要确保默认情况下使用 CAS 船舶的记录配置文件被禁用，并转变为禁用 **特别** 日志配置和位置是否要通过 CAS 设置进行控制。 这是必要的，因为在 CAS 本身有机会通过设置控制记录之前，在外部伺服容器内初始化 CAS Web 应用程序上下文往往会过早地从类路径中初始化日志配置。
 
-To disable CAS' own logging, define a `log4j2.xml` under `src/main/resources` and put the following content in it:
+要禁用 CAS 自己的日志，请在 `src/主/资源` 下定义 `日志4j2.xml` 并在其中放入以下内容：
 
 ```xml
-<?xml version="1.0" encoding="UTF-8" ?>
+<？xml 版本="1.0"编码="UTF-8"？>
 <Configuration>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
@@ -201,18 +202,22 @@ To disable CAS' own logging, define a `log4j2.xml` under `src/main/resources` an
 </Configuration>
 ```
 
-The above configuration will turn the logging initialization moot, allowing the location and configuration of logs to be defined via CAS settings.
+上述配置将使日志初始化变得无意义，从而允许通过 CAS 设置定义日志的位置和配置。
 
-### Async Logging
+### 不同步记录
 
-CAS logging automatically inserts itself into the runtime application context and will clean up the logging context once the container is instructed to shut down. However, Apache Tomcat in particular seems to by default ignore all JAR files named `log4j*.jar`, which prevents this feature from working. You may need to change the `catalina.properties` and remove `log4j*.jar` from the `jarsToSkip` property. Failure to do so will prevent the container to gracefully shut down and causes logger context threads to hang.
+CAS 登录会自动插入运行时间应用上下文，并在指示容器关闭后清理 记录上下文。 然而，阿帕奇汤姆卡特，特别是 似乎默认忽略所有JAR文件命名 `日志4j*.jar`，这阻止了此功能的工作。 您可能需要更改 `` 属性，并将 `日志4j*.jar` 从 `罐中取出，` 属性。 如果 这样做，将阻止容器优雅地关闭，并导致记录器上下文线程挂起。
 
-You may need to do something similar on other containers if they skip scanning Log4j JAR files.
+如果其他容器跳过扫描 Log4j JAR 文件，则可能需要在其他容器上进行类似处理。
 
-## Docker
+## 码头工人
 
-You may also be interested to deploy CAS via [Docker](https://www.docker.com/). See [this guide](Docker-Installation.html) for more info.
+您可能也有兴趣通过 [多克](https://www.docker.com/)部署 CAS 。 有关详细信息，请参阅本指南</a>
 
-## System Service
+。</p> 
 
-CAS can be easily started as Unix/Linux services using either `init.d` or `systemd`. To learn more, please [visit this guide](Configuring-Deployment-System-Service.html).
+
+
+## 系统服务
+
+CAS 可以很容易地开始作为 Unix/Linux 服务使用 `init.d` 或 `系统`。 要了解更多 ，请 [请访问本指南](Configuring-Deployment-System-Service.html)。
