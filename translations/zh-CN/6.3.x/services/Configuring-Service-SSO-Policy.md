@@ -1,102 +1,102 @@
 ---
-layout: default
-title: CAS - Configuring Service SSO Policy
-category: Services
+layout: 违约
+title: CAS - 配置服务 SSO 策略
+category: 服务业
 ---
 
-# Configuring Service SSO Policy
+# 配置服务 SSO 策略
 
-Single Sign-on participation policies designed on a per-service basis should override the global SSO behavior. Such policies generally are applicable to participation in single sign-on sessions, creating SSO cookies, etc.
+以每项服务为基础设计的单一登录参与策略应覆盖全球 SSO 行为。 此类政策通常适用于 参加单一登录会话、创建 SSO Cookie 等。
 
-## Single Sign-on Cookie
+## 单个登录曲奇
 
-CAS adopters may want to allow for a behavior where logging in to a non-SSO-participating application via CAS either does not create a CAS SSO session and the SSO session it creates is not honored for authenticating subsequently to an SSO-participating application. This behavior can be defined on a per-service basis.
+CAS 采用者可能希望允许通过 CAS 登录非 SSO 参与的应用程序 的行为，该应用不创建 CAS SSO 会话，并且它创建的 SSO 会话不荣幸于随后 到 SSO 参与的应用程序进行身份验证。 此行为可以根据每个服务进行定义。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "...",
-  "name" : "...",
-  "id" : 1,
-  "singleSignOnParticipationPolicy": {
-    "@class": "org.apereo.cas.services.DefaultRegisteredServiceSingleSignOnParticipationPolicy",
-    "createCookieOnRenewedAuthentication": "TRUE"
-  }
-}
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："。。。"，
+  "名称"："。。。"
+  "id"： 1，
+  "单一签名参与政策"： [
+    "@class"： "org. apereo. cas. 服务. 默认注册服务单项签名参与政策"，
+    "创建 Cookieon 重新注册"： "真实"
+  [
+]
 ```
 
-Acceptable values for `createCookieOnRenewedAuthentication` are `TRUE`, `FALSE` or `UNDEFINED`.
+`创造"重新授权"` 的可接受值 `真实`、 `虚假` 或 `未定义`。
 
-## Participation Policies
+## 参与政策
 
-Additional policies can be assigned to each service definition to control participation of an application in an existing single sign-on session. If conditions hold true, CAS shall honor the existing SSO session and will not challenge the user for credentials. If conditions fail, then user may be asked for credentials. Such policies can be chained together and executed in order.
+可为每个服务定义分配其他策略，以控制应用程序在现有单个登录会话中的参与。 如果条件成立，中科院将遵守现有的SSO会话，不会质疑用户的凭据。 如果条件失败，则可能会要求 用户提供凭据。 此类政策可以按顺序链接在一起并执行。
 
-### Authentication Date
+### 认证日期
 
-Honor the existing single sign-on session, if any, if the authentication date is at most `5` seconds old. Otherwise, challenge the user for credentials and ignore the existing session.
+如果认证日期最多 `5` 秒，则尊重现有的单个登录会话（如果有的话）。 否则， 用户挑战凭据，而忽略现有会话。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "...",
-  "name" : "...",
-  "id" : 1,
-  "singleSignOnParticipationPolicy":
-    {
-      "@class": "org.apereo.cas.services.ChainingRegisteredServiceSingleSignOnParticipationPolicy",
-      "policies": [ "java.util.ArrayList",
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："。。。"，
+  "名称"："。。。"，
+  "id"：1，
+  "单一签名参与政策"：
+    =
+      "@class"："org.apereo.cas.服务。
+      "政策"： [java. util. Arraylist"，
         [
-          {
-            "@class": "org.apereo.cas.services.AuthenticationDateRegisteredServiceSingleSignOnParticipationPolicy",
-            "timeUnit": "SECONDS",
-            "timeValue": 5,
-            "order": 0
-          }
+          ]
+            "@class"： "org. apereo. cas. 服务。 政策"，
+            "时间统一"："秒"，
+            "时间价值"：5，
+            "顺序"：0
+          [
         ]
       ]
     }
 }
 ```
 
-### Last Used Time
+### 上次使用时间
 
-Honor the existing single sign-on session, if any, if the last time an SSO session was used is at most `5` seconds old. Otherwise, challenge the user for credentials and ignore the existing session.
+如果最后一次使用 SSO 会话最多 `5` 秒，则尊重现有的单个登录会话（如果有的话）。 否则，挑战 用户的凭据，而忽略现有的会话。
 
-The policy calculation here typically includes evaluating the last-used-time of the ticket-granting ticket linked to the SSO session to check whether the ticket continues to actively issue service tickets, etc.
+此处的政策计算通常包括评估链接到 SSO 会话的出票票的最后使用时间，以检查 机票是否继续主动签发服务票等。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "...",
-  "name" : "...",
-  "id" : 1,
-  "singleSignOnParticipationPolicy":
-    {
-      "@class": "org.apereo.cas.services.ChainingRegisteredServiceSingleSignOnParticipationPolicy",
-      "policies": [ "java.util.ArrayList",
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务"："。。。"，
+  "名称"："。。。"，
+  "id"：1，
+  "单一签名参与政策"：
+    =
+      "@class"："org.apereo.cas.服务。链注册服务单项签名参与政策"，
+      "政策"： [java. util. Arraylist"，
         [
-          {
-            "@class": "org.apereo.cas.services.LastUsedTimeRegisteredServiceSingleSignOnParticipationPolicy",
-            "timeUnit": "SECONDS",
-            "timeValue": 5,
-            "order": 0
-          }
+          ]
+            "@class"： "org. apereo. cas. 服务. 上次使用时间注册服务单签名 参与政策"，
+            "时间统一"："秒"，
+            "时间价值"：5，
+            "订单"：0
+          [
         ]
       ]
     }
 }
 ```
 
-## Custom
+## 习惯
 
-Participation in a single sign-on session can be customized and controlled using custom strategies registered with CAS per the below syntax:
+使用以下语法在 CAS 注册的自定义策略，可以自定义和控制参加单个登录会话：
 
 ```java
 @Bean
-public SingleSignOnParticipationStrategyConfigurer customSsoConfigurer() {
-    return chain -> chain.addStrategy(...);
-}
+公共单信号参与配置器自定义配置器（）=
+    返回链-> 链
+。
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[本指南](../configuration/Configuration-Management-Extensions.html) 了解有关如何将配置注册到 CAS 运行时间的更多信息。
 
