@@ -1,47 +1,57 @@
 ---
-layout: default
-title: CAS - GeoTracking Authentication Requests
-category: Authentication
+layout: 违约
+title: CAS - 地理跟踪身份验证请求
+category: 认证
 ---
 
-# GeoTracking Authentication Requests
+# 地理跟踪身份验证请求
 
-Authentication requests can be mapped and translated to physical locations.
+身份验证请求可以映射并翻译到物理位置。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-geolocation</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>套机服务器支持地理位置</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-## Google Maps
+## 谷歌地图
 
-Uses the [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/start) to translate authentication requests into a geo-location.
+使用谷歌地图地理编码 API</a>
+
+将 身份验证请求转换为地理位置。</p> 
+
+
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-geolocation-googlemaps</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>的卡-服务器-支持-地理定位-谷歌图</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#googlemaps-geotracking).
 
-## Maxmind
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#googlemaps-geotracking)。
 
-Uses [Maxmind](https://www.maxmind.com/en/home) to translate authentication requests into a geo-location.
+
+
+## 马克斯明德
+
+使用 maxmind</a> 将 身份验证请求转换为地理位置。</p> 
+
+
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-geolocation-maxmind</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>套机服务器支持-地理定位-最大</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#maxmind-geotracking).
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#maxmind-geotracking)。
