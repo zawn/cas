@@ -1,42 +1,46 @@
 ---
-layout: default
-title: CAS - Configuring Service HTTP Security Headers
-category: Services
+layout: 违约
+title: CAS - 配置服务 HTTP 安全头
+category: 服务业
 ---
 
-# Configure Service HTTP Security Headers
+# 配置服务 HTTP 安全头
 
-CAS has ability to control, on a per-service basis, whether certain security-related HTTP headers should be injected into the response. While headers are typically enabled and defined globally as part of the [CAS Security Filter](../planning/Security-Guide.html#cas-security-filter), the strategy described here allows one to disable/enable the injection of these headers for certain applications and service requests and override the global defaults.
+CAS 有能力根据每项服务控制是否应将某些与安全相关的 HTTP 标题注入响应中。 虽然标头通常在全球范围内启用并定义为 [cas 安全过滤器](../planning/Security-Guide.html#cas-security-filter)的一部分，但此处描述的策略允许一个人禁用/启用这些标头用于某些应用程序和服务请求，并覆盖全球默认值。
 
-A sample JSON file follows:
+示例 JSON 文件如下：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "sample service",
-  "id" : 100,
-  "properties" : {
-    "@class" : "java.util.HashMap",
-    "httpHeaderEnableXContentOptions" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "true" ] ]
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："^https://.+"，
+  "名称"："示例服务"，
+  "id"：100，
+  "属性"：{
+    "@class"："java.util.哈希马普"，
+    "http头可实现X可控制选项"：{
+      "@class"： "org.apereo.cas.服务.默认注册服务"，
+      "价值"："java.利用"，"哈希集"，"真实"]
     }
   }
 }
 ```
 
-Supported HTTP headers in form of service properties are:
+以服务属性形式支持的 HTTP 头是：
 
-| Header                                    | Description                                                                    |
-| ----------------------------------------- | ------------------------------------------------------------------------------ |
-| `httpHeaderEnableCacheControl`            | Insert `Cache-Control` headers into the response for this service.             |
-| `httpHeaderEnableXContentOptions`         | Insert `X-Content-Type-Options` headers into the response for this service.    |
-| `httpHeaderEnableStrictTransportSecurity` | Insert `Strict-Transport-Security` headers into the response for this service. |
-| `httpHeaderEnableXFrameOptions`           | Insert `X-Frame-Options` headers into the response for this service.           |
-| `httpHeaderEnableContentSecurityPolicy`   | Insert `Content-Security-Policy` headers into the response for this service.   |
-| `httpHeaderEnableXSSProtection`           | Insert `X-XSS-Protection` headers into the response for this service.          |
-| `httpHeaderXFrameOptions`                 | Override the `X-Frame-Options` header of the response for this service.        |
+| 页眉             | 描述                                                                               |
+| -------------- | -------------------------------------------------------------------------------- |
+| `htp头可控制`      | 将缓存控制</code> `插入此服务的响应中。</td>
+</tr>
+<tr>
+  <td><code>h头可实现X可控制选项` | 将 `X 内容类型选项` 标题插入此服务的响应中。 |
+| `h头可被限制运输安全`   | 将 `严格的运输安全` 头插入此服务的响应中。                                                          |
+| `htp头可替换X框架选项` | 将 `X 帧选项` 标题插入此服务的响应中。                                                           |
+| `htp 头可控制安全政策` | 在此服务的响应中插入内容安全政策</code> 标题 `。</td>
+</tr>
+<tr>
+  <td><code>h头可保护`  | 将 `X-XSS 保护` 标题插入此服务的响应中。 |
+| `赫特普黑德X框架选项`   | 覆盖此服务响应的 `X 帧选项` 标题。                                                             |
 
-The headers values are picked up from CAS properties. See [this guide](../configuration/Configuration-Properties.html#http-web-requests) for relevant settings.
+从 CAS 属性中拾取标题值。 有关相关设置，请参阅本指南</a> 。</p>
 
