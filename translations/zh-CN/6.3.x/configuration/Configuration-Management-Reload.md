@@ -1,60 +1,79 @@
 ---
-layout: default
-title: CAS - Configuration Management - Reloading Changes
-category: Configuration
+layout: 违约
+title: CAS - 配置管理 - 重新加载更改
+category: 配置
 ---
 
-# Reloading Changes
+# 重新加载更改
 
-The CAS spring cloud configuration server is able to consume properties and settings via the [profiles outlined here](Configuration-Server-Management.html). The server is constantly monitoring changes to the underlying property sources automatically, but has no way to broadcast those changes to its own clients, such as the CAS server itself, which would act as *a client of the configuration server* expecting change notifications to quietly reload its configuration.
+CAS 弹簧云配置服务器能够通过此处概述的</a>
 
-Therefore, in order to broadcast such `change` events CAS presents [various endpoints](../monitoring/Monitoring-Statistics.html) that allow the adopter to **refresh** the configuration as needed. This means that an adopter would change a required CAS settings and then would submit a request to CAS to refresh its current state. All CAS internal components that are affected by the external change are quietly reloaded and the setting takes immediate effect, completely removing the need for container restarts or CAS re-deployments.
+配置文件 消耗属性和设置。 服务器不断自动监控基础属性源的 更改，但无法 向自己的客户端（如 CAS 服务器本身）广播这些更改，CAS 服务器本身将充当配置 服务器的客户端 *，* 期待更改通知悄悄地重新加载其配置。</p> 
 
-<div class="alert alert-info"><strong>Do Not Discriminate!</strong><p>Most if not all CAS settings are eligible candidates
-for reloads. CAS should be smart enough to reload the appropriate configuration, regardless of setting/module that
-ends up using that setting. All is fair game, as the entire CAS web application inclusive of all modules and all
-relevant settings may be completely and utterly reloadable. If you find an instance where this statement does not hold, please speak up.</p></div>
+因此，为了广播此类 `更改` 事件 CAS 呈现 [种端点](../monitoring/Monitoring-Statistics.html) ，使采用者 能够根据需要 **刷新** 配置。 这意味着采用者将 更改所需的 CAS 设置，然后向 CAS 提交 请求以刷新其当前状态。 受外部变化影响 的所有 CAS 内部组件都悄悄地重新加载 ，设置立即生效，完全无需容器重新启动或 CAS 重新部署。
 
-To see the relevant list of CAS properties, please [review this guide](Configuration-Properties.html#cloud-configuration-bus).
+<div class="alert alert-info"><strong>不要歧视！</strong><p>大多数（如果不是全部）CAS设置都是符合资格的候选人
+重新加载。 CAS 应该足够聪明，能够重新加载适当的配置，无论
+最终使用该设置的设置/模块如何。 一切都是公平的游戏，因为整个CAS网络应用程序包括所有模块和所有
+相关设置可能是完全和完全可重新加载。 如果您发现此语句不成立的实例，请直言不讳。</p></div>
 
-## Reload Strategy
+要查看 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#cloud-configuration-bus)。
 
-CAS uses [Spring Cloud](https://github.com/spring-cloud/spring-cloud-config) to manage the internal state of the configuration. The configuration server that is provided by Spring Cloud embedded in CAS is constantly monitoring sources that house CAS settings and upon changes will auto-refresh itself.
 
-### Application Context
 
-The CAS application context and runtime environment that contains all Spring components and bean definitions can be reloaded using the following administrative endpoint:
+## 重新加载策略
 
-The following endpoints are provided by CAS:
+CAS 使用 [春云](https://github.com/spring-cloud/spring-cloud-config) 来管理配置的内部状态。 由 CAS 嵌入的 Spring Cloud 提供的配置服务器不断监控 CAS 设置 源，一更改后将自动刷新。
 
-| Endpoint        | Description                                                                   |
-| --------------- | ----------------------------------------------------------------------------- |
-| `reloadContext` | Reloads the CAS application context and all bean definitions where necessary. |
 
-### Configuration
 
-Changes in CAS configuration settings and properties can be reloaded using the strategies outlined below.
+### 应用上下文
 
-#### Standalone
+CAS 应用程序上下文和运行时间环境包含所有春季组件和豆子定义 可使用以下管理端点重新加载：
 
-In the event that the [standalone configuration profile](Configuration-Server-Management.html#standalone) is used to control and direct settings and Spring Cloud configuration server is disabled, CAS will begin to automatically watch and monitor the configuration files indicated by the profile and will auto-reload the state of the runtime application context automatically. You may also attempt to [refresh settings manually](../monitoring/Monitoring-Statistics.html) via the CAS admin endpoints.
+CAS 提供以下端点：
 
-Support is enabled by including the following dependency in the WAR overlay:
+| 端点        | 描述                         |
+| --------- | -------------------------- |
+| `重新加载康德信` | 必要时重新加载 CAS 应用程序上下文和所有豆定义。 |
+
+
+
+
+### 配置
+
+CAS 配置设置和属性的变化可以使用下面概述的策略重新加载。
+
+
+
+#### 独立
+
+如果 [独立配置文件](Configuration-Server-Management.html#standalone) 用于控制和直接设置，并禁用了Spring Cloud配置服务器， CAS 将开始自动监视和监控配置文件指示的配置文件，并将自动重新加载运行时间的状态 应用程序上下文。 您也可以尝试通过 CAS 管理端点手动</a> 刷新设置。</p> 
+
+支持通过在 WAR 叠加中包括以下依赖性来启用：
+
+
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-core-events-configuration</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-核心-事件-配置</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-#### Spring Cloud
 
-Clients of the configuration server (i.e. CAS server web application) do also expose a `/refresh` endpoint that allow one to refresh the configuration based on the current state of the configuration server and reconfigure the application runtime without the need to restart the JVM.
+
+
+#### 春云
+
+配置服务器的客户端（即 CAS服务器web应用程序）也暴露了一个 `/刷新` 端点 ，允许一个人刷新配置的基础上配置服务器的当前状态，并重新配置 应用程序运行时间，而无需重新启动JVM。
+
+
 
 ```bash
-curl -X POST https://cas.server.url/cas/actuator/refresh
+卷曲-X开机自检 https://cas.server.url/cas/actuator/refresh
 ```
 
-[See this guide](../monitoring/Monitoring-Statistics.html) to learn more about various monitoring endpoints, etc.
+
+[本指南](../monitoring/Monitoring-Statistics.html) 了解有关各种监控端点等的更多情况。
