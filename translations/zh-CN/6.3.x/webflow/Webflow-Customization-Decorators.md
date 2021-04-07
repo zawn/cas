@@ -1,42 +1,42 @@
 ---
-layout: default
-title: CAS - Webflow Decorations
-category: Webflow Management
+layout: 违约
+title: CAS - 网络流装饰
+category: 网络流管理
 ---
 
-# Webflow Decorations
+# 网络流装饰
 
-There are times where you may need to modify the CAS login webflow to include additional data, typically fetched from outside resources and endpoints that may also be considered sensitive and may require credentials for access. Examples include displaying announcements on the CAS login screen or other types of dynamic data. You can certainly [extend the webflow](Webflow-Customization-Extensions.html) to include additional states and actions into the login flow to call upon endpoints and data sources to fetch data. An easier option would be to let CAS decorate the login webflow automatically by reaching out to your REST endpoints, etc, taking care of the internal webflow configuration. Such decorators specifically get called upon as CAS begins to render the login view while reserving the right to decorate additional parts of the webflow in the future.
+有时，您可能需要修改 CAS 登录网络流以包含其他数据，这些数据通常取自外部资源和端点，也可能被视为敏感，可能需要访问凭据。 示例包括在 CAS 登录屏幕上显示公告或其他类型的动态数据。 您当然可以 [扩展 webflow](Webflow-Customization-Extensions.html) ，在登录流中加入其他状态和操作，以调用端点和数据源来获取数据。 一个更简单的选择是让 CAS 通过接触您的 REST 端点等自动装饰登录网络流，从而处理内部 Webflow 配置。 当 CAS 开始渲染登录视图时，此类装饰器特别需要，同时保留将来装饰 Webflow 其他部分的权利。
 
-Note that decorators only inject data into the webflow context where that data later on becomes available to the CAS login view, and more. Once the data is available, you still have the responsibility of using that data to properly display it in the appropriate view and style it correctly.
+请注意，装饰器仅将数据注入 Webflow 上下文，以便以后该数据可用于 CAS 登录视图等。 数据可用后，您仍有责任使用该数据在适当的视图中正确显示数据并正确设计数据。
 
-## Groovy Decorators
+## 格罗夫装饰器
 
-Groovy login decorators allow one to inject data into the webflow context by using an external Groovy script that may take on the following form:
+Groovy 登录装饰器允许使用外部 Groovy 脚本将数据注入网络流上下文，该脚本可能采用以下形式：
 
 ```groovy
-def run(Object[] args) {
-     def requestContext = args[0]
-     def applicationContext = args[1]
-     def logger = args[2]
+def运行（对象[]args）{
+     def请求康德文特=args[0]
+     def应用程序转换=args[1]
+     dd记录器=args[2]
 
-     logger.info("Decorating the webflow...")
-     requestContext.flowScope.put("decoration", ...)
+     logger.info（"装饰网络流。。。"）
+     请求康德信. 流镜. 放 （"装饰"， ...）
  }
 ```
 
-The parameters passed are as follows:
+通过的参数如下：
 
-| Parameter            | Description                                                                                  |
-| -------------------- | -------------------------------------------------------------------------------------------- |
-| `requestContext`     | The Spring Webflow `RequestContext` that carries various types of scopes as data containers. |
-| `applicationContext` | The Spring application context.                                                              |
-| `logger`             | Logger object used to issue log messages where needed.                                       |
+| 参数      | 描述                             |
+| ------- | ------------------------------ |
+| `请求康德信` | 春季网络流 `请求通量` ，将各种类型的示波器作为数据容器。 |
+| `应用康德信` | 春季应用上下文。                       |
+| `记录`    | 用于在需要时发布日志消息的记录对象。             |
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#spring-webflow-login-decorations).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#spring-webflow-login-decorations)。
 
-## REST Decorators
+## 休息装饰
 
-RESTful login decorators allow one to inject data into the webflow context by reaching out to an external REST API. If the endpoint responds back with a `200` status code, CAS would parse the response body into a JSON object and will stuff the result into the webflow's `flowScope` container under the key `decoration`. Please remember that data stuffed into the webflow **MUST** be serializable and if you intend to pass along complex objects types and fancy data structures, you need to make sure they can safely and ultimately transform into a simple `byte[]`.
+RESTFUL 登录装饰器允许一个人通过联系外部 REST API 将数据注入网络流上下文。 如果端点以 `200` 状态代码进行响应，CAS 会将响应主体解析为 JSON 对象，并将结果塞入网流的 `流范围` 容器中的关键 `装饰`下。 请记住，塞入网络流中的数据 **必须** 可串行，如果您打算传递复杂的对象类型和花哨的数据结构，您需要确保它们能够安全地最终转化为一个简单的 `字节[]`。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#spring-webflow-login-decorations).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#spring-webflow-login-decorations)。
