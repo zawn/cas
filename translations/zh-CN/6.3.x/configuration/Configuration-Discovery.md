@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - Configuration Discovery
-category: Configuration
+layout: 默认
+title: CAS-配置发现
+category: 配置
 ---
 
-# Configuration Discovery
+# 配置发现
 
-Certain aspects of the CAS server deployment may be advertised via a discovery endpoint to indicate to client applications and consumers the set of features and capabilities that are turned on. The [discovery profile endpoint](../monitoring/Monitoring-Statistics.html) is enabled by including the following module in the overlay:
+可以通过发现端点来通告CAS服务器部署的某些方面，以向客户端应用程序和消费者指示已打开的一组功能。 通过在叠加层中包含以下模块来启用 [发现配置文件端点](../monitoring/Monitoring-Statistics.html)
 
 ```xml
 <dependency>
@@ -16,25 +16,29 @@ Certain aspects of the CAS server deployment may be advertised via a discovery e
 </dependency>
 ```
 
-The metadata reported in the discovery profile generally includes two categories of items:
+发现配置文件中报告的元数据通常包括两类项目：
 
-- Capabilities that **could be** supported by the CAS server where the feature is available and yet isn't quite configured and turned on.
-- Capabilities that **are** actively and currently supported by and configured in the running CAS server.
+- 可以使用该功能但尚未完全配置和启用的CAS服务器 **能力设置**
+- 处于运行状态的CAS服务器当前主动支持和配置的能力为 ****
 
-Examples of reported items include:
+报告项目的示例包括：
 
-- Service definitions types (CAS, SAML, OAuth, etc)
-- Multifactor Authentication Provider  types (Authy, Duo Security, etc)
+- 服务定义类型（CAS，SAML，OAuth等）
+- 多因素身份验证提供程序类型（Authy，Duo Security等）
 - ...
 
-<div class="alert alert-info"><strong>Docs Grow Old</strong><p>To examine the latest collection of reported metadata, turn on the endpoint and observe the behavior in action. The metadata will continue to grow and improve per every CAS release to accommodate fancier discovery attempts.</p></div>
+<div class="alert alert-info"><strong>Docs变老了</strong><p>要检查报告的元数据的最新集合，请打开端点并观察实际行为。 每个CAS版本的元数据都将继续增长和改进，以适应更多的发现尝试。</p></div>
 
-Note that this capability and endpoint is turned off by default and its access is controlled similar to all other CAS administrative endpoints. Once the endpoint is turned on, you will need to ensure proper access is granted only to authorized parties via appropriate [security options provided by CAS](../monitoring/Monitoring-Statistics.html).
+请注意，此功能和端点默认情况下处于关闭状态，其访问与所有其他CAS管理端点一样受到控制。 </a>
 
-## Administrative Endpoints
+安全选项，仅将适当的访问权限授予授权方。</p> 
 
-The following endpoints are provided by CAS:
 
-| Endpoint           | Description                                                                                               |
-| ------------------ | --------------------------------------------------------------------------------------------------------- |
-| `discoveryProfile` | Provides a JSON representation of the [CAS configuration and capabilities](Configuration-Discovery.html). |
+
+## 行政端点
+
+CAS提供了以下端点：
+
+| 终点                 | 描述                                                 |
+| ------------------ | -------------------------------------------------- |
+| `DiscoveryProfile` | [CAS配置和功能](Configuration-Discovery.html)的JSON表示形式。 |
