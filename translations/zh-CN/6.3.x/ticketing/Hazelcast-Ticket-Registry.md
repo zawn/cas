@@ -1,41 +1,41 @@
 ---
-layout: default
-title: CAS - Hazelcast Ticket Registry
-category: Ticketing
+layout: 默认
+title: CAS-Hazelcast票务注册表
+category: 售票处
 ---
 
-# Hazelcast Ticket Registry
+# Hazelcast票务登记处
 
-Hazelcast Ticket Registry is a distributed ticket registry implementation based on [Hazelcast distributed grid library](http://hazelcast.org/). The registry implementation is cluster-aware and is able to auto-join a cluster of all the CAS nodes that expose this registry. Hazelcast will use port auto-increment feature to assign a TCP port to each member of a cluster starting from initially provided arbitrary port, which is typically `5701` by default.
+Hazelcast Ticket Registry是基于 [Hazelcast分布式网格库](http://hazelcast.org/)的分布式票证注册表实现 。 注册表实现可 群集，并且能够自动加入所有公开此注册表的CAS节点的群集。 Hazelcast将使用端口自动递增功能为群集的每个成员分配一个TCP端口，该端口从最初提供的任意端口 ，默认情况下 `5701`
 
-Hazelcast will evenly distribute the ticket data among all the members of a cluster in a very efficient manner. Also, by default, the data collection on each node is configured with 1 backup copy, so that Hazelcast will use it to make strong data consistency guarantees i.e. the loss of data on live nodes will not occur should any other *primary data owner* members die. The data will be re-partitioned among the remaining live cluster members.
+Hazelcast将以非常有效的 方式在群集的所有成员之间平均分配票证数据。 同样，默认情况下，每个节点上的数据收集都配置有1个备份副本，即 以便Hazelcast将使用它来提供强大的数据一致性保证，即， *主要数据拥有者都不会发生 * 名成员死亡。 数据将在剩余的活动群集成员中重新分区
 
-Support is enabled by the following module:
+以下模块启用了支持：
 
 ```xml
 <dependency>
     <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-hazelcast-ticket-registry</artifactId>
+    <artifactId>cas服务器支持hazelcast票务注册表</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-This module has a configuration strategy which by default auto-configures a hazelcast instance used by the ticket registry implementation to build and retrieve Hazelcast's maps for its distributed tickets storage. Some aspects of hazelcast configuration in this auto-configuration mode are controlled by CAS properties.
+该模块具有一种配置策略，默认情况下会自动配置票证注册表实现所使用的hazelcast实例，以构建和检索Hazelcast的地图以用于其分布式票证存储。 在此自动配置模式下，Hazelcast配置的某些方面由CAS属性控制。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#hazelcast-ticket-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#hazelcast-ticket-registry)。
 
-<div class="alert alert-warning"><strong>Session Monitoring</strong><p>Be aware that under very heavy load and given a very large collection of tickets over time, <a href="../monitoring/Configuring-Monitoring.html">session monitoring capabilities</a> of CAS that report back ticket statistics based on the underlying Hazelcast ticket registry may end up timing out. This is due to the concern that Hazelcast attempts to run distributed queries across the entire network to collect, analyze and aggregate tickets which may be still active or in flux. If you do experience this behavior, it likely is preferable to turn off the session monitor.
+<div class="alert alert-warning"><strong>会话监控</strong><p>请注意，在非常重的负载下，并且随着时间的推移收集了大量票证 <a href="../monitoring/Configuring-Monitoring.html">会话监视功能</a> 基于基础的Hazelcast票证注册表报告票证统计信息，最终可能会超时。 这是由于担心，Hazelcast尝试在整个网络上运行分布式查询，以收集，分析和汇总可能仍处于活动状态或不断变化的票证。 如果您确实遇到这种现象，则最好关闭会话监视器。
 </p></div>
 
-For more information on the Hazelcast configuration options available, refer to [the Hazelcast configuration documentation](http://docs.hazelcast.org/docs/3.9.1/manual/html-single/index.html#hazelcast-configuration)
+有关可用Hazelcast配置选项的详细信息， 是指 [所述Hazelcast配置文档](http://docs.hazelcast.org/docs/3.9.1/manual/html-single/index.html#hazelcast-configuration)
 
-## AWS EC2 Auto Discovery
+## AWS EC2自动发现
 
-Hazelcast support in CAS may handle EC2 auto-discovery automatically. It is useful when you do not want to provide or you cannot provide the list of possible IP addresses for the members of the cluster. You optionally also have the ability to specify partitioning group that would be zone aware. When using the zone-aware configuration, backups are created in the other AZs. Each zone will be accepted as one partition group. Using the AWS Discovery capability requires that you turn off and disable multicast and TCP/IP config in the CAS settings, which should be done automatically by CAS at runtime.
+CAS中的Hazelcast支持可能会自动处理EC2自动发现。 当您不想提供或无法提供群集成员的可能IP地址的列表时，此功能很有用。 您还可以选择指定可以识别区域的分区组。 使用区域感知配置时，将在其他可用区中创建备份。 每个区域将被接受为一个分区组。 使用AWS Discovery功能要求您在CAS设置中关闭并禁用多播和TCP / IP配置，这应由CAS在运行时自动完成。
 
-Support is enabled by the following module:
+以下模块启用了支持：
 
 ```xml
 <dependency>
@@ -45,9 +45,9 @@ Support is enabled by the following module:
 </dependency>
 ```
 
-## Apache jclouds Auto Discovery
+## Apache jclouds自动发现
 
-Hazelcast support in CAS may handle auto-discovery automatically via [Apache jclouds®](https://jclouds.apache.org/). It is useful when you do not want to provide or you cannot provide the list of possible IP addresses for the members of the cluster. Apache jclouds® is an open source multi-cloud toolkit for the Java platform that gives you the freedom to create applications that are portable across clouds while giving you full control to use cloud-specific features. To see the full list of supported cloud environments, [please see this link](https://jclouds.apache.org/reference/providers/#compute).
+在CAS Hazelcast支持可以通过自动处理自动发现 [阿帕奇jclouds®](https://jclouds.apache.org/)。 当您不想提供或无法提供群集成员的可能IP地址的列表时，此功能很有用。 Apachejclouds®是Java平台的开源多云工具包，它使您可以自由创建跨云可移植的应用程序，同时可以完全控制使用特定于云的功能。 要查看受支持的云环境的完整列表，请参阅 [](https://jclouds.apache.org/reference/providers/#compute)。
 
 ```xml
 <dependency>
@@ -57,9 +57,9 @@ Hazelcast support in CAS may handle auto-discovery automatically via [Apache jcl
 </dependency>
 ```
 
-## Microsoft Azure Auto Discovery
+## Microsoft Azure自动发现
 
-Hazelcast support in CAS may handle auto-discovery automatically via Microsoft Azure. The discovery strategy will provide all Hazelcast instances by returning VMs within your Azure resource group that are tagged with a specified value. You will need to setup [Azure Active Directory Service Principal credentials](https://azure.microsoft.com/en-us/documentation/articles/resource-group-create-service-principal-portal/) for your Azure Subscription for this plugin to work. With every Hazelcast Virtual Machine you deploy in your resource group, you need to ensure that each VM is tagged with the value of `clusterId` defined in the CAS Hazelcast configuration. The only requirement is that every VM can access each other either by private or public IP address.
+CAS中的Hazelcast支持可以通过Microsoft Azure自动处理自动发现。 发现策略将通过返回Azure资源组中标记有指定值的VM，从而提供所有Hazelcast实例。 您需要 [Azure Active Directory服务主体凭据](https://azure.microsoft.com/en-us/documentation/articles/resource-group-create-service-principal-portal/) ，此插件才能正常工作。 对于您在资源组中部署的每个Hazelcast虚拟机，您需要确保每个VM都标记有CAS Hazelcast配置中定义 `clusterId` 唯一的要求是每个VM都可以通过私有IP地址或公共IP地址相互访问。
 
 ```xml
 <dependency>
@@ -69,16 +69,16 @@ Hazelcast support in CAS may handle auto-discovery automatically via Microsoft A
 </dependency>
 ```
 
-## Kubernetes Auto Discovery
+## Kubernetes自动发现
 
-This hazelcast discovery plugin provides the possibility to lookup IP addresses of other members by resolving those requests against a [Kubernetes](http://kubernetes.io/) Service Discovery system.
+这个hazelcast发现插件提供了通过将 [Kubernetes](http://kubernetes.io/) Service Discovery系统 请求来查找其他成员的IP地址的可能性。
 
-This module supports two different options of resolving against the discovery registry:
+此模块支持针对发现注册表进行解析的两个不同选项：
 
-- A request to the REST API
-- DNS Lookup against a given headless DNS service name
+- 对REST API的请求
+- 针对给定的无头DNS服务名称的DNS查找
 
-See [this link](https://github.com/hazelcast/hazelcast-kubernetes) for more info.
+有关更多信息，请参见 [此链接](https://github.com/hazelcast/hazelcast-kubernetes)
 
 ```xml
 <dependency>
@@ -88,11 +88,11 @@ See [this link](https://github.com/hazelcast/hazelcast-kubernetes) for more info
 </dependency>
 ```
 
-## Docker Swarm Auto Discovery
+## Docker Swarm自动发现
 
-This hazelcast discovery plugin provides a Docker Swarm mode based discovery strategy.
+这个hazelcast发现插件提供了基于Docker Swarm模式的发现策略。
 
-See [this link](https://github.com/bitsofinfo/hazelcast-docker-swarm-discovery-spi/) for more info.
+有关更多信息，请参见 [此链接](https://github.com/bitsofinfo/hazelcast-docker-swarm-discovery-spi/)
 
 ```xml
 <dependency>
@@ -102,31 +102,31 @@ See [this link](https://github.com/bitsofinfo/hazelcast-docker-swarm-discovery-s
 </dependency>
 ```
 
-## Multicast Auto Discovery
+## 组播自动发现
 
-With the multicast auto-discovery mechanism, Hazelcast allows cluster members to find each other using multicast communication. The cluster members do not need to know the concrete addresses of the other members, as they just multicast to all the other members for listening. Whether multicast is possible or allowed **depends on your environment**.
+通过多播自动发现机制，Hazelcast允许群集成员使用多播通信相互查找。 集群成员不需要知道其他成员的具体地址，因为它们只是组播给所有其他成员以进行监听。 多播是可能的还是被允许的 **取决于您的环境**。
 
-Pay special attention to timeouts when multicast is enabled. Multicast timeout specifies the time in seconds that a member should wait for a valid multicast response from another member running in the network before declaring itself the leader member (the first member joined to the cluster) and creating its own cluster. This only applies to the startup of members where no leader has been assigned yet. If you specify a high value such as 60 seconds, it means that until a leader is selected each member will wait 60 seconds before moving on. Be careful when providing a high value. Also, be careful not to set the value too low, or the members might give up too early and create their own cluster.
+启用多播时，请特别注意超时。 组播超时指定以秒为单位的时间，该成员应等待网络中另一个成员的有效组播响应，然后再声明自己为领导者成员（加入集群的第一个成员）并创建自己的集群。 这仅适用于尚未分配领导者的成员的启动。 如果您指定一个较高的值（例如60秒），则意味着在选择领导者之前，每个成员将等待60秒才能继续前进。 提供高价值时要小心。 另外，请注意不要将值设置得太低，否则成员可能会放弃得太早而创建自己的集群。
 
-## WAN Replication
+## 广域网复制
 
-Hazelcast WAN Replication allows you to keep multiple Hazelcast clusters in sync by replicating their state over WAN environments such as the Internet.
+Hazelcast WAN复制允许您通过在WAN环境（例如Internet）上复制它们的状态来使多个Hazelcast群集保持同步。
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>Using Hazelcast WAN Replication requires a Hazelcast Enterprise subscription. Make sure you 
-have acquired the proper license, SDK and tooling from Hazelcast before activating this feature. Please contact Hazelcast for more information.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>使用Hazelcast WAN复制需要Hazelcast Enterprise订阅。 在激活此功能之前，请确保您 
+已从Hazelcast获得了正确的许可证，SDK和工具。 请联系Hazelcast以获取更多信息。</p></div>
 
-Hazelcast supports two different operation modes of WAN Replication:
+Hazelcast支持WAN复制的两种不同操作模式：
 
-- Active-Passive: This mode is mostly used for failover scenarios where you want to replicate an active cluster to one or more passive clusters, for the purpose of maintaining a backup.
-- Active-Active: Every cluster is equal, each cluster replicates to all other clusters. This is normally used to connect different clients to different clusters for the sake of the shortest path between client and server.
+- 主动-被动：此模式主要用于故障转移方案，在这种情况下，您需要将主动群集复制到一个或多个被动群集中，以维护备份。
+- Active-Active：每个集群都相等，每个集群都复制到所有其他集群。 通常，这是为了将客户端和服务器之间的最短路径连接到不同的群集上。
 
-See [this page](https://hazelcast.com/products/wan-replication/) for more information.
+有关更多信息，请参见 [第](https://hazelcast.com/products/wan-replication/)
 
-Defining WAN replication endpoints in CAS is done using static endpoints and discovery.
+在CAS中定义WAN复制端点是使用静态端点和发现完成的。
 
-## Logging
+## 记录中
 
-To enable additional logging for the registry, configure the log4j configuration file to add the following levels:
+要为注册表启用其他日志记录，请配置log4j配置文件以添加以下 级：
 
 ```xml
 ...
