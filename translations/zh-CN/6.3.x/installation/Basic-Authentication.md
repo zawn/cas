@@ -1,38 +1,38 @@
 ---
-layout: default
-title: CAS - Basic Authentication
-category: Authentication
+layout: 违约
+title: 中科院 - 基本认证
+category: 认证
 ---
 
-# Basic Authentication
+# 基本身份验证
 
-Verify and authenticate credentials using Basic Authentication.
+使用基本身份验证验证和验证凭据。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-basic</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-基本</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To access a CAS-protected application using a command-line client such as `curl`, the following command may be used:
+要使用命令线客户端（如 `卷曲`）访问 CAS 保护的应用程序，可以使用以下命令：
 
 ```bash
-curl <APPLICATION-URL> -L -u <USER>:<PASSWORD>
+卷曲 <APPLICATION-URL> -L-u <USER>：<PASSWORD>
 ```
 
-Use `--insecure -v` flags to bypass certificate validation and receive additional logs from `curl`.
+使用 `- 不安全 - v` 标志绕过证书验证，并接收来自 `卷曲`的其他日志。
 
-If your `APPLICATION-URL` and CAS server url are not on the same host, curl will **NOT** send the Basic Authentication header to the CAS server when redirected. This behavior in curl can be overridden by passing the `--location-trusted` flag to curl.
+如果您的 `应用-URL` 和 CAS 服务器 url 不在同一主机上，则卷曲将 **不** 重定向时将基本身份验证标题发送到 CAS 服务器。 卷曲中的这种行为可以通过传递 `来覆盖 - 位置信任的` 标志卷曲。
 
-From CURL man page:
+从CURL人页面：
 
 ```bash
---location-trusted
-        (HTTP/HTTPS) Like -L, --location, but will allow sending the name + password to all hosts that the site may redirect to. This may or may
-        not  introduce a security breach if the site redirects you to a site to which you'll send your authentication info 
-        (which is plaintext in the case of HTTP Basic authentication).
+-位置信任的
+        （HTTP/HTTPS）喜欢-L，位置，但将允许发送名称+密码到所有主机，该网站可能会重定向。 如果网站将您重定向到 
+        （HTTP 基础身份验证情况下为简体），则可能会或可能不会
+        引入安全漏洞。
 ```
