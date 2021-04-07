@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - SOAP Authentication
-category: Authentication
+layout: 违约
+title: CAS - 肥皂认证
+category: 认证
 ---
 
-# SOAP Authentication
+# 肥皂认证
 
-Verify and authenticate credentials where CAS acts as a SOAP client. Credentials are submitted to the SOAP endpoint whereupon authentication, the expected response is to return a username, a set of attributes and possibly a status that is loosely based on HTTP status codes which might help determine the *account status*.
+在 CAS 充当 SOAP 客户端的情况下，验证和验证凭据。 凭据被提交到 SOAP 端点，因此通过身份验证， 预期响应是返回用户名、一组属性，以及可能松散地基于 HTTP 状态代码的状态状态，这可能有助于 确定 *帐户状态*。
 
-The current schema is as such:
+当前的模式如下：
 
 ```xml
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -42,35 +42,35 @@ The current schema is as such:
 </xs:schema>
 ```
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-soap-authentication</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>套机服务器支持肥皂认证</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#soap-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#soap-authentication)。
 
-The `status` returned in the SOAP response as interpreted as one of the following values:
+`状态` SOAP响应中返回，解释为以下值之一：
 
-| Code  | Result                                          |
-| ----- | ----------------------------------------------- |
-| `200` | Successful authentication.                      |
-| `403` | Produces a `AccountDisabledException`           |
-| `404` | Produces a `AccountNotFoundException`           |
-| `423` | Produces a `AccountLockedException`             |
-| `412` | Produces a `AccountExpiredException`            |
-| `428` | Produces a `AccountPasswordMustChangeException` |
-| Other | Produces a `FailedLoginException`               |
+| 法典    | 结果              |
+| ----- | --------------- |
+| `200` | 成功的身份验证。        |
+| `403` | 生成 `帐户禁用例外`     |
+| `404` | 生成 `帐户未发现例外`    |
+| `423` | 生成 `帐户锁定例外`     |
+| `412` | 生成 `帐户初始`       |
+| `428` | 生成 `帐户密码必须改变例外` |
+| 其他    | 生成 `失败日志初始`     |
 
-## Troubleshooting
+## 故障 排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
 
 ```xml
 ...
