@@ -1,61 +1,61 @@
 ---
-layout: default
-title: CAS - RADIUS Authentication
-category: Multifactor Authentication
+layout: 违约
+title: CAS - 拉迪乌斯认证
+category: 多因素认证
 ---
 
-# RADIUS Authentication
+# 拉迪乌斯身份验证
 
-RADIUS support is enabled by only including the following dependency in the overlay:
+RADIUS 支持仅通过在叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-radius</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡 - 服务器支持半径</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#radius-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#radius-authentication)。
 
-You may also need to declare the following repository in your CAS overlay to be able to resolve dependencies:
+您可能需要在 CAS 叠加 中申报以下存储库，以解决依赖关系：
 
 ```groovy       
-repositories {
-    maven { 
-        mavenContent { releasesOnly() }
-        url "https://dl.bintray.com/apereocas/jradius" 
+存储库{
+    马文{ 
+        马文康森特{发布（）=
+        网址"https://dl.bintray.com/apereocas/jradius" 
     }
 }
 ```
 
-# RSA RADIUS MFA
+# RSA拉迪乌斯·姆法
 
-RSA RADIUS OTP support for MFA is enabled by only including the following dependency in the overlay:
+RSA RADIUS OTP对MFA的支持仅通过在叠加中包括以下依赖性来实现：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-radius-mfa</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持半径 - mfa</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#radius-otp).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#radius-otp)。
 
-## Repository
+## 存储 库
 
-You may also need to declare the following repository in your CAS overlay to be able to resolve dependencies:
+您可能需要在 CAS 叠加 中申报以下存储库，以解决依赖关系：
 
 ```xml 
-repositories {
-    maven { 
-        mavenContent { releasesOnly() }
-        url "https://jitpack.io" 
+存储库{
+    maven{ 
+        马文康森特{发布（）=
+        网址"https://jitpack.io" 
     }
 }
 ```
