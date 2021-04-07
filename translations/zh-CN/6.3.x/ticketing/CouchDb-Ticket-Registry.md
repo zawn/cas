@@ -1,38 +1,38 @@
 ---
-layout: default
-title: CAS - CouchDB Ticket Registry
-category: Ticketing
+layout: 违约
+title: CAS - 库奇德布票务注册处
+category: 票务
 ---
 
-# CouchDB Ticket Registry
+# 库奇德布票务登记处
 
-CouchDB integration is enabled by including the following dependency in the WAR overlay:
+沙发数据库集成通过在 WAR 叠加中包括以下依赖性而实现：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-couchdb-ticket-registry</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 沙发 - 票登记</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
 
-[CouchDB](http://couchdb.apache.org) is a highly available, open source NoSQL database server based on [Erlang/OTP](http://www.erlang.org) and its mnesia database. The intention of this registry is to leverage the multi-master, multi-datacenter capabilities of CouchDB server to provide high availability to CAS.
+[沙发数据库](http://couchdb.apache.org) 是基于 [Erlang/OTP](http://www.erlang.org) 及其 mnesia 数据库的高度可用的开源 NoSQL 数据库服务器。 此 注册表的目的是利用 CouchDB 服务器的多主、多数据中心功能，为 CAS 提供高可用性。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchdb-ticket-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchdb-ticket-registry)。
 
 
-The only truly mandatory setting is the URL. However, CouchDB should not be used in admin party mode in production, so username and password are needed as well.
+唯一真正强制性的设置是网址。 但是，在生产中不应在管理员方模式中使用 CouchDB，因此也需要用户名和密码。
 
-## Caveat
+## 警告
 
-The trade off for multi-master replication across multiple datacenters if CouchDB does not fully delete records. Depending on deployment scale, usage, and available storage, the database may need regular cleaning through normal CouchDB techniques.
+如果 CouchDB 未完全删除 记录，则多个数据中心的多主复制将进行权衡。 根据部署规模、使用情况和可用存储，数据库可能需要通过正常的 CouchDB 技术定期进行清洁 。
 
-## Troubleshooting
+## 故障 排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下 级别：
 
 ```xml
 ...
