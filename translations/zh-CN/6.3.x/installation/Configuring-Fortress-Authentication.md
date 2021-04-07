@@ -1,49 +1,49 @@
 ---
-layout: default
-title: CAS - Apache Fortress Authentication
-category: Authentication
+layout: 违约
+title: CAS - 阿帕奇要塞认证
+category: 认证
 ---
 
-# Apache Fortress Authentication
+# 阿帕奇要塞认证
 
-Services connected to CAS can use [Apache Fortress](http://directory.apache.org/fortress/) to handle the authentication and authorization with Apache Fortress. The idea of this is because Apache Fortress does not have any SSO mechanism. However, Apache Fortress is complied for `ANSI INCITS 359 RBAC`.  
-[See this link](http://directory.apache.org/fortress/testimonials.html) for background and history.
+连接到 CAS 的服务可以使用 [阿帕奇要塞](http://directory.apache.org/fortress/) 处理与阿帕奇要塞的认证和授权。 这个想法是因为阿帕奇要塞没有任何SSO机制。 然而，阿帕奇要塞是遵守 `ANSI INCITS 359 RBAC`。  
+[请参阅此链接](http://directory.apache.org/fortress/testimonials.html) 了解背景和历史。
 
-## Overview
+## 概述
 
-The following diagram is a typical CAS deployment integrated with Apache Fortress: ![](https://cloud.githubusercontent.com/assets/493782/26521160/f9987de0-430b-11e7-833d-a0e6257a9ebd.PNG)
+下图是典型的 CAS 部署与阿帕奇要塞集成： ![](https://cloud.githubusercontent.com/assets/493782/26521160/f9987de0-430b-11e7-833d-a0e6257a9ebd.PNG)
 
-In the above diagram, CAS will delegate the authentication to Fortress on behalf the Fortress admin user, which is configured in the `fortress.properties` file. CAS automatically search for this file (assuming classpath) and constructs an access manager component with the admin user as the default communication user to fortress.
+在上图中，CAS 将代表堡垒管理员用户将身份验证委托给要塞，该管理员用户 配置在 `` 要塞中。 CAS 会自动搜索此文件（假设类路径） ，并构建一个访问管理器组件，管理员用户作为默认通信用户到堡垒。
 
-To enable this feature, ensure Apache Fortress is [installed](http://directory.apache.org/fortress/installation.html "apache fortress installation").
+要启用此功能，请确保阿帕奇要塞 [安装](http://directory.apache.org/fortress/installation.html "apache fortress installation")。
 
-Next include the following module in the WAR overlay:
+下一个内容包括 WAR 叠加中的以下模块：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-fortress</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>卡斯服务器支持堡垒</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-At this time, Apache Fortress support is limited to Apache Tomcat as the web container. Support for additional containers such as Jetty will be worked out in future releases.
+此时，阿帕奇要塞的支持仅限于阿帕奇汤姆卡特作为网络容器。 在未来的版本中，将制定对码头等额外集装箱的支持。
 
-## CAS Configuration
+## CAS 配置
 
-- Configure `fortress.properties` file and put it under your `$TOMCAT_HOME/lib` or you can append your own classpath configuration. An example configuration file follows:
+- 配置 `堡垒.属性` 文件，并将其置于您的 `$TOMCAT_HOME/lib` ，或者您可以附加您自己的类路径配置。 文件 示例配置如下：
 
 ```properties
-http.user=fortress-super-user
-http.pw=verysecretpassword
-http.host=localhost
+http.user=堡垒超级用户
+http.pw]非常秘密的密码
+http.主机=本地主机
 http.port=8080
-http.protocol=http
+http.协议
 ```
 
-- Put Fortress Realm Proxy under your `$TOMCAT_HOME/lib`.
-- Add `-Dversion=<your.fortress.version>` to `JAVA_OPTS` or `CATALINA_OPTS`.
+- 把堡垒王国代理下你的 `$TOMCAT_HOME/图书馆`。
+- 添加 `-Dversion®<your.fortress.version>` 到 `JAVA_OPTS` 或 `CATALINA_OPTS`。
 
-## Client Configuration
+## 客户端配置
 
-The fortress session is stored as a principal attribute `fortressSession`. As the client you need to extract this key in order to get [Session](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/model/Session.html) in xml form. With Fortress session later you can get the roles or get the permission dynamically by calling fortress rest.
+堡垒会话存储为堡垒 `堡垒`的主要属性。 作为客户端，您需要提取 此密钥，以便以 xml 形式获得 [会话](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/model/Session.html) 。 稍后通过堡垒会话，您可以通过呼叫堡垒休息来获得角色或动态获得权限。
