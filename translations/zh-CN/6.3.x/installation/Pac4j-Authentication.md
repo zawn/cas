@@ -1,22 +1,22 @@
 ---
-layout: default
-title: CAS - pac4j Authentication
-category: Authentication
+layout: 默认
+title: CAS-pac4j身份验证
+category: 验证
 ---
 
 <p align="center">
   <img src="https://pac4j.github.io/pac4j/img/logo-cas.png" width="300" />
 </p>
 
-## Overview
+## 概述
 
-The [pac4j](https://github.com/pac4j/pac4j) project is a security engine with specific authentication mechanisms, called authenticators, for MongoDB, LDAP, CouchDb, JWT, RDBMS...
+[pac4j](https://github.com/pac4j/pac4j) 项目是一个具有特定身份验证机制的安全引擎，其中 称为身份验证器，用于MongoDB，LDAP，CouchDb，JWT，RDBMS ...
 
-A pac4j authenticator (and profile creator) can be wrapped in a CAS authentication handler and used for authentication.
+pac4j身份验证器（和配置文件创建者）可以在CAS身份验证处理程序中
 
-## Dependency
+## 相依性
 
-Support is added by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖关系来添加支持：
 
 ```xml
 <dependency>
@@ -26,6 +26,6 @@ Support is added by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-You can use the implementation for CAS username/password credentials: `UsernamePasswordWrapperAuthenticationHandler`.
+您可以将实现用于CAS用户名/密码凭据： `UsernamePasswordWrapperAuthenticationHandler`。
