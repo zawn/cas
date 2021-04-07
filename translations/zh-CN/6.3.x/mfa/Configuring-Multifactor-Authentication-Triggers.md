@@ -1,431 +1,431 @@
 ---
-layout: default
-title: CAS - Multifactor Authentication Triggers
-category: Multifactor Authentication
+layout: 默认
+title: CAS-多因素身份验证触发器
+category: 多因素身份验证
 ---
 
-# Multifactor Authentication Triggers
+# 多因素身份验证触发器
 
-The following triggers can be used to activate and instruct CAS to navigate to a multifactor authentication flow. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+以下触发器可用于激活并指示CAS导航到多因素身份验证流程。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#multifactor-authentication)。
 
-The execution order of multifactor authentication triggers is outlined below:
+下面概述了多因素身份验证触发器的执行顺序：
 
-1. Adaptive
-2. Global
-3. Opt-In Request Parameter/Header
-4. REST Endpoint
-5. Groovy Script
-6. Principal Attribute Per Application
-7. Global Principal Attribute Predicate
-8. Global Principal Attribute
-9. Global Authentication Attribute
-10. Applications
-11. Grouper
-12. Entity ID Request Parameter
-13. Other
+1. 适应性强
+2. 全球的
+3. 选择加入请求参数/标题
+4. REST端点
+5. Groovy脚本
+6. 每个应用程序的主要属性
+7. 全局主体属性谓词
+8. 全局主体属性
+9. 全局认证属性
+10. 应用领域
+11. 石斑鱼
+12. 实体ID请求参数
+13. 其他
 
-Each trigger should properly try to ignore the authentication request, if applicable configuration is not found for its activation and execution. Also note that various CAS modules present and inject their own *internal triggers* into the CAS application runtime in order to translate protocol-specific authentication requests (such as those presented by SAML2 or OpenID Connect) into multifactor authentication flows.
+如果未找到激活和执行的适用配置，则每个触发器应正确尝试忽略身份验证请求。 还要注意，各种CAS模块都提供了自己的 *内部触发器* 并将它们注入CAS应用程序运行时，以便将协议特定的身份验证请求（例如SAML2或OpenID Connect提出的请求）转换为多因素身份验证流。
 
-<div class="alert alert-info"><strong>Service Requirement</strong><p>Most multifactor authentication triggers require that the original authentication request submitted to CAS contain a <code>service</code> parameter. Failure to do so will result in an initial successful authentication attempt where subsequent requests that carry the relevant parameter will elevate the authentication context and trigger multifactor later. If you need to test a particular trigger, remember to provide the <code>service</code> parameter appropriately to see the trigger in action.</p></div>
+<div class="alert alert-info"><strong>服务要求</strong><p>大多数多因素身份验证触发器均要求提交给CAS的原始身份验证请求包含 <code>服务</code> 参数。 否则，将导致初始成功的身份验证尝试，在此之后，带有相关参数的后续请求将提升身份验证上下文并稍后触发多因素。 如果需要测试特定的触发器，请记住 <code>service</code> 参数，以查看该触发器的作用。</p></div>
 
-The trigger machinery in general should be completely oblivious to multifactor authentication; all it cares about is finding the next event in the chain in a very generic way. This means that it is technically possible to combine multiple triggers each of which may produce a different event in the authentication flow. In the event, having selected a final candidate event, the appropriate component and module that is able to support and respond to the produced event will take over and route the authentication flow appropriately.
+一般而言，触发机制应完全不考虑多因素身份验证；它关心的只是以一种非常通用的方式查找链中的下一个事件。 这意味着在技术上可以组合多个触发器，每个触发器可能在身份验证流程中产生不同的事件。 如果选择了最终的候选事件，则能够支持并响应所产生事件的适当组件和模块将接管并适当路由验证流程。
 
-## Global
+## 全球的
 
-MFA can be triggered for all applications and users regardless of individual settings.
+无论单独的设置如何，均可为所有应用程序和用户触发MFA。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#multifactor-authentication)。
 
-## Per Application
+## 每个应用
 
-MFA can be triggered for a specific application registered inside the CAS service registry.
+可以为在CAS服务注册表中注册的特定应用程序触发MFA。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "id" : 100,
-  "name": "test",
-  "multifactorPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy",
-    "multifactorAuthenticationProviders" : [ "java.util.LinkedHashSet", [ "mfa-duo" ] ],
-    "bypassEnabled": false,
-    "forceExecution": true
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “^（HTTPS | IMAPS）：//.*”，
+  “ID”：100，
+  “名称”： “ test”，
+  “ multifactorPolicy”：{
+    “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy”，
+    “ multifactorAuthenticationProviders”：[“ java.util.LinkedHashSet”，[“ mfa-duo”]] ，
+    “ bypassEnabled”：否，
+    “ forceExecution”：正确
   }
 }
 ```
 
-The following fields are accepted by the policy definition
+策略定义接受以下字段
 
-| Field                                | Description                                                                                                                             |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `multifactorAuthenticationProviders` | Set of multifactor provider ids that should trigger for this application.                                                               |
-| `script`                             | Path to a script, whether external or internal, to trigger multifactor authentication dynamically.                                      |
-| `bypassEnabled`                      | Whether multifactor authentication should be [bypassed](Configuring-Multifactor-Authentication-Bypass.html) for this service.           |
-| `forceExecution`                     | Whether multifactor authentication should forcefully trigger, even if the existing authentication context can be satisfied without MFA. |
+| 场地                                   | 描述                                                                       |
+| ------------------------------------ | ------------------------------------------------------------------------ |
+| `multifactorAuthenticationProviders` | 应为此应用程序触发的多因素提供程序ID的集合。                                                  |
+| `脚本`                                 | 脚本的路径，无论是外部脚本还是内部脚本，以动态触发多因素身份验证。                                        |
+| `BypassEnabled`                      | 多因素身份验证是否应为 [绕过此服务的](Configuring-Multifactor-Authentication-Bypass.html) |
+| `强制执行`                               | 即使不使用MFA即可满足现有身份验证上下文，是否也应强制触发多因素身份验证。                                   |
 
-### Groovy Per Application
+### 每个应用程序的Groovy
 
-You may determine the multifactor authentication policy for a registered service using a Groovy script:
+您可以使用Groovy脚本确定注册服务的多因素身份验证策略：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "id" : 100,
-  "name": "test",
-  "multifactorPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy",
-    "script" : "file:///etc/cas/config/mfa-policy.groovy"
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “^（HTTPS | IMAPS）：//.*”，
+  “ID”：100，
+  “名称”： “ test”，
+  “ multifactorPolicy”：{
+    “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy”，
+    “ script”：“ file：///etc/cas/config/mfa-policy.groovy “
   }
 }
 ```
 
-The script may also be embedded directly in the service definition, as such:
+该脚本也可以直接嵌入服务定义中，如下所示：
 
-you may determine the multifactor authentication policy for a registered service using a Groovy script:
+您可以使用Groovy脚本确定注册服务的多因素身份验证策略：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "id" : 100,
-  "name": "test",
-  "multifactorPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy",
-    "script" : "groovy { ... }"
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “^（HTTPS | IMAPS）：//.*”，
+  “ID”：100，
+  “名称”： “ test”，
+  “ multifactorPolicy”：{
+    “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy”，
+    “ script”：“ groovy { ... }”
   }
 }
 ```
 
-The script itself may be designed as follows:
+脚本本身可以设计如下：
 
 ```groovy
-def run(final Object... args) {
-    def authentication = args[0]
-    def registeredService = args[1]
+def run（final Object ... args）{
+    def身份验证= args[0]
+    def已注册服务= args[1]
     def httpRequest = args[2]
     def service = args[3]
     def applicationContext = args[4]
     def logger = args[5]
 
-    logger.debug("Determine mfa provider for ${registeredService} and ${authentication}")
-    return "mfa-duo"
+    logger。 debug（“确定 ${registeredService} 和 ${authentication}mfa提供程序”）
+    返回“ mfa-duo”
 }
 ```
 
-The parameters passed are as follows:
+传递的参数如下：
 
-| Parameter            | Description                                                                     |
-| -------------------- | ------------------------------------------------------------------------------- |
-| `registeredService`  | The object representing the corresponding service definition in the registry.   |
-| `authentication`     | The object representing the `Authentication` object.                            |
-| `httpRequest`        | The object representing the HTTP servlet request.                               |
-| `service`            | The object representing the service request, associated with this http request. |
-| `applicationContext` | The object representing the Spring application context.                         |
-| `logger`             | The object responsible for issuing log messages such as `logger.info(...)`.     |
+| 范围                   | 描述                                 |
+| -------------------- | ---------------------------------- |
+| `已注册的服务`             | 代表注册表中相应服务定义的对象。                   |
+| `验证`                 | 表示 `验证` 对象的对象。                     |
+| `httpRequest`        | 表示HTTP Servlet请求的对象。               |
+| `服务`                 | 表示服务请求的对象，与此http请求相关联。             |
+| `applicationContext` | 表示Spring应用程序上下文的对象。                |
+| `记录器`                | 负责发布日志消息的对象，例如 `logger.info（...）`。 |
 
-The expected outcome of the script is either `null` in case multifactor authentication should be skipped by this trigger, or the identifier of the multifactor provider that should be considered for activation.
+该脚本的预期结果为 `null` （如果该触发器将跳过多因素身份验证， 或应考虑激活的多因素提供者的标识符。
 
-### Groovy Per Application (Deprecated)
+### 每个应用程序的Groovy（已弃用）
 
-<div class="alert alert-warning"><strong>Usage</strong>
-<p><strong>This feature is deprecated and is scheduled to be removed in the future.</strong> If you can, consider using
-alternatives outlined here to trigger multifactor authentication per service using Groovy.</p>
+<div class="alert alert-warning"><strong>用法</strong>
+<p><strong>不推荐使用此功能，并计划在将来将其删除。</strong> 如果可以，请考虑使用
+替代方案，以使用Groovy触发每个服务的多因素身份验证。</p>
 </div>
 
-Additionally, you may determine the multifactor authentication policy for a registered service using a Groovy script:
+此外，您可以使用Groovy脚本确定注册服务的多因素身份验证策略：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "id" : 100,
-  "name": "test",
-  "multifactorPolicy" : {
-    "@class" : "org.apereo.cas.services.GroovyRegisteredServiceMultifactorPolicy",
-    "groovyScript" : "file:///etc/cas/config/mfa-policy.groovy"
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “^（HTTPS | IMAPS）：//.*”，
+  “ID”：100，
+  “名称”： “ test”，
+  “ multifactorPolicy”：{
+    “ @class”：“ org.apereo.cas.services.GroovyRegisteredServiceMultifactorPolicy”，
+    “ groovyScript”：“ file：///etc/cas/config/mfa-policy.groovy “
   }
 }
 ```
 
-The script itself may be designed as such by overriding the needed operations where necessary:
+通过在必要时覆盖所需的操作，可以将脚本本身设计为：
 
 ```groovy
-import org.apereo.cas.services.*
-import java.util.*
+import org.apereo.cas.services。*
+import java.util。*
 
-class GroovyMultifactorPolicy extends DefaultRegisteredServiceMultifactorPolicy {
-    @Override
-    Set<String> getMultifactorAuthenticationProviders() {
-        ...
+类GroovyMultifactorPolicy扩展DefaultRegisteredServiceMultifactorPolicy {
+
+    Set<String> getMultifactorAuthenticationProviders（）{
+...
     }
 
     @Override
-    RegisteredServiceMultifactorPolicyFailureModes getFailureMode() {
-        ...
+    RegisteredServiceMultifactorPolicyFailureModes getFailureMode（）{
+...
     }
 
-    @Override
-    String getPrincipalAttributeNameTrigger() {
-        ...
+
+    字符串getPrincipalAttributeNameTrigger（）{
+...
     }
 
-    @Override
-    String getPrincipalAttributeValueToMatch() {
-        ...
+
+    字符串getPrincipalAttributeValueToMatch（）{
+...
     }
 
-    @Override
-    boolean isBypassEnabled() {
-        ...
+
+    boolean isBypassEnabled（）{
+...
     }
 
-    @Override
-    boolean isForceExecution() {
-        ...
+
+    boolean isForceExecution（）{
+...
     }
 }
 ```
 
-The configuration of this component qualifies to use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax. Refer to the CAS API documentation to learn more about operations and expected behaviors.
+该组件的配置符合使用 [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) 语法的条件。 请参阅CAS API文档以了解有关操作和预期行为的更多信息。
 
-## Global Principal Attribute
+## 全局主体属性
 
-MFA can be triggered for all users/subjects carrying a specific attribute that matches one of the conditions below.
+可以为所有具有与以下条件之一匹配的特定属性的用户/主题触发MFA。
 
-- Trigger MFA based on a principal attribute(s) whose value(s) matches a regex pattern. **Note** that this behavior is only applicable if there is only a **single MFA provider** configured, since that would allow CAS to know what provider to next activate.
+- 根据其值与正则表达式模式匹配的主体属性触发MFA。 **注意** 该行为仅在仅 **个MFA提供程序** 情况下适用，因为这将使CAS 知道接下来要激活的提供程序。
 
-- Trigger MFA based on a principal attribute(s) whose value(s) **EXACTLY** matches an MFA provider. This option is more relevant if you have more than one provider configured or if you have the flexibility of assigning provider ids to attributes as values.
+- 根据主要属性（其值 **恰好为** 与MFA提供者匹配）触发MFA。 如果您配置了多个提供程序，或者可以灵活地将提供程序ID分配给属性作为值，则此选项更相关。
 
-Needless to say, the attributes need to have been resolved for the principal prior to this step. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+不用说，在此步骤之前，必须已经为主体解析了属性。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#multifactor-authentication)。
 
-## Global Principal Attribute Predicate
+## 全局主体属性谓词
 
-This is a more generic variant of the above trigger. It may be useful in cases where there is more than one provider configured and available in the application runtime and you need to design a strategy to dynamically decide on the provider that should be activated for the request.
+这是上述触发器的更通用的变体。 如果在应用程序运行时中配置了多个提供程序并且可用，并且您需要设计一种策略来动态决定应为该请求激活的提供程序，则这可能会很有用。
 
-The decision is handed off to a `Predicate` implementation defined in a Groovy script whose location is taught to CAS. The responsibility of the `test` function in the script is to determine eligibility of the provider to be triggered. If the predicate determines multiple providers as eligible by returning `true` more than one, the first provider in the sorted result set ranked by the provider's order will be chosen to respond.
+该决策将移交给 `谓词` 实现，该脚本的位置已告知CAS。 `test` 函数的职责是确定要触发的提供者的资格。 `真` 来确定多个提供者为合格，则将选择按提供者顺序排序的排序结果集中的第一个提供者进行响应。
 
-The Groovy script predicate may be designed as such:
+Groovy脚本谓词可以这样设计：
 
 ```groovy
-import org.apereo.cas.authentication.*
-import java.util.function.*
-import org.apereo.cas.services.*
+import org.apereo.cas.authentication。*
+import java.util.function。*
+import org.apereo.cas.services。*
 
-class PredicateExample implements Predicate<MultifactorAuthenticationProvider> {
+class PredicateExample实现谓词<MultifactorAuthenticationProvider> {
 
-    def service
-    def principal
-    def providers
-    def logger
+    def服务
+    def主体
+    def提供者
+    def记录器
 
-    public PredicateExample(service, principal, providers, logger) {
-        this.service = service
-        this.principal = principal
-        this.providers = providers
-        this.logger = logger
+    公共PredicateExample（服务，委托人，提供者，记录器）{
+        this.service =服务
+        this.principal =委托人
+        this.providers =提供者
+        this.logger =记录器
     }
 
     @Override
-    boolean test(final MultifactorAuthenticationProvider p) {
-        ...
+    布尔测试（最终MultifactorAuthenticationProvider p）{
+...
     }
 }
 ```
 
-The parameters passed are as follows:
+传递的参数如下：
 
-| Parameter   | Description                                                                              |
-| ----------- | ---------------------------------------------------------------------------------------- |
-| `service`   | The object representing the corresponding service definition in the registry.            |
-| `principal` | The object representing the authenticated principal.                                     |
-| `providers` | Collection of `MultifactorAuthenticationProvider`s from which a selection shall be made. |
-| `logger`    | The object responsible for issuing log messages such as `logger.info(...)`.              |
+| 范围    | 描述                                              |
+| ----- | ----------------------------------------------- |
+| `服务`  | 代表注册表中相应服务定义的对象。                                |
+| `主要的` | 代表已验证主体的对象。                                     |
+| `提供者` | `MultifactorAuthenticationProvider`的集合，应从中进行选择。 |
+| `记录器` | 负责发布日志消息的对象，例如 `logger.info（...）`。              |
 
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#multifactor-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#multifactor-authentication)。
 
-As an example, the following predicate example will begin to test each multifactor authentication provider and if the given provider is `mfa-duo` it will accept it as a valid trigger so long as the provider can be reached.
+例如，下面的谓词示例将开始测试每个多因素身份验证提供程序，并且如果给定提供程序为 `mfa-duo` ，则只要可以到达提供程序，它将接受它作为有效触发器。
 
 ```groovy
-import org.apereo.cas.authentication.*
-import java.util.function.*
-import org.apereo.cas.services.*
+import org.apereo.cas.authentication。*
+import java.util.function。*
+import org.apereo.cas.services。*
 
-class PredicateExample implements Predicate<MultifactorAuthenticationProvider> {
+class PredicateExample实现谓词<MultifactorAuthenticationProvider> {
 
-    def service
-    def principal
-    def providers
-    def logger
+    def服务
+    def主体
+    def提供者
+    def记录器
 
-    public PredicateExample(service, principal, providers, logger) {
-        this.service = service
-        this.principal = principal
-        this.providers = providers
-        this.logger = logger
+    公共PredicateExample（服务，委托人，提供者，记录器）{
+        this.service =服务
+        this.principal =委托人
+        this.providers =提供者
+        this.logger =记录器
     }
 
     @Override
-    boolean test(final MultifactorAuthenticationProvider p) {
-        logger.info("Testing provider {}", p.getId())
-        if (p.matches("mfa-duo")) {
-           logger.info("Provider {} is available. Checking eligibility...", p.getId())
-           if (p.isAvailable(this.service)) {
-               logger.info("Provider {} matched. Good to go!", p.getId())
-               return true;
+    布尔测试（最终MultifactorAuthenticationProvider p）{
+        logger.info（“测试提供程序{}”，p.getId（））
+        if（p.matches（“ mfa-duo”））{
+           logger.info（“提供程序{}可用。 检查资格...”，如果（p.isAvailable（this.service））{
+               logger.info（“ Provider {}相匹配，则p.getId（））为
+ 很好！！，p.getId（））
+               返回true；
            }
-           logger.info("Skipping provider {}. Match failed.", p.getId())
-           return false; 
+           logger.info（“跳过提供程序{}。 匹配失败。“，p.getId（））
+           返回false; 
         }
-        logger.info("Provider {} cannot be reached", p.getId())
-        return false
+        logger.info（”无法访问提供者{}“，p.getId（））
+        返回false
     }
 }
 ```
 
-## Global Authentication Attribute
+## 全局认证属性
 
-MFA can be triggered for all users/subjects whose *authentication event/metadata* has resolved a specific attribute that matches one of the below conditions:
+*身份验证事件/元数据* 解决了与以下条件之一匹配的特定属性 所有用户/主题触发MFA：
 
-- Trigger MFA based on a *authentication attribute(s)* whose value(s) matches a regex pattern. **Note** that this behavior is only applicable if there is only a **single MFA provider** configured, since that would allow CAS to know what provider to next activate.
+- *身份验证属性* 触发MFA，该属性的值与正则表达式模式匹配。 **注意** 该行为仅在仅 **个MFA提供程序** 情况下适用，因为这将使CAS 知道接下来要激活的提供程序。
 
-- Trigger MFA based on a *authentication attribute(s)* whose value(s) **EXACTLY** matches an MFA provider. This option is more relevant if you have more than one provider configured or if you have the flexibility of assigning provider ids to attributes as values.
+- *身份验证属性* 触发MFA，该属性的值 **恰好** 与MFA提供者匹配。 如果您配置了多个提供程序，或者可以灵活地将 提供程序ID分配给属性作为值，则此选项更相关。
 
-Needless to say, the attributes need to have been resolved for the authentication event prior to this step. This trigger is generally useful when the underlying authentication engine signals CAS to perform additional validation of credentials. This signal may be captured by CAS as an attribute that is part of the authentication event metadata which can then trigger additional multifactor authentication events.
+不用说，在此步骤之前，必须已针对身份验证事件解析属性。 当基础身份验证引擎向CAS发出信号以执行凭据的其他验证时，该触发器 CAS可以将该信号捕获为属性，该属性是身份验证事件元数据的一部分，然后可以触发 其他多因素身份验证事件。
 
-An example of this scenario would be the "Access Challenge response" produced by RADIUS servers.
+这种情况的一个示例是RADIUS服务器产生的“访问挑战响应”。
 
-## Adaptive
+## 适应性强
 
-MFA can be triggered based on the specific nature of a request that may be considered outlawed. For instance, you may want all requests that are submitted from a specific IP pattern, or from a particular geographical location to be forced to go through MFA. CAS is able to adapt itself to various properties of the incoming request and will route the flow to execute MFA. See [this guide](Configuring-Adaptive-Authentication.html) for more info.
+可以基于被认为是非法的请求的特定性质来触发MFA。 例如， 从特定IP模式或从特定地理位置 提交的所有请求都强制通过MFA。 CAS能够使自己适应传入请求 各种属性，并将路由该流以执行MFA。 有关更多信息，请参见 [本指南](Configuring-Adaptive-Authentication.html)
 
-## Grouper
+## 石斑鱼
 
-MFA can be triggered by [Grouper](https://incommon.org/software/grouper/) groups to which the authenticated principal is assigned. Groups are collected by CAS and then cross-checked against all available/configured MFA providers. The group's comparing factor **MUST** be defined in CAS to activate this behavior and it can be based on the group's name, display name, etc where a successful match against a provider id shall activate the chosen MFA provider.
+可以通过将已分配身份验证的主体 [Grouper](https://incommon.org/software/grouper/) CAS收集组，然后对照所有可用/配置的MFA提供程序进行交叉检查。 该组的比较因子 **MUST** 在CAS被定义为激活此行为 ，它可以基于组的名称，显示名称等，其中 对一个提供者ID成功匹配应当激活所选择的MFA提供商。
 
 ```xml
 <dependency>
   <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-grouper</artifactId>
+  <artifactId>cas-server-support-</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-You will also need to ensure `grouper.client.properties` is available on the classpath with the following configured properties:
+您还需要确保 `classer.client.properties` 在具有以下已配置属性的类路径
 
 ```properties
 grouperClient.webService.url = http://192.168.99.100:32768/grouper-ws/servicesRest
 grouperClient.webService.login = banderson
-grouperClient.webService.password = password
+grouperClient.webService.password =密码
 ```
 
 ## Groovy
 
-MFA can be triggered based on the results of a groovy script of your own design. The outcome of the script should determine the MFA provider id that CAS should attempt to activate.
+可以根据您自己设计的groovy脚本的结果来触发MFA。 脚本的结果应确定CAS应尝试激活的MFA提供者ID。
 
-The outline of the groovy script is shown below as a sample:
+groovy脚本的概要如下所示：
 
 ```groovy
-import java.util.*
+导入java.util。*
 
-class SampleGroovyEventResolver {
-    def String run(final Object... args) {
-        def service = args[0]
-        def registeredService = args[1]
-        def authentication = args[2]
+类SampleGroovyEventResolver {
+    def字符串运行（最终对象... args）{
+        def服务= args[0]
+        def已注册服务= args[1]
+        def身份验证= args[2]
         def httpRequest = args[3]
-        def logger = args[4]
+        def记录器= args[4]
 
-        ...
+...
 
-        return "mfa-duo"
+        返回“ mfa-duo”
     }
 }
 ```
 
-The parameters passed are as follows:
+传递的参数如下：
 
-| Parameter           | Description                                                                             |
-| ------------------- | --------------------------------------------------------------------------------------- |
-| `service`           | The object representing the incoming service provided in the request, if any.           |
-| `registeredService` | The object representing the corresponding service definition in the registry.           |
-| `authentication`    | The object representing the established authentication event, containing the principal. |
-| `httpRequest`       | The object representing the `HttpServletRequest`.                                       |
-| `logger`            | The object responsible for issuing log messages such as `logger.info(...)`.             |
+| 范围            | 描述                                 |
+| ------------- | ---------------------------------- |
+| `服务`          | 表示请求中提供的传入服务的对象（如果有）。              |
+| `已注册的服务`      | 代表注册表中相应服务定义的对象。                   |
+| `验证`          | 代表已建立的身份验证事件的对象，包含主体。              |
+| `httpRequest` | `HttpServletRequest`的对象。           |
+| `记录器`         | 负责发布日志消息的对象，例如 `logger.info（...）`。 |
 
-As an example, the following script triggers multifactor authentication via Duo Security, if the requesting application is `https://www.example.com` and the authenticated principal contains a `mail` attribute whose values contain `email@example.org`.
+`https://www.example.com` 并且经过身份验证的主体包含 `mail` 属性（其值包含 `email@example.org`，则以下脚本将通过Duo Security触发多因素身份验证。 。
 
 ```groovy
-import java.util.*
+import java.util。*
 
 class MyExampleScript {
-    def String run(final Object... args) {
-        def service = args[0]
-        def registeredService = args[1]
-        def authentication = args[2]
+    def字符串运行（最终对象... args）{
+        def服务= args[0]
+        def已注册服务= args[1]
+        def身份验证= args[2]
         def httpRequest = args[3]
-        def logger = args[4]
+        def记录器= args[4]
 
-        if (service.id == "https://www.example.com") {
-            logger.info("Evaluating principal attributes [{}]", authentication.principal.attributes)
+        if（service.id ==“ https://www.example.com”）{
+            logger.info（“评估主体属性[{}]”，authentication.principal.attributes）
 
-            def mail = authentication.principal.attributes['mail']
-            if (mail.contains("email@example.org")) {
-                logger.info("Found mail attribute with value [{}]", mail)
-                return "mfa-duo"
+            def邮件=身份验证.principal.attributes ['mail']
+            如果（mail.contains（“ email@example.org”））{
+                logger.info（“找到的值为[{}]的邮件属性”，mail）
+                返回“ MFA-二重奏“
             }
         }
-        return null
+        返回null
     }
 }
 ```
 
-## REST
+## 休息
 
-MFA can be triggered based on the results of a remote REST endpoint of your design. If the endpoint is configured, CAS shall issue a `POST`, providing the authenticated username as `principalId` and `serviceId` as the service url in the body of the request.
+可以基于设计的远程REST端点的结果来触发MFA。 如果配置了端点， CAS出具 `POST`，提供认证的用户名作为 `principalId` 和 `服务Id` 为服务 在请求的主体中的URL。
 
-Endpoints must be designed to accept/process `application/json`. The body of the response in the event of a successful `200` status code is expected to be the MFA provider id which CAS should activate.
+端点必须设计为接受/处理 `application / json`。 如果成功发送了 `200` 状态代码，则响应的主体为 ，预计将是CAS应该激活的MFA提供者ID。
 
-## Opt-In Request Parameter/Header
+## 选择加入请求参数/标题
 
-MFA can be triggered for a specific authentication request, provided the initial request to the CAS `/login` endpoint contains a parameter/header that indicates the required MFA authentication flow. The parameter/header name is configurable, but its value must match the authentication provider id of an available MFA provider described above.
+MFA可以触发对特定认证请求，提供 的初始请求到CAS `/登录` 端点包含参数/报头 ，其指示所要求的MFA认证流。 参数/标头名称 是可配置的，但其值必须与上述可用MFA提供程序
 
-An example request that triggers an authentication flow based on a request parameter would be:
+基于请求参数触发身份验证流的示例请求为：
 
 ```bash
-https://.../cas/login?service=...&<PARAMETER_NAME>=<MFA_PROVIDER_ID>
+https：//.../cas/login？service = ...&<PARAMETER_NAME>=<MFA_PROVIDER_ID>
 ```
 
-The same strategy also applied to triggers that are based on request/session attributes, which tend to get used for internal communications between APIs and CAS components specially when designing extensions.
+相同的策略也适用于基于请求/会话属性的触发器，特别是在设计扩展时，这些触发器通常用于API和CAS组件之间的内部通信。
 
-## Principal Attribute Per Application
+## 每个应用程序的主要属性
 
-As a hybrid option, MFA can be triggered for a specific application registered inside the CAS service registry, provided the authenticated principal carries an attribute that matches a configured attribute value. The attribute value can be an arbitrary regex pattern. See below to learn about how to configure MFA settings.
+作为混合选项，可以为在CAS服务注册表中注册的特定应用程序触发MFA，前提 ，其属性与配置的属性值匹配。 属性 值可以是任意的正则表达式模式。 请参阅下面的内容以了解如何配置MFA设置。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "id" : 100,
-  "name": "test",
-  "multifactorPolicy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy",
-    "multifactorAuthenticationProviders" : [ "java.util.LinkedHashSet", [ "mfa-duo" ] ],
-    "principalAttributeNameTrigger" : "memberOf",
-    "principalAttributeValueToMatch" : "faculty|allMfaMembers"
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “^（HTTPS | IMAPS）：//.*”，
+  “ID”：100，
+  “名称”： “ test”，
+  “ multifactorPolicy”：{
+    “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy”，
+    “ multifactorAuthenticationProviders”：[“ java.util.LinkedHashSet”，[“ mfa-duo”]] ，
+    “ principalAttributeNameTrigger”：“ memberOf”，
+    “ principalAttributeValueToMatch”：“ faculty | allMfaMembers”
   }
 }
 ```
 
-## Entity Id Request Parameter
+## 实体ID请求参数
 
-In situations where authentication is delegated to CAS, most commonly via a [Shibboleth Identity Provider](https://www.shibboleth.net/products/),  the entity id may be passed as a request parameter to CAS to be treated as a CAS registered service. This allows one to activate multifactor authentication policies based on the entity id that is registered This allows one to \[activate multifactor authentication policies\](#Per Application) based on the entity id that is registered in the CAS service registry. As a side benefit, the entity id can take advantage of all other CAS features such as access strategies and authorization rules simply because it's just another service definition known to CAS.
+在将身份验证委派给CAS的情况下（最常见的情况是通过 [Shibboleth身份提供者](https://www.shibboleth.net/products/) ，实体ID可以作为 传递给CAS，以被视为CAS注册服务。 的实体ID激活多因素身份验证策略。这允许一个人基于在CAS服务注册表中 的实体ID [激活多因素身份验证策略]（＃Per Application）。 附带的好处是，实体ID可以利用所有其他CAS功能 优势，例如访问策略和授权规则，这仅仅是因为它只是CAS已知的另一种服务定义。
 
-To learn more about integration options and to understand how to delegate authentication to CAS from a Shibboleth identity provider, please [see this guide](../integration/Shibboleth.html).
+要了解有关集成选项的更多信息并了解如何将Shibboleth身份提供商的身份 [参见本指南](../integration/Shibboleth.html)。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -435,12 +435,12 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-The `entityId` parameter may be passed as such:
+在 `ENTITYID` 参数可以这样进行传递：
 
 ```bash
-https://.../cas/login?service=http://idp.example.org&entityId=the-entity-id-passed
+https：//.../cas/login？service = http：//idp.example.org&entityId = the-entity-id-passed
 ```
 
-## Custom
+## 风俗
 
-While support for triggers may seem extensive, there is always that edge use case that would have you trigger MFA based on a special set of requirements. To learn how to design your own triggers, [please see this guide](Configuring-Multifactor-Authentication-CustomTriggers.html).
+尽管对触发器的支持似乎很广泛，但总有一些边缘用例可以让您基于一组特殊要求来触发MFA。 要了解如何设计自己的触发器，请参阅本指南</a>。</p>
