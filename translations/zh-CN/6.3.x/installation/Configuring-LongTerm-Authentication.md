@@ -1,21 +1,21 @@
 ---
-layout: default
-title: CAS - Long Term Authentication
-category: SSO & SLO
+layout: 违约
+title: 中科院 - 长期认证
+category: 索 & 斯洛
 ---
 
-# Long Term Authentication
+# 长期认证
 
-This feature, also known as *Remember Me*, extends the length of the SSO session beyond the typical period of hours such that users can go days or weeks without having to log in to CAS. See the [security guide](../planning/Security-Guide.html) for discussion of security concerns related to long term authentication.
+此功能也称为 *记住我*，将 SSO 会话的长度延长到通常的小时数 以便用户无需登录 CAS 即可使用数天或数周。 请参阅 [安全指南](../planning/Security-Guide.html) ，讨论与长期认证相关的安全问题。
 
-## Policy and Deployment Considerations
+## 政策和部署考虑
 
-While users can elect to establish a long term authentication session, the duration is established through configuration as a matter of security policy. Deployers must determine the length of long term authentication sessions by weighing convenience against security risks.
+虽然用户可以选择建立长期身份验证会话，但根据安全策略，通过 配置确定会话的持续时间。 部署人员必须通过权衡便利性和安全风险来确定 的长期认证会话的长度。
 
-The use of long term authentication sessions dramatically increases the length of time ticket-granting tickets are stored in the ticket registry. Loss of a ticket-granting ticket corresponding to a long-term SSO session would require the user to re-authenticate to CAS. A security policy that requires that long term authentication sessions MUST NOT be terminated prior to their natural expiration would mandate a ticket registry component that provides for durable storage, such as the [JPA Ticket Registry](../ticketing/JPA-Ticket-Registry.html).
+长期认证会话的使用大大延长了票证授予票 存储在票证注册表中的时间长度。 丢失与长期 SSO 会话相对应的出票票证需要 用户重新验证 CAS。 要求长期认证会议不得在自然到期前终止 的安全策略将要求提供持久存储的票证 注册表组件，例如 [JPA 票证注册处](../ticketing/JPA-Ticket-Registry.html)。
 
-## Configuration
+## 配置
 
-Adjust your expiration policy so that remember-me authentication requests are handled via a long-term timeout expiration policy, and other requests are handled via the CAS default SSO session expiration policy.
+调整您的过期策略，以便通过长期超时到期策略 处理记住我的身份验证请求，并通过 CAS 默认 SSO 会话到期策略处理 的其他请求。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ticket-granting-cookie) and [this guide](../configuration/Configuration-Properties.html#remember-me).
+要查看 CAS 属性的相关列表，请 [](../configuration/Configuration-Properties.html#ticket-granting-cookie) 查看本指南，并 [本指南](../configuration/Configuration-Properties.html#remember-me)。
