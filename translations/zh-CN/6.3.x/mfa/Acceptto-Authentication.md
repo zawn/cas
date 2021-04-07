@@ -1,31 +1,31 @@
 ---
-layout: default
-title: CAS - Acceptto Authentication
-category: Multifactor Authentication
+layout: 违约
+title: CAS - 接受认证
+category: 多因素认证
 ---
 
-# Acceptto Authentication
+# 接受身份验证
 
-Secure your workforce identity with [Acceptto](https://www.acceptto.com) end-to-end risk-based multiFactor authentication.
+通过 [接受](https://www.acceptto.com) 基于风险的多因素身份验证，确保您的员工身份。
 
-Start by visiting the [Acceptto documentation](https://www.acceptto.com/acceptto-mfa-rest-api/).
+首先参观 [接受文件](https://www.acceptto.com/acceptto-mfa-rest-api/)。
 
-Support is enabled by including the following module in the overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-acceptto-mfa</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 接受 - mfa</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-The integration adds support for both multifactor authentication and QR passwordless authentication.
+集成为多因素身份验证和 QR 无密码身份验证增加了支持。
 
-## Integration with DBFP
+## 与 DBFP 集成
 
-The integration is able to handle the integration with DBFP and will set a cookie named `jwt` that is passed to the Acceptto API. This parameter contains a value that the server uses to assess the risk of authentication request including browser fingerprint, IP address of user and GPS location of the user’s browser. The server compares this data with the history of user behavior data to detect anomalies.
+集成能够处理与 DBFP 的集成，并将设置一个名为 `jwt` 的曲奇饼，该饼干将传递给接受 API。 此参数包含服务器用于评估身份验证请求风险的值，包括浏览器指纹、用户 IP 地址和用户浏览器的 GPS 位置。 服务器将此数据与用户行为数据的历史记录进行比较，以检测异常情况。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptto).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptto)。
