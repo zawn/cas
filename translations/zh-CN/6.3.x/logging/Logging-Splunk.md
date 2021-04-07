@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - Splunk Logging Configuration
-category: Logs & Audits
+layout: 默认
+title: CAS-Splunk日志记录配置
+category: 记录 & 审核
 ---
 
-# Splunk Logging
+# Splunk记录
 
-Log data can be automatically routed to [Splunk](https://splunk.com/). Support is enabled by including the following module in the overlay:
+日志数据可以自动路由到 [Splunk](https://splunk.com/)。 通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -16,18 +16,18 @@ Log data can be automatically routed to [Splunk](https://splunk.com/). Support i
 </dependency>
 ```
 
-You may also need to declare the following repository in your CAS overlay to be able to resolve dependencies:
+您可能还需要在CAS覆盖中声明以下存储库，以便能够解决依赖关系：
 
 ```groovy       
-repositories {
+存储库{
     maven { 
-        mavenContent { releasesOnly() }
-        url "https://splunk.jfrog.io/splunk/ext-releases-local" 
+        mavenContent {releasesOnly（）}
+        url“ https://splunk.jfrog.io/splunk/ext-releases-local” 
     }
 }
 ```
 
-With the above module, you may then declare a specific appender to communicate with Splunk. Following is an example that assumes that you have Splunk Enterprise running locally (with an IP address of `127.0.0.1`), with a TCP input configured on port `15000`. TCP inputs do not have the same port number as the Splunk Enterprise management port.
+通过上述模块，您可以声明一个特定的附加程序以与Splunk进行通信。 下面的示例假定您具有本地运行的Splunk Enterprise（IP地址为 `127.0.0.1`）， `15000`上配置了TCP输入。 TCP输入的端口号与 Splunk Enterprise管理端口不同。
 
 ```xml
 <Appenders>
@@ -47,4 +47,4 @@ With the above module, you may then declare a specific appender to communicate w
 </Loggers>
 ```
 
-Of course, you will need to create a TCP input in Splunk Enterprise to which CAS will write logs.
+当然，您需要在Splunk Enterprise中创建一个TCP输入，CAS将向其写入日志。
