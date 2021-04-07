@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - Logstash Logging Configuration
-category: Logs & Audits
+layout: 违约
+title: CAS - 日志记录配置
+category: 日志 & 审计
 ---
 
-# Logstash Logging
+# 日志记录
 
-CAS logging framework has the ability route log messages to a TCP/UDP endpoint. This configuration assumes that the Logstash server has enabled its [TCP input](https://www.elastic.co/guide/en/logstash/current/plugins-inputs-tcp.html) on port `9500`:
+CAS 测井框架具有将日志消息路由到 TCP/UDP 端点的能力。 此配置假定 Logstash 服务器已启用其 [TCP 输入](https://www.elastic.co/guide/en/logstash/current/plugins-inputs-tcp.html) 端口 `9500`：
 
 ```xml
 ...
