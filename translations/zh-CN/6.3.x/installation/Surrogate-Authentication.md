@@ -1,284 +1,284 @@
 ---
-layout: default
-title: CAS - Surrogate Authentication
-category: Authentication
+layout: 违约
+title: CAS - 代理认证
+category: 认证
 ---
 
-# Surrogate Authentication
+# 代理身份验证
 
-Surrogate authentication (impersonation), sometimes known as *sudo for the web*, is the ability to authenticate on behalf of another user.
+代理身份验证（模拟），有时被称为网络</em>的 *sudo，是代表其他用户进行身份验证的能力。 </p>
 
-The two actors in this case are:
+本案的两个角色是：
 
-1. The primary admin user whose credentials are verified upon authentication.
-2. The surrogate user, selected by the admin, to which CAS will switch after credential verification and is one that is linked to the single sign-on session.
+1. 凭据在身份验证后得到验证的主要管理员用户。
+2. 代理用户，由管理员选择，CAS将在凭据验证后切换到该用户，并且是链接到单个登录会话的代理用户。
 
-Example use cases for impersonation include:
+模拟的示例使用案例包括：
 
-1. Logging into an application on behalf of a user to execute and make changes.
-2. Troubleshoot a bothersome authentication experience with an application on behalf of another user.
+1. 代表用户登录应用程序以执行和进行更改。
+2. 为代表其他用户的应用程序解决令人烦恼的身份验证体验。
 
-Surrogate authentication is enabled by including the following dependencies in the WAR overlay:
+代理身份验证通过在 WAR 叠加中包括以下依赖项而启用：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-surrogate-webflow</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>卡-服务器-支持-代理-网络流</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-## Account Storage
+## 帐户存储
 
-The following account stores may be configured and used to locate surrogates authorized for a particular user.
+以下帐户存储可以配置并用于查找授权给特定用户的代理。
 
-### Static
+### 静态的
 
-Surrogate accounts may be defined statically in the CAS configuration. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#surrogate-authentication).
+代理帐户可以在 CAS 配置中静态定义。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#surrogate-authentication)。
 
-### JSON
+### 杰森
 
-Similar to above, except that surrogate accounts may be defined in an external JSON file whose path is specified via the CAS configuration. The syntax of the JSON file should match the following snippet:
+与上述类似，除了代理帐户可以在外部 JSON 文件中定义，该文件通过 CAS 配置指定路径。 JSON 文件的语法应与以下片段匹配：
 
 ```json
 {
-    "casuser": ["jsmith", "banderson"],
-    "adminuser": ["jsmith", "tomhanks"]
+    "卡瑟"：["史密斯"，"班德森"]，
+    "管理员"：["史密斯"，"汤姆汉克斯"]
 }
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#surrogate-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#surrogate-authentication)。
 
-### LDAP
+### 阿尔达普
 
-LDAP support for surrogate authentication is enabled by including the following dependencies in the WAR overlay:
+通过在 WAR 叠加中包括以下依赖项，支持代孕身份验证的 LDAP 支持：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-surrogate-authentication-ldap</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 代理 - 认证 - ldap</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-Surrogate accounts may also be retrieved from an LDAP instance. Such accounts are expected to be found in a configured attribute defined for the primary user in LDAP whose value(s) may be examined against a regular expression pattern of your own choosing to further narrow down the list of authorized surrogate accounts. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#surrogate-authentication).
+也可以从 LDAP 实例中检索代理帐户。 此类帐户预计将在 LDAP 中为主要用户定义的配置属性中找到，该属性的价值可能会根据您自己选择进一步缩小授权代理帐户列表的常规表达模式进行检查。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#surrogate-authentication)。
 
-### CouchDb
+### 库奇德布
 
-CouchDb support for surrogate authentication is enabled by including the following dependencies in the WAR overlay:
+沙发数据库对代理身份验证的支持通过在 WAR 叠加中包括以下依赖项来实现：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-surrogate-authentication-couchdb</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>卡-服务器-支持-代理-认证-沙发</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-Surrogate accounts may also be retrieved from an CouchDb instance. By default, this takes the form of surrogate/principal key/value pairs. Users authorized as surrogates may be listed multiple times to authorize them to access multiple accounts. Additionally, the CouchDb surrogate support may be configured to use a profile attribute containing a list of principals the user may surrogate for with the `profileBased` property. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#surrogate-authentication).
+代理帐户也可以从库奇德布实例中检索。 默认情况下，这采取代理/委托键/值对的形式。 被授权为代理人的用户可能会多次被列出，以授权他们访问多个帐户。 此外，CouchDb 代理支持可能配置为使用配置文件属性，其中包含用户可能代理的 `配置文件` 属性的委托人列表。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#surrogate-authentication)。
 
-### JDBC
+### 京城
 
-JDBC support for surrogate authentication is enabled by including the following dependencies in the WAR overlay:
+JDBC 对代理身份验证的支持通过在 WAR 叠加中包括以下依赖项而实现：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-surrogate-authentication-jdbc</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>卡-服务器-支持-代理-认证-jdbc</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-Aside from the usual database settings, this mode requires the specification of two SQL queries; one that determines eligibility and one that is able to retrieve the list of accounts that can be impersonated for a given admin user. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jdbc-surrogate-accounts).
+除了通常的数据库设置外，此模式还需要两个 SQL 查询的规范：决定资格的帐户和能够检索 可以冒充给定管理员用户的帐户列表。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#jdbc-surrogate-accounts)。
 
-### REST
+### 休息
 
-REST support for surrogate authentication is enabled by including the following dependencies in the WAR overlay:
+通过在 WAR 叠加中包括以下依赖项，支持代理身份验证：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-surrogate-authentication-rest</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>套机服务器支持-代理-认证-休息</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-| Method | Description                                                | Parameter(s)             | Response                |
-| ------ | ---------------------------------------------------------- | ------------------------ | ----------------------- |
-| `GET`  | Whether principal can authenticate as a surrogate account. | `surrogate`, `principal` | `202`                   |
-| `GET`  | List of accounts principal is eligible to impersonate.     | `principal`              | JSON list of usernames. |
+| 方法   | 描述                   | 参数          | 响应          |
+| ---- | -------------------- | ----------- | ----------- |
+| `获取` | 委托人是否可以作为代理帐户进行身份验证。 | `代孕人`， `主要` | `202`       |
+| `获取` | 账户本金列表有资格冒充。         | `主要`        | 用户名的JSON列表。 |
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#rest-surrogate-accounts).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#rest-surrogate-accounts)。
 
-### Custom
+### 习惯
 
-If you wish to design your own account store, you may follow the below approach:
+如果您想要设计自己的帐户商店，您可以遵循以下方法：
 
 ```java
-package org.apereo.cas.custom;
+包组织. 阿佩雷奥. 卡斯. 自定义;
 
-@Configuration("mySurrogateConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MySurrogateConfiguration {
+@Configuration（"我的代理配置"）
+@EnableConfigurationProperties（案例配置.class）
+公共类"我的代理配置"=
 
     @Bean
-    public SurrogateAuthenticationService surrogateAuthenticationService() {
-      ...
-    }
+    公共代理服务（）=
+      。。。
+    •
 
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[本指南](../configuration/Configuration-Management-Extensions.html) 了解有关如何将配置注册到 CAS 运行时间的更多信息。
 
-## Account Selection
+## 帐户选择
 
-The surrogate user selection can happen via the following ways.
+代孕用户选择可以通过以下方式进行。
 
-### Preselected
+### 预选
 
-This is the case where the surrogate user identity is known beforehand and is provided to CAS upon login using a special syntax. When entering credentials, the following syntax should be used:
+在这种情况下，代理用户身份是事先知道的，并在登录时使用特殊语法提供给 CAS。 输入凭据时，应使用以下语法：
 
 ```bash
 [surrogate-userid][separator][primary-userid]
 ```
 
-For example, if you are `casuser` and you need to switch to `jsmith` as the surrogate user, the credential id provided to CAS would be `jsmith+casuser` where the separator is `+` and can be altered via the CAS configuration. You will need to provide your own password of course.
+例如，如果您</code> `套管，并且需要切换到 <code>jsmith` 作为代理用户，则提供给 CAS 的凭据 ID 将 `jsmith+casuser` 分离器 `+` ，并且可以通过 CAS 配置进行更改。 当然，您需要提供自己的密码。
 
-### GUI
+### 图形用户界面
 
-This is the case where the surrogate user identity is *not* known beforehand, and you wish to choose the account from a pre-populated list. When entering credentials, the following syntax should be used:
+在这种情况下，代理用户身份 *事先不知道* ，并且您希望从预先填充的列表中选择帐户。 输入凭据时，应使用以下语法：
 
 ```bash
 [separator][primary-userid]
 ```
 
-For example, if you are `casuser` and you need to locate the surrogate account to which you may want to switch, the credential id provided to CAS would be `+casuser` where the separator is `+` and can be altered via the CAS configuration. You will need to provide your own password of course.
+例如，如果您</code> `套管，并且您需要找到您可能需要切换的代理帐户，则提供给 CAS 的凭据 ID 将 <code>+casuser` 分离器 `+` ，并且可以通过 CAS 配置进行更改。 当然，您需要提供自己的密码。
 
-## Session Expiration
+## 会话到期
 
-An impersonation session can be assigned a specific expiration policy that would control how long a surrogate session may last. This means that the SSO session established as part of impersonation will rightly vanish, once the expiration policy dictates as such. It is recommended that you keep the expiration length short (i.e. 30 minutes) to avoid possible security issues.
+可以为模拟会话分配一个特定的到期策略，该政策将控制代理会话可能持续多长时间。 这意味着，一旦到期政策规定，作为冒名顶替一部分而设立的SSO会议将理所当然地消失。 建议您缩短到期时间（即 30 分钟），以避免可能的安全问题。
 
-<div class="alert alert-info"><strong>Remember</strong><p>
-The expiration policy assigned to impersonation sessions is expected to be <i>shorter</i> than the <i>normal</i> expiration policy
-assigned to non-surrogate sessions. In other words, if the usual expiration policy that controls the single sign-on session is set to last
-2 hours, the surrogate session expiration is expected to be a time period less than or equal to 2 hours.
+<div class="alert alert-info"><strong>记得</strong><p>
+指定给模拟会议的到期政策预计将比分配给非代理会议的正常</i> 到期政策
+<i>短 <i></i> 。 换句话说，如果控制单个登录会话的通常到期策略设置为持续
+2 小时，则代理会话到期的时间预计小于或等于 2 小时。
 </p></div>
 
-## Surrogate Attributes
+## 代理属性
 
-Upon a successful surrogate authentication event, the following attributes are communicated back to the application in order to detect an impersonation session:
+在成功代理身份验证事件后，以下属性将传回应用程序，以便检测模拟会话：
 
-| Attribute            | Instructions                                                                 |
-| -------------------- | ---------------------------------------------------------------------------- |
-| `surrogateEnabled`   | Boolean to indicate whether session is impersonated.                         |
-| `surrogatePrincipal` | The admin user whose credentials are validated and acts as the impersonator. |
-| `surrogateUser`      | The surrogate user that is impersonated.                                     |
+| 属性      | 指示               |
+| ------- | ---------------- |
+| `代理可`   | 布利安， 以指示会话是否被冒充。 |
+| `代孕原则`  | 经验证并充当模拟器的管理员用户。 |
+| `代理使用者` | 冒充的代理用户。         |
 
-## Surrogate Access Strategy
+## 代理访问策略
 
-Each surrogate account storage is able to determine the list of impersonatees to enforce authorization rules. Additionally, you may on a per-service level define whether an application is authorized to leverage surrogate authentication. The surrogate access strategy is only activated if the establish authentication and SSO session is one of impersonation.
+每个代理帐户存储都能够确定执行授权规则的冒名顶替者列表。 此外，您可以在每个服务级别上定义是否授权应用程序利用代理身份验证。 只有在建立身份验证和 SSO 会话是模拟策略时，代理访问策略才会激活。
 
-See below for the available options.
+有关可用选项，请参阅下文。
 
-### Attributes
+### 属性
 
-Decide whether the primary user is tagged with enough attributes and entitlements to allow impersonation to execute. In the below example, surrogate access to the application matching `testId` is allowed only if the authenticated primary user carries an attribute `givenName` which contains a value of `Administrator`.
+决定主用户是否标记了足够的属性和权利，允许模拟执行。 在下面的示例中，只有在经过身份验证的主要用户具有包含 `管理员`值的 `给定` 的属性时，才允许代理访问应用程序匹配 `测试` 。
 
-A sample service definition follows:
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.SurrogateRegisteredServiceAccessStrategy",
-    "surrogateEnabled" : true,
-    "enabled": true,
-    "ssoEnabled": true,
-    "surrogateRequiredAttributes" : {
-      "@class" : "java.util.HashMap",
-      "givenName" : [ "java.util.HashSet", [ "Administrator" ] ]
-    }
-  }
-}
-```
-
-### Groovy
-
-Decide whether the primary user is allowed to go through impersonation via an external Groovy script. A sample service file follows:
-
+示例服务定义如下：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.GroovySurrogateRegisteredServiceAccessStrategy",
-    "groovyScript": "file:/etc/cas/config/surrogate.groovy"
-  }
-}
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务"："测试"，
+  "名称"："测试"，
+  "id"：1，
+  "访问战略"：{
+    "@class"："org.apereo.cas.服务。服务。代理注册服务访问"，
+    "代理"：真实，
+    "启用"：真实，
+    "成功"：真实，
+    "代理要求属性"：{
+      "@class"："java.util.HashMap"，
+      "给定名称"："java.util.HashSet"，"管理员"]][
+    ]
+  [
+]
 ```
 
-The configuration of this component qualifies to use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax. The Groovy script itself may be designed as:
+### 槽的
+
+决定是否允许主要用户通过外部 Groovy 脚本进行模拟。 示例服务文件如下：
+
+
+```json
+•
+  "@class"： "org. apereo. cas. 服务. 注册服务"，
+  "服务 Id"： "测试"，
+  "名称"： "测试"，
+  "id"： 1，
+  "访问战略"： [
+    "@class"： "org. apereo. cas. 服务. 格劳维苏罗盖特注册服务访问服务" ，
+    "凹槽脚本"： "文件：/ 等 / 卡斯 / 康普 / 代理. groovy"
+  [
+
+```
+
+此组件的配置有资格使用 [弹簧表达语言](../configuration/Configuration-Spring-Expressions.html) 语法。 Groovy 脚本本身可设计为：
 
 ```groovy
-import java.util.*
+导入java.利用。*
 
-def Object run(final Object... args) {
-    def principal = args[0]
-    def principalAttributes = args[1]
-    def logger = args[2]
+定义对象运行（最终对象。。。args）{
+    def本金=args[0]
+    d主要属性=args[1]
+    d记录器=args[2]
 
-    logger.info("Checking for impersonation authz for $principal...")
+    logger.info（"检查 $principal的模拟身份验证。。。"）
 
-    // Decide if impersonation is allowed by returning true...
-    if (principal.equals("casuser")) {
+    决定是否允许冒名顶替返回真实。。。
+    如果 （主。 等于 （"卡苏瑟"） {
         return true
     }
-    logger.warn("User is not allowed to proceed with impersonation!")
-    return false
+    记录器。
+    返回虚假
 }
 ```
 
-The parameters passed are as follows:
+通过的参数如下：
 
-| Parameter             | Description                                                                 |
-| --------------------- | --------------------------------------------------------------------------- |
-| `principal`           | Primary/Principal user id.                                                  |
-| `principalAttributes` | Principal attributes collected for the primary user.                        |
-| `logger`              | The object responsible for issuing log messages such as `logger.info(...)`. |
+| 参数     | 描述                                |
+| ------ | --------------------------------- |
+| `主要`   | 主要/主要用户ID。                        |
+| `主要属性` | 为主要用户收集的主要属性。                     |
+| `记录`   | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
 
-## Surrogate Audits
+## 代理审计
 
-Surrogate authentication events are by default tracked in the audit logs:
+默认情况下，审计日志中会跟踪代理身份验证事件：
 
 ```
-=============================================================
-WHO: (Primary User: [casuser], Surrogate User: [testuser])
-WHAT: ST-1-u_R_SyXJJlENS0fBLwpecNE for https://example.app.edu
-ACTION: SERVICE_TICKET_CREATED
-APPLICATION: CAS
-WHEN: Mon Sep 11 12:55:07 MST 2017
-CLIENT IP ADDRESS: 127.0.0.1
-SERVER IP ADDRESS: 127.0.0.1
-=============================================================
+[] 世卫组织：（主要用户： [casuser]，代孕用户： [testuser]）
+：ST-1-u_R_SyXJJlENS0fBLwpecNE https://example.app.edu
+行动：SERVICE_TICKET_CREATED
+应用：CAS
+时间：9月11日星期一 12：55：07 MST 2017
+客户端 IP 地址： 127.0.0.1
+服务器 IP 地址： 127.0.1
+[]
+
 ```
 
-Additionally, failure and success events may also communicated via SMS and/or email messages to relevant parties. To learn more about available options, please [see this guide](../notifications/SMS-Messaging-Configuration.html) or [this guide](../notifications/Sending-Email-Configuration.html).
+此外，失败和成功事件也可以通过短信和/或电子邮件传达给相关方。 要了解有关可用选项的更多信息，请 [本指南](../notifications/SMS-Messaging-Configuration.html) 或 [本指南](../notifications/Sending-Email-Configuration.html)。
 
-## REST Protocol
+## 休息协议
 
-The feature extends the [CAS REST API](../protocol/REST-Protocol.html) communication model to surrogate authentication, allowing REST credentials to specify a substitute and authenticate on behalf of another user. To activate surrogate authentication for the CAS REST API, you will need to choose one of the following options:
+该功能扩展了 [CAS REST API](../protocol/REST-Protocol.html) 通信模型以代理身份验证， 允许 REST 凭据指定替代项并代表其他用户进行身份验证。 要激活 CAS REST API 的代理认证 ，您需要选择以下选项之一：
 
-- Format the credential username using the following syntax:
+- 使用以下语法格式化凭证用户名：
 
 ```bash
 [surrogate-userid][separator][primary-userid]
 ```
 
-- Pass along a special request header `X-Surrogate-Principal` that contains the surrogate userid.
+- 传递包含代理使用 `X 代理-委托` 的特殊请求标题。
