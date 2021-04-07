@@ -1,109 +1,109 @@
 ---
-layout: default
-title: CAS - Logging Configuration
-category: Logs & Audits
+layout: 违约
+title: CAS - 记录配置
+category: 日志 & 审计
 ---
 
-# Logging
+# 伐木
 
-CAS provides a logging facility that logs important informational events like authentication success and failure; it can be customized to produce additional information for troubleshooting. CAS uses the Slf4j Logging framework as a facade for the [Log4j engine](http://logging.apache.org) by default.
+CAS 提供记录重要信息事件（如身份验证成功和 故障）的记录设施：可以自定义以生成用于故障排除的其他信息。 默认情况下，CAS 将 Slf4j 伐木框架用作 [Log4j 发动机](http://logging.apache.org) 的外墙。
 
-The default log4j configuration file is located in `src/main/resources/log4j2.xml` of the `cas-server-webapp-resources` source module. In the `cas.war` it is found at the root of the `cas-server-webapp-resources*.jar`. The cas-overlay comes with an external log42.xml in etc/cas/config and a property `logging.config=file:/etc/cas/config/log4j2.xml` set to reference it. By default logging is set to `INFO` for all functionality related to `org.apereo.cas` code. For debugging and diagnostic purposes you may want to set these levels to `DEBUG` or `TRACE`.
+默认日志4j配置文件位于 `cas-服务器-Webapp资源` 源模块.xml</code> 的 `src/主/资源/log4j2 中。 在 <code>cas.war` 它被发现在 `的cas-服务器-Web应用程序资源*.jar`的根源。 cas-叠加附带外部日志42.xml等/cas/配置和属性 `记录。配置文件：/等/cas/配置/log4j2.xml` 设置为引用它。 默认情况下，对于与 `org.apereo.cas` 代码相关的所有功能，将设置为 `INFO` 。 出于调试和诊断目的，您可能需要将这些级别设置为 `DEBUG` 或 `跟踪`。
 
-<div class="alert alert-warning"><strong>Production</strong><p>You should always run everything under
-<code>WARN</code>. In production warnings and errors are things you care about. Everything else is just diagnostics. Only
-turn up <code>DEBUG</code> or <code>INFO</code> if you need to research a particular issue.</p></div>
+<div class="alert alert-warning"><strong>生产</strong><p>你应该总是运行
+<code>警告</code>下的一切。 在生产警告和错误中，您关心的是。 其他一切都只是诊断。 只有
+ <code>DEBUG出现</code> 或 <code>INFO</code> ，如果你需要研究一个特定的问题。</p></div>
 
-## CAS Custom Log4j2 plugins
-The log4j2.xml file use by CAS includes custom Log4j2 plugins:
-- CasAppender: The CasAppender wraps another regular appender and removes sensitive values from the log entries such as Ticket Granting Tickets or Proxy Granting Tickets.
-- ExceptionOnlyFilter: In order to allow CAS to freely log unexpected errors at WARN and ERROR without obscuring everything with stacktraces, exceptions in the logs are disabled by default but there are log4j2.xml properties that can turn them back on. By default, all exceptions are written to a dedicated stacktrace rolling log file and this is done using a custom ExceptionOnlyFilter nested in the CasAppender.
+## CAS自定义日志4j2插件
+CAS使用日志4j2.xml文件包括自定义日志4j2插件：
+- CasAppender： CasAppender 包裹了另一个常规应用程序，并从日志条目中删除敏感值， 如票务赠与票证或代理授予票证。
+- 例外过滤：为了让 CAS 能够在 WARN 和 ERROR 中自由记录意外错误，而不会遮挡堆栈跟踪 的所有内容，默认情况下会禁用日志中的异常情况，但有日志4j2.xml属性可以重新打开 它们。 默认情况下，所有例外都写入专用的堆栈跟踪滚动日志文件 ，这是使用嵌入 CasAppender 中的自定义异常过滤器完成的。
 
-## Log4j2 Properties
-The log4j2.xml file includes properties for various settings and those can be set in the properties section of the log4j2.xml file, in a property file called `log4j2.component.properties` on the classpath, or as system properties. If setting properties in a `log4j2.component.properties`, be sure to include:
+## 日志4j2属性
+log4j2.xml文件包括各种设置的属性，这些属性可以设置在日志4j2.xml文件的属性部分 ，在名为 `日志4j2.组件的属性文件中，或作为系统 
+属性` 。 如果将属性设置在 `日志4j2.组件中，则属性`，请务必包括：
 ```
-Log4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
+日志 4j 康特克斯特塞勒克托 \ org. 阿帕奇. 记录. log4j. 核心. 同步. 阿同步记录器电子
 ```
-in order to keep using asynchronous logging which CAS sets by default. To turn off asynchronous logging, include the following in `log4j2.component.properites` or as a system property:
+以保持使用CAS默认设置的异步记录。 要关闭异步记录，请在 `日志4j2.组件中包括以下内容` 。
 ```
-Log4jContextSelector=org.apache.logging.log4j.core.selector.BasicContextSelector
+日志4j康泰克勒克特.org.阿帕奇.记录.log4j.核心.选择器.基础信标
 ```
 
-## Configuration
+## 配置
 
-It is often helpful to externalize the `log4j2.xml` file to a system path to preserve settings between upgrades. The location of `log4j2.xml` file by default is on the runtime classpath and can be controlled via the CAS properties.
+将 `日志4j2.xml` 文件外部化到系统路径以保存升级之间的设置通常很有帮助。 默认情况下， `日志4j2.xml` 文件的位置位于运行时间类路径上，可以通过CAS属性 进行控制。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#logging).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#logging)。
 
-### Log Levels
+### 日志级别
 
-While log levels can directly be massaged via the native `log4j2.xml` syntax, they may also be modified using the usual CAS properties. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#logging).
+虽然日志水平可以通过原生 `日志4j2.xml` 语法直接按摩，但也可以使用通常的 CAS 属性 修改它们。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#logging)。
 
-### Refresh Interval
+### 刷新间隔
 
-The `log4j2.xml` itself controls the refresh interval of the logging configuration. Log4j has the ability to automatically detect changes to the configuration file and reconfigure itself. If the `monitorInterval` attribute is specified on the configuration element and is set to a non-zero value then the file will be checked the next time a log event is evaluated and/or logged and the `monitorInterval` has elapsed since the last check. This will allow you to adjust the log levels and configuration without restarting the server environment.
+`日志4j2.xml` 本身控制记录配置的刷新间隔。 Log4j 能够 自动检测配置文件的变化并重新配置本身。 如果 `监视器在配置元素上指定了Interval` 属性，并设置为非零值，则下次评估和/或记录日志事件时将 检查文件，并且自上次检查 以来， `监视器Interval` 已经过去。 这将允许您在不重新启动 服务器环境的情况下调整日志级别和配置。
 
-```xml
-<!-- Specify the refresh internal in seconds. -->
-<Configuration monitorInterval="15" ...>
+```xml<!--在几秒钟内指定内部刷新。 --><Configuration monitorInterval="15" ...>
     ...
 </Configuration>
 ```
 
-### Appenders
+### 应用者
 
-Appenders are responsible for delivering log events to their destination. Appenders usually are only responsible for writing the event data to the target destination. In most cases they delegate responsibility for formatting the event to a layout. Some appenders wrap other appenders so that they can modify the log event, handle a failure in an `Appender`, route the event to a subordinate `Appender` based on advanced filtering criteria or provide similar functionality that does not directly format the event for viewing. `Appender`s always have a name so that they can be referenced from `Logger`s.
+应用者负责将日志事件传递到目的地。 应用对象通常只负责将事件数据编写到目标目标目标 。 在大多数情况下，他们将活动格式化的责任委托给布局。 一些应用程序包装其他应用程序，以便他们可以修改日志事件， 处理 `应用`中出现的故障，根据高级筛选标准将事件路由到从属 `Appender` ，或提供类似的 功能，不直接格式化事件以供查看。 `阿彭德`总是有一个名字，以便他们可以从 `伐木`引用。
 
-The following `Appender` elements are only a partial collection of available options.
+以下 `应用程序` 元素只是可用选项的部分集合。
 
-| Layout                | Description                                                                                                                                                                                     |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AsyncAppender`       | Accepts references to other Appenders and causes LogEvents to be written to them on a separate Thread.                                                                                          |
-| `CassandraAppender`   | Writes its output to an Apache Cassandra database. A keyspace and table must be configured ahead of time, and the columns should be mapped in a configuration file.                             |
-| `ConsoleAppender`     | Writes its output to either `System.out` or `System.err` with `System.out` being the default target.                                                                                            |
-| `FailoverAppender`    | Wraps a set of appenders. If the primary Appender fails the secondary appenders will be tried in order until one succeeds or there are no more secondaries to try.                              |
-| `FileAppender`        | Writes to the File named in the `fileName` parameter.                                                                                                                                           |
-| `CsvParameterLayout`  | Converts an event's parameters into a CSV record, ignoring the message.                                                                                                                         |
-| `JDBCAppender`        | Writes log events to a relational database table using standard JDBC.                                                                                                                           |
-| `JPAAppender`         | Writes log events to a relational database table using the Java Persistence API `2.1`.                                                                                                          |
-| `HttpAppender`        | Sends log events over HTTP. A Layout must be provided to format the log event.                                                                                                                  |
-| `KafkaAppender`       | Logs events to an Apache Kafka topic. Each log event is sent as a Kafka record.                                                                                                                 |
-| `NoSQLAppender`       | Writes log events to a NoSQL database; Provider implementations currently exist for MongoDB and Apache CouchDB.                                                                                 |
-| `RoutingAppender`     | Evaluates log events and then routes them to a subordinate `Appender`.                                                                                                                          |
-| `SMTPAppender`        | Sends an e-mail when a specific logging event occurs, typically on errors or fatal errors.                                                                                                      |
-| `JeroMQ`              | The ZeroMQ appender uses the JeroMQ library to send log events to one or more ZeroMQ endpoints.                                                                                                 |
-| `RollingFileAppender` | Writes to the File named in the fileName parameter and rolls the file over according the `TriggeringPolicy` and the `RolloverPolicy`.                                                           |
-| `RewriteAppender`     | Allows the log event to be manipulated before it is processed by another `Appender`. This can be used to mask sensitive information such as passwords or to inject information into each event. |
+| 布局         | 描述                                                                                              |
+| ---------- | ----------------------------------------------------------------------------------------------- |
+| `阿同步应用程序`  | 接受对其他应用方的引用，并导致将日志事件写在单独的线程上。                                                                   |
+| `卡桑德拉·普彭德` | 将其输出写入阿帕奇卡桑德拉数据库。 必须提前配置密钥空间和表，并且列应映射在配置文件中。                                                    |
+| `控制台应用`    | 将其输出写入 `系统.out` 或 `系统。` 与 `系统。out` 默认目标。                                                        |
+| `故障转移应用`   | 包装一组应用程序。 如果主要应用程序失败，次要应用程序将按顺序试用，直到一个成功或不再有辅助程序尝试。                                             |
+| `文件应用程序`   | 写入 `文件中命名的文件名称` 参数。                                                                             |
+| `茨夫帕拉米莱奥特` | 将事件的参数转换为 CSV 记录，忽略消息。                                                                          |
+| `京东应用`     | 使用标准的JDBC将日志事件写入关系数据库表。                                                                         |
+| `贾帕彭德`     | 使用 Java 持久 API 将日志事件写入关系数据库表 `2.1`。                                                             |
+| `赫特普彭德`    | 通过HTTP发送日志事件。 必须提供布局来格式化日志事件。                                                                   |
+| `卡夫卡阿彭德`   | 将事件记录到阿帕奇·卡夫卡主题。 每个日志事件都作为卡夫卡记录发送。                                                              |
+| `诺斯基拉彭德`   | 将日志事件写入 NoSQL 数据库;蒙哥德银行和阿帕奇沙发开发银行目前存在提供商实施程序。                                                   |
+| `路由应用程序`   | 评估日志事件，然后将它们路由到下属 `应用程序`。                                                                       |
+| `斯姆特普应用`   | 在发生特定的记录事件时发送电子邮件，通常是在错误或致命错误时。                                                                 |
+| `耶罗姆克`     | ZeroMQ 应用程序使用 JeroMQ 库将日志事件发送到一个或多个零MQ 端点。                                                      |
+| `滚动文件应用程序` | 写到文件名称参数中命名的文件，并根据触发政策</code> 和 `翻滚政策``滚动文件。</td>
+</tr>
+<tr>
+  <td><code>重写应用程序` | Allows the log event to be manipulated before it is processed by another `Appender`. 这可用于掩盖敏感信息（如密码）或将信息注入每个事件。 |
 
-For full details, please review the official [Log4j documentation](http://logging.apache.org)
+有关详细信息，请查看官方 [Log4j 文档](http://logging.apache.org)
 
-### Log Patterns
+### 日志模式
 
-By default most appenders that are provided via the `log4j2.xml` file use pattern-based layouts to format log messages. The following alternative layouts may also be used:
+默认情况下，大多数通过 `日志4j2提供的应用程序.xml` 文件使用基于模式的布局 格式化日志消息。 还可用于以下替代布局：
 
-| Layout               | Description                                                                                                              |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `CsvParameterLayout` | Converts an event's parameters into a CSV record, ignoring the message.                                                  |
-| `GelfLayout`         | Lays out events in the Graylog Extended Log Format (`GELF`).                                                             |
-| `HTMLLayout`         | Generates an HTML page and adds each LogEvent to a row in a table                                                        |
-| `JSONLayout`         | Creates log events in well-formed or fragmented JSON.                                                                    |
-| `PatternLayout`      | Formats the log even based on a conversion pattern.                                                                      |
-| `RFC5424Layout`      | Formats log events in accordance with [RFC 5424](http://tools.ietf.org/html/rfc5424), the enhanced Syslog specification. |
-| `SerializedLayout`   | Log events are transformed into byte arrays useful in JMS or socket connections.                                         |
-| `SyslogLayout`       | Formats log events as BSD Syslog records.                                                                                |
-| `XMLLayout`          | Creates log events in well-formed or fragmented XML.                                                                     |
-| `YamlLayout`         | Creates log events in YAML.                                                                                              |
+| 布局          | 描述                                                                   |
+| ----------- | -------------------------------------------------------------------- |
+| `茨夫帕拉米莱奥特`  | 将事件的参数转换为 CSV 记录，忽略消息。                                               |
+| `格尔夫莱尤特`    | 在灰log扩展日志格式（geLF``）中列出事件。                                            |
+| `赫特姆莱奥特`    | 生成 HTML 页面，并将每个日志事件添加到表中的行中                                          |
+| `杰森莱尤特`     | 在形成良好或支离破碎的 JSON 中创建日志事件。                                            |
+| `模式退出`      | 即使基于转换模式，也会对日志进行格式化。                                                 |
+| `RFC5424退出` | 格式日志事件根据 [RFC 5424](http://tools.ietf.org/html/rfc5424)，增强的Syslog规范。 |
+| `序列化出`      | 日志事件被转换为在JMS或插座连接中有用的字节阵列。                                           |
+| `赛斯洛格莱尤特`   | 将事件格式化为BSD Syslog记录。                                                 |
+| `X毫升退出`     | 在形成良好或支离破碎的 XML 中创建日志事件。                                             |
+| `亚姆莱尤特`     | 在YML中创建日志事件。                                                         |
 
-To learn more about nuances and configuration settings for each, please refer to the [official Log4J guides](http://logging.apache.org).
+要了解有关每个细微差别和配置设置的更多，请参阅 [官方日志4J指南](http://logging.apache.org)。
 
-## Log File Rotation
+## 日志文件旋转
 
-The default configuration specifies triggering policies for rolling over logs, at startup, size or at specific times. These policies apply to `RollingFile` appenders.
+默认配置指定在启动时、大小或特定时间滚动日志的触发策略。 这些策略适用于 `滚动文件` 应用程序。
 
-For example, the following XML fragment defines policies that rollover the log when the JVM starts, when the log size reaches `10` megabytes, and when the current date no longer matches the log’s start date.
+例如，以下 XML 片段定义了在 JVM 开始时、日志大小达到 10</code> MB `以及当前日期不再匹配日志的开始日期时滚动日志的政策。</p>
 
-```xml
-<RollingFile name="file" fileName="${baseDir}/cas.log" append="true"
+<pre><code class="xml"><RollingFile name="file" fileName="${baseDir}/cas.log" append="true"
                     filePattern="${baseDir}/cas-%d{yyyy-MM-dd-HH}-%i.log">
     ...
     <Policies>
@@ -113,17 +113,17 @@ For example, the following XML fragment defines policies that rollover the log w
     </Policies>
     ...
 </RollingFile>
-```
+`</pre>
 
-The triggering policies determines **if** a rollover should be performed and rollover strategy can also be design to indicate **how** that should be done. If no strategy is configured, the default will be used.
+触发策略决定 **是否应执行** 展期，并且还可以设计展期策略，以指示 **应该如何** 。 如果没有配置策略，将使用默认值。
 
-To find more a comprehensive documentation, please [review the guides here](http://logging.apache.org).
+要查找更多全面的文档，请 [查看此处的指南](http://logging.apache.org)。
 
-### Rollover Strategy
+### 展期战略
 
-Customized rollover strategies provide a delete action that gives users more control over what files are deleted at rollover time than what was possible with the DefaultRolloverStrategy max attribute. The delete action lets users configure one or more conditions that select the files to delete relative to a base directory.
+自定义的展期策略提供了一个删除操作，使用户能够比默认翻滚策略的最大属性更能够控制在展期时间删除哪些文件。 删除操作允许用户配置一个或多个条件，选择相对于基本目录删除的文件。
 
-For example, the following appender at rollover time deletes all files under the base directory that match the `*/*.log` glob and are `7` days old or older.
+例如，在展期时，以下应用器会删除与 `*/*.log` 球匹配的基础目录下的所有文件，并且 `7` 天或更久。
 
 ```xml
 <RollingFile name="file" fileName="${baseDir}/cas.log" append="true"
@@ -139,24 +139,24 @@ For example, the following appender at rollover time deletes all files under the
 </RollingFile>
 ```
 
-To find more a comprehensive documentation, please [review the guides here](http://logging.apache.org).
+要查找更多全面的文档，请 [查看此处的指南](http://logging.apache.org)。
 
-## Log Data Sanitation
+## 日志数据卫生
 
-For security purposes, CAS by default will attempt to remove ticket-granting ticket and proxy-granting ticket ids from all log data. This will of course include messages that are routed to a log destination by the logging framework as well as all audit messages.
+出于安全考虑，CAS 默认将尝试从所有日志数据中删除出票证和代理授予票证 ID。 这当然包括通过记录框架路由到日志目的地的消息以及所有审计消息。
 
-A sample follows below:
+示例如下：
 
 ```bash
-WHO: audit:unknown
-WHAT: TGT-******************123456-cas01.example.org
-ACTION: TICKET_GRANTING_TICKET_DESTROYED
-APPLICATION: CAS
-WHEN: Sat Jul 12 04:10:35 PDT 2014
-CLIENT IP ADDRESS: ...
-SERVER IP ADDRESS: ...
+世卫组织：审计：未知
+什么：TGT-***123456-cas01.example.org
+行动：TICKET_GRANTING_TICKET_DESTROYED
+申请：CAS
+时间：2014年7月12日星期六04：10：35 PDT 2014
+客户IP地址：
+服务器 IP 地址： ...
 ```
 
-Certain number of characters are left at the trailing end of the ticket id to assist with troubleshooting and diagnostics.
+在票证 ID 的尾端留下一定数量的字符，以帮助进行故障排除和诊断。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#logging).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#logging)。
