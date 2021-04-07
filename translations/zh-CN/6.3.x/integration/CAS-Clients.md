@@ -1,51 +1,51 @@
 ---
-layout: default
-title: CAS - CAS Clients
-category: Integration
+layout: 默认
+title: CAS-CAS客户
+category: 一体化
 ---
 
-# Overview
+# 概述
 
-A CAS client is also a software package that can be integrated with various software platforms and applications in order to communicate with the CAS server using or or more supported protocols. CAS clients supporting a number of software platforms and products have been developed.
-
-
-## Official Clients
-
-* [.NET CAS Client](https://github.com/apereo/dotnet-cas-client)
-* [Java CAS Client](https://github.com/apereo/java-cas-client)
-* [PHP CAS Client](https://github.com/Jasig/phpCAS)
-* [Apache CAS Client](https://github.com/Jasig/mod_auth_cas)
+CAS客户端也是一个软件包，可以与各种软件平台和应用程序集成，以便使用或更多受支持的协议与CAS服务器进行 已经开发了支持许多软件平台和产品的CAS客户。
 
 
-## Other Clients
+## 官方客户
 
-Other unofficial or incubating CAS clients may be [found here](https://wiki.jasig.org/display/CASC). Given the above projects are unofficial and not under direct maintenance of CAS, their availability and accuracy may vary.
+* [.NET CAS客户端](https://github.com/apereo/dotnet-cas-client)
+* [Java CAS客户端](https://github.com/apereo/java-cas-client)
+* [PHP CAS客户端](https://github.com/Jasig/phpCAS)
+* [Apache CAS客户端](https://github.com/Jasig/mod_auth_cas)
 
-## Samples
 
-- [CASified Python web application using Flask](https://github.com/cas-projects/cas-sample-python-webapp)
-- [CASified Java web application using Java CAS Client](https://github.com/cas-projects/cas-sample-java-webapp)
-- [Go CLI for CAS admin endpoints](https://github.com/cas-projects/casctl)
-- [Smoke Testing CAS HA Deployments](https://github.com/cas-projects/duct)
-- [CASified Bootiful Java web application](https://github.com/cas-projects/bootiful-cas-client)
-- [CASified Bootiful Java web application via Spring Security](https://github.com/cas-projects/springsecurity-bootiful-cas-client)
+## 其他客户
 
-## Framework Support
+其他非官方的或正在孵化的CAS客户可能是 [在这里](https://wiki.jasig.org/display/CASC)。 鉴于以上项目是非官方的，并且不在CAS的直接维护下，因此 的可用性和准确性可能会有所不同。
 
-The following programming frameworks have built-in support for CAS:
+## 样品
 
-* [Spring Security](http://static.springsource.org/spring-security/site/)
-* [Apache Shiro](http://shiro.apache.org/cas.html)
+- [使用Flask的CASified Python Web应用程序](https://github.com/cas-projects/cas-sample-python-webapp)
+- [使用Java CAS Client的CASified Java Web应用程序](https://github.com/cas-projects/cas-sample-java-webapp)
+- [进入CLI以访问CAS管理员端点](https://github.com/cas-projects/casctl)
+- [烟雾测试CAS HA部署](https://github.com/cas-projects/duct)
+- [CASified Bootiful Java Web应用程序](https://github.com/cas-projects/bootiful-cas-client)
+- [通过Spring Security进行CASified Bootiful Java Web应用程序](https://github.com/cas-projects/springsecurity-bootiful-cas-client)
+
+## 框架支持
+
+以下编程框架具有对CAS的内置支持：
+
+* [春季安全](http://static.springsource.org/spring-security/site/)
+* [阿帕克史郎](http://shiro.apache.org/cas.html)
 * [Pac4j](https://github.com/pac4j/pac4j)
 
 
-## Build your own CAS client
+## 建立自己的CAS客户
 
-As a lot of CAS clients already exist, there is little opportunity to develop a CAS client and it should be avoided as much as possible. Indeed, creating your own client is not an easy job and you're most likely to generate security breaches.
+由于已有许多CAS客户，因此开发CAS客户的机会很少，应尽可能避免。 确实，创建自己的客户端并不是一件容易的事，并且您最有可能产生安全漏洞。
 
-Though, if you really need to create your own CAS client, please be aware of these incomplete guidelines:
+但是，如果确实需要创建自己的CAS客户端，请注意以下不完整的准则：
 
-* Rely on a static internal configuration instead of leveraging the behaviour on received inputs which can be forged
-* Ensure that all outside inputs are properly decoded and encoded when used calls to CAS or other services
-* Ensure that input is validated and that overly large inputs are discarded.
+* 依靠静态内部配置，而不是利用可伪造的已接收输入的行为
+* 使用CAS或其他服务调用时，请确保所有外部输入均已正确解码和编码
+* 确保输入经过验证，并且丢弃过多的输入。
 
