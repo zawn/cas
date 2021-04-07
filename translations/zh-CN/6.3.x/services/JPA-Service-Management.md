@@ -1,13 +1,13 @@
 ---
-layout: default
-title: CAS - JPA Service Registry
-category: Services
+layout: 默认
+title: CAS-JPA服务注册中心
+category: 服务
 ---
 
-# JPA Service Registry
-Stores registered service data in a database.
+# JPA服务注册中心
+将注册的服务数据存储在数据库中。
 
-Support is enabled by adding the following module into the overlay:
+通过将以下模块添加到叠加层来启用支持：
 
 ```xml
 <dependency>
@@ -17,8 +17,12 @@ Support is enabled by adding the following module into the overlay:
 </dependency>
 ```
 
-To learn how to configure database drivers, [please see this guide](../installation/JDBC-Drivers.html). To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#database-service-registry).
+要了解如何配置数据库驱动程序，请参阅本指南</a>
 
-## Auto Initialization
+。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#database-service-registry)。</p> 
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+
+
+## 自动初始化
+
+在启动和配置允许的情况下，注册表可以根据CAS可用的默认JSON服务定义自动进行初始化。 有关更多信息，请参见 [本指南](AutoInitialization-Service-Management.html)
