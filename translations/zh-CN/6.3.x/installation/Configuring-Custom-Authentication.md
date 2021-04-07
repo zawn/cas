@@ -1,101 +1,101 @@
 ---
-layout: default
-title: CAS - Design Authentication Strategies
-category: Authentication
+layout: 默认
+title: CAS-设计认证策略
+category: 验证
 ---
 
-# Custom Authentication Strategies
+# 自定义身份验证策略
 
-While authentication support in CAS for a variety of systems is somewhat comprehensive and complex, a common deployment use case is the task of designing custom authentication schemes. This document describes the necessary steps needed to design and register a custom authentication strategy (i.e. `AuthenticationHandler`) in CAS.
+尽管CAS对各种系统的身份验证支持较为全面和复杂，但常见的部署用例是设计自定义身份验证方案的任务。 本文描述了在CAS中设计和注册自定义身份验证策略（即 `AuthenticationHandler`
 
-This guide really is intended for developers with a basic-to-medium familiarity with Spring, Spring Boot and Spring Webflow. This is *NOT* a tutorial to be used verbatim via copy/paste. It is instead a recipe for developers to extend CAS based on specialized requirements.
+本指南实际上是为熟悉Spring，Spring Boot和Spring Webflow的中级开发人员准备的。 这是 *NOT* 通过复制/粘贴逐字使用的教程。 相反，它是开发人员根据特殊要求扩展CAS的秘诀。
 
-## Overview
+## 概述
 
-The overall tasks may be categorized as such:
+总体任务可以归类为：
 
-1. Design the authentication handler.
-2. Register the authentication handler with the CAS authentication engine.
-3. Let CAS to recognize the authentication configuration.
+1. 设计身份验证处理程序。
+2. 向CAS身份验证引擎注册身份验证处理程序。
+3. 让CAS识别身份验证配置。
 
-## Design
+## 设计
 
-First step is to define the skeleton for the authentication handler itself. This is the core principal component whose job is to declare support for a given type of credential only to then attempt to validate it and produce a successful result. The core parent component from which all handlers extend is the `AuthenticationHandler` interface.
+第一步是为身份验证处理程序本身定义框架。 这是核心主要组件，其工作是声明对给定类型的凭证的支持，然后才尝试对其进行验证并产生成功的结果。 所有处理程序都从其扩展的核心父组件是 `AuthenticationHandler` 接口。
 
-With the assumption that the type of credentials used here deal with the traditional username and password, noted by the infamous `UsernamePasswordCredential` below, a more appropriate skeleton to define for a custom authentication handler may seem like the following example:
+假设此处使用的凭据类型处理传统的用户名和密码（如 `UsernamePasswordCredential` 所示），则为自定义身份验证处理程序定义的更合适的框架可能类似于以下示例：
 
 ```java
-package com.example.cas;
+包com.example.cas;
 
-public class MyAuthenticationHandler extends AbstractUsernamePasswordAuthenticationHandler {
-    ...
-    protected AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal(
-        final UsernamePasswordCredential credential,
-        final String originalPassword) {
+公共类MyAuthenticationHandler扩展AbstractUsernamePasswordAuthenticationHandler {
+...
+    受保护的AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal（
+        最终UsernamePasswordCredential凭据，
+        最终String originalPassword）{
 
-        if (everythingLooksGood()) {
-            return createHandlerResult(credential,
-                this.principalFactory.createPrincipal(username), null);
+        if（everythingLooksGood（））{
+            return createHandlerResult（credential，
+                this.principalFactory.createPrincipal（username），null）;
         }
-        throw new FailedLoginException("Sorry, you are a failure!");
+        抛出新的FailedLoginException（“对不起，您失败了！”）;
     }
-    ...
+...
 }
 ```
 
-### Review
+### 审查
 
-- Authentication handlers have the ability to produce a fully resolved principal along with attributes. If you have the ability to retrieve attributes from the same place as the original user/principal account store, the final `Principal` object that is resolved here must then be able to carry all those attributes and claims inside it at construction time.
+- 身份验证处理程序具有产生完全解析的主体以及属性的能力。 如果您能够从与原始用户/本金帐户存储相同的位置检索属性， `主体` 对象必须能够在构造时在其中携带所有这些属性和声明。
 
-- The last parameter, `null`, is effectively a collection of warnings that is eventually worked into the authentication chain and conditionally shown to the user. Examples of such warnings include password status nearing an expiration date, etc.
+- 最后一个参数 `null`实际上是警告的集合，这些警告最终被应用到身份验证链中并有条件地显示给用户。 此类警告的示例包括临近到期日期的密码状态等。
 
-- Authentication handlers also have the ability to block authentication by throwing a number of specific exceptions. A more common exception to throw back is `FailedLoginException` to note authentication failure. Other specific exceptions may be thrown to indicate abnormalities with the account status itself, such as `AccountDisabledException`.
+- 身份验证处理程序还可以通过引发许多特定的异常来阻止身份验证。 抛出的更常见异常是 `FailedLoginException` 以记录身份验证失败。 可能引发其他特定异常以指示帐户状态本身异常，例如 `AccountDisabledException`。
 
-- Various other components such as `PrincipalNameTransformer`s, `PasswordEncoder`s and such may also be injected into our handler if need be, though these are skipped for now in this post for simplicity.
+- 如有必要，也可以将其他各种组件（例如 `PrincipalNameTransformer`s， `PasswordEncoder`s）注入到我们的处理程序中，尽管为简单起见，在本文中现在略过了这些组件。
 
-## Register
+## 登记
 
-Once the handler is designed, it needs to be registered with CAS and put into the authentication engine. This is done via the magic of `@Configuration` classes that are picked up automatically at runtime, per your approval, whose job is to understand how to dynamically modify the application context.
+设计处理程序后，需要在CAS中注册处理程序并将其放入身份验证引擎中。 这是通过神奇的 `@Configuration` 类实现的，在您批准后，它们会在运行时自动拾取， 的工作是了解如何动态修改应用程序上下文。
 
 ```java
-package com.example.cas;
+包com.example.cas;
 
-@Configuration("MyAuthenticationEventExecutionPlanConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyAuthenticationEventExecutionPlanConfiguration
-                    implements AuthenticationEventExecutionPlanConfigurer {
+@Configuration（“ MyAuthenticationEventExecutionPlanConfiguration”）
+@EnableConfigurationProperties（CasConfigurationProperties.class）
+公共类MyAuthenticationEventExecutionPlanConfiguration
+                    实现AuthenticationEventExecutionPlanConfigurer {
     @Autowired
-    private CasConfigurationProperties casProperties;
+    私有CasConfigurationProperties casProperties;
 
     @Bean
-    public AuthenticationHandler myAuthenticationHandler() {
-        var handler = new MyAuthenticationHandler();
-        /*
-            Configure the handler by invoking various setter methods.
-            Note that you also have full access to the collection of resolved CAS settings.
-            Note that each authentication handler may optionally qualify for an 'order`
-            as well as a unique name.
-        */
-        return h;
+    public AuthenticationHandler myAuthenticationHandler（）{
+        var handler = new MyAuthenticationHandler（）;
+        / *
+            通过调用各种设置方法来配置处理程序。
+            请注意，您还可以完全访问已解析的CAS设置的集合。
+            请注意，每个身份验证处理程序可以有选择地符合“ order”
+            以及唯一名称的条件。
+        * /
+        返回h;
     }
 
     @Override
-    public void configureAuthenticationExecutionPlan(final AuthenticationEventExecutionPlan plan) {
-        if (feelingGoodOnAMondayMorning()) {
-            plan.registerAuthenticationHandler(myAuthenticationHandler());
+    public void configureAuthenticationExecutionPlan（final AuthenticationEventExecutionPlan plan）{
+        if（feelingGoodOnAMondayMorning（））{
+            plan.registerAuthenticationHandler（myAuthenticationHandler（））;
         }
     }
 }
 ```
 
 
-Now that we have properly created and registered our handler with the CAS authentication machinery, we just need to ensure that CAS is able to pick up our special configuration. To do so, create a `src/main/resources/META-INF/spring.factories` file and reference the configuration class in it as such:
+现在，我们已经正确创建了处理程序并将其注册到CAS身份验证机制，我们只需要确保CAS能够获取我们的特殊配置即可。 为此，请创建一个 `src / main / resources / META-INF / spring.factories` 文件，并在其中引用配置类，如下所示：
 
 ```properties
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
     com.example.cas.MyAuthenticationEventExecutionPlanConfiguration
 ```
 
-To learn more about the registration strategy, [please see this guide](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html).
+要了解更多关于注册策略， [请参阅本指南](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html)。
 
-At runtime, CAS will try to automatically detect all components and beans that advertise themselves as `AuthenticationEventExecutionPlanConfigurers`. Each detected component is then invoked to register its own authentication execution plan. The result of this operation at the end will produce a ready-made collection of authentication handlers that are ready to be invoked by CAS in the given order defined, if any.
+在运行时，CAS将尝试自动检测所有将自身广告为 `组件和bean AuthenticationEventExecutionPlanConfigurers`。 然后调用每个检测到的组件以注册其自己的身份验证执行计划。 最终，此操作的结果将生成现成的身份验证处理程序集合，可以按定义的给定顺序（如果有）由CAS调用。
