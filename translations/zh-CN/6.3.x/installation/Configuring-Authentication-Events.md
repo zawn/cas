@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Configuring Authentication Events
-category: Authentication
+layout: 默认
+title: CAS-配置身份验证事件
+category: 验证
 ---
 
-# Authentication Events
+# 认证事件
 
-CAS provides a facility for consuming and recording authentication events into persistent storage. This functionality is similar to the records kept by the [Audit log](Audits.html) except that the functionality and storage format is controlled via CAS itself rather than the audit engine. Additionally, while audit data may be used for reporting and monitoring, events stored into storage via this functionality may later be assessed in a historical fashion to assess authentication requests, evaluate risk associated with them and take further action upon them. Events are primarily designed to be consumed by the developer and subsequent CAS modules, while audit data is targeted at deployers for end-user functionality and reporting.
+CAS提供了一种用于使用身份验证事件并将其记录到持久性存储中的功能。 此功能类似于 [审核日志](Audits.html) 保留 ，不同之处在于，功能和存储格式是通过CAS本身而不是审核引擎来控制的。 另外，虽然审核数据可用于报告和监视，但以后可以 ，以评估身份验证请求，评估与请求关联的风险并对其采取进一步的措施。 事件主要 ，以供开发人员和后续的CAS模块使用，而审核数据则针对最终用户功能和报告的部署者。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,42 +18,42 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-## Recorded Data
+## 记录数据
 
-The following metadata is captured and recorded by the event machinery when enabled:
+启用后，事件机制将捕获并记录以下元数据：
 
-| Field             | Description                                      |
-| ----------------- | ------------------------------------------------ |
-| `principalId`     | The principal id of the authenticated subject    |
-| `timestamp`       | Timestamp of this event                          |
-| `creationTime`    | Timestamp of this authentication event           |
-| `clientIpAddress` | Client IP address                                |
-| `serverIpAddress` | Server IP address                                |
-| `agent`           | User-Agent of the browser                        |
-| `geoLatitude`     | Geo Latitude of authentication request's origin  |
-| `geoLongitude`    | Geo Longitude of authentication request's origin |
-| `geoAccuracy`     | Accuracy measure of the location                 |
-| `geoTimestamp`    | Timestamp of the geo location request            |
+| 场地                | 描述            |
+| ----------------- | ------------- |
+| `PrincipalId`     | 认证主题的主体ID     |
+| `时间戳记`            | 此事件的时间戳       |
+| `creationTime`    | 此认证事件的时间戳     |
+| `clientIpAddress` | 客户端IP地址       |
+| `服务器的IP地址`        | 服务器的IP地址      |
+| `代理人`             | 浏览器的用户代理      |
+| `geoLatitude`     | 身份验证请求来源的地理位置 |
+| `地理经度`            | 身份验证请求来源的地理经度 |
+| `地理精度`            | 位置精度测量        |
+| `geoTimestamp`    | 地理位置请求的时间戳    |
 
-## GeoLocation
+## 地理位置
 
-CAS attempts to record the geolocation properties of the authentication requests, by allowing the browser to ask for user's consent. Should consent not be granted or geolocation not supported by the browser, CAS will ignore the geolocation data when it attempts to record the event. To learn more, please [review this guide](GeoTracking-Authentication-Requests.html).
+CAS尝试通过允许浏览器征求用户同意来记录身份验证请求的地理位置属性。 如果浏览器未授予同意或不支持地理位置，则CAS尝试将事件记录 要了解更多信息，请 [本指南](GeoTracking-Authentication-Requests.html)。
 
-## Administrative Endpoints
+## 行政端点
 
-The following endpoints are provided by CAS:
+CAS提供了以下端点：
 
-| Endpoint | Description                                                |
-| -------- | ---------------------------------------------------------- |
-| `events` | Provides a JSON representation of all CAS recorded events. |
+| 终点    | 描述                     |
+| ----- | ---------------------- |
+| `大事记` | 提供所有CAS记录的事件的JSON表示形式。 |
 
-## Configuration
+## 配置
 
-The following storage backends are available for consumption of events.
+以下存储后端可用于事件消费。
 
 ### MongoDb
 
-Stores authentication events into a MongoDb NoSQL database.
+将身份验证事件存储到MongoDb NoSQL数据库中。
 
 ```xml
 <dependency>
@@ -63,11 +63,11 @@ Stores authentication events into a MongoDb NoSQL database.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#mongodb-events).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#mongodb-events)。
 
 ### DynamoDb
 
-Stores authentication events into a DynamoDb database.
+将身份验证事件存储到DynamoDb数据库中。
 
 ```xml
 <dependency>
@@ -77,11 +77,11 @@ Stores authentication events into a DynamoDb database.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#dynamodb-events).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#dynamodb-events)。
 
 ### CouchDb
 
-Stores authentication events inside a CouchDb instance.
+将身份验证事件存储在CouchDb实例中。
 
 ```xml
 <dependency>
@@ -91,11 +91,11 @@ Stores authentication events inside a CouchDb instance.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchdb-events).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchdb-events)。
 
 ### JPA
 
-Stores authentication events into a RDBMS.
+将身份验证事件存储到RDBMS中。
 
 ```xml
 <dependency>
@@ -105,11 +105,11 @@ Stores authentication events into a RDBMS.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#database-events).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#database-events)。
 
 ### InfluxDb
 
-Stores authentication events inside an InfluxDb instance.
+将身份验证事件存储在InfluxDb实例中。
 
 ```xml
 <dependency>
@@ -119,16 +119,16 @@ Stores authentication events inside an InfluxDb instance.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#influxdb-events).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#influxdb-events)。
 
-### Memory
+### 记忆
 
-Stores authentication events into memory for a very limited time period.
+在非常有限的时间段内将身份验证事件存储到内存中。
 
 ```xml
 <dependency>
   <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-events-memory</artifactId>
+  <artifactId>cas服务器支持事件内存</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
