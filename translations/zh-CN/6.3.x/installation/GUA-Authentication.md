@@ -1,33 +1,33 @@
 ---
-layout: default
-title: CAS - GUA Authentication
-category: Authentication
+layout: 违约
+title: 中科院 - 瓜认证
+category: 认证
 ---
 
-# Graphical User Authentication
+# 图形用户身份验证
 
-Graphical user authentication, sometimes also known as 'login images' are a form of login verification (i.e. second factor) where a site presents the user with an image previously selected by the user at the time the account is created. It is an "account secret" tied to the username that should not be easily reproduced by a phishing campaign attempting to impersonate a legitimate website.
+图形用户身份验证（有时也称为"登录图像"）是登录验证的一种形式（即第二个因子），其中网站向用户展示用户在创建帐户时以前选择的图像。 这是一个与用户名相关的"帐户机密"，不应轻易被试图冒充合法网站的网络钓鱼活动转载。
 
-In practice, CAS prompts the user for only their username and responds with a page displaying what should be the user's pre-selected image along with a password field to complete their authentication. The user in turn is to be trained to refuse submitting the rest of their login credentials to a site posing to be legitimate if CAS fails to present the correct image.
+在实践中，CAS 仅向用户提示其用户名，并使用显示用户预选图像的页面以及密码字段来响应以完成其身份验证。 反过来，如果 CAS 未能呈现正确的图像，则用户将接受培训，拒绝将其余登录凭据提交到假定合法的站点。
 
-## Overview
+## 概述
 
-Support is enabled by including the following module in the overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-gua</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 瓜</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#gua-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#gua-authentication)。
 
-### Resource
+### 资源
 
-Primarily useful for demo and testing purposes, this option allows CAS to load a global and static image resource as the user identifier onto the login flow.
+此选项主要用于演示和测试目的，允许 CAS 将全球和静态图像资源 作为用户标识符加载到登录流中。
 
-### LDAP
+### 阿尔达普
 
-CAS may also be allowed to locate a binary image attribute for the user from LDAP. The binary attribute value is then loaded as the user identifier onto the login flow.
+CAS 也可以允许从 LDAP 为用户定位二进制图像属性。 然后将二进制属性值加载 作为用户标识符加载到登录流中。
