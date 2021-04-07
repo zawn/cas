@@ -1,96 +1,118 @@
 ---
-layout: default
-title: CAS - Test Process
-category: Developer
+layout: 默认
+title: CAS-测试流程
+category: 开发者
 ---
 
-# Test Process
+# 测试过程
 
-This page documents the steps that a CAS developer/contributor should take for testing a CAS server deployment during development. For additional instructions and guidance on the general build process, please [see this page](Build-Process.html).
+本页记录了CAS开发人员/贡献者在开发过程中测试CAS服务器部署应采取的步骤。 有关 说明和指南，请 [参见此页面](Build-Process.html)。
 
-## Testing Modules
+## 测试模块
 
-To test the functionality provided by a given CAS module, execute the following steps:
+要测试给定的CAS模块提供的功能，请执行以下步骤：
 
-- For the tomcat, undertow or jetty webapp, add the module reference to the `webapp.gradle` build script of web application you intend to run:
+- 对于tomcat，undertow或jetty webapp，将模块引用添加到要运行的Web应用程序 `webapp.gradle`
 
 ```gradle
-implementation project(":support:cas-server-support-modulename")
+实施项目（“：support：cas-server-support-modulename”）
 ```
 
-Alternatively, set a `casModules` property in the root project's `gradle.properties` or `~/.gradle/gradle.properties` to a comma separated list of modules without the `cas-server-` prefix:
+可替换地，设置一个 `casModules` 个项目的属性 `gradle.properties` 或 `〜/ .gradle / gradle.properties` 至 逗号分隔模块的列表，而不 `CAS -服务器` 前缀：
 
-For example:
+例如：
 
 ```properties
-casModules=monitor,\
-    ldap,\
-    x509,\
+casModules = monitor，\
+    ldap，\
+    x509，\
     bootadmin-client
 ```
 
-Or set the property on the command-line:
+或在命令行上设置属性：
 
 ```bash
-bc -PcasModules=ldap,x509
+bc -PcasModules = ldap，x509
 ```
 
-...where `bc` is an [alias for building CAS](Build-Process.html#sample-build-aliases).
+...其中 `bc` 是构建CAS</a>
 
-Prepare [the embedded container](Build-Process.html#embedded-containers), to run and deploy the web application.
+别名。</p> 
 
-## Unit / Integration Testing
+准备 [嵌入式容器](Build-Process.html#embedded-containers)，以运行和部署Web应用程序。
 
-To simplify the test execution process, you may take advantage of the `testcas.sh` script found at the root of the repository as such:
+
+
+## 单元/集成测试
+
+为了简化测试执行过程，您可以利用在存储库根目录中找到 `testcas.sh`
+
+
 
 ```bash
-# chmod +x ./testcas.sh
+＃chmod + x ./testcas.sh
 ./testcas.sh --category <category> [--test <test-class>] [--debug] [--with-coverage]
 ```
 
-To learn more about the script, use:
+
+要了解有关脚本的更多信息，请使用：
+
+
 
 ```bash
-./testcas.sh --help
+./testcas.sh-帮助
 ```
 
-All unit and integration tests are executed by the [continuous integration system](Test-Process.html#continuous-integration).
 
-## Code Coverage & Metrics
+所有单元测试和集成测试均由 [连续集成系统](Test-Process.html#continuous-integration)。
 
-Code coverage metrics are collected and reported by the following platforms:
 
-| System                            | Badge |-----------------------------------+---------------------------------------------------------------------------+ | Codacy           | [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/29973e19266547dab7ab73f1a511c826)](https://www.codacy.com/gh/apereo/cas/dashboard?utm_source=github.com&utm_medium=referral&utm_content=apereo/cas&utm_campaign=Badge_Coverage) | SonarCloud           | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=org.apereo.cas%3Acas-server&metric=coverage)](https://sonarcloud.io/dashboard?id=org.apereo.cas%3Acas-server) | CodeCov           | [![codecov](https://codecov.io/gh/apereo/cas/branch/master/graph/badge.svg)](https://codecov.io/gh/apereo/cas)
 
-Quality metrics are collected and reported by the following platforms:
+## 代码覆盖率 & 指标
 
-| System                            | Badge |-----------------------------------+---------------------------------------------------------------------------+ | Codacy           | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/29973e19266547dab7ab73f1a511c826)](https://www.codacy.com/gh/apereo/cas/dashboard?utm_source=github.com&utm_medium=referral&utm_content=apereo/cas&utm_campaign=Badge_Grade) | SonarCloud Quality Gate           | [![Sonarqube Quality](https://sonarcloud.io/api/project_badges/measure?project=org.apereo.cas%3Acas-server&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.apereo.cas%3Acas-server) | SonarCloud Maintainability            | [![Sonarqube Quality](https://sonarcloud.io/api/project_badges/measure?project=org.apereo.cas%3Acas-server&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=org.apereo.cas%3Acas-server)
+以下平台收集和报告代码覆盖率指标：
 
-## Browser & Functional Testing
+|系统|徽章 | ----------------------------------- + ----------- -------------------------------------------------- -------------- + |编纂| [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/29973e19266547dab7ab73f1a511c826)](https://www.codacy.com/gh/apereo/cas/dashboard?utm_source=github.com&utm_medium=referral&utm_content=apereo/cas&utm_campaign=Badge_Coverage) | SonarCloud | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=org.apereo.cas%3Acas-server&metric=coverage)](https://sonarcloud.io/dashboard?id=org.apereo.cas%3Acas-server) | CodeCov | [![编码](https://codecov.io/gh/apereo/cas/branch/master/graph/badge.svg)](https://codecov.io/gh/apereo/cas)
 
-Automated browser testing is done via the [Puppeteer framework](https://pptr.dev/). Puppeteer is a Node library which provides a high-level API to control Chrome or Chromium over the DevTools Protocol and runs headless by default.
+质量指标是由以下平台收集和报告的：
 
-Functional tests start by generating a plain CAS overlay as a baseline that is able to run under HTTPS using a pre-generated keystore. This overlay is supplied the test scenario configuration that explain the required modules, properties, etc to use when CAS is deployed inside an embedded Apache Tomcat container. Once running, the Puppeteer script is executed by Node for the given test scenario to verify specific functionality such as successful logins, generation of tickets, etc.
+|系统|徽章 | ----------------------------------- + ----------- -------------------------------------------------- -------------- + |编纂| [![Codacy Badge](https://app.codacy.com/project/badge/Grade/29973e19266547dab7ab73f1a511c826)](https://www.codacy.com/gh/apereo/cas/dashboard?utm_source=github.com&utm_medium=referral&utm_content=apereo/cas&utm_campaign=Badge_Grade) | SonarCloud质量门| [![Sonarqube Quality](https://sonarcloud.io/api/project_badges/measure?project=org.apereo.cas%3Acas-server&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.apereo.cas%3Acas-server) | SonarCloud可维护性| [![声纳质量](https://sonarcloud.io/api/project_badges/measure?project=org.apereo.cas%3Acas-server&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=org.apereo.cas%3Acas-server) 
 
-All functional and browser tests are executed by the [continuous integration system](Test-Process.html#continuous-integration). If you are adding a new batch of tests, make sure the scenario (i.e. test) name is included in the CI configuration.
 
-To help simplify the testing process, you may use the following bash function in your `.profile`:
+
+## 浏览器 & 功能测试
+
+自动化浏览器测试是通过 [Puppeteer框架](https://pptr.dev/)。 Puppeteer是一个Node库，它提供了一个高级 API来通过DevTools协议控制Chrome或Chromium，并且默认情况下是无头运行的。
+
+功能测试从生成普通的CAS覆盖作为基线开始，该覆盖可以使用预生成的密钥库在HTTPS下运行。 该覆盖图提供了测试方案配置，该配置说明了在嵌入式Apache Tomcat容器内将 一旦运行，Puppeteer脚本将由Node针对给定的测试场景执行，以验证 特定功能，例如成功登录，生成票证等。
+
+所有功能和浏览器测试均由 [连续集成系统](Test-Process.html#continuous-integration)。 如果您 的新一批测试，请确保方案（即测试）名称包含在CI配置中。
+
+为了帮助简化测试过程，您可以在 `.profile`使用以下bash函数：
+
+
 
 ```bash
-function pupcas() {
-  scenario=$1
-  /path/to/cas/ci/tests/puppeteer/run.sh /path/to/cas/ci/tests/puppeteer/scenarios/"${scenario}"
+函数pupcas（）{
+  方案= $ 1
+  /path/to/cas/ci/tests/puppeteer/run.sh / path / to / cas / ci / tests / puppeteer / scenarios /“${scenario}”
 }
 ```
 
-...which can later be invoked as:
+
+...以后可以通过以下方式调用：
+
+
 
 ```bash
-pupcas <scenario-name>
+up <scenario-name>
 ```
 
-To successfully run tests, you need to make [jq](https://stedolan.github.io/jq/) is installed.
 
-## Continuous Integration
+要成功运行测试，您需要安装 [jq](https://stedolan.github.io/jq/)
 
-Unit and integration tests are automatically executed by the CAS CI system, [GitHub Actions](https://github.com/apereo/cas/actions).
+
+
+## 持续集成
+
+单元和集成测试由CAS CI系统 [GitHub Actions](https://github.com/apereo/cas/actions)自动执行。
