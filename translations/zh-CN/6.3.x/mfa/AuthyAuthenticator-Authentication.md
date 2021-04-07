@@ -1,29 +1,29 @@
 ---
-layout: default
-title: CAS - Authy Authentication
-category: Multifactor Authentication
+layout: 违约
+title: CAS - 奥蒂认证
+category: 多因素认证
 ---
 
-# Authy Authentication
+# 奥蒂认证
 
-CAS provides support for Authy's [TOTP API](http://docs.authy.com/totp.html). This is done via Authy's REST API that does all the heavy lifting.
+中科院为奥西 [托普API](http://docs.authy.com/totp.html)提供支持。 这是通过奥蒂的 REST API 完成 ，该 API 可以完成所有繁重的工作。
 
-Start by visiting the [Authy documentation](https://www.authy.com/developers/).
+首先参观 [奥蒂文件](https://www.authy.com/developers/)。
 
-Support is enabled by including the following module in the overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-authy</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 -</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authy)。
 
-## Registration
+## 注册
 
-By default, users are registered with authy based on their phone and email attributes retrieved by CAS.
+默认情况下，用户根据 CAS 检索到的手机和电子邮件属性以 authy 注册。
