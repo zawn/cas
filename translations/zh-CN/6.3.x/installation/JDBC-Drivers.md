@@ -1,117 +1,117 @@
 ---
-layout: default
-title: CAS - JDBC Drivers
-category: Configuration
+layout: 违约
+title: CAS - 京德B驱动程序
+category: 配置
 ---
 
-# JDBC Drivers
+# 京城驱动程序
 
-While in most cases this is unnecessary and handled by CAS automatically, you may need to also include the following module to account for various database drivers:
+虽然在大多数情况下，这是不必要的，由CAS自动处理， 您可能需要还包括以下模块，以考虑各种数据库驱动程序：
 
 ```xml
 <dependency>
-   <groupId>org.apereo.cas</groupId>
-   <artifactId>cas-server-support-jdbc-drivers</artifactId>
+   <groupId>组织. apereo. cas</groupId>
+   <artifactId>卡斯服务器支持 - jdbc - 驱动程序</artifactId>
    <version>${cas.version}</version>
 </dependency>
 ```
 
-## Database Support
+## 数据库支持
 
-Automatic support for drivers includes the following databases. All other drivers need to be manually added to the build configuration. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties-Common.html#hibernate--jdbc).
+对驱动程序的自动支持包括以下数据库。 所有其他驱动程序需要手动添加到生成配置中。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties-Common.html#hibernate--jdbc)。
 
 ### H2
 
-Available drivers are:
+可用的驱动程序是：
 
-1. `org.h2.Driver`
+1. `组织.h2.驱动程序`
 
-| Dialects                          |
-| --------------------------------- |
-| `org.hibernate.dialect.H2Dialect` |
+| 方言              |
+| --------------- |
+| `组织.冬眠.方言.H2对话` |
 
-### HSQLDB
+### 赫斯卡尔德布
 
-Available drivers are:
+可用的驱动程序是：
 
-1. `org.hsqldb.jdbcDriver`
+1. `组织. 赫克尔德布. jdbc 司机`
 
-| Dialects                            |
-| ----------------------------------- |
-| `org.hibernate.dialect.HSQLDialect` |
+| 方言                     |
+| ---------------------- |
+| `组织. 休眠. 方言. Hsql 糖尿病` |
 
-### Oracle
+### 神谕
 
-Available drivers are:
+可用的驱动程序是：
 
-1. `oracle.jdbc.driver.OracleDriver`
+1. `甲骨文.jdbc.驱动程序。甲骨文驱动程序`
 
-| Dialects                                 |
-| ---------------------------------------- |
-| `org.hibernate.dialect.Oracle8iDialect`  |
-| `org.hibernate.dialect.Oracle9iDialect`  |
-| `org.hibernate.dialect.Oracle10gDialect` |
-| `org.hibernate.dialect.Oracle12cDialect` |
+| 方言                         |
+| -------------------------- |
+| `组织. 休伯内特. 方言. 甲骨文 8i 糖尿病` |
+| `组织.休伯内特.方言.甲骨文9i对话`       |
+| `组织.休伯内特.方言.甲骨文10g对话`      |
+| `组织.休伯内特.方言。甲骨文12c对话`      |
 
-### MYSQL
+### 迈斯克尔
 
-Available drivers are:
+可用的驱动程序是：
 
-1. `com.mysql.jdbc.Driver`
-2. `com.mysql.cj.jdbc.Driver`
+1. `科姆. 迈斯克尔. jdbc. 司机`
+2. `科姆. 迈斯克尔. cj. jdbc. 司机`
 
-| Dialects                                     |
-| -------------------------------------------- |
-| `org.hibernate.dialect.MySQLDialect`         |
-| `org.hibernate.dialect.MySQL5Dialect`        |
-| `org.hibernate.dialect.MySQLInnoDBDialect`   |
-| `org.hibernate.dialect.MySQLMyISAMDialect`   |
-| `org.hibernate.dialect.MySQL5InnoDBDialect`  |
-| `org.hibernate.dialect.MySQL57InnoDBDialect` |
-| `org.hibernate.dialect.MySQL8Dialect`        |
+| 方言                         |
+| -------------------------- |
+| `组织.冬眠.方言。我的问题`            |
+| `组织.冬眠.方言。我的QL5对话`         |
+| `组织.休伯内特.方言。迈斯克林诺德布迪亚特`    |
+| `组织.休伯内特.方言。迈斯基尔·米伊萨姆·迪亚特` |
+| `组织.冬眠.方言.MySQL5无糖尿病`      |
+| `组织.冬眠.方言.MySQL57无糖尿病`     |
+| `组织.冬眠.方言。我的QL8对话`         |
 
-### PostgreSQL
+### 波斯特格雷斯克尔
 
-Available drivers are:
+可用的驱动程序是：
 
-1. `org.postgresql.Driver`
+1. `组织. 后格雷斯克尔. 司机`
 
-| Dialects                                    |
-| ------------------------------------------- |
-| `org.hibernate.dialect.PostgreSQL81Dialect` |
-| `org.hibernate.dialect.PostgreSQL82Dialect` |
-| `org.hibernate.dialect.PostgreSQL9Dialect`  |
-| `org.hibernate.dialect.PostgreSQL91Dialect` |
-| `org.hibernate.dialect.PostgreSQL92Dialect` |
-| `org.hibernate.dialect.PostgreSQL93Dialect` |
-| `org.hibernate.dialect.PostgreSQL94Dialect` |
-| `org.hibernate.dialect.PostgreSQL95Dialect` |
-| `org.hibernate.dialect.PostgresPlusDialect` |
+| 方言                        |
+| ------------------------- |
+| `组织.休眠.方言.后格雷斯QL81对话`     |
+| `组织. 休眠. 方言. 后格雷斯QL82 对话` |
+| `组织.冬眠.方言.后格雷斯QL9对话`      |
+| `组织.冬眠.方言.后格雷斯QL91对话`     |
+| `组织.休眠.方言.后格雷斯QL92对话`     |
+| `组织.休眠.方言.后格雷斯QL93对话`     |
+| `组织.冬眠.方言.后格雷斯QL94对话`     |
+| `组织.休眠.方言。后格雷斯QL95对话`     |
+| `组织.休眠.方言。后格雷斯加迪亚特`       |
 
-### MariaDB
+### 马里亚德布
 
-Available drivers are:
+可用的驱动程序是：
 
-1. `org.mariadb.jdbc.Driver`
+1. `组织. 玛丽亚德布. jdbc. 司机`
 
-| Dialects                                  |
-| ----------------------------------------- |
-| `org.hibernate.dialect.MariaDBDialect`    |
-| `org.hibernate.dialect.MariaDB53Dialect`  |
-| `org.hibernate.dialect.MariaDB10Dialect`  |
-| `org.hibernate.dialect.MariaDB102Dialect` |
-| `org.hibernate.dialect.MariaDB103Dialect` |
+| 方言                          |
+| --------------------------- |
+| `组织. 休伯内特. 方言. 玛丽亚德布迪亚克`    |
+| `组织. 休伯内特. 方言. 玛丽亚德布 53 对话` |
+| `组织.冬眠.方言.玛丽亚DB10对话`        |
+| `组织.休伯内特.方言.玛丽亚DB102对话`     |
+| `组织.休伯内特.方言.玛丽亚DB103对话`     |
 
-### Microsoft SQL Server
+### 微软SQL服务器
 
-Available drivers are:
+可用的驱动程序是：
 
-1. `net.sourceforge.jtds.jdbc.Driver`
-2. `com.microsoft.sqlserver.jdbc.SQLServerDriver`
+1. `网. 来源福格. jtds. jdbc. 司机`
+2. `com. 微软. 斯克尔服务器. jdbc. 斯克尔服务器司机`
 
-| Dialects                                     |
-| -------------------------------------------- |
-| `org.hibernate.dialect.SQLServerDialect`     |
-| `org.hibernate.dialect.SQLServer2005Dialect` |
-| `org.hibernate.dialect.SQLServer2008Dialect` |
-| `org.hibernate.dialect.SQLServer2012Dialect` |  
+| 方言                        |
+| ------------------------- |
+| `组织. 休伯内特. 方言. 斯凯塞尔服务器`   |
+| `组织.休伯内特.方言.SQL服务器2005对话` |
+| `组织.休伯内特.方言.SQL服务器2008对话` |
+| `组织.休伯内特.方言.SQL服务器2012对话` |  
