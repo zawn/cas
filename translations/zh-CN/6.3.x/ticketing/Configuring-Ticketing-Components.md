@@ -1,70 +1,87 @@
 ---
-layout: default
-title: CAS - Configuring Ticketing Components
-category: Ticketing
+layout: 违约
+title: CAS - 配置票务组件
+category: 票务
 ---
 
-# Ticketing
+# 票务
 
-There are two core configurable ticketing components:
+有两个核心可配置票务组件：
 
-* `TicketRegistry` - Provides for durable ticket storage.
-* `ExpirationPolicy` - Provides a policy framework for ticket expiration semantics.
+* `票务登记` - 提供耐用的门票存储。
+* `到期政策` - 为票证到期语义提供政策框架。
 
-## Ticket Registry
+## 票务登记处
 
-The deployment environment and technology expertise generally determine the particular `TicketRegistry` component. A cache-backed implementation is recommended for HA deployments, while the default in-memory registry may be suitable for small deployments.
+部署环境和技术专长通常决定票务注册</code> 组件的特定 。 建议在 HA 部署时采用缓存支持的实施，而默认的内存内存注册表可能适用于小型部署。</p>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ticket-registry).
+<p spaces-before="0">要查看 CAS 属性的相关列表，请 <a href="../configuration/Configuration-Properties.html#ticket-registry">查看本指南</a>。</p>
 
-### How Do I Choose?
+<h3 spaces-before="0">如何选择？</h3>
 
-There are a wide range of ticket registries on the menu. The selection criteria are outlined below:
+<p spaces-before="0">菜单上有各种各样的票务登记簿。 选择标准概述如下：</p>
 
-- Choose a technology that you are most familiar with and have the skills and patience to troubleshoot, tune and scale for the win.
-- Choose a technology that does not force your CAS configuration to be tied to any individual servers/nodes in the cluster, as this will present auto-scaling issues and manual effort.
-- Choose a technology that works well with your network and firewall configuration and is performant and reliable enough based on your network topology.
-- Choose a technology that shows promising results under *your expected load*, having run [performance and stress tests](../high_availability/High-Availability-Performance-Testing.html).
-- Choose a technology that does not depend on outside processes and systems as much as possible, is self-reliant and self contained.
+<ul>
+<li>选择您最熟悉的技术，并具有排除故障、调整和扩展以赢得胜利的技能和耐心。</li>
+<li>选择一种不会强制 CAS 配置与群集中的任何单个服务器/节点绑定的技术，因为这将显示自动缩放问题和手动工作。</li>
+<li>选择一种与您的网络和防火墙配置配合良好的技术，并且基于您的网络拓扑技术，该技术性能良好且足够可靠。</li>
+<li>选择一种技术，显示有希望的结果下， <em x-id="3">你的预期负荷</em>，运行 <a href="../high_availability/High-Availability-Performance-Testing.html">性能和压力测试</a>。</li>
+<li>选择一种不依赖于外部过程和系统的技术，是自力更生和自我遏制的。</li>
+</ul>
 
-The above simply outlines suggestions and guidelines you may wish to consider. Each option presents various pros and cons and in the end, you must decide which drawbacks or advantages provide you with the best experience.
+<p spaces-before="0">以上只是概述了您可能希望考虑的建议和准则。 每个选项都呈现各种优点和缺点，最终，您必须决定哪些缺点或优势为您提供最佳体验。</p>
 
-### Cache-Based Ticket Registries
+<h3 spaces-before="0">基于缓存的机票注册</h3>
 
-Cached-based ticket registries provide a high-performance solution for ticket storage in high availability deployments. Components for the following caching technologies are provided:
+<p spaces-before="0">基于缓存的票务登记处提供高性能的解决方案，用于高可用性
+部署的门票存储。 提供以下缓存技术的组件：</p>
 
-* [Default](Default-Ticket-Registry.html)
-* [Hazelcast](Hazelcast-Ticket-Registry.html)
-* [Ehcache](Ehcache-Ticket-Registry.html)
-* [Ignite](Ignite-Ticket-Registry.html)
-* [Memcached](Memcached-Ticket-Registry.html)
-* [Infinispan](Infinispan-Ticket-Registry.html)
+<ul>
+<li><a href="Default-Ticket-Registry.html">违约</a></li>
+<li><a href="Hazelcast-Ticket-Registry.html">黑兹尔卡斯特</a></li>
+<li><a href="Ehcache-Ticket-Registry.html">埃卡奇</a></li>
+<li><a href="Ignite-Ticket-Registry.html">点燃</a></li>
+<li><a href="Memcached-Ticket-Registry.html">梅卡奇德</a></li>
+<li><a href="Infinispan-Ticket-Registry.html">英菲尼斯潘</a></li>
+</ul>
 
-### Message-based Ticket Registries
+<h3 spaces-before="0">基于消息的票务注册</h3>
 
-* [JMS](Messaging-JMS-Ticket-Registry.html)
+<ul>
+<li><a href="Messaging-JMS-Ticket-Registry.html">JMS</a></li>
+</ul>
 
-### RDBMS Ticket Registries
+<h3 spaces-before="0">RDBMS 票务登记处</h3>
 
-RDBMS-based ticket registries provide a distributed ticket store across multiple CAS nodes. Components for the following caching technologies are provided:
+<p spaces-before="0">基于 RDBMS 的票务登记处在多个 CAS 节点之间提供分布式票务商店。
+提供以下缓存技术的组件：</p>
 
-* [JPA](JPA-Ticket-Registry.html)
+<ul>
+<li><a href="JPA-Ticket-Registry.html">日本经济与经济、经济、经济</a></li>
+</ul>
 
-### NoSQL Ticket Registries
+<h3 spaces-before="0">诺斯QL票务登记处</h3>
 
-CAS also provides support for a variety of other databases, including Redis, MongoDb and Apache Cassandra, for ticket storage and persistence:
+<p spaces-before="0">CAS还为各种其他数据库提供支持，包括雷迪斯、蒙戈德和阿帕奇
+卡桑德拉，用于存储门票和坚持：</p>
 
-* [Infinispan](Infinispan-Ticket-Registry.html)
-* [Couchbase](Couchbase-Ticket-Registry.html)
-* [Redis](Redis-Ticket-Registry.html)
-* [CouchDb](CouchDb-Ticket-Registry.html)
-* [MongoDb](MongoDb-Ticket-Registry.html)
-* [DynamoDb](DynamoDb-Ticket-Registry.html)
+<ul>
+<li><a href="Infinispan-Ticket-Registry.html">英菲尼斯潘</a></li>
+<li><a href="Couchbase-Ticket-Registry.html">沙发基地</a></li>
+<li><a href="Redis-Ticket-Registry.html">雷迪斯</a></li>
+<li><a href="CouchDb-Ticket-Registry.html">库奇德布</a></li>
+<li><a href="MongoDb-Ticket-Registry.html">蒙古德布</a></li>
+<li><a href="DynamoDb-Ticket-Registry.html">迪纳莫德布</a></li>
+</ul>
 
-### Secure Cache Replication
+<h3 spaces-before="0">安全缓存复制</h3>
 
-A number of cache-based ticket registries support secure replication of ticket data across the wire, so that tickets are encrypted and signed on replication attempts to prevent sniffing and eavesdrops. [See this guide](../installation/Ticket-Registry-Replication-Encryption.html) for more info.
+<p spaces-before="0">一些基于缓存的票证注册机构支持在线路上安全复制票证数据，
+以便对门票进行加密，并在复制尝试中签名，以防止嗅探和窃听。
+<a href="../installation/Ticket-Registry-Replication-Encryption.html">有关详细信息，请参阅本指南</a> 。</p>
 
-## Ticket Expiration Policies
+<h2 spaces-before="0">票证到期政策</h2>
 
-CAS supports a pluggable and extensible policy framework to control the expiration policy of ticket-granting tickets (TGT) and service tickets (ST). [See this guide](Configuring-Ticket-Expiration-Policy.html) for details on how to configure the expiration policies.
+<p spaces-before="0">CAS 支持一个可插入且可扩展的政策框架，以控制
+门票赠与票 （TGT） 和服务票 （ST） 的到期政策。
+<a href="Configuring-Ticket-Expiration-Policy.html">有关如何配置到期保单的详细信息，请参阅本指南</a> 。</p>
