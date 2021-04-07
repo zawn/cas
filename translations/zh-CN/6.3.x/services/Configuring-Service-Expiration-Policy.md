@@ -1,38 +1,35 @@
 ---
-layout: default
-title: CAS - Configuring Service Expiration Policy
-category: Services
+layout: 违约
+title: CAS - 配置服务过期政策
+category: 服务业
 ---
 
-# Configure Service Expiration Policy
+# 配置服务到期政策
 
-An application registered with CAS may be assigned an optional expiration policy that controls the lifetime of the registration. Once the service is deemed expired, it will automatically be disabled or removed from the CAS registry and [relevant contacts](Configuring-Service-Contacts.html) defined and assigned to the service will be notified via email or text messages.
+在 CAS 注册的申请可以分配一个可选的过期政策，以控制注册的寿命。 一旦服务被视为过期，它将自动禁用或从 CAS 注册表中删除 ， [相关联系人](Configuring-Service-Contacts.html) 定义并分配给服务将通过电子邮件或短信通知。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#service-registry-notifications).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#service-registry-notifications)。
 
-A sample JSON file follows:
+示例 JSON 文件如下：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "sample service",
-  "id" : 100,
-  "expirationPolicy": {
-    "@class": "org.apereo.cas.services.DefaultRegisteredServiceExpirationPolicy",
-    "deleteWhenExpired": true,
-    "notifyWhenDeleted": false,
-    "notifyWhenExpired": false,
-    "expirationDate": "2017-10-05"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："^https://.+"，
+  "名称"："样本服务"，
+  "id"：100，
+  "到期政策"：{
+    "@class"："org.apereo.cas.服务。默认注册服务探索政策"，
+    "删除时删除"：真实，
+    "通知时删除"：虚假，
+    "通知时删除"：虚假，
+    "到期日期"："2017-10-05"
   }
 }
 ```
 
-The following settings are available by default for expiration policies:
+默认情况下，到期保单可设置以下设置：
 
-| Field               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `expirationDate`    | The date on which the registration record is deemed expired. The expiration date may be specified in `2011-12-03T10:15:30`, `09/24/1980 04:30 PM`, `09/24/2014 6:30 AM`, `09/24/2013 18:45`, `09/24/2017` or `2017-10-25` formats.                                                                                                                                                                                                                            |
-| `deleteWhenExpired` | When `true`, removes the application from the CAS service registry if and when expired. Otherwise the application record will be marked as disabled.                                                                                                                                                                                                                                                                                                          |
-| `notifyWhenDeleted` | Notifies [contacts](Configuring-Service-Contacts.html) of the application via email or text, assuming valid contacts with email addresses or phone numbers are defined and CAS is configured to send [email messages](../notifications/Sending-Email-Configuration.html) or [SMS notifications](../notifications/SMS-Messaging-Configuration.html). The notification is only sent if the application is expired and is about to be deleted from the registry. |
-| `notifyWhenExpired` | Notifies [contacts](Configuring-Service-Contacts.html) of the application via email or text, assuming valid contacts with email addresses or phone numbers are defined and CAS is configured to send [email messages](../notifications/Sending-Email-Configuration.html) or [SMS notifications](../notifications/SMS-Messaging-Configuration.html). The notification is only sent if the application is expired.                                              |
+通过电子邮件或短信通知 [联系人](Configuring-Service-Contacts.html) 申请，假设定义了具有电子邮件地址或电话号码的有效联系人，并配置CAS</a> 发送 [封电子邮件或](../notifications/Sending-Email-Configuration.html)短信通知。 通知仅在申请过期且即将从注册表中删除时发送。</td> </tr> 
+
+通过电子邮件或短信通知 [联系人](Configuring-Service-Contacts.html) 申请，假设定义了具有电子邮件地址或电话号码的有效联系人，并配置CAS</a> 发送 [封电子邮件或](../notifications/Sending-Email-Configuration.html)短信通知。 通知仅在申请过期时发送。</td> </tr> </tbody> </table>
