@@ -1,71 +1,71 @@
 ---
-layout: default
-title: CAS - Adaptive Authentication
-category: Multifactor Authentication
+layout: 违约
+title: CAS - 自适应认证
+category: 多因素认证
 ---
 
-# Adaptive Authentication
+# 自适应身份验证
 
-Adaptive authentication in CAS allows you to accept or reject authentication requests based on certain characteristics of the client browser and/or device. When configured, you are provided with options to block authentication requests from certain locations submitted by certain browser agents. For instance, you may consider authentication requests submitted from `London, UK` to be considered suspicious, or you may want to block requests that are submitted from Internet Explorer, etc.
+CAS 中的自适应身份验证允许您根据客户端浏览器和/或设备 某些特征接受或拒绝身份验证请求。 配置时，您可以选择阻止某些浏览器代理提交的某些位置 的身份验证请求。 例如，您可能会认为从 `伦敦、英国` 提交的 身份验证请求被视为可疑，或者您可能想要阻止来自 Internet Explorer 等提交的请求。
 
-Adaptive authentication can also be configured to trigger multifactor based on specific days and times. For example, you may wish to trigger multifactor on select days or if the current hour is after 11pm or before 6am. Each rule block may be assigned to an mfa provider where successful matching of rules allows for the multifactor trigger to execute.
+自适应身份验证也可以根据特定日期和时间配置为触发多因素。 例如，您可能希望在选定的日期触发多因素，或者当前时间是晚上 11 点以后或早上 6 点之前。 每个规则块可以分配给 mfa 提供商，其中规则的成功匹配允许执行多因素触发器。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#adaptive-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#adaptive-authentication)。
 
-To enable adaptive authentication, you will need to allow CAS to geo-locate authentication requests. To learn more, please [see this guide](../installation/GeoTracking-Authentication-Requests.html)
+要启用自适应身份验证，您需要允许 CAS 进行地理定位身份验证请求。 欲了解更多，请 [本指南](../installation/GeoTracking-Authentication-Requests.html)
 
-## IP Intelligence
+## 知识产权情报
 
-CAS provides you with the capability to examine the client IP address and decide whether access should be granted. This may be useful to detect bot, proxy or VPN traffic and protect your deployment from fraud, automated attacks, crawlers, etc.
+CAS 为您提供了检查客户端 IP 地址并决定是否授予访问权限的能力。 这可能是有用的 检测机器人，代理或VPN流量，并保护您的部署免受欺诈，自动攻击，爬行器等。
 
-The result of the IP address examination may either ban and request the request, allow it to go through, or present a score to indicate the probability of an IP address that may be questionable. If the result is ranked score, it will be compared against the configured risk threshold to determine whether the request may proceed.
+IP 地址检查的结果可以禁止和请求请求、允许请求通过，也可以 提供分数，以指示可能可疑的 IP 地址的概率。 如果结果为排名分数，则将与配置的风险阈值 进行比较，以确定请求是否可以继续。
 
-Banned IP address can either be defined as patterns in the CAS settings, or they may be examined using the listed strategies below.
+禁止的 IP 地址可以定义为 CAS 设置中的模式，也可以使用下面列出的策略对其进行检查。
 
-### REST
+### 休息
 
-The client IP address is submitted to a REST endpoint as the header `clientIpAddress` under a `GET` request. The expected result status codes are the following:
+客户端 IP 地址将提交到 REST 端口，因为标题 `客户端地址根据 <code>获取` 请求</code> 。 预期结果状态代码如下：
 
-| Code         | Description                                                                                                                           |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `401`, `403` | IP address is banned and the request will be rejected.                                                                                |
-| `200`, `202` | IP address is allowed and the request may proceed.                                                                                    |
-| All Others   | Response body is expected to contain a score between `1` and `0`, (`1=Banned` and `0=Allowed`), indicating IP address suspiciousness. |
+| 法典           | 描述                                                    |
+| ------------ | ----------------------------------------------------- |
+| `401`， `403` | IP 地址被禁止，请求将被拒绝。                                      |
+| `200`， `202` | 允许使用 IP 地址，请求可以继续。                                    |
+| 所有其他         | 响应机构预计将包含 `1` 和 `0`（`1+禁止` 和 `0+允许`）之间的分数，表明 IP 地址可疑。 |
 
-### Groovy
+### 槽的
 
-The client IP address may be examined using a Groovy script whose outline should match the following:
+客户端 IP 地址可以使用 Groovy 脚本进行检查，其大纲应与以下内容相匹配：
 
 ```groovy
-import org.apereo.cas.authentication.principal.*
-import org.apereo.cas.authentication.*
-import org.apereo.cas.util.*
-import org.apereo.cas.authentication.adaptive.intel.*
+进口组织. apereo. cas. 认证.
+进口组织. apereo. cas. 认证. *
+进口组织. apereo. cas. 使用. *
+进口组织. apereo. cas. 认证. 自适应. 英特尔. *
 
-def run(Object[] args) {
-    def requestContext = args[0]
-    def clientIpAddress = args[1]
-    def logger = args[2]
-    logger.info("Client ip address provided is ${clientIpAddress}")
+def 运行 （对象 [] args） =
+    def 请求康泰克斯 [args[0]
+    定义客户地址=args[1]
+    def 记录器 = args[2]
+    logger.info（"提供的客户 ip 地址 ${clientIpAddress}"）
 
-    if (ipAddressIsRejected())
-        return IPAddressIntelligenceResponse.banned()
+    （ipAdadadresre）
+        返回 IP 地址智能回复。禁止（）
 
-    return IPAddressIntelligenceResponse.allows()
+    返回 IP 地址智能回复。允许（）
 }
 ```
 
-### BlackDot IP Intel
+### 黑点 IP 英特尔
 
-Please [see this link](https://getipintel.net/) for more info. A valid subscription is required for large query counts.
+有关详细信息，请 [](https://getipintel.net/) 查看此链接。 大型查询计数需要有效的订阅。
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>This is a free service, primarily useful for development, testing and demos. Production deployments 
-of this service require a subscription that can handle the expected query count and load.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>这是一项免费服务，主要用于开发、测试和演示。 此服务 
+的生产部署需要订阅，以便处理预期的查询计数和负载。</p></div>
 
-Note that a valid email that is checked frequently must be used in the contact field or else the service might be disabled without notice. Furthermore, **DO NOT** exceed more than 500 queries per day & 15 queries per minute. See [FAQ](https://getipintel.net/#FAQ) for further information.
+请注意，经常检查的有效电子邮件必须在联系人字段中使用，否则服务可能会在未通知的情况下被禁用。 此外， **不要** 超过 每天超过500个查询 & 每分钟15个查询。 有关更多信息，请参阅 [常见问题解答](https://getipintel.net/#FAQ) 。
 
-# Risk-based Authentication
+# 基于风险的身份验证
 
-CAS is able to track and examine authentication requests for suspicious behavior. To learn more, please [see this guide](../installation/Configuring-RiskBased-Authentication.html).
+CAS 能够跟踪和检查可疑行为的认证请求。 要了解更多，请 [本指南](../installation/Configuring-RiskBased-Authentication.html)。
