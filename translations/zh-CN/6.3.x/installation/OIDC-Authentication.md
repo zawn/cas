@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - OpenID Connect Authentication
-category: Authentication
+layout: 默认
+title: CAS-OpenID Connect身份验证
+category: 验证
 ---
 
-# OpenID Connect Authentication
+# OpenID Connect身份验证
 
-Allow CAS to act as an [OpenId Connect Provider (OP)](http://openid.net/connect/).
+允许CAS充当 [OpenId Connect Provider（OP）](http://openid.net/connect/)。
 
-<div class="alert alert-info"><strong>Remember</strong><p>OpenId Connect is a continuation of the <a href="OAuth-OpenId-Authentication.html">OAuth protocol</a> with some additional variations. If you enable OpenId Connect, you will have automatically enabled OAuth as well. Options and behaviors that are documented for the <a href="OAuth-OpenId-Authentication.html">OAuth protocol</a> support may apply here just the same.</p></div>
+<div class="alert alert-info"><strong>记住</strong><p>OpenId Connect是 <a href="OAuth-OpenId-Authentication.html">OAuth协议</a> 的延续，带有一些其他变体。 如果启用OpenId Connect，则也会自动启用OAuth。 <a href="OAuth-OpenId-Authentication.html">OAuth协议</a> 支持而记录的选项和行为可能在此处同样适用。</p></div>
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -20,241 +20,285 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To learn more about OpenId Connect, please [review this guide](http://openid.net/specs/openid-connect-basic-1_0.html).
+要了解有关OpenId Connect的更多信息，请 [本指南](http://openid.net/specs/openid-connect-basic-1_0.html)。
 
-The current implementation provides support for:
+当前的实现为以下方面提供支持：
 
-- [Authorization Code Flow](http://openid.net/specs/openid-connect-basic-1_0.html)
-- [Implicit Flow](https://openid.net/specs/openid-connect-implicit-1_0.html)
-- [Dynamic Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html)
-- [WebFinger Issuer Discovery](https://openid.net/specs/openid-connect-discovery-1_0-21.html)
-- Administration and registration of [OIDC clients and relying parties](../services/Service-Management.html).
-- Administration and registration of [OIDC clients and relying parties](../services/Service-Management.html) via [Dynamic Client Registration protocol](https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-management-01).
-- Ability to [resolve, map and release claims](../integration/Attribute-Release-Policies.html).
-- Ability to configure expiration policies for various tokens.
+- [授权码流程](http://openid.net/specs/openid-connect-basic-1_0.html)
+- [隐式流](https://openid.net/specs/openid-connect-implicit-1_0.html)
+- [动态发现](https://openid.net/specs/openid-connect-discovery-1_0.html)
+- [WebFinger发行者发现](https://openid.net/specs/openid-connect-discovery-1_0-21.html)
+- [OIDC客户和依赖方的管理和注册](../services/Service-Management.html)。
+- 通过 [动态客户端注册协议](https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-management-01)管理和注册 [OIDC客户端和依赖方](../services/Service-Management.html)。
+- 能够解决，映射和发布声明</a>能力为
 
-## Endpoints
+。</li> 
+  
+  - 能够为各种令牌配置到期策略。</ul> 
 
-| Field                                    | Description                                                                                                                                                                                                                                             |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/oidc/.well-known`                      | The discovery endpoint used to query for CAS OIDC configuration information and metadata.                                                                                                                                                               |
-| `/oidc/.well-known/openid-configuration` | Same as `.well-known` discovery endpoint.                                                                                                                                                                                                               |
-| `/oidc/.well-known/webfinger`            | [WebFinger](http://tools.ietf.org/html/rfc7033) discovery endpoint                                                                                                                                                                                      |
-| `/oidc/jwks`                             | Contains the server’s public signing keys, which clients may use to verify the digital signatures of access tokens and ID tokens issued by CAS.                                                                                                         |
-| `/oidc/authorize`                        | Authorization requests are handled here.                                                                                                                                                                                                                |
-| `/oidc/profile`                          | User profile requests are handled here.                                                                                                                                                                                                                 |
-| `/oidc/introspect`                       | Query CAS to detect the status of a given access token via [introspection](https://tools.ietf.org/html/rfc7662). This endpoint expects HTTP basic authentication with OIDC service `client_id` and `client_secret` associated as username and password. |
-| `/oidc/accessToken`, `/oidc/token`       | Produces authorized access tokens.                                                                                                                                                                                                                      |
-| `/oidc/revoke`                           | [Revoke](https://tools.ietf.org/html/rfc7009) access or refresh tokens. This endpoint expects HTTP basic authentication with OIDC service `client_id` and `client_secret` associated as username and password.                                          |
-| `/oidc/register`                         | Register clients via the [dynamic client registration](https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-management-01) protocol.                                                                                                                    |
 
-## Register Clients
 
-Clients can be registered with CAS in the following ways.
+## 终点
 
-### Statically
+| 场地                                       | 描述                                                                                                   |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `/ oidc /。众所周知`                          | 发现端点用于查询CAS OIDC配置信息和元数据。                                                                            |
+| `/oidc/.well-known/openid-configuration` | 与 `知名` 发现端点相同。                                                                                       |
+| `/oidc/.well-known/webfinger`            | [WebFinger](http://tools.ietf.org/html/rfc7033) 发现端点                                                 |
+| `/ oidc / jwks`                          | 包含服务器的公共签名密钥，客户端可以使用它们来验证CAS颁发的访问令牌和ID令牌的数字签名。                                                       |
+| `/ oidc /授权`                             | 授权请求在这里处理。                                                                                           |
+| `/ oidc / profile`                       | 用户个人资料请求在此处处理。                                                                                       |
+| `/ oidc / introspect`                    | [内省](https://tools.ietf.org/html/rfc7662)检测给定访问令牌的状态。 该端点期望使用用户名和密码关联的 `client_id` 和 `client_secret` |
+| `/ OIDC /的accessToken`， `/ OIDC /令牌`     | 产生授权的访问令牌。                                                                                           |
+| `/ oidc /撤销`                             | [撤消](https://tools.ietf.org/html/rfc7009) 访问或刷新令牌。 该端点期望使用用户名和密码关联的 `client_id` 和 `client_secret`    |
+| `/ oidc /注册`                             | [动态客户端注册](https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-management-01) 协议注册客户端。               |
 
-OpenID Connect clients can be *statically* registered with CAS as such:
+
+
+
+## 注册客户
+
+可以通过以下方式向CAS注册客户。
+
+
+
+### 静态地
+
+OpenID Connect客户端可以通过CAS静态 *静态注册为*
+
+
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.OidcRegisteredService",
-  "clientId": "client",
-  "clientSecret": "secret",
-  "serviceId" : "^<https://the-redirect-uri>",
-  "name": "OIDC",
-  "id": 1000
+  “ @class”：“ org.apereo.cas.services.OidcRegisteredService”，
+  “ clientId”：“ client”，
+  “ clientSecret”：“ secret”，
+  “ serviceId”：“ ^<https://the-redirect-uri>”，
+  “名称“：” OIDC“，
+  ” id“：1000
 }
 ```
 
-Note that OpenID connect clients as service definitions are an extension of [OAuth services](OAuth-OpenId-Authentication.html) in CAS. All settings that apply to an OAuth service definition should equally apply here as well. The following fields are specifically available for OpenID connect services:
 
-| Field                               | Description                                                                                                                                                                           |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`                          | Required. The identifier for this client application.                                                                                                                                 |
-| `clientSecret`                      | Required. The secret for this client application.                                                                                                                                     |
-| `serviceId`                         | Required. The authorized redirect URI for this OIDC client.                                                                                                                           |
-| `supportedGrantTypes`               | Optional. Collection of supported grant types for this service.                                                                                                                       |
-| `supportedResponseTypes`            | Optional. Collection of supported response types for this service.                                                                                                                    |
-| `signIdToken`                       | Optional. Whether ID tokens should be signed. Default is `true`.                                                                                                                      |
-| `jwks`                              | Optional. Resource path to the keystore location that holds the keys for this application.                                                                                            |
-| `jwksCacheDuration`                 | Optional. The expiration policy time value applied to loaded/cached keys for this application.                                                                                        |
-| `jwksCacheTimeUnit`                 | Optional. The expiration policy time unit of measure (i.e. `seconds`, `minutes`, etc) applied to loaded/cached keys.                                                                  |
-| `encryptIdToken`                    | Optional. Whether ID tokens should be encrypted. Default is `false`.                                                                                                                  |
-| `idTokenEncryptionAlg`              | Optional. The algorithm header value used to encrypt the id token.                                                                                                                    |
-| `idTokenSigningAlg`                 | Optional. The algorithm header value used to sign the id token.                                                                                                                       |
-| `userInfoSigningAlg`                | Optional. The algorithm header value used to sign user profile responses.                                                                                                             |
-| `userInfoEncryptedResponseAlg`      | Optional. The algorithm header value used to encrypt user profile responses.                                                                                                          |
-| `tokenEndpointAuthenticationMethod` | Optional. The requested client authentication method to the token endpoint. Default is `client_secret_basic`.                                                                         |
-| `applicationType`                   | Optional. `web`, `native`, or blank. Defined the kind of the application. The default, if omitted, is `web`.                                                                          |
-| `idTokenEncryptionEncoding`         | Optional. The algorithm method header value used to encrypt the id token.                                                                                                             |
-| `userInfoEncryptedResponseEncoding` | Optional. The algorithm method header value used to encrypt the user profile response.                                                                                                |
-| `subjectType`                       | Optional value chosen from `public` or `pairwise`. Type to use when generating principal identifiers. Default is `public`.                                                            |
-| `sectorIdentifierUri`               | Optional. Host value of this URL is used as the sector identifier for the pairwise identifier calculation. If left undefined, the host value of the `serviceId` will be used instead. |
+请注意，作为服务定义的OpenID连接客户端是CAS [OAuth服务](OAuth-OpenId-Authentication.html) 适用于OAuth服务定义的所有设置也应同样适用于此处。 以下字段专门用于OpenID连接服务：
 
-<div class="alert alert-info"><strong>Keep What You Need!</strong><p>You are encouraged to only keep and maintain properties and settings needed for a 
-particular integration. It is UNNECESSARY to grab a copy of all service fields and try to configure them yet again based on their default. While 
-you may wish to keep a copy as a reference, this strategy would ultimately lead to poor upgrades increasing chances of breaking changes and a messy 
-deployment at that.</p></div>
+| 场地                                  | 描述                                                         |
+| ----------------------------------- | ---------------------------------------------------------- |
+| `clientId`                          | 必需的。 此客户端应用程序的标识符。                                         |
+| `客户秘密`                              | 必需的。 此客户端应用程序的秘密。                                          |
+| `serviceId`                         | 必需的。 此OIDC客户端的授权重定向URI。                                    |
+| `supportedGrantTypes`               | 可选的。 这项服务支持的补助金类型的集合。                                      |
+| `supportedResponseTypes`            | 可选的。 该服务支持的响应类型的集合。                                        |
+| `signIdToken`                       | 可选的。 ID令牌是否应该签名。 默认值为 `true`。                              |
+| `ks`                                | 可选的。 存放此应用程序密钥的密钥库位置的资源路径。                                 |
+| `jwksCacheDuration`                 | 可选的。 过期策略时间值应用于此应用程序的已加载/缓存的键。                             |
+| `jwksCacheTimeUnit`                 | 可选的。 措施的过期策略时间单元（即 `秒`， `分钟`等）施加到加载/高速缓存的密钥。               |
+| `cryptoIdToken`                     | 可选的。 ID令牌是否应加密。 默认值为 `false`。                              |
+| `idTokenEncryptionAlg`              | 可选的。 用于加密ID令牌的算法标头值。                                       |
+| `idTokenSigningAlg`                 | 可选的。 用于对ID令牌进行签名的算法标头值。                                    |
+| `userInfoSigningAlg`                | 可选的。 用于签署用户配置文件响应的算法标头值。                                   |
+| `userInfoEncryptedResponseAlg`      | 可选的。 用于加密用户配置文件响应的算法标头值。                                   |
+| `tokenEndpointAuthenticationMethod` | 可选的。 向令牌端点请求的客户端身份验证方法。 默认值为 `client_secret_basic`。        |
+| `申请类型`                              | 可选的。 `卷筒纸`， `本机`，或空白。 定义了应用程序的种类。 如果省略，则默认值为 `web`。        |
+| `idTokenEncryptionEncoding`         | 可选的。 用于加密ID令牌的算法方法标头值。                                     |
+| `userInfoEncryptedResponseEncoding` | 可选的。 用于加密用户配置文件响应的算法方法标头值。                                 |
+| `subjectType`                       | `public` 或 `pairwise`选择的可选值。 生成主体标识符时使用的类型。 默认值为 `public`。 |
+| `segmentIdentifierUri`              | 可选的。 该URL的主机值用作成对标识符计算的扇区标识符。 如果未定义，则将使用 `serviceId`       |
 
-Service definitions are typically managed and registered with CAS by the [service management](../services/Service-Management.html) facility.
+<div class="alert alert-info"><strong>保留您所需要的！</strong><p>鼓励您仅保留和维护 
+特定集成所需的属性和设置。 获取所有服务字段的副本并尝试根据其默认值再次进行配置是不必要的。 虽然 
+您可能希望保留一份副本作为参考，这种策略最终将导致不好的升级提高重大更改和凌乱的机会 
+，在该部署。</p></div>
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>CAS today does not strictly enforce the collection of authorized supported 
-response/grant types for backward compatibility reasons if left blank. This means that if left undefined, all grant and response types may be allowed by 
-the service definition and related policies. Do please note that this behavior is <strong>subject to change</strong> in future releases 
-and thus, it is strongly recommended that all authorized grant/response types for each profile be declared in the service definition 
-immediately to avoid surprises in the future.</p></div>
+服务定义通常由 [服务管理](../services/Service-Management.html) 设施管理并向CAS注册。
 
-### Dynamically
+<div class="alert alert-warning"><strong>使用警告！</strong><p>今天，出于向后兼容性的原因，如果留为空白，CAS不会严格执行授权的受支持的 
+ 这意味着，如果未定义，则服务定义和相关策略的所有许可和响应类型都可以由 
+ 请注意，此行为是 <strong>，在将来的发行版 
+可能会发生更改</strong> 
+立即声明每个配置文件的所有授权授予/响应类型，以免日后出现意外情况。</p></div>
 
-Client applications may dynamically be registered with CAS for authentication. By default, CAS operates in a `PROTECTED` mode where the registration endpoint requires user authentication. This behavior may be relaxed via CAS settings to allow CAS to operate in an `OPEN` mode.
+### 动态地
 
-## Settings
+客户端应用程序可以动态地向CAS注册以进行身份验证。 默认情况下，CAS `保护` 在该模式下注册端点需要用户身份验证。 CAS设置放松此行为，以允许CAS在 `OPEN` 模式下运行。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#openid-connect).
 
-## Server Configuration
 
-Remember that OpenID Connect features of CAS require session affinity (and optionally session replication), as the authorization responses throughout the login flow are stored via server-backed session storage mechanisms. You will need to configure your deployment environment and load-balancers accordingly.
+## 设定值
 
-## Sample Client Applications
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#openid-connect)。
 
-- [MITREid Sample Java Webapp](https://github.com/cas-projects/oidc-sample-java-webapp)
 
-## Claims
 
-OpenID connect claims are simply treated as normal CAS attributes that need to be [resolved, mapped and released](../integration/Attribute-Release-Policies.html).
+## 服务器配置
 
-### Scope-based Claims
+请记住，CAS的OpenID Connect功能需要会话关联性（以及可选的会话复制），因为整个登录流程中的授权响应都是通过服务器支持的会话存储机制存储的 您将需要相应地配置部署环境和负载均衡器。
 
-You may chain various attribute release policies that authorize claim release based on specific scopes:
+
+
+## 样例客户端应用程序
+
+- [MITREid示例Java Webapp](https://github.com/cas-projects/oidc-sample-java-webapp)
+
+
+
+## 索偿
+
+OpenID连接声明仅被视为普通CAS属性，需要 被 [解析，映射和释放](../integration/Attribute-Release-Policies.html)。
+
+
+
+### 基于范围的声明
+
+您可以链接各种基于特定范围授权声明发布的属性发布策略：
+
+
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.OidcRegisteredService",
-  "clientId": "...",
-  "clientSecret": "...",
-  "serviceId" : "...",
-  "name": "OIDC Test",
-  "id": 10,
-  "scopes" : [ "java.util.HashSet", 
-    [ "profile", "email", "address", "phone", "offline_access", "displayName", "eduPerson" ]
+  “ @class”：“ org.apereo.cas.services.OidcRegisteredService”，
+  “ clientId”：“ ...”，
+  “ clientSecret”：“ ...”，
+  “ serviceId”：“ ... ”
+  “名字”： “OIDC测试”，
+  “标识”：10，
+  “范围”： “java.util.HashSet中”， 
+    [ “轮廓”， “电子邮件”， “地址”， “手机” ，“ offline_access”，“ displayName”，“ eduPerson”]
   ]
 }
 ```
 
-Standard scopes that internally catalog pre-defined claims all belong to the namespace `org.apereo.cas.oidc.claims` and are described below:
 
-| Policy                                             | Description                                                   |
-| -------------------------------------------------- | ------------------------------------------------------------- |
-| `o.a.c.o.c.OidcProfileScopeAttributeReleasePolicy` | Release claims mapped to the spec-predefined `profile` scope. |
-| `o.a.c.o.c.OidcEmailScopeAttributeReleasePolicy`   | Release claims mapped to the spec-predefined `email` scope.   |
-| `o.a.c.o.c.OidcAddressScopeAttributeReleasePolicy` | Release claims mapped to the spec-predefined `address` scope. |
-| `o.a.c.o.c.OidcPhoneScopeAttributeReleasePolicy`   | Release claims mapped to the spec-predefined `phone` scope.   |
+在内部对预定义声明进行目录的标准范围都属于名称空间 `org.apereo.cas.oidc.claims` 并在下面进行描述：
 
-### Mapping Claims
+| 政策                                            | 描述                        |
+| --------------------------------------------- | ------------------------- |
+| `oacocOidcProfileScopeAttributeReleasePolicy` | 释放声明映射到规范预定义的 `配置文件` 范围。  |
+| `oacocOidcEmailScopeAttributeReleasePolicy`   | 发布声明已映射到规范预定义的 `电子邮件` 范围。 |
+| `oacocOidcAddressScopeAttributeReleasePolicy` | 发布声明映射到规范预定义的 `地址` 范围。    |
+| `oacocOidcPhoneScopeAttributeReleasePolicy`   | 释放声明映射到规范预定义的 `电话` 范围。    |
 
-Claims associated with a scope (i.e. `given_name` for `profile`) are fixed in the [OpenID specification](http://openid.net/specs/openid-connect-basic-1_0.html). In the event that custom arbitrary attributes should be mapped to claims, mappings can be defined in CAS settings to link a CAS-defined attribute to a fixed given scope. For instance, CAS configuration may allow the value of the attribute `sys_given_name` to be mapped and assigned to the claim `given_name` without having an impact on the attribute resolution configuration and all other CAS-enabled applications.
 
-If mapping is not defined, by default CAS attributes are expected to match claim names.
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#openid-connect).
 
-### User-Defined Scopes
+### 映射声明
 
-Note that in addition to standard system scopes, you may define your own custom scope with a number of attributes within:
+与相关联的范围的权利要求（即 `GIVEN_NAME` 为 `型材`）被固定在 的 [OpenID规范](http://openid.net/specs/openid-connect-basic-1_0.html)。 在将自定义任意属性映射到声明 设置中定义映射，以将CAS定义的属性链接到固定的给定范围。 例如，CAS配置可以 允许将属性 `sys_given_name` 的值映射并分配给权利要求 `给定名称` 而不会影响属性解析配置和所有其他启用CAS的应用程序。 
+
+如果未定义映射，则默认情况下，CAS属性应与声明名称匹配。
+
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#openid-connect)。
+
+
+
+### 用户定义的范围
+
+请注意，除了标准系统作用域之外，您还可以在以下范围内使用许多属性定义自己的自定义作用域：
+
+
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.OidcRegisteredService",
-  "clientId": "...",
-  "clientSecret": "...",
-  "serviceId" : "...",
-  "name": "OIDC Test",
-  "id": 10,
-  "scopes" : [ "java.util.HashSet", [ "displayName", "eduPerson" ] ]
+  “ @class”：“ org.apereo.cas.services.OidcRegisteredService”，
+  “ clientId”：“ ...”，
+  “ clientSecret”：“ ...”，
+  “ serviceId”：“ ... ”，
+  “名称”： “OIDC测试”，
+  “ID”：10，
+  “范围”：[ “java.util.HashSet中”，[ “显示名”， “eduPerson”]]
 }
 ```
 
-These such as `displayName` above, get bundled into a `custom` scope which can be used and requested by services and clients.
 
-If you however wish to define your custom scopes as an extension of what OpenID Connect defines such that you may bundle attributes together, then you need to first register your `scope`, define its attribute bundle and then use it a given service definition such as `eduPerson` above. Such user-defined scopes are also able to override the definition of system scopes.
+这些，例如 `displayName` ，被捆绑到 `自定义` 范围中，服务和客户端可以使用和请求它们。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#openid-connect).
+不过，若你想定义自己的定制范围作为什么ID连接定义的扩展 ，这样你可以捆绑属性在一起，那么你需要首先注册 `范围`， 界定其属性束，然后用它给定的服务定义例如上面的 `eduPerson` 这样的用户定义范围也可以覆盖系统范围的定义。
 
-### Releasing Claims
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#openid-connect)。
 
-Defined scopes for a given service definition control and build attribute release policies internally. Such attribute release policies allow one to release standard claims, remap attributes to standard claims, or define custom claims and scopes altogether.
 
-It is also possible to define and use *free-form* attribute release policies outside the confines of a *scope* to freely build and release claims/attributes.
 
-For example, the following service definition will decide on relevant attribute release policies based on the semantics of the scopes `profile` and `email`. There is no need to design or list individual claims as CAS will auto-configure the relevant attribute release policies:
+### 下达索偿
+
+给定服务定义的定义范围在内部控制和构建属性释放策略。 此类属性发布 策略允许发布标准声明，将属性重新映射到标准声明或完全定义自定义声明和范围。 
+
+还可以在 *范围* *自由格式* 属性释放策略，以自由构建和释放声明/属性。  
+
+例如，以下服务定义将基于范围 `概要` 和 `电子邮件` 来决定相关的属性释放策略。 无需设计或列出单个声明，因为CAS将自动配置 相关的属性释放策略：
+
+
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.OidcRegisteredService",
-  "clientId": "client",
-  "clientSecret": "secret",
-  "serviceId" : "...",
-  "name": "OIDC",
-  "id": 1,
-  "scopes" : [ "java.util.HashSet",
-    [ "profile", "email" ]
+  “ @class”：“ org.apereo.cas.services.OidcRegisteredService”，
+  “ clientId”：“ client”，
+  “ clientSecret”：“秘密”，
+  “ serviceId”：“ ...”，
+  “名称”：“ OIDC”，
+  “ id”：
+  “作用域”：[“ java.util.HashSet”，
+    [“配置文件”，“电子邮件”]
   ]
 }
 ```
 
-A *scope-free* attribute release policy may just as equally apply, allowing one in the following example to release `userX` as a *claim*:
+
+*范围* 属性释放策略也同样适用，在以下示例中 `就有一个 <em x-id="3">声明</em>`：
+
+
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.OidcRegisteredService",
-  "clientId": "client",
-  "clientSecret": "secret",
-  "serviceId" : "...",
-  "name": "OIDC",
-  "id": 1,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnMappedAttributeReleasePolicy",
-    "allowedAttributes" : {
-      "@class" : "java.util.TreeMap",
-      "userX" : "groovy { return attributes['uid'].get(0) + '-X' }"
+  “ @class”：“ org.apereo.cas.services.OidcRegisteredService”，
+  “ clientId”：“客户端”，
+  “ clientSecret”：“秘密”，
+  “ serviceId”：“ ...”，
+  “名称”：“ OIDC”，
+  “ id”：
+  “ attributeReleasePolicy”：{
+    “ @class”：“ org.apereo.cas.services.ReturnMappedAttributeReleasePolicy”，
+    “ allowedAttributes”：{
+      “ @class”： “ java.util.TreeMap”，
+      “ userX”：“ groovy {返回attribute ['uid']。get（0）+'-X'}”
     }
   }
 }
 ```
 
-It is also possible to mix *free-form* release policies with those that operate based on a scope by chaining such policies together. For example, the below policy allows the release of `user-x` as a claim, as well as all claims assigned and internally defined for the standard `email` scope.
+
+通过将此类自由策略链接在一起，还可以将 *自由格式* 释放策略与基于范围操作的策略混合在一起。 例如，以下策略 允许释放 `用户x` `电子邮件` 范围分配和内部定义的所有声明。
+
+
 
 ```json
 {
-  "@class": "org.apereo.cas.services.OidcRegisteredService",
-  "clientId": "client",
-  "clientSecret": "secret",
-  "serviceId": "...",
-  "name": "OIDC",
-  "id": 10,
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.services.ChainingAttributeReleasePolicy",
-    "policies": [
-      "java.util.ArrayList",
+  “ @class”：“ org.apereo.cas.services.OidcRegisteredService”，
+  “ clientId”：“ client”，
+  “ clientSecret”：“秘密”，
+  “ serviceId”：“ ...”，
+  “名“： ”OIDC“，
+  ”ID“：10，
+  ”attributeReleasePolicy“：{
+    ”@class“： ”org.apereo.cas.services.ChainingAttributeReleasePolicy“，
+    ”政策“：[
+      ” java.util中。 ArrayList“，
       [
         {
-          "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-          "allowedAttributes" : [ "java.util.ArrayList", [ "cn", "uid", "givenName" ] ],
-          "order": 0  
-        },
+          ” @class“：” org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy“，
+          ” allowedAttributes“：[” java.util.ArrayList“，[” cn“，” uid“，” givenName “]]，
+          ” order“：0  
+        }，
         {
-          "@class": "org.apereo.cas.services.ReturnMappedAttributeReleasePolicy",
-          "allowedAttributes": {
-            "@class": "java.util.TreeMap",
-            "user-x": "groovy { return attributes['uid'].get(0) + '-X' }"
-          },
-          "order": 1
-        },
+          ” @class“：” org.apereo.cas.services.ReturnMappedAttributeReleasePolicy“，
+          ” allowedAttributes“：{
+            ” @class“：” java.util。 TreeMap”，
+            “ user-x”：“ groovy {返回attribute ['uid']。get（0）+'-X'}”
+          }，
+          “ order”：1
+        }，
         {
-          "@class": "org.apereo.cas.oidc.claims.OidcEmailScopeAttributeReleasePolicy",
-          "order": 2
+          “ @class “：”“ org.apereo.cas.oidc.claims.OidcEmailScopeAttributeReleasePolicy”，
+          “顺序”：2
         }
       ]
     ]
@@ -262,141 +306,177 @@ It is also possible to mix *free-form* release policies with those that operate 
 }
 ```
 
-To learn more about attribute release policies and the chain of command, please [see this guide](../integration/Attribute-Release-Policies.html).
 
-## Authentication Context Class
+要了解更多关于属性释放政策和指挥链，请 [参阅本指南](../integration/Attribute-Release-Policies.html)。
 
-Support for authentication context class references is implemented in form of `acr_values` as part of the original authorization request, which is mostly taken into account by the [multifactor authentication features](../mfa/Configuring-Multifactor-Authentication.html) of CAS. Once successful, `acr` and `amr` values are passed back to the relying party as part of the id token.
 
-## Pairwise Identifiers
 
-When `pairwise` subject type is used, CAS will calculate a unique `sub` value for each sector identifier. This identifier should not be reversible by any party other than CAS and is somewhat akin to CAS generating persistent anonymous user identifiers. Each value provided to every relying party is different so as not to enable clients to correlate the user's activities without permission.
+## 身份验证上下文类
+
+授权请求的一部分，以 `acr_values` 形式实现了对身份验证上下文类引用的支持，CAS 的 [多因素身份验证功能](../mfa/Configuring-Multifactor-Authentication.html) 大多将其考虑在内。 一旦成功， `acr` 和 `amr` 值作为id令牌的一部分传递回依赖方。
+
+
+
+## 成对标识符
+
+当 `成对` 被用于拍摄对象的类型，CAS将计算独特 `子` 对每个扇区标识符值。 标识符 除CAS以外的任何其他方都不能不可逆，并且有点类似于CAS生成永久匿名用户 标识符的过程。 提供给每个依赖方的每个值都是不同的，以免使客户未经允许就将用户的活动关联起来。
+
+
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.OidcRegisteredService",
-  "clientId": "client",
-  "clientSecret": "secret",
-  "serviceId" : "^<https://the-redirect-uri>",
-  "usernameAttributeProvider" : {
-    "@class" : "org.apereo.cas.services.PairwiseOidcRegisteredServiceUsernameAttributeProvider",
-    "persistentIdGenerator" : {
-      "@class" : "org.apereo.cas.authentication.principal.OidcPairwisePersistentIdGenerator",
-      "salt" : "aGVsbG93b3JsZA=="
+  “ @class”：“ org.apereo.cas.services.OidcRegisteredService”，
+  “ clientId”：“ client”，
+  “ clientSecret”：“秘密”，
+  “ serviceId”：“ ^<https://the-redirect-uri>”，
+  “ usernameAttributeProvider “：{
+    ” @class“：” org.apereo.cas.services.PairwiseOidcRegisteredServiceUsernameAttributeProvider“，
+    ” persistentIdGenerator“：{
+      ” @class“：” org.apereo.cas.authentication.principal.OidcPairwisePersistentIdGenerator“，
+      ” salt “：” aGVsbG93b3JsZA ==“
     }
   }
 }
 ```
 
-## Keystores
 
-Each registered application in CAS can contain its own keystore as a `jwks` resource. By default, a global keystore can be expected and defined via CAS properties. The format of the keystore file is similar to the following:
+
+
+## 密钥库
+
+CAS中的每个已注册应用程序都可以包含自己的密钥库，作为 `jwks` 资源。 默认情况下，可以通过CAS属性将全局密钥库 密钥库 文件的格式类似于以下内容：
+
+
 
 ```json
 {
-  "keys": [
+  “ keys”：[
     {
-      "d": "...",
-      "e": "AQAB",
-      "n": "...",
-      "kty": "RSA",
-      "kid": "cas"
+      “ d”：“ ...”，
+      “ e”：“ AQAB”，
+      “ n”：“ ...”，
+      “ kty”：“ RSA”，
+      “ kid”：“ cas”
     }
   ]
 }
 ```
 
-CAS will attempt to auto-generate a keystore if it can't find one, but if you wish to generate one manually, a JWKS can be generated using [this tool](https://mkjwk.org/) or [this tool](http://connect2id.com/products/nimbus-jose-jwt/generator).
 
-## WebFinger Issuer Discovery
+如果找不到密钥存储，CAS将尝试自动生成密钥存储，但是如果您希望手动生成一个密钥存储，则可以 [这个工具](https://mkjwk.org/) 或 [这个工具](http://connect2id.com/products/nimbus-jose-jwt/generator)来生成 JWKS。
 
-OpenID Provider Issuer discovery is the process of determining the location of the OpenID Provider. Issuer discovery is optional; if a Relying Party knows the OP's Issuer location through an out-of-band mechanism, it can skip this step.
 
-Issuer discovery requires the following information to make a discovery request:
 
-| Parameter  | Description                                                                                                        |
-| ---------- | ------------------------------------------------------------------------------------------------------------------ |
-| `resource` | Required. Identifier for the target End-User that is the subject of the discovery request.                         |
-| `host`     | Server where a WebFinger service is hosted.                                                                        |
-| `rel`      | URI identifying the type of service whose location is being requested:`http://openid.net/specs/connect/1.0/issuer` |
+## WebFinger发行者发现
 
-To start discovery of OpenID endpoints, the End-User supplies an Identifier to the Relying Party. The RP applies normalization rules to the Identifier to determine the Resource and Host. Then it makes an HTTP `GET` request to the CAS WebFinger endpoint with the `resource` and `rel` parameters to obtain the location of the requested service. The Issuer location **MUST** be returned in the WebFinger response as the value of the `href` member of a links array element with `rel` member value `http://openid.net/specs/connect/1.0/issuer`.
+OpenID Provider发行者发现是确定OpenID Provider位置的过程。 发行者发现是可选的；如果依赖方 通过带外机制知道OP的发行方位置，则可以跳过此步骤。
 
-Example invocation of the `webfinger` endpoint follows:
+发行者发现需要以下信息来发出发现请求：
+
+| 范围    | 描述                                                            |
+| ----- | ------------------------------------------------------------- |
+| `资源`  | 必需的。 作为发现请求主题的目标最终用户的标识符。                                     |
+| `主持人` | 托管WebFinger服务的服务器。                                            |
+| `rel` | 标识请求其位置的服务类型的URI：`http://openid.net/specs/connect/1.0/issuer` |
+
+
+为了开始发现OpenID端点，最终用户向依赖方提供一个标识符。 RP将规范化规则应用于标识符，以 确定资源和主机。 然后，它 `资源` 和 `rel` 参数向CAS WebFinger端点 `GET` 请求的服务的位置。 发行人位置 **MUST** 中的WebFinger响应作为值被返回 所述的 `HREF` 一个链接阵列元件的构件用 `相对` 成员值 `http://openid.net/specs/connect/1.0/issuer`。
+
+以下是 `webfinger` 端点的示例调用：
+
+
 
 ```bash
-curl https://sso.example.org/cas/oidc/.well-known/webfinger?resource=acct:casuser@somewhere.example.org
+卷曲https://sso.example.org/cas/oidc/.well-known/webfinger?resource=acct:casuser@somewhere.example.org
 ```
 
-The expected response shall match the following example:
+
+预期响应应与以下示例匹配：
+
+
 
 ```json
 {
-  "subject": "acct:casuser@somewhere.example.org",
-  "links": [
+  “受试者”： “ACCT：casuser@somewhere.example.org”，
+  “链接”：[
     {
-      "rel": "http://openid.net/specs/connect/1.0/issuer",
-      "href": "https://sso.example.org/cas/oidc/"
+      “相对”： “http://openid.net/specs/connect/1.0/issuer”，
+      “ href”：“ https://sso.example.org/cas/oidc/”
     }
   ]
 }
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#openid-connect-webfinger).
 
-### WebFinger Resource UserInfo
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#openid-connect-webfinger)。
 
-To determine the correct issuer, resources that are provided to the `webfinger` discovery endpoint using the `acct` URI scheme can be located and fetched using external user repositories via `email` or `username`.
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>The default repository implementation will 
-simply echo back the provided email or username, etc as it is <strong>ONLY</strong> relevant for demo/testing purposes.</p></div>
 
-The following user-info repository choices are available for configuration and production use.
+### WebFinger资源UserInfo
 
-#### Groovy UserInfo Repository
+为了确定正确的发行者，可以使用外部用户存储库（通过 `电子邮件` 或 `用户名``acct` URI方案 `webfinger` 发现端点的资源。
 
-The task of locating accounts linked to webfinger resources can be handled using an external Groovy script whose outline would match the following:
+<div class="alert alert-warning"><strong>使用警告！</strong><p>默认库实现将 
+简单地回显提供的电子邮件或用户名，等等，因为它是 <strong>只</strong> 用于演示/测试的目的有关。</p></div>
+
+以下用户信息存储库选项可用于配置和生产。
+
+
+
+#### Groovy UserInfo存储库
+
+可以使用外部Groovy脚本来处理查找链接到webfinger资源的帐户的任务，该脚本的轮廓将与以下内容匹配：
+
+
 
 ```groovy
-def findByUsername(Object[] args) {
-    def username = args[0]
+def findByUsername（Object [] args）{
+    def用户名= args[0]
     def logger = args[1]
-    return [username: username]
+    return [用户名：用户名]
 }
 
-def findByEmailAddress(Object[] args) {
+def findByEmailAddress（Object [] args）{
     def email = args[0]
     def logger = args[1]
-    return [email: email]
+    return [email：email]
 }
 ```
 
-The expected return value from the script is a `Map` that contains key-value objects, representing user account details. An empty `Map` would indicate the absence of the user record, leading to a `404` response status back to the relying party.
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#openid-connect-webfinger).
+脚本的预期返回值为 `Map` ，其中包含键值对象，代表用户帐户详细信息。 空的 `Map` 将指示缺少用户记录，从而导致 `404` 响应状态返回给依赖方。
 
-#### REST UserInfo Repository
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#openid-connect-webfinger)。
 
-The REST repository allows the CAS server to reach to a remote REST endpoint via the configured HTTP method to fetch user account information.
 
-Query data is passed via either `email` or `username` HTTP headers. The response that is returned must be accompanied by a `200` status code where the body should contain `Map` representing the user account information. All other responses will lead to a `404` response status back to the relying party.
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#openid-connect-webfinger).
+#### REST用户信息存储库
 
-#### Custom UserInfo Repository
+REST存储库允许CAS服务器通过配置的HTTP方法访问远程REST端点，以获取用户帐户信息。
 
-It is possible to design and inject your own version of webfinger user repositories into CAS. First, you will need to design a `@Configuration` class to contain your own `OidcWebFingerUserInfoRepository` implementation:
+查询数据是通过 `电子邮件` 或 `用户名` HTTP标头传递的。 返回的响应必须随附一个 `200` 状态代码，其中主体应包含 `` 表示用户帐户信息的Map 4。 所有其他响应将导致 `404` 响应状态返回给依赖方。
+
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#openid-connect-webfinger)。
+
+
+
+#### 自定义UserInfo存储库
+
+可以将自己的版本的webfinger用户存储库设计并注入到CAS中。 首先，您将需要设计 a `@Configuration` 类以包含您自己的 `OidcWebFingerUserInfoRepository` 实现：
+
+
 
 ```java
-@Configuration("customWebFingerUserInfoConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class CustomWebFingerUserInfoConfiguration {
+@Configuration（“ customWebFingerUserInfoConfiguration”）
+@EnableConfigurationProperties（CasConfigurationProperties.class）
+公共类CustomWebFingerUserInfoConfiguration {
 
     @Bean
-    public OidcWebFingerUserInfoRepository oidcWebFingerUserInfoRepository() {
-        ...
+    公共OidcWebFingerUserInfoRepository oidcWebFingerUserInfoRepository（）{
+...
     }
 }
 ```
 
-Your configuration class needs to be registered with CAS. [See this guide](../configuration/Configuration-Management-Extensions.html) for better details.
+
+您的配置类需要在CAS中注册。 [有关更多详细信息，请参见本指南](../configuration/Configuration-Management-Extensions.html)
