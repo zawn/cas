@@ -1,298 +1,356 @@
 ---
-layout: default
-title: CAS Common Properties Overview
-category: Configuration
+layout: 违约
+title: 中科院普通物业概览
+category: 配置
 ---
 
-# CAS Common Properties
+# 中科院公共属性
 
-This document describes a number of suggestions and configuration options that apply to and are common amongst a selection of CAS modules and features. To see the full list of CAS properties, please [review this guide](Configuration-Properties.html).
+本文档描述了适用于 CAS 模块和功能的一些建议和配置选项，这些建议和配置选项在选择 CAS 模块和功能中很常见。 要查看 CAS 属性的完整列表，请 [查看本指南](Configuration-Properties.html)。
 
-## What is `${configurationKey}`?
+## 什么是 `${configurationKey}`？
 
-Many CAS *sub* settings are common and applicable to a number of modules and features. For example, in dealing with database authentication there are a number of database-related modules who own an individual setting to define the database driver. These settings would typically be defined as `cas.authn.feature1.database-driver=xyz` and `cas.authn.feature2.database-driver=abc`. Rather than duplicating the shared and common `database-driver` setting, this page attempts to collect only what might be common CAS settings across features and modules while referring to the specific feature under the path `${configurationKey}`. Therefore, the documentation for either `feature1` or `feature2` might allow one to find common database-related settings (such as the `database-driver`) under `${configurationKey}.database-driver` where `${configurationKey}` would either be `cas.authn.feature1` or `cas.authn.feature2` depending on feature at hand. The notes and documentation for each feature that wants to inherit from a common block of settings should always advertise the appropriate value for `${configurationKey}`.
+许多 CAS *子* 设置是常见的，适用于许多模块和功能。 例如，在处理数据库身份验证时，有许多与数据库相关的模块拥有定义数据库驱动程序的单个设置。 这些设置通常被定义为 `cas.authn.功能1.数据库驱动程序=xyz` 和 `cas.authn.功能2.数据库驱动程序=abc`。 此页面没有重复共享的和常见的 `数据库驱动程序` 设置，而是尝试只收集跨功能和模块的常见 CAS 设置，同时参考路径 `${configurationKey}`下的特定功能。 因此， `功能 1` 或 `功能 2` 文档都可能允许在 `${configurationKey}下查找与数据库相关的常见设置（如 <code>数据库驱动程序`）。</code> .数据库驱动程序，其中 `${configurationKey}` 将 `cas.authn.功能1` 或 `cas.authn.功能2` 取决于手头的功能。 每个要从常见设置块中继承的功能的注释和文档应始终宣传 `${configurationKey}`的适当值。
 
-## Naming Convention
+## 命名公约
 
-- Settings and properties that are controlled by the CAS platform directly always begin with the prefix `cas`. All other settings are controlled and provided to CAS via other underlying frameworks and may have their own schemas and syntax. **BE CAREFUL** with the distinction.
+- 由 CAS 平台直接控制的设置和属性始终从前缀 `cas`开始。 所有其他设置都 控制，并通过其他基础框架提供给 CAS，并且可能有自己的语法和语法。 **小心** 与区别。
 
-- Unrecognized properties are rejected by CAS and/or frameworks upon which CAS depends. This means if you somehow misspell a property definition or fail to adhere to the dot-notation syntax and such, your setting is entirely refused by CAS and likely the feature it controls will never be activated in the way you intend.
+- 未识别的属性被 CAS 和/或 CAS 所依赖的框架拒绝。 这意味着，如果您以某种方式拼错了属性定义或未能遵守点符号语法等，则 CAS 完全拒绝您的设置 ，并且可能永远不会按照您的意图激活它控制的功能。
 
-## Indexed Settings
+## 索引设置
 
-CAS settings able to accept multiple values are typically documented with an index, such as `cas.some.setting[0]=value`. The index `[0]` is meant to be incremented by the adopter to allow for distinct multiple configuration blocks:
+能够接受多个值的 CAS 设置通常用索引进行记录，例如 `cas.some.设置[0]=价值`。 `[0]` 的索引将由采用者增量，以允许不同的多个配置块：
 
 ```properties
-# cas.some.setting[0]=value1
-# cas.some.setting[1]=value2
+#cas.一些.设置[0]=价值1
+#cas.一些。设置[1]=值2
 ```
 
-## Trust But Verify
+## 信任但验证
 
-If you are unsure about the meaning of a given CAS setting, do **NOT** turn it on without hesitation. Review the codebase or better yet, [ask questions](/cas/Mailing-Lists.html) to clarify the intended behavior.
+如果您不确定给定 CAS 设置的含义，请 **不要毫不犹豫地打开它** 。 查看代码库或更好， [](/cas/Mailing-Lists.html) 提问以澄清预期的行为。
 
-<div class="alert alert-info"><strong>Keep It Simple</strong><p>If you do not know or cannot tell what a setting does, you do not need it.</p></div>
+<div class="alert alert-info"><strong>保持简单</strong><p>如果您不知道或无法判断设置是什么，则不需要它。</p></div>
 
-## Time Unit of Measure
+## 测量时间单位
 
-All CAS settings that deal with time units, unless noted otherwise, should support the duration syntax for full clarity on unit of measure:
+处理时间单位的所有 CAS 设置（除非另有注明） 应支持持续时间语法，以充分明确测量单位：
 
 ```bash
-"PT20S"     -- parses as "20 seconds"
-"PT15M"     -- parses as "15 minutes"
-"PT10H"     -- parses as "10 hours"
-"P2D"       -- parses as "2 days"
-"P2DT3H4M"  -- parses as "2 days, 3 hours and 4 minutes"
+"PT20S" - 解析为"20 秒"
+"PT15M" - 解析为"15 分钟"
+"PT10H" - 解析为"10 小时"
+"P2D" - 解析为"2 天"
+"P2DT3H4M" - 解析为"2 天" 3小时4分钟"
 ```
 
-The native numeric syntax is still supported though you will have to refer to the docs in each case to learn the exact unit of measure.
+原生数字语法仍然得到支持，但您必须参考每个情况下 文档才能了解测量的确切单位。
 
-## Job Scheduling
+## 工作安排
 
-A number of CAS components are given the ability to schedule background jobs to clean tokens, remove records, etc. The behavior of the scheduler can be controlled using the following settings:
+一些 CAS 组件能够安排背景作业来清理令牌、删除记录等。 调度器的行为可以使用以下设置进行控制：
 
 ```properties
-# ${configurationKey}.schedule.start-delay=PT10S
-# ${configurationKey}.schedule.repeat-interval=PT60S
-# ${configurationKey}.schedule.enabled=true
+# ${configurationKey}.计划.计划.启动延迟=PT10S
+# ${configurationKey}.计划.计划.重复间隔=PT60S
+# ${configurationKey}.计划。
 ```
 
-## Authentication Throttling
+## 身份验证限制
 
-Certain functionality in CAS, such as [OAuth](../installation/OAuth-OpenId-Authentication.html) or [REST API](../protocol/REST-Protocol.html), allow you to throttle requests to specific endpoints in addition to the more generic authentication throttling functionality applied during the login flow and authentication attempts.
+CAS 中的某些功能（如 [OAuth](../installation/OAuth-OpenId-Authentication.html) 或 REST API</a>，除了在登录流和身份验证尝试中应用的更 通用身份验证限制功能外，还允许您限制对特定端点的请求。</p> 
 
-To fully deliver this functionality, it is expected that [authentication throttling](../installation/Configuring-Authentication-Throttling.html) is turned on.
+为了全面实现此功能，预计 [身份验证限制](../installation/Configuring-Authentication-Throttling.html) 已打开。
 
-## Authentication Credential Selection
 
-A number of authentication handlers are allowed to determine whether they can operate on the provided credential and as such lend themselves to be tried and tested during the authentication handler selection phase. The credential criteria may be one of the following options:
 
-- A regular expression pattern that is tested against the credential identifier
-- A fully qualified class name of your own design that looks similar to the below example:
+## 身份验证凭据选择
+
+允许许多身份验证处理程序确定他们是否可以在提供的凭据 上操作，因此借给自己在身份验证处理程序选择阶段进行尝试和测试。 凭证标准可能是以下选项之一：
+
+- 根据凭据标识符测试的常规表达模式
+- 您自己设计的完全合格的类名称，看起来类似于以下示例：
+
+
 
 ```java
-import java.util.function.Predicate;
-import org.apereo.cas.authentication.Credential;
+导入爪哇.利用。功能。预示：
+进口组织. apereo. cas. 认证. 认证;
 
-public class PredicateExample implements Predicate<Credential> {
+公共类谓词example实施谓词<Credential> ^
     @Override
-    public boolean test(final Credential credential) {
-        // Examine the credential and return true/false
+    公共布尔测试（最终凭据证书）{
+        //检查凭据并返回真/假
     }
 }
 ```
 
-- Path to an external Groovy script that looks similar to the below example:
+
+- 通往外部 Groovy 脚本的路径，该脚本看起来类似于以下示例：
+
+
 
 ```groovy
-import org.apereo.cas.authentication.Credential
-import java.util.function.Predicate
+导入组织.apereo.cas.认证.证书
+导入 java.util.功能.谓词
 
-class PredicateExample implements Predicate<Credential> {
+类谓词执行谓词<Credential> •
     @Override
-    boolean test(final Credential credential) {
-        // test and return result
+    布尔测试（最终证书凭据）{
+        //测试和退货结果
     }
 }
 ```
 
-## Password Encoding
 
-Certain aspects of CAS such as authentication handling support configuration of password encoding. Most options are based on Spring Security's [support for password encoding](https://docs.spring.io/spring-security/site/docs/current/reference/html5/).
 
-The following options related to password encoding support in CAS apply equally to a number of CAS components (authentication handlers, etc) given the component's *configuration key*:
+
+## 密码编码
+
+CAS的某些方面，如 密码编码的身份验证处理支持配置。 大多数选项基于春季安全 [支持密码编码](https://docs.spring.io/spring-security/site/docs/current/reference/html5/)。
+
+鉴于组件的 *配置密钥*，CAS 中有关密码编码支持的以下选项同样适用于多个 CAS 组件（身份验证处理程序等）：
+
+
 
 ```properties
-# ${configurationKey}.password-encoder.type=NONE|DEFAULT|STANDARD|BCRYPT|SCRYPT|PBKDF2
-# ${configurationKey}.password-encoder.character-encoding=
-# ${configurationKey}.password-encoder.encoding-algorithm=
-# ${configurationKey}.password-encoder.secret=
-# ${configurationKey}.password-encoder.strength=16
+# ${configurationKey}.密码编码器.类型=无|默认|标准|布里普特|克里普特|PBKDF2
+# ${configurationKey}.密码编码器.字符编码]
+# ${configurationKey}.密码编码器.编码算法]
+# ${configurationKey}.密码编码器.秘密]
+# ${configurationKey}.密码编码器.强度=16
 ```
 
-The following options are supported:
 
-| Type                            | Description                                                                                                                                                                                                                              |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NONE`                          | No password encoding (i.e. plain-text) takes place.                                                                                                                                                                                      |
-| `DEFAULT`                       | Use the `DefaultPasswordEncoder` of CAS. For message-digest algorithms via `characterEncoding` and `encodingAlgorithm`.                                                                                                                  |
-| `BCRYPT`                        | Use the `BCryptPasswordEncoder` based on the `strength` provided and an optional `secret`.                                                                                                                                               |
-| `SCRYPT`                        | Use the `SCryptPasswordEncoder`.                                                                                                                                                                                                         |
-| `PBKDF2`                        | Use the `Pbkdf2PasswordEncoder` based on the `strength` provided and an optional `secret`.                                                                                                                                               |
-| `STANDARD`                      | Use the `StandardPasswordEncoder` based on the `secret` provided.                                                                                                                                                                        |
-| `SSHA`                          | Use the `LdapShaPasswordEncoder` supports Ldap SHA and SSHA (salted-SHA). The values are base-64 encoded and have the label `{SHA}` (or `{SSHA}`) prepended to the encoded hash.                                                         |
-| `GLIBC_CRYPT`                   | Use the `GlibcCryptPasswordEncoder` based on the [`encoding-algorithm`](https://commons.apache.org/proper/commons-codec/archives/1.10/apidocs/org/apache/commons/codec/digest/Crypt.html), `strength` provided and an optional `secret`. |
-| `org.example.MyEncoder`         | An implementation of `PasswordEncoder` of your own choosing.                                                                                                                                                                             |
-| `file:///path/to/script.groovy` | Path to a Groovy script charged with handling password encoding operations.                                                                                                                                                              |
+支持以下选项：
 
-In cases where you plan to design your own password encoder or write scripts to do so, you may also need to ensure the overlay has access to `org.springframework.security:spring-security-core` at runtime. Make sure the artifact is marked as `provided` or `compileOnly` to avoid conflicts.
+| 类型                              | 描述                                                                                                                                                                                                                                     |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `没有`                            | 不进行密码编码（即纯文本）。                                                                                                                                                                                                                         |
+| `违约`                            | 使用中科院 `默认密码编码器` 。 对于通过 `字符编码` 和 `编码算法的消息消化算法`。                                                                                                                                                                                         |
+| `布里普特`                          | 使用 `BCrypt密码编码器` 基于提供 `强度` 和可选 `秘密`。                                                                                                                                                                                                   |
+| `克里普特`                          | 使用 `斯克里普特密码编码器`。                                                                                                                                                                                                                       |
+| `PBKDF2`                        | 使用 `Pbkdf2密码编码器` 基于提供 `强度` 和可选 `秘密`。                                                                                                                                                                                                   |
+| `标准`                            | 使用基于所提供 `秘密` 的 `标准密码编码器` 。                                                                                                                                                                                                             |
+| `斯沙`                            | 使用 `的LdapSha密码编码器` 支持Ldap SHA和SSHA（盐沙）。 这些值是基础-64编码的，并且将标签 `{SHA}` （或 `{SSHA}`）预先贴在编码的哈希上。                                                                                                                                             |
+| `GLIBC_CRYPT`                   | 使用基于 [`编码算法`](https://commons.apache.org/proper/commons-codec/archives/1.10/apidocs/org/apache/commons/codec/digest/Crypt.html)、 `强度` 和可选 `秘密`的GlibcCryptPassword编码器</code> `。</td>
+</tr>
+<tr>
+  <td><code>组织。示例。我的编码器` | `密码编码器的实现` 您自己选择的。 |
+| `file:///path/to/script.groovy` | 前往负责处理密码编码操作的 Groovy 脚本的路径。                                                                                                                                                                                                            |
 
-If you need to design your own password encoding scheme where the type is specified as a fully qualified Java class name, the structure of the class would be similar to the following:
+
+如果您计划设计自己的密码编码器或编写脚本来设计密码编码器或编写脚本， 您可能还需要确保覆盖物能够访问 `组织.springframework.security：春季安全核心` 。 确保将工件标记为 `` 或 `编译仅` 以避免冲突。
+
+如果您需要设计自己的密码编码方案，其中类型被指定为完全合格的 Java 类名称，则该类的结构将 类似于以下内容：
+
+
 
 ```java
-package org.example.cas;
+包组织.示例.cas;
 
-import org.springframework.security.crypto.codec.*;
-import org.springframework.security.crypto.password.*;
+进口组织.弹簧框架.安全.加密.编解码*;
+导入组织.弹簧框架.安全.加密.密码。*;
 
-public class MyEncoder extends AbstractPasswordEncoder {
+公共类MyEncoder扩展抽象密码编码器{
     @Override
-    protected byte[] encode(CharSequence rawPassword, byte[] salt) {
-        return ...
-    }
+    受保护的字节[]编码（字符字节原始密码，字节[]盐）{
+        返回。。。
+    •
 }
 ```
 
-If you need to design your own password encoding scheme where the type is specified as a path to a Groovy script, the structure of the script would be similar to the following:
+
+如果您需要设计自己的密码编码方案，其中类型被指定为通往 Groovy 脚本的路径，则脚本的结构将类似于以下 ：
+
+
 
 ```groovy
-import java.util.*
+导入java.利用。*
 
-def byte[] run(final Object... args) {
-    def rawPassword = args[0]
-    def generatedSalt = args[1]
-    def logger = args[2]
-    def casApplicationContext = args[3]
+def拜特[]运行（最终对象。。。args）{
+    def原始密码=args[0]
+    def生成的alt=args[1]
+    d记录器=args[2]
+    d级联应用程序转换=args[3]
 
-    logger.debug("Encoding password...")
-    return ...
-}
+    记录器.debug（"编码密码。。。"）
+    返回。。。
+=
 
-def Boolean matches(final Object... args) {
-    def rawPassword = args[0]
-    def encodedPassword = args[1]
-    def logger = args[2]
-    def casApplicationContext = args[3]
+德布尔比赛（最终对象。。。args）{
+    定义原始密码=args[0]
+    定义编码密码=args[1]
+    定义记录器=args[2]
+    定义应用程序配置配置=args[3]
 
-   logger.debug("Does match or not ?");
-   return ...
+   记录器.debug（"匹配与否？"）;
+   返回。。。
 ```
 
-## Authentication Principal Transformation
 
-Authentication handlers that generally deal with username-password credentials can be configured to transform the user id prior to executing the authentication sequence. The following options may be used:
 
-| Type        | Description                        |
-| ----------- | ---------------------------------- |
-| `NONE`      | Do not apply any transformations.  |
-| `UPPERCASE` | Convert the username to uppercase. |
-| `LOWERCASE` | Convert the username to lowercase. |
 
-Authentication handlers as part of principal transformation may also be provided a path to a Groovy script to transform the provided username. The outline of the script may take on the following form:
+## 身份验证主体转换
+
+通常处理用户名密码凭据 的身份验证处理程序可以在执行身份验证序列之前配置以转换用户 ID。 可使用以下选项：
+
+| 类型   | 描述         |
+| ---- | ---------- |
+| `没有` | 不要应用任何转换。  |
+| `大写` | 将用户名转换为大写。 |
+| `小写` | 将用户名转换为小写。 |
+
+
+作为主要转换的一部分，身份验证处理程序也可以提供一条通往 Groovy 脚本的路径，以转换所提供的用户名。 脚本的大纲可以采取以下形式：
+
+
 
 ```groovy
-def String run(final Object... args) {
-    def providedUsername = args[0]
-    def logger = args[1]
-    return providedUsername.concat("SomethingElse")
+def字符串运行（最终对象。。。args）{
+    def提供使用者=args[0]
+    d记录器=args[1]
+    返回提供使用者。concat（"东西"）
 }
 ```
 
-The following options related to principal transformation support in CAS apply equally to a number of CAS components (authentication handlers, etc) given the component's *configuration key*:
+
+鉴于组件的 *配置密钥*，与 CAS 主要转换支持相关的以下选项同样适用于多个 CAS 组件（身份验证处理程序等）：
+
+
 
 ```properties
 # ${configurationKey}.principal-transformation.pattern=(.+)@example.org
-# ${configurationKey}.principal-transformation.groovy.location=file:///etc/cas/config/principal.groovy
-# ${configurationKey}.principal-transformation.suffix=
-# ${configurationKey}.principal-transformation.case-conversion=NONE|UPPERCASE|LOWERCASE
-# ${configurationKey}.principal-transformation.prefix=
+# ${configurationKey}. 校长转换. groovy.位置= 文件//等/cas/配置/委托. 凹槽
+# ${configurationKey}.校长转换. 后缀=
+# ${configurationKey}.委托转换. 案例转换= 无|上一个|下一个
+# ${configurationKey}。校长转换.前缀=
 ```
 
-## Cookie Properties
 
-The following common properties configure cookie generator support in CAS.
+
+
+## 饼干属性
+
+以下常见属性在 CAS 中配置曲奇生成器支持。
+
+
 
 ```properties
-# ${configurationKey}.path=
-# ${configurationKey}.max-age=-1
-# ${configurationKey}.domain=
-# ${configurationKey}.name=
-# ${configurationKey}.secure=true
-# ${configurationKey}.http-only=true
-# ${configurationKey}.same-site-policy=none|lax|strict
-# ${configurationKey}.comment=CAS Cookie
+# ${configurationKey}.path]
+# ${configurationKey}.max岁 = -1
+# ${configurationKey}.domain]
+# ${configurationKey}. name]
+# ${configurationKey}. secure = 真实
+| # ${configurationKey}. http 仅限. 真实
+= ${configurationKey}. 同一站点策略 = 无|拉克斯|限制
+# ${configurationKey}. 评论] CAS 曲奇
 ```
 
-## Cassandra Configuration
 
-Control properties that are relevant to Cassandra, when CAS attempts to establish connections, run queries, etc.
+
+
+## 卡桑德拉配置
+
+当 CAS 尝试建立连接、运行查询等时，与卡桑德拉相关的控制属性 。
+
+
 
 ```properties
-# ${configurationKey}.keyspace=
-# ${configurationKey}.contact-points=localhost:9042
-# ${configurationKey}.local-dc=
-# ${configurationKey}.consistency-level=ANY|ONE|TWO|THREE|QUORUM|LOCAL_QUORUM|ALL|EACH_QUORUM|LOCAL_SERIAL|SERIAL|LOCAL_ONE
-# ${configurationKey}.serial-consistency-level=ANY|ONE|TWO|THREE|QUORUM|LOCAL_QUORUM|ALL|EACH_QUORUM|LOCAL_SERIAL|SERIAL|LOCAL_ONE
-# ${configurationKey}.timeout=PT5S
+# ${configurationKey}.密钥空间]
+= ${configurationKey}.联系点= 本地总部：9042
+# ${configurationKey}.本地-直流=
+= ${configurationKey}。一致性级别=任何|一|二|三|夸鲁姆|LOCAL_QUORUM|全部|EACH_QUORUM|LOCAL_SERIAL|串行|LOCAL_ONE
+# ${configurationKey}.串行一致性级别=任何|一|二|三|夸鲁姆|LOCAL_QUORUM|全部|EACH_QUORUM|LOCAL_SERIAL|串行|LOCAL_ONE
+# ${configurationKey}.超时=PT5S
 ```
 
-## Hibernate & JDBC
 
-Control global properties that are relevant to Hibernate, when CAS attempts to employ and utilize database resources, connections and queries.
+
+
+## 冬眠 & Jdbc
+
+当 CAS 尝试使用和利用数据库资源、 连接和查询时，控制与冬眠相关的全球属性 。
+
+
 
 ```properties
-# cas.jdbc.show-sql=true
-# cas.jdbc.gen-ddl=true
-# cas.jdbc.case-insensitive=false
-# cas.jdbc.physical-table-names.{table-name}={new-table-name}
+#cas. jdbc. 显示 - sql] 真正的
+# 卡斯. jdbc. 根 - ddl] 真正的
+# 卡斯. jdbc. 案件麻木不仁 = 假
+# 卡斯. jdbc. 物理表名称。{table-name}={new-table-name}
 ```
 
-### Database Settings
 
-The following options related to JPA/JDBC support in CAS apply equally to a number of CAS components (ticket registries, etc) given the component's *configuration key*:
+
+
+### 数据库设置
+
+鉴于组件的 *配置密钥*，与中科院 JPA/JDBC 支持相关的以下选项同样适用于多个 CAS 组件（票证注册等）：
+
+
 
 ```properties
 # ${configurationKey}.user=sa
-# ${configurationKey}.password=
-# ${configurationKey}.driver-class=org.hsqldb.jdbcDriver
-# ${configurationKey}.url=jdbc:hsqldb:mem:cas-hsql-database
-# ${configurationKey}.dialect=org.hibernate.dialect.HSQLDialect
+# ${configurationKey}.密码]
+# ${configurationKey}.驱动类=org.hsqldb.jdbcdriver
+# ${configurationKey}.url=jdbc：hsqldb：mem：卡斯-hsql-数据库
+# ${configurationKey}.方言\org.hiber
 
-# ${configurationKey}.fail-fast-timeout=1
-# ${configurationKey}.isolation-level-name=ISOLATION_READ_COMMITTED 
-# ${configurationKey}.health-query=
-# ${configurationKey}.isolate-internal-queries=false
-# ${configurationKey}.leak-threshold=10
-# ${configurationKey}.propagation-behaviorName=PROPAGATION_REQUIRED
-# ${configurationKey}.batchSize=1
-# ${configurationKey}.default-catalog=
-# ${configurationKey}.default-schema=
-# ${configurationKey}.ddl-auto=create-drop
-# ${configurationKey}.physical-naming-strategy-class-name=org.apereo.cas.hibernate.CasHibernatePhysicalNamingStrategy
+# ${configurationKey}.故障快速超时 = 1
+# ${configurationKey}.隔离级别名称=ISOLATION_READ_COMMITTED 
+= ${configurationKey}.健康查询]
+# ${configurationKey}.隔离内部查询=错误
+= ${configurationKey}.泄漏阈值=10
+# ${configurationKey}. 传播行为名称 = PROPAGATION_REQUIRED
+= ${configurationKey}. batchsize = 1
+= ${configurationKey}.默认目录]
+# ${configurationKey}. 默认 -
+# ${configurationKey}. ddl - 自动创建 - 下降
+# ${configurationKey}. 物理命名战略类名称] 组织. apereo. cas. 休眠. 卡希伯内特物理命名战略
 
-# ${configurationKey}.autocommit=false
-# ${configurationKey}.idle-timeout=5000
+# ${configurationKey}. 自动承诺 = 虚假
+# ${configurationKey}. 空闲超时 = 50
 
-# ${configurationKey}.data-source-name=
-# ${configurationKey}.data-source-roxy=false
+# ${configurationKey}. 数据源名称 ]
+# ${configurationKey}. 数据源 - roxy = 假
 
-# Hibernate-specific properties (i.e. `hibernate.globally_quoted_identifiers`)
-# ${configurationKey}.properties.property-name=propertyValue
+# 冬眠特异性属性（即 "hibernate.globally_quoted_identifiers"）
+# ${configurationKey}. 属性. 属性. 属性名称 = 财产价值
 
-# ${configurationKey}.pool.suspension=false
-# ${configurationKey}.pool.mi-size=6
-# ${configurationKey}.pool.max-size=18
-# ${configurationKey}.pool.max-wait=2000
-# ${configurationKey}.pool.timeout-millis=1000
+# ${configurationKey}. pool. 暂停 = 假
+# ${configurationKey}. pool. mi 大小 = 6
+ ${configurationKey}.pool.max大小=18
+= ${configurationKey}.pool.max-wait=2000
+# ${configurationKey}.pool.超时-毫秒=1000
 ```
 
-### Container-based JDBC Connections
 
-If you are planning to use a container-managed JDBC connection with CAS (i.e. JPA Ticket/Service Registry, etc) then you can set the `data-source-name` property on any of the configuration items that require a database connection. When using a container configured data source, many of the pool related parameters will not be used. If `data-source-name` is specified but the JNDI lookup fails, a data source will be created with the configured (or default) CAS pool parameters.
 
-If you experience classloading errors while trying to use a container datasource, you can try setting the `data-source-proxy` setting to true which will wrap the container datasource in a way that may resolve the error.
 
-The `data-source-name` property can be either a JNDI name for the datasource or a resource name prefixed with `java:/comp/env/`. If it is a resource name then you need an entry in a `web.xml` that you can add to your CAS overlay. It should contain an entry like this:
+### 基于集装箱的 JDBC 连接
+
+如果您计划使用与CAS的集装箱管理的JDBC连接（即 JPA 票证/服务注册处等） 然后可以在任何需要数据库 连接的配置项目上设置 `数据源名称` 属性。 在使用配置的容器数据源时，将不使用许多与池相关的参数。 如果指定了 `数据源名称` 但 JNDI 查找失败，则将使用配置的 （或默认）CAS 池参数创建数据源。
+
+如果您在尝试使用容器数据源时遇到分级加载错误，则可以尝试 将 `数据源代理` 设置设置为真实，从而将容器数据源包装成 一种可能解决错误的方法。
+
+`数据源名称` 属性可以是数据源的 JNDI 名称，也可以是前缀 `java：/comp/env/`的资源名称。 如果它是一个资源名称，那么你需要一个条目在 `网络.xml` ，你可以添加到您的 CAS覆盖。 它应该包含这样的条目：
+
+
 
 ```xml
 <resource-ref>
-    <res-ref-name>jdbc/casDataSource</res-ref-name>
-    <res-type>javax.sql.DataSource</res-type>
-    <res-auth>Container</res-auth>
+    <res-ref-name>jdbc / 卡斯数据来源</res-ref-name>
+    <res-type>贾瓦克斯.sql. 数据来源</res-type>
+    <res-auth>集装箱</res-auth>
 </resource-ref>
 ```
 
-In Apache Tomcat a container datasource can be defined like this in the `context.xml`:
+
+在 Apache Tomcat 中，容器数据源可以在 `上下文中这样定义.xml`：
+
+
 
 ```xml
 <Resource name="jdbc/casDataSource"
@@ -316,7 +374,10 @@ In Apache Tomcat a container datasource can be defined like this in the `context
     maxWait="10000" />
 ```
 
-In Jetty, a pool can be put in JNDI with a `jetty.xml` or `jetty-env.xml` file like this:
+
+在码头，一个游泳池可以放在JNDI与 `码头.xml` 或 `码头.xml` 这样的文件：
+
+
 
 ```xml
 <?xml version="1.0"?>
@@ -348,372 +409,479 @@ In Jetty, a pool can be put in JNDI with a `jetty.xml` or `jetty-env.xml` file l
 </Configure>
 ```
 
-## Signing & Encryption
 
-A number of components in CAS accept signing and encryption keys. In most scenarios if keys are not provided, CAS will auto-generate them. The following instructions apply if you wish to manually and beforehand create the signing and encryption keys.
 
-Note that if you are asked to create a [JWK](https://tools.ietf.org/html/rfc7517) of a certain size for the key, you are to use the following set of commands to generate the token:
+
+## 签署 & 加密
+
+CAS 中的许多组件接受签名和加密密钥。 在大多数情况下，如果不提供密钥，CAS 将 自动生成它们。 如果您希望手动和事先创建签名和加密密钥，则以下说明适用。
+
+请注意，如果您被要求为密钥创建一定大小的 [JWK](https://tools.ietf.org/html/rfc7517) ，则要使用以下命令集 生成令牌：
+
+
 
 ```bash
 wget https://raw.githubusercontent.com/apereo/cas/master/etc/jwk-gen.jar
-java -jar jwk-gen.jar -t oct -s [size]
+爪哇-贾尔-杰克根.jar-t八分之一-s [size]
 ```
 
-The outcome would be similar to:
+
+结果类似于：
+
+
 
 ```json
 {
-  "kty": "oct",
-  "kid": "...",
-  "k": "..."
+  "kty"："八"，
+  "孩子"："。。。"，
+  "k"："。。。"
 }
 ```
 
-The generated value for `k` needs to be assigned to the relevant CAS settings. Note that keys generated via the above algorithm are processed by CAS using the Advanced Encryption Standard (`AES`) algorithm which is a specification for the encryption of electronic data established by the U.S. National Institute of Standards and Technology.
 
-### Settings
+`k` 的生成值需要分配给相关的 CAS 设置。 请注意，通过上述算法 生成的密钥由 CAS 使用高级加密标准 （`AES`） 算法进行处理，该算法是美国建立的电子数据加密的 规范。 国家标准与技术研究所。
 
-The following crypto options apply equally to relevant CAS components (ticket registries, etc) given the component's *configuration key*:
+
+
+### 设置
+
+鉴于组件的 *配置密钥*，以下加密选项同样适用于相关的 CAS 组件（票证注册等）：
+
+
 
 ```properties
-# ${configurationKey}.crypto.signing.key=
-# ${configurationKey}.crypto.signing.key-size=
+# ${configurationKey}.crypto.签名.key]
+# ${configurationKey}.加密. 签名.key大小=
 
-# ${configurationKey}.crypto.encryption.key=
-# ${configurationKey}.crypto.encryption.key-size=
+# ${configurationKey}.crypto.加密.key
+# ${configurationKey}.crypt ${configurationKey}.crypto.key.alg=AES
 
-# ${configurationKey}.crypto.alg=AES
-# ${configurationKey}.crypto.enabled=false   
 
-# ${configurationKey}.crypto.strategyType=ENCRYPT_AND_SIGN|SIGN_AND_ENCRYPT
+ ${configurationKey}.加密.启用=假   
+
+ ${configurationKey}.加密.战略类型ENCRYPT_AND_SIGN|SIGN_AND_ENCRYPT
 ```
 
-The following cipher strategy types are available:
 
-| Type               | Description                                      |
-| ------------------ | ------------------------------------------------ |
-| `ENCRYPT_AND_SIGN` | Default strategy; encrypt values, and then sign. |
-| `SIGN_AND_ENCRYPT` | Sign values, and then encrypt.                   |
+提供以下密码策略类型：
 
-### RSA Keys
+| 类型                 | 描述             |
+| ------------------ | -------------- |
+| `ENCRYPT_AND_SIGN` | 默认策略;加密值，然后签名。 |
+| `SIGN_AND_ENCRYPT` | 签署值，然后加密。      |
 
-Certain features such as the ability to produce [JWTs as CAS tickets](../installation/Configure-ServiceTicket-JWT.html) may allow you to use the `RSA` algorithm with public/private keypairs for signing and encryption. This behavior may prove useful generally in cases where the consumer of the CAS-encoded payload is an outsider and a client application that need not have access to the signing secrets directly and visibly and may only be given a half truth vis-a-vis a public key to verify the payload authenticity and decode it. This particular option makes little sense in situations where CAS itself is both a producer and a consumer of the payload.
 
-<div class="alert alert-info"><strong>Remember</strong><p>Signing and encryption options are not mutually exclusive. While it would be rather nonsensical, it is entirely possible for CAS to use <code>AES</code> keys for signing and <code>RSA</code> keys for encryption, or vice versa.</p></div>
 
-In order to enable RSA functionality for signing payloads, you will need to generate a private/public keypair via the following sample commands:
+
+### RSA 密钥
+
+某些功能，如能够产生 [JWT 作为 CAS 票证](../installation/Configure-ServiceTicket-JWT.html) ，可能允许您使用 `RSA` 算法与公共/私人密钥对接进行签名和加密。 如果 CAS 编码有效载荷的消费者是局外人，并且客户端应用程序不需要直接和明显地访问签名秘密，并且可能只获得与公共密钥相对的半真半假，以验证有效载荷的真实性和解码，这种行为通常可能证明是有用的。 在 CAS 本身既是有效载荷的生产商又是有效载荷的消费者的情况下，此特定选项没有什么意义。
+
+<div class="alert alert-info"><strong>记得</strong><p>签名和加密选项并非相互排斥。 虽然这相当荒谬，但CAS完全有可能使用 <code>AES</code> 密钥进行签名，并 <code>RSA</code> 密钥进行加密，反之亦然。</p></div>
+
+为了启用 RSA 功能以签署有效负载，您需要通过以下示例命令生成私钥/公共密钥对：
+
+
 
 ```bash
-openssl genrsa -out private.key 2048
-openssl rsa -pubout -in private.key -out public.key -inform PEM -outform DER
+打开sl genrsa-出私人.key 2048
+打开sl rsa-酒吧-在私人.key-出公共.key-通知PEM-超越DER
 ```
 
-The private key path (i.e. `file:///path/to/private.key`) needs to be configured for the signing key in CAS properties for the relevant feature. The public key needs to be shared with client applications and consumers of the payload in order to validate the payload signature.
+
+私钥路径（即 `file:///path/to/private.key`）需要配置为相关功能的CAS属性的签名密钥。 公共密钥需要与有效载荷的客户应用程序和消费者共享，以验证有效载荷签名。
+
+
 
 ```properties
-# cas.xyz.crypto.signing.key=file:///etc/cas/config/private.key
+#cas.xyz.加密.签名.key文件：//等/卡斯/配置/私人.key
 ```
 
-<div class="alert alert-info"><strong>Key Size</strong><p>Remember that RSA key sizes are required to be at least <code>2048</code> and above. Smaller key sizes are not accepted by CAS and will cause runtime errors. Choose wisely.</p></div>
+<div class="alert alert-info"><strong>密钥大小</strong><p>请记住，RSA 密钥大小至少需要 <code>2048</code> 及以上。 CAS 不接受较小的键大小，并会导致运行时间错误。 明智地选择。</p></div>
 
-In order to enable RSA functionality for encrypting payloads, you will need to essentially execute the reverse of the above operations. The client application will provide you with a public key which will be used to encrypt the payload and whose path (i.e. `file:///path/to/public.key`) needs to be configured for the encryption key in CAS properties for the relevant feature. Once the payload is submitted, the client should use its own private key to decode the payload and unpack it.
+为了启用用于加密有效载荷的 RSA 功能，您需要基本上执行上述操作的反向操作。 客户端应用程序将为您提供一个公钥，用于加密有效载荷及其路径（即 `file:///path/to/public.key`）需要为CAS属性中的加密密钥进行相关功能的配置。 提交有效载荷后，客户端应使用自己的私钥解码有效载荷并拆开有效载荷。
+
+
 
 ```properties
-# cas.xyz.crypto.encryption.key=file:///etc/cas/config/public.key
+#cas.xyz.加密.key文件//等/卡斯/配置/公共.key
 ```
 
-## Person Directory Principal Resolution
 
-The following options related to Person Directory support in CAS when it attempts to resolve and build the authenticated principal, given the component's *configuration key*:
+
+
+## 人员目录主要决议
+
+鉴于组件的 *配置密钥，在 CAS 尝试解决和构建经过验证的本金时，与"人员目录"支持相关的以下选项*：
+
+
 
 ```properties
-# ${configurationKey}.principal-attribute=uid,sAMAccountName,etc
-# ${configurationKey}.return-null=false
-# ${configurationKey}.principal-resolution-failure-fatal=false
-# ${configurationKey}.use-existing-principal-id=false
-# ${configurationKey}.attribute-resolution-enabled=true
-# ${configurationKey}.active-attribute-repository-ids=StubRepository,etc
+# ${configurationKey}.主要属性=uid，帐户名等
+= ${configurationKey}.返回-空=假
+= ${configurationKey}.委托分辨率-故障-致命=虚假
+# ${configurationKey}.使用-现有-主-id=虚假
+=启用 ${configurationKey}.属性分辨率=真实
+= ${configurationKey}.主动属性存储库-id=存根存储库等
 ```
 
-## Git Configuration
 
-The following options related to Git integration support in CAS when it attempts to connect and pull/push changes, given the component's *configuration key*:
+
+
+## 吉特配置
+
+鉴于组件的 *配置键，CAS 在尝试连接和拉/推更改时，与 Git 集成支持相关的以下选项*：
+
+
 
 ```properties
-# ${configurationKey}.git.repository-url=https://github.com/repository
-# ${configurationKey}.git.branches-to-clone=master
-# ${configurationKey}.git.active-branch=master
-# ${configurationKey}.git.sign-commits=false
-# ${configurationKey}.git.username=
-# ${configurationKey}.git.password=
-# ${configurationKey}.git.clone-directory.location=file:/tmp/cas-service-registry
-# ${configurationKey}.git.push-changes=false
-# ${configurationKey}.git.private-key-passphrase=
-# ${configurationKey}.git.private-key.location=file:/tmp/privkey.pem
-# ${configurationKey}.git.ssh-session-password=
-# ${configurationKey}.git.timeout=PT10S
-# ${configurationKey}.git.strict-host-key-checking=true
-# ${configurationKey}.git.clear-existing-identities=false
+• ${configurationKey}. git. 存储库 - url= .com/存储库
+# ${configurationKey}.git. 分支到克隆大师
+# ${configurationKey}.git.主动分支/主
+# ${configurationKey}.git.sign-提交] 假
+= ${configurationKey}.git.用户名]
+= ${configurationKey}.git.密码]
+= ${configurationKey}.git.克隆-目录. 位置
+# ${configurationKey}.git.推送更改 = 虚假
+# ${configurationKey}.git.私人钥匙密码短语]
+= ${configurationKey}.git.私钥. 位置. 文件/私人
+# ${configurationKey}.git.ssh 会话-密码]
+= ${configurationKey}.git.超时=PT10S
+= ${configurationKey}.git.严格主机键检查=真实
+= ${configurationKey}.git.清除存在的身份=虚假
 ```
 
-## InfluxDb Configuration
 
-The following options related to InfluxDb support in CAS apply equally to a number of CAS components given the component's *configuration key*:
+
+
+## 影响数据库配置
+
+鉴于该组件的 *配置密钥*，与CAS的Cassdb支持相关的以下选项同样适用于一些CAS组件：
+
+
 
 ```properties
-# ${configurationKey}.url=http://localhost:8086
-# ${configurationKey}.username=root
-# ${configurationKey}.password=root
-# ${configurationKey}.retention-policy=autogen
-# ${configurationKey}.drop-database=false
-# ${configurationKey}.points-to-flush=100
-# ${configurationKey}.batch-interval=PT5S
-# ${configurationKey}.consistency-level=ALL
+# ${configurationKey}.url=/本地主机：8086
+# ${configurationKey}。用户名 =根
+# ${configurationKey}.密码=根
+# ${configurationKey}.保留策略=自动原
+# ${configurationKey}.drop-数据库=假
+= ${configurationKey}.点对冲洗=100
+= ${configurationKey}.批次间隔=PT5S
+= ${configurationKey}。一致性级别
 ```
 
-## Apache Kafka Configuration
 
-The following options related to Kafka support in CAS apply equally to a number of CAS components given the component's *configuration key*:
+
+
+## 阿帕奇卡夫卡配置
+
+鉴于组件的 *配置密钥*，与 CAS 中的 Kafka 支持相关的以下选项同样适用于多个 CAS 组件：
+
+
 
 ```properties
-# ${configurationKey}.bootstrap-address=localhost:9092
+• ${configurationKey}.引导地址=本地酒店：9092
 ```
 
-### Apache Kafka Topic Configuration
 
-The following options related to Kafka support in CAS apply equally to a number of CAS components given the component's *configuration key*:
+
+
+### 阿帕奇卡夫卡主题配置
+
+鉴于组件的 *配置密钥*，与 CAS 中的 Kafka 支持相关的以下选项同样适用于多个 CAS 组件：
+
+
 
 ```properties
-# ${configurationKey}.name=
-# ${configurationKey}.partitions=1
-# ${configurationKey}.replicas=1
-# ${configurationKey}.compression-type=gzip
-# ${configurationKey}.config.key=value
+# ${configurationKey}.name]
+# ${configurationKey}.分区 = 1
+# ${configurationKey}.复制品= 1
+# ${configurationKey}.压缩型 =
+= ${configurationKey}.comig.key=值
 ```
 
-## Hazelcast Configuration
 
-The following options related to Hazelcast support in CAS apply equally to a number of CAS components given the component's *configuration key*:
+
+
+## 黑兹尔卡斯特配置
+
+鉴于组件的 *配置密钥*，与 CAS 中的黑兹尔卡斯特支持相关的以下选项同样适用于多个 CAS 组件：
+
+
 
 ```properties
-# ${configurationKey}.cluster.members=123.456.789.000,123.456.789.001
-# ${configurationKey}.cluster.instance-name=localhost
+# ${configurationKey}.集群.成员=123.456.789.000，123.456.789.001
+# ${configurationKey}.集群.实例名称=本地
 # ${configurationKey}.cluster.port=5701
 
-# ${configurationKey}.license-key=
-# ${configurationKey}.enable-compression=false
-# ${configurationKey}.enable-management-center-scripting=true
+# ${configurationKey}.许可键]
+# ${configurationKey}.启用压缩 = 虚假
+# ${configurationKey}.启用管理中心脚本=真实
 ```
 
-More advanced Hazelcast configuration settings are listed below, given the component's *configuration key*:
+
+鉴于组件的 *配置密钥*，下面列出了更高级的黑兹尔卡斯特配置设置：
+
+
 
 ```properties
-# ${configurationKey}.cluster.tcpip-enabled=true
+# ${configurationKey}.集群. tcpip 启用= 真正的
 
-# ${configurationKey}.cluster.partition-member-group-type=HOST_AWARE|CUSTOM|PER_MEMBER|ZONE_AWARE|SPI
-# ${configurationKey}.cluster.map-merge-policy=PUT_IF_ABSENT|HIGHER_HITS|DISCARD|PASS_THROUGH|EXPIRATION_TIME|LATEST_UPDATE|LATEST_ACCESS
+= ${configurationKey}. 集群. 分区 - 成员组类型 = HOST_AWARE|定制|PER_MEMBER|ZONE_AWARE|SPI
+# ${configurationKey}.集群.地图合并政策=PUT_IF_ABSENT|HIGHER_HITS|丢弃|PASS_THROUGH|EXPIRATION_TIME|LATEST_UPDATE|LATEST_ACCESS
 
-# ${configurationKey}.cluster.eviction-policy=LRU
-# ${configurationKey}.cluster.max-no-heartbeat-seconds=300
-# ${configurationKey}.cluster.logging-type=slf4j
-# ${configurationKey}.cluster.port-auto-increment=true
-# ${configurationKey}.cluster.max-size=85
-# ${configurationKey}.cluster.backup-count=1
-# ${configurationKey}.cluster.async-backup-count=0
-# ${configurationKey}.cluster.max-size-policy=USED_HEAP_PERCENTAGE
-# ${configurationKey}.cluster.timeout=5
+# ${configurationKey}.集群.驱逐政策=LRU
+# ${configurationKey}.集群.max无心跳秒=300
+= ${configurationKey}.集群.记录类型 slf4j
+# ${configurationKey}.集群.端口自动增量= 真实
+# ${configurationKey}.集群.max大小=85
+= ${configurationKey}.集群.备份计数 1
+= ${configurationKey}.集群.
+ ${configurationKey}${configurationKey}USED_HEAP_PERCENTAGE
+.max.集群.超时=5
 
-# ${configurationKey}.cluster.local-address=
-# ${configurationKey}.cluster.public-address=
+# ${configurationKey}.集群.本地地址=
+= ${configurationKey}.集群.公共地址=
 
-# ${configurationKey}.cluster.outbound-ports[0]=45000
+= ${configurationKey}.集群.出站端口[0]=45000
 ```
 
-### Static WAN Replication
+
+
+
+### 静态广域网复制
+
+
 
 ```properties
-# ${configurationKey}.cluster.wan-replication.enabled=false
-# ${configurationKey}.cluster.wan-replication.replication-name=CAS
+# ${configurationKey}.集群.wan 复制.启用=假
+= ${configurationKey}.集群.wan 复制.复制名称=CAS
 
-# ${configurationKey}.cluster.wan-replication.targets[0].endpoints=1.2.3.4,4.5.6.7
-# ${configurationKey}.cluster.wan-replication.targets[0].publisher-className=com.hazelcast.enterprise.wan.replication.WanBatchReplication
-# ${configurationKey}.cluster.wan-replication.targets[0].queue-full-behavior=THROW_EXCEPTION
-# ${configurationKey}.cluster.wan-replication.targets[0].acknowledge-type=ACK_ON_OPERATION_COMPLETE
-# ${configurationKey}.cluster.wan-replication.targets[0].queue-capacity=10000
-# ${configurationKey}.cluster.wan-replication.targets[0].batch-size=500
-# ${configurationKey}.cluster.wan-replication.targets[0].snapshot-enabled=false
-# ${configurationKey}.cluster.wan-replication.targets[0].batch-maximum-delay-milliseconds=1000
-# ${configurationKey}.cluster.wan-replication.targets[0].response-timeout-milliseconds=60000
-# ${configurationKey}.cluster.wan-replication.targets[0].executor-thread-count=2
+# ${configurationKey}.集群.wan 复制.目标[0].端点=1.2.3.4，4.5.6.7
+= ${configurationKey}.集群.wan 复制.目标[0].发布商级名[com.哈泽尔卡斯特.企业.wan.复制.万.复制.万巴奇复制
+] ${configurationKey}.集群.wan-复制.目标[0].队列全行为=THROW_EXCEPTION
+= ${configurationKey}.集群.wan复制.目标[0].确认类型=ACK_ON_OPERATION_COMPLETE
+= ${configurationKey}.集群.wan复制.目标[0].队列 容量=10000
+= ${configurationKey}.集群.wan 复制.目标[0].批量大小=500
+# ${configurationKey}.集群.wan 复制.目标[0].快照启用= 假
+# ${configurationKey}.集群.wan 复制.目标[0].批量最大延迟毫秒=1000
+# ${configurationKey}.cluster.wan 复制.目标[0].响应超时毫秒=60000
+# ${configurationKey}.集群.wan 复制.目标[0].执行线程计数 =2
 
-# ${configurationKey}.cluster.wan-replication.targets[0].consistency-check-strategy=NONE|MERKLE_TREES
-# ${configurationKey}.cluster.wan-replication.targets[0].cluster-name=
-# ${configurationKey}.cluster.wan-replication.targets[0].publisher-id=
-# ${configurationKey}.cluster.wan-replication.targets[0].properties=
+= ${configurationKey}.集群.wan 复制.目标[0]。一致性检查策略=无|MERKLE_TREES
+# ${configurationKey}.集群.wan 复制.目标[0].集群名称=
+# ${configurationKey}.集群.wan 复制. 目标[0].发布者 id=
+= ${configurationKey}.集群.wan 复制.目标[0].属性
 ```
 
-### Multicast Discovery
+
+
+
+### 多播发现
+
+
 
 ```properties
-# ${configurationKey}.cluster.multicast-trusted-interfaces=
-# ${configurationKey}.cluster.multicast-enabled=false
-# ${configurationKey}.cluster.multicast-port=
-# ${configurationKey}.cluster.multicast-group=
-# ${configurationKey}.cluster.multicast-timeout=2
-# ${configurationKey}.cluster.multicast-time-to-live=32
+# ${configurationKey}.集群.多广播信任界面]
+= ${configurationKey}.集群.支持多播的假
+= ${configurationKey}.集群.多播端口]
+# ${configurationKey}.集群.多播组=
+= ${configurationKey}.集群.多播超时=2
+= ${configurationKey}.集群。多播直播时间=32
 ```
 
-### AWS EC2 Discovery
+
+
+
+### AWS EC2 发现
+
+
 
 ```properties
-# ${configurationKey}.cluster.discovery.enabled=true
+# ${configurationKey}.集群.发现.启用]真正的
 
-# ${configurationKey}.cluster.discovery.aws.access-ley=
-# ${configurationKey}.cluster.discovery.aws.secret-ley=
+# ${configurationKey}.集群.发现.aws.访问-利]
+= ${configurationKey}.集群.发现.aws.秘密-莱]
 
-# ${configurationKey}.cluster.discovery.aws.iam-role=
 
-# ${configurationKey}.cluster.discovery.aws.region=us-east-1
-# ${configurationKey}.cluster.discovery.aws.host-header=
-# ${configurationKey}.cluster.discovery.aws.security-group-name=
-# ${configurationKey}.cluster.discovery.aws.tag-key=
-# ${configurationKey}.cluster.discovery.aws.tag-value=
-# ${configurationKey}.cluster.discovery.aws.port=-1
-# ${configurationKey}.cluster.discovery.aws.connection-timeout-seconds=5
+${configurationKey}# ${configurationKey}. 集群. 发现. aws. iam 角色 –
+
+# ${configurationKey}. 集群. 发现. aws. 区域 = 我们 - 东 - 1
+# ${configurationKey}. 集群. 发现。 aws. 主机标题 ]
+# ${configurationKey}. 集群. 发现. aws. 安全组名]
+# . 集群. 发现. aws. 标签键 ]
+# ${configurationKey}。 集群.发现.aws.标签值=
+= ${configurationKey}.集群.发现.aws.端口+-1= ${configurationKey}.集群.发现.aws.连接超时秒+5
 ```
 
-### Apache jclouds Discovery
+
+
+
+### 阿帕奇云发现
+
+
 
 ```properties
-# ${configurationKey}.cluster.discovery.enabled=true
+# ${configurationKey}.集群.发现.启用]真实
 
-# ${configurationKey}.cluster.discovery.jclouds.provider=
-# ${configurationKey}.cluster.discovery.jclouds.identity=
-# ${configurationKey}.cluster.discovery.jclouds.credential=
-# ${configurationKey}.cluster.discovery.jclouds.endpoint=
-# ${configurationKey}.cluster.discovery.jclouds.zones=
-# ${configurationKey}.cluster.discovery.jclouds.regions=
-# ${configurationKey}.cluster.discovery.jclouds.tag-keys=
-# ${configurationKey}.cluster.discovery.jclouds.tag-values=
-# ${configurationKey}.cluster.discovery.jclouds.group=
-# ${configurationKey}.cluster.discovery.jclouds.port=-1
-# ${configurationKey}.cluster.discovery.jclouds.role-name=
-# ${configurationKey}.cluster.discovery.jclouds.credential-path=
+# ${configurationKey}.集群.发现.云.提供商]
+# ${configurationKey}.集群.发现.发现.jclou.身份=
+= ${configurationKey}.集群.发现.jclou
+. ${configurationKey}. 集群. 发现. jclouds. 端点]
+# ${configurationKey}. 集群. 发现. jclouds. 区域]
+# ${configurationKey}. 集群. 发现. jclouds. 区域]
+# ${configurationKey}. 集群. 发现. jclouds. 标签键]
+# ${configurationKey}. 集群. 发现. 发现. 标签值]
+= ${configurationKey}. 集群. 发现. jclouds. 组 =
+ ${configurationKey}.集群.发现.jclouds.port=-1
+# ${configurationKey}.集群.发现.云.角色名称]
+ ${configurationKey}.集群.发现.云.证书路径]
 ```
 
-### Kubernetes Discovery
+
+
+
+### 库贝内茨发现
+
+
 
 ```properties
-# ${configurationKey}.cluster.discovery.enabled=true
+# ${configurationKey}.集群.discovery.启用]真实
 
-# ${configurationKey}.service-dns=
-# ${configurationKey}.service-dns-timeout=-1
-# ${configurationKey}.service-name=
-# ${configurationKey}.service-label-name=
-# ${configurationKey}.service-label-value=
-# ${configurationKey}.cluster.discovery.kubernetes.namespace=
-# ${configurationKey}.resolve-not-ready-addresses=false
-# ${configurationKey}.cluster.discovery.kubernetes.kubernetes-master=
-# ${configurationKey}.api-token=
+# ${configurationKey}.服务-dns]
+# ${configurationKey}.服务-dns 超时=-1
+# ${configurationKey}.服务名称=
+# ${configurationKey}.服务标签名称=
+# ${configurationKey}. 标签值=
+# ${configurationKey}. 集群. 发现. 库贝内茨. 命名空间]
+= ${configurationKey}. 解决不现成的地址 = 假
+= ${configurationKey}. 集群. 发现. 库伯内特斯. 库伯内特斯 - 大师]
+# ${configurationKey}. api - 令牌]
 ```
 
-### Docker Swarm Discovery
+
+
+
+### 多克沼泽发现
+
+
 
 ```properties
-# ${configurationKey}.cluster.discovery.enabled=true
+# ${configurationKey}.集群.发现.启用]真正的
 
-# ${configurationKey}.cluster.discovery.docker-swarm.dns-provider.enabled=true
-# ${configurationKey}.cluster.discovery.docker-swarm.dns-provider.service-name=
-# ${configurationKey}.cluster.discovery.docker-swarm.dns-provider.service-port=5701
-# ${configurationKey}.cluster.discovery.docker-swarm.dns-provider.peer-services=service-a,service-b,etc
+# ${configurationKey}.集群.发现.发现.docker-温暖.dns-提供商.启用]真实
+= ${configurationKey}.集群.发现.docker-温暖 ${configurationKey}
+.提供商. ${configurationKey}5701
+ ${configurationKey}# ${configurationKey}. 集群. 发现. docker - 温暖. dns - 提供商. 点服务 = 服务 a， 服务 - b 等
 
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.enabled=true
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.group-name=
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.group-password=
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.docker-network-names=
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.docker-service-names=
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.docker-service-labels=
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.swarm-mgr-uri=
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.skip-verify-ssl=false
-# ${configurationKey}.cluster.discovery.docker-swarm.member-provider.hazelcast-peer-port=5701
+# ${configurationKey}. 集群. 发现. docker - 温暖. 成员提供商. 启用] 真正的
+# . 集群. 发现. docker - swarm. 成员提供商. 组名]
+=  . 集群. 发现. -swarm. 成员提供商. 组密码]
+# ${configurationKey}. 集群. 发现. docker - 温暖. 成员 - 提供商.
+= ${configurationKey}. 集群. 发现. docker - swarm. 成员提供商. docker - 服务名称 =
+# ${configurationKey}. 集群. 发现. docker - swarm. 成员提供商. [
+] ${configurationKey}. 集群. 发现. docker - swarm. 成员提供商. 温暖 - mgr - uri]
+# ${configurationKey}. 集群. 发现. docker - swarm. 成员提供商. 跳过验证 - ssl = 虚假
+# ${configurationKey}. 集群. 发现. docker - swarm. 成员提供商. 哈泽尔卡斯特 - 同行端口 + 5701
 ```
 
-### Microsoft Azure Discovery
+
+
+
+### 微软蔚蓝发现
+
+
 
 ```properties
-# ${configurationKey}.cluster.discovery.enabled=true
+# ${configurationKey}.集群.发现.启用]真正的
 
-# ${configurationKey}.cluster.discovery.azure.subscription-id=
-# ${configurationKey}.cluster.discovery.azure.client-id=
-# ${configurationKey}.cluster.discovery.azure.client-secret=
-# ${configurationKey}.cluster.discovery.azure.tenant-id=
-# ${configurationKey}.cluster.discovery.azure.cluster-id=
-# ${configurationKey}.cluster.discovery.azure.group-name=
+# ${configurationKey}.集群.发现.azure.订阅-id]
+= ${configurationKey}.集群.发现.发现.azure.客户端id=
+= ${configurationKey}.集群.发现。 [客户-秘密]
+= ${configurationKey}. 集群. 发现. azure. 租户 - id]
+• ${configurationKey}. 集群. 发现. azure. 集群 id]
+# ${configurationKey}. 集群. 发现. azure. 组名]
 ```
 
-## RADIUS Configuration
 
-The following options related to RADIUS support in CAS apply equally to a number of CAS components (authentication, etc) given the component's *configuration key*.
 
-`server` parameters defines identification values of authenticated service (CAS server), primarily `server.protocol` for communication to RADIUS server identified by `client`.
 
-`client` parameters defines values for connecting RADIUS server. Parameter `client.inetAddress` has possibility to contain more addresses separated by comma to define failover servers when `failoverOnException` is set.
+## 半径配置
+
+鉴于该组件的 *配置密钥*，与中科院RADIUS支持相关的以下选项同样适用于 一些 CAS 组件（身份验证等）。
+
+`服务器` 参数定义认证服务 （CAS 服务器） 的识别值，主要是 `服务器``` 。
+
+`客户端` 参数定义连接RADIUS服务器的值。 参数 `客户端.inetAddress` 有可能包含更多由逗号分离的地址，以定义故障转移服务器在设置 `故障转移时` 。   
+
+
 
 ```properties
-# ${configurationKey}.server.nas-port-id=-1
-# ${configurationKey}.server.nas-real-port=-1
-# ${configurationKey}.server.protocol=EAP_MSCHAPv2
-# ${configurationKey}.server.retries=3
-# ${configurationKey}.server.nas-port-type=-1
-# ${configurationKey}.server.nas-port=-1
-# ${configurationKey}.server.nas-ip-address=
-# ${configurationKey}.server.nas-ipv6-address=
-# ${configurationKey}.server.nas-identifier=-1
-# ${configurationKey}.client.authentication-port=1812
-# ${configurationKey}.client.shared-secret=N0Sh@ar3d$ecReT
-# ${configurationKey}.client.socket-timeout=0
-# ${configurationKey}.client.inet-address=localhost
-# ${configurationKey}.client.accounting-port=1813
-# ${configurationKey}.failover-on-exception=false
-# ${configurationKey}.failover-on-authentication-failure=false
+# ${configurationKey}.服务器. ${configurationKey}.服务器.
+= ${configurationKey}.服务器.
+ ${configurationKey}.服务器.EAP_MSCHAPv2
+
+ ${configurationKey}.服务器.nas 端口类型=-1
+# ${configurationKey}.服务器.服务器.nas 端口=-1
+# ${configurationKey}.服务器.nas-ip 地址=
+# ${configurationKey}.服务器.服务器.nas-ipv6 地址]
+# ${configurationKey}.服务器.nas 标识符=-1
+# ${configurationKey}.客户端口#1812
+# ${configurationKey}.客户端。共享-秘密=N0Sh@ar3d$ecReT
+# ${configurationKey}.客户端口=0
+# ${configurationKey}.客户地址=本地主
+# ${configurationKey}.客户端口=1813
+# ${configurationKey}.异常故障转移=假
+= ${configurationKey}.认证失败
 ```
 
-## CouchDb Configuration
 
-The following options related to CouchDb support in CAS apply equally to a number of CAS components (ticket registries, etc) given the component's *configuration key*:
+
+
+## 沙发数据库配置
+
+鉴于组件的 *配置密钥*，与 CouchDb 在 CAS 支持相关的以下选项同样适用于多个 CAS 组件（票证注册等）：
+
+
 
 ```properties
-# ${configurationKey}.couch-db.url=http://localhost:5984
-# ${configurationKey}.couch-db.username=
-# ${configurationKey}.couch-db.password=
-# ${configurationKey}.couch-db.socket-timeout=10000
-# ${configurationKey}.couch-db.connection-timeout=1000
-# ${configurationKey}.couch-db.drop-collection=false
-# ${configurationKey}.couch-db.max-connections=20
-# ${configurationKey}.couch-db.enable-ssl=
-# ${configurationKey}.couch-db.relaxed-ssl-settings=
-# ${configurationKey}.couch-db.caching=false
-# ${configurationKey}.couch-db.max-cache-entries=1000
-# ${configurationKey}.couch-db.max-object-size-bytes=8192
-# ${configurationKey}.couch-db.use-expect-continue=true
-# ${configurationKey}.couch-db.cleanup-idle-connections=true
-# ${configurationKey}.couch-db.create-if-not-exists=true
-# ${configurationKey}.couch-db.proxy-host=
-# ${configurationKey}.couch-db.proxy-port=-1
+# ${configurationKey}. 沙发 - db. url= 本地主机： 5984
+# ${configurationKey}. 沙发 - db. 用户名]
+= ${configurationKey}. 沙发 - db. 密码 =
+= ${configurationKey}. 沙发 - db. 插座超时 = 10
+= ${configurationKey}. 沙发 - db. 连接超时 = 10
+= ${configurationKey}. 沙发 - db. 滴收集 = 假
+= ${configurationKey}. 沙发 - db .max连接 = 20
+= ${configurationKey}. 沙发 - db. 启用 - ssl]
+# ${configurationKey}. 沙发 - db. 放松 - sl 设置 ]
+# ${configurationKey}. 沙发 - db. 缓存 = 假
+# ${configurationKey}. 沙发 - db .max 缓存条目 = 10
+= ${configurationKey}. 沙发 - db .max对象大小字节 = 8192
+= ${configurationKey}. 沙发 - db. 使用 - 预期继续] 真实
+# ${configurationKey}. 沙发 - db. 清理 - 空闲连接] 真正的
+# ${configurationKey}. 沙发 - db. 创造- 如果不存在] 真正的
+# ${configurationKey}. 沙发 - db. 代理主机]
+# ${configurationKey}. 沙发 - db. 代理端口 = 1
 
-# Defaults are based on the feature name.
-# ${configurationKey}.couch-db.db-name=
+# 默认基于功能名称。
+# ${configurationKey}.沙发-db.db名称=
 
-# For the few features that can't have update conflicts automatically resolved.
-# ${configurationKey}.couch-db.retries=5
+#对于无法自动解析更新冲突的少数功能。
+# ${configurationKey}.沙发-db.retries=5
 
-# Depending on the feature at hand, CAS may perform some actions asynchronously.
-# ${configurationKey}.couch-db.asynchronous=true
+=根据手头的功能，CAS可能会同步执行一些操作。
+* ${configurationKey}.沙发-db.异步=真实
 ```
 
-## MongoDb Configuration
 
-The following options related to MongoDb support in CAS apply equally to a number of CAS components (ticket registries, etc) given the component's *configuration key*:
+
+
+## 蒙哥德布配置
+
+鉴于该组件的 *配置密钥*，与 MongoDb 在 CAS 中的支持相关的以下选项同样适用于多个 CAS 组件（票证注册等）：
+
+
 
 ```properties
 # ${configurationKey}.mongo.host=localhost
@@ -744,635 +912,802 @@ The following options related to MongoDb support in CAS apply equally to a numbe
 # ${configurationKey}.mongo.pool.per-host=10
 ```
 
-## DynamoDb Configuration
 
-The following options related to DynamoDb support in CAS apply equally to a number of CAS components (ticket registries, etc) given the component's *configuration key*:
 
-```properties
-# ${configurationKey}.dynamo-db.drop-tables-on-startup=false
-# ${configurationKey}.dynamo-db.prevent-table-creation-on-startup=false
-# ${configurationKey}.dynamo-db.local-instance=false
-```
 
-AWS settings for this feature are available [here](#amazon-integration-settings).
+## 发电机数据库配置
 
-## RESTful Integrations
+鉴于组件的 *配置密钥*，与中科院 DynamoDb 支持相关的以下选项同样适用于多个 CAS 组件（票证注册等）：
 
-The following options related to features in CAS that provide REST support to fetch and update data. These settings apply equally, given the component's *configuration key*:
+
 
 ```properties
-# ${configurationKey}.method=GET|POST
-# ${configurationKey}.order=0
-# ${configurationKey}.case-insensitive=false
-# ${configurationKey}.basic-auth-username=uid
-# ${configurationKey}.basic-auth-password=password
-# ${configurationKey}.headers.key=value
-# ${configurationKey}.url=https://rest.somewhere.org/attributes
+# ${configurationKey}.dynamo-db.启动时投表=假
+= ${configurationKey}.dynamo-db.预防表创建启动时=假
+= ${configurationKey}.dynamo-db.本地实例=假
 ```
 
-## Redis Configuration
 
-The following options related to Redis support in CAS apply equally to a number of CAS components (ticket registries, etc) given the component's *configuration key*:
+此功能的 AWS 设置可 [此处](#amazon-integration-settings)。
+
+
+
+## 重新整合
+
+以下选项与 CAS 中的功能相关，这些功能提供 REST 支持以获取和更新数据。 鉴于组件的 *配置密钥*，这些设置同样适用：
+
+
 
 ```properties
-# ${configurationKey}.redis.host=localhost
-# ${configurationKey}.redis.database=0
-# ${configurationKey}.redis.port=6380
-# ${configurationKey}.redis.password=
-# ${configurationKey}.redis.timeout=2000
-# ${configurationKey}.redis.use-ssl=false
-# ${configurationKey}.redis.read-from=MASTER
+# ${configurationKey}.方法]获取|开机自检
+# ${configurationKey}.顺序=0
+= ${configurationKey}.case 麻木不仁 = 虚假
+# ${configurationKey}.基本身份验证用户名 =uid
+# ${configurationKey}.基本身份验证密码=密码
+# ${configurationKey}.headers.key= 值
+= ${configurationKey}.
 ```
 
-### Redis Pool Configuration
+
+
+
+## 雷迪斯配置
+
+鉴于组件的 *配置密钥*，与 CAS 中的 Redis 支持相关的以下选项同样适用于多个 CAS 组件（票证注册等）：
+
+
 
 ```properties
-# ${configurationKey}.redis.pool.enabled=false
-# ${configurationKey}.redis.pool.max-active=20
-# ${configurationKey}.redis.pool.max-idle=8
-# ${configurationKey}.redis.pool.min-idle=0
-# ${configurationKey}.redis.pool.max-active=8
-# ${configurationKey}.redis.pool.max-wait=-1
-# ${configurationKey}.redis.pool.num-tests-per-eviction-run=0
-# ${configurationKey}.redis.pool.soft-min-evictable-idle-time-millis=0
-# ${configurationKey}.redis.pool.min-evictable-idle-time-millis=0
-# ${configurationKey}.redis.pool.lifo=true
-# ${configurationKey}.redis.pool.fairness=false
-# ${configurationKey}.redis.pool.test-on-create=false
-# ${configurationKey}.redis.pool.test-on-borrow=false
-# ${configurationKey}.redis.pool.test-on-return=false
-# ${configurationKey}.redis.pool.test-while-idle=false
+# ${configurationKey}.雷迪斯.主机]本地主机
+# ${configurationKey}.雷迪斯.数据库=0
+= ${configurationKey}.redis.port=6380
+# ${configurationKey}.redis. 密码=
+= ${configurationKey}. redis. 超时 = 2000
+# ${configurationKey}. redis. 使用 - ssl = 假
+# ${configurationKey}. redis. 阅读 - 从] 大师
 ```
 
-### Redis Sentinel Configuration
+
+
+
+### 重新分配池配置
+
+
 
 ```properties
-# ${configurationKey}.redis.sentinel.master=mymaster
-# ${configurationKey}.redis.sentinel.node[0]=localhost:26377
-# ${configurationKey}.redis.sentinel.node[1]=localhost:26378
-# ${configurationKey}.redis.sentinel.node[2]=localhost:26379
+# ${configurationKey}. redis. pool. 启用= 假
+# ${configurationKey}. redis. 池.max活动 = 20
+# ${configurationKey}. redis. 池.max - 空闲 = 8
+# ${configurationKey}. redis. pool. min - 空闲 = 0
+# ${configurationKey}.redis.pool.max活动=8
+= ${configurationKey}.redis.pool.max-wait=-1
+# ${configurationKey}.雷迪斯.池.数字测试-每驱逐运行=0
+= ${configurationKey}.redis.池 . 软敏可驱逐 - 可驱逐 - 空闲时间 - 毫 ] 0
+= ${configurationKey}. redis. pool. 最小可驱逐 - 可被驱逐 - 空闲时间 - 毫秒 # 0
+# ${configurationKey}. redis. pool.
+# ${configurationKey}. redis. pool. 公平 = 虚假
+# ${configurationKey}. redis. pool. 测试创造 = 假
+# ${configurationKey}. redis. pool. 借试 = 假
+# ${configurationKey}. redis. pool. 测试返回 = 假
+= ${configurationKey}. redis. 池。
 ```
 
-### Redis Cluster Configuration
+
+
+
+### 雷迪斯哨兵配置
+
+
 
 ```properties
-# ${configurationKey}.redis.cluster.password=
-# ${configurationKey}.redis.cluster.max-redirects=0
-# ${configurationKey}.redis.cluster.nodes[0].host=
-# ${configurationKey}.redis.cluster.nodes[0].port=
-# ${configurationKey}.redis.cluster.nodes[0].replica-of=
-# ${configurationKey}.redis.cluster.nodes[0].id=
-# ${configurationKey}.redis.cluster.nodes[0].name=
-# ${configurationKey}.redis.cluster.nodes[0].type=MASTER|SLAVE
+# ${configurationKey}.雷迪斯.森蒂内尔.大师]我的大师
+# ${configurationKey}.雷迪斯.森蒂内尔.节点[0]=本地主机：26377
+# ${configurationKey}。 雷迪斯. sentinel. 节点[1]= 本地主
+： 26378 # ${configurationKey}. redis. sentinel. 节点[2]= 本地主： 26379
 ```
 
-## DDL Configuration
 
-Note that the default value for Hibernate's DDL setting is `create-drop` which may not be appropriate for use in production. Setting the value to `validate` may be more desirable, but any of the following options can be used:
 
-| Type          | Description                                               |
-| ------------- | --------------------------------------------------------- |
-| `validate`    | Validate the schema, but make no changes to the database. |
-| `update`      | Update the schema.                                        |
-| `create`      | Create the schema, destroying previous data.              |
-| `create-drop` | Drop the schema at the end of the session.                |
-| `none`        | Do nothing.                                               |
 
-Note that during a version migration where any schema has changed `create-drop` will result in the loss of all data as soon as CAS is started. For transient data like tickets this is probably not an issue, but in cases like the audit table important data could be lost. Using `update`, while safe for data, is confirmed to result in invalid database state. `validate` or `none` settings are likely the only safe options for production use.
+### 重新组合配置
 
-For more information on configuration of transaction levels and propagation behaviors, please review [this guide](http://docs.spring.io/spring-framework/docs/current/javadoc-api/).
 
-## SAML2 Service Provider Integrations
-
-The settings defined for each service provider simply attempt to automate the creation of a [SAML service definition](../installation/Configuring-SAML2-Authentication.html#saml-services) and nothing more. If you find the applicable settings lack in certain areas, it is best to fall back onto the native configuration strategy for registering SAML service providers with CAS which would depend on your service registry of choice.
-
-Each SAML service provider supports the following settings:
-
-| Name                | Description                                                                                          |
-| ------------------- | ---------------------------------------------------------------------------------------------------- |
-| `metadata`          | Location of metadata for the service provider (i.e URL, path, etc)                                   |
-| `name`              | The name of the service provider registered in the service registry.                                 |
-| `description`       | The description of the service provider registered in the service registry.                          |
-| `nameIdAttribute`   | Attribute to use when generating name ids for this service provider.                                 |
-| `nameIdFormat`      | The forced NameID Format identifier (i.e. `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`). |
-| `attributes`        | Attributes to release to the service provider, which may virtually be mapped and renamed.            |
-| `signatureLocation` | Signature location to verify metadata.                                                               |
-| `entityIds`         | List of entity ids allowed for this service provider.                                                |
-| `signResponses`     | Indicate whether responses should be signed. Default is `true`.                                      |
-| `signAssertions`    | Indicate whether assertions should be signed. Default is `false`.                                    |
-
-The only required setting that would activate the automatic configuration for a service provider is the presence and definition of metadata. All other settings are optional.
-
-The following options apply equally to SAML2 service provider integrations, given the provider's *configuration key*:
 
 ```properties
-# ${configurationKey}.metadata=/etc/cas/saml/dropbox.xml
-# ${configurationKey}.name=SP Name
-# ${configurationKey}.description=SP Integration
-# ${configurationKey}.name-id-attribute=mail
-# ${configurationKey}.name-id-format=
-# ${configurationKey}.signature-location=
-# ${configurationKey}.attributes=
-# ${configurationKey}.entity-ids=
-# ${configurationKey}.sign-responses=
-# ${configurationKey}.sign-assertions=
+# ${configurationKey}.redis.集群.密码]
+# ${configurationKey}.redis.集群.max重定向 =0
+# ${configurationKey}.reis.集群. 节点[0].主机=
+# ${configurationKey}.redis.集群.节点[0].port=
+# ${configurationKey}。[0].
+ ${configurationKey}.redis.集群.节点[0].id]
+# ${configurationKey}.redis.集群.节点[0].名称=
+# ${configurationKey}.redis.集群.节点[0].type=MASTER|奴隶
 ```
 
-## Multifactor Authentication Providers
 
-All configurable multifactor authentication providers have these base properties available given the provider's *configuration key*:
+
+
+## DDL 配置
+
+请注意，冬眠的 DDL 设置的默认值 `创建滴` 这可能不适合用于生产。 将值设置为 `验证` 可能更可取，但可以使用以下任何选项：
+
+| 类型     | 描述                 |
+| ------ | ------------------ |
+| `驗證`   | 验证该模式，但不会对数据库进行更改。 |
+| `更新`   | 更新该模式。             |
+| `创造`   | 创建模式，销毁以前的数据。      |
+| `创建-滴` | 在会话结束时删除该模式。       |
+| `没有`   | 什么都不做              |
+
+
+请注意，在版本迁移中，任何模式都已更改 `创建滴` 一旦 CAS 启动，将导致所有数据的丢失 。 对于像票证这样的瞬态数据，这可能 不是问题，但在审计表等情况下，重要数据可能会丢失。 使用 `更新`，虽然安全 的数据，被确认导致无效的数据库状态。 `验证` 或 `没有` 设置 可能是生产使用的唯一安全选项。
+
+有关交易级别和传播行为配置的更多信息，请 本指南 [](http://docs.spring.io/spring-framework/docs/current/javadoc-api/)。
+
+
+
+## SAML2 服务提供商集成
+
+为每个服务提供商定义的设置只是尝试自动创建 [SAML 服务定义](../installation/Configuring-SAML2-Authentication.html#saml-services) 仅此而已。 如果您发现某些领域缺乏 适用设置，最好回到本地配置策略上，在 CAS 注册 SAML 服务提供商，这将取决于您选择的服务注册表。
+
+每个 SAML 服务提供商支持以下设置：
+
+| 名字       | 描述                                                  |
+| -------- | --------------------------------------------------- |
+| `元数据`    | 服务提供商元数据的位置（即 URL、路径等）                              |
+| `名字`     | 在服务注册表中注册的服务提供商的名称。                                 |
+| `描述`     | 在服务注册表中注册的服务提供商的描述。                                 |
+| `名称伊德属性` | 为此服务提供商生成名称 ID 时要使用的属性。                             |
+| `名称伊德法特` | 强制名称ID格式标识符（即 `骨灰盒：绿洲：名称：tc：SAML：1.1：名称格式：电子邮件地址`）。 |
+| `属性`     | 要发布给服务提供商的属性，这些属性实际上可以映射并重命名。                       |
+| `签名位置`   | 要验证元数据的签名位置。                                        |
+| `实体ID`   | 允许此服务提供商的实体 ID 列表。                                  |
+| `符号响应`   | 指示是否应签署回复。 默认值 `真实`。                                |
+| `符号附录`   | 指示是否应签署断言。 违约 `虚假`。                                 |
+
+
+激活服务提供商自动配置的唯一所需设置是元数据的存在和定义。 所有其他设置都是可选的。 
+
+鉴于提供商的 *配置密钥，以下选项同样适用于 SAML2 服务提供商集成*：
+
+
 
 ```properties
-# ${configurationKey}.rank=
-# ${configurationKey}.id=
-# ${configurationKey}.name=
-# ${configurationKey}.failure-mode=UNDEFINED
+# ${configurationKey}.元数据]/等/cas/saml/下拉框.xml
+# ${configurationKey}.name=SP 名称
+# ${configurationKey}.描述/SP 集成
+# ${configurationKey}.名称-id-属性/邮件
+# ${configurationKey}.name- id 格式 =
+# ${configurationKey}. 签名位置]
+= ${configurationKey}. 属性 =
+= ${configurationKey}. 实体 - ids =
+# ${configurationKey}. 符号响应 =
+= ${configurationKey}.
 ```
 
-## Multifactor Authentication Bypass
 
-The following bypass options apply equally to multifactor authentication providers given the provider's *configuration key*:
+
+
+## 多因素身份验证提供商
+
+鉴于提供商的 *配置密钥*，所有可配置的多因素身份验证提供商都有这些基本属性：
+
+
 
 ```properties
-# ${configurationKey}.bypass.principal-attribute-name=bypass|skip
-# ${configurationKey}.bypass.principal-attribute-value=true|enabled.+
-
-# ${configurationKey}.bypass.authentication-attribute-name=bypass|skip
-# ${configurationKey}.bypass.authentication-attribute-value=allowed.+|enabled.+
-
-# ${configurationKey}.bypass.authentication-handler-name=AcceptUsers.+
-# ${configurationKey}.bypass.authentication-method-name=LdapAuthentication.+
-
-# ${configurationKey}.bypass.credential-class-type=UsernamePassword.+
-
-# ${configurationKey}.bypass.http-request-remote-address=127.+|example.*
-# ${configurationKey}.bypass.http-request-headers=header-X-.+|header-Y-.+
-
-# ${configurationKey}.bypass.groovy.location=file:/etc/cas/config/mfa-bypass.groovy
+# ${configurationKey}.rank]
+• ${configurationKey}.id]
+• ${configurationKey}。名称=
+• ${configurationKey}.故障模式
 ```
 
-If multifactor authentication bypass is determined via REST, RESTful settings are available [here](#restful-integrations) under the configuration key `${configurationKey}.bypass.rest`.
 
-## Couchbase Integration Settings
 
-The following options are shared and apply when CAS is configured to integrate with Couchbase (i.e ticket registry, etc), given the provider's *configuration key*:
+
+## 多因素身份验证旁路
+
+鉴于提供商的 *配置密钥，以下旁路选项同样适用于多因素身份验证提供商，*：
+
+
 
 ```properties
-# ${configurationKey}.addresses[0]=localhost
-# ${configurationKey}.cluster-username=
-# ${configurationKey}.cluster-password= 
+# ${configurationKey}.旁路.主要属性名称=旁路|跳过
+= ${configurationKey}.旁路.委托属性值=真实|可用。]
 
-# ${configurationKey}.bucket=testbucket    
+= ${configurationKey}.旁路.旁路.认证-属性名称=旁路|跳过
+# ${configurationKey}.旁路.认证-属性值=允许. |可
 
-# ${configurationKey}.connection-timeout=PT60S
-# ${configurationKey}.search-timeout=PT30S
-# ${configurationKey}.query-timeout=PT30S
-# ${configurationKey}.view-timeout=PT30S
-# ${configurationKey}.kv-timeout=PT30S 
-# ${configurationKey}.max-http-connections=PT30S
-# ${configurationKey}.idle-connection-timeout=PT30S
-# ${configurationKey}.query-threshold=PT30S
-# ${configurationKey}.scan-consistency=NOT_BOUNDED|REQUEST_PLUS
+= ${configurationKey}.旁路.认证处理程序名称 ${configurationKey}
+=接受使用者。 名称[Ldap授权.]
+
+= ${configurationKey}.旁路.证书类类型=用户名密码 | ${configurationKey}
+
+。
+# ${configurationKey}. . . http 请求标题 = 标题 - x - |头 - y.
+
+= ${configurationKey}. 旁路. groovy. 位置 [ 文件] 等 / cas / 配置 / mfa - 旁路. groovy
 ```
 
-## Amazon Integration Settings
 
-The following options are shared and apply when CAS is configured to integrate with various Amazon Web Service features, given the provider's *configuration key*:
+如果多因素身份验证旁路是通过 REST 确定的， 则此处 [可在配置键 `${configurationKey}. .`下](#restful-integrations) 提供 reSTful 设置。
+
+
+
+## 沙发基地集成设置
+
+当 CAS 配置为与 Couchbase 集成时（即票务注册表等），鉴于提供商的 *配置密钥*，将共享以下选项并实施：
+
+
 
 ```properties
-# ${configurationKey}.credential-access-key=
-# ${configurationKey}.credential-secret-key=
+# ${configurationKey}.地址[0]=本地
+# ${configurationKey}.群集用户名]
+# ${configurationKey}.集群密码] 
 
-# ${configurationKey}.endpoint=http://localhost:8000
-# ${configurationKey}.region=US_WEST_2|US_EAST_2|EU_WEST_2|<REGION-NAME>
-# ${configurationKey}.local-address=
-# ${configurationKey}.retry-mode=STANDARD|LEGACY
+# ${configurationKey}.bucket= 测试桶    
 
-# ${configurationKey}.proxy-host=
-# ${configurationKey}.proxy-password=
-# ${configurationKey}.proxy-username=
-
-# ${configurationKey}.read-capacity=10
-# ${configurationKey}.write-capacity=10
-# ${configurationKey}.connection-timeout=5000
-# ${configurationKey}.socket-timeout=5000
-# ${configurationKey}.use-reaper=false
-
-# ${configurationKey}.client-execution-timeout=10000
-# ${configurationKey}.max-connections=10
+# ${configurationKey}.连接超时 # PT60s
+# ${configurationKey}.搜索超时 # PT30S
+# ${configurationKey}.查询超时 = PT30
+# ${configurationKey}. view 超时 # PT30s
+# ${configurationKey}.kv 超时 # PT30s 
+# ${configurationKey}.max - http 连接 = Pt30s
+# ${configurationKey}.空闲连接超时 # PT30S
+# ${configurationKey}.查询阈值 = PT30S
+# ${configurationKey}.扫描一致性=NOT_BOUNDED|REQUEST_PLUS
 ```
 
-## Memcached Integration Settings
 
-The following  options are shared and apply when CAS is configured to integrate with memcached (i.e ticket registry, etc), given the provider's *configuration key*:
+
+
+## 亚马逊集成设置
+
+鉴于提供商的 *配置密钥*，当 CAS 配置为集成各种 亚马逊 Web 服务功能时，将共享以下选项并应用：
+
+
 
 ```properties
-# ${configurationKey}.memcached.servers=localhost:11211
-# ${configurationKey}.memcached.locator-type=ARRAY_MOD
-# ${configurationKey}.memcached.failure-mode=Redistribute
-# ${configurationKey}.memcached.hash-algorithm=FNV1_64_HASH
-# ${configurationKey}.memcached.protocol=TEXT
-# ${configurationKey}.memcached.should-optimize=false
-# ${configurationKey}.memcached.daemon=true
-# ${configurationKey}.memcached.max-reconnect-delay=-1
-# ${configurationKey}.memcached.use-nagle-algorithm=false
-# ${configurationKey}.memcached.shutdown-timeout-seconds=-1
-# ${configurationKey}.memcached.op-timeout=-1
-# ${configurationKey}.memcached.timeout-exception-threshold=2
-# ${configurationKey}.memcached.max-total=20
-# ${configurationKey}.memcached.max-idle=8
-# ${configurationKey}.memcached.min-idle=0
+# ${configurationKey}.凭据访问密钥]
+= ${configurationKey}.凭据-秘密密钥]
 
-# ${configurationKey}.memcached.transcoder=KRYO|SERIAL|WHALIN|WHALINV1
-# ${configurationKey}.memcached.transcoder-compression-threshold=16384
-# ${configurationKey}.memcached.kryo-auto-reset=false
-# ${configurationKey}.memcached.kryo-objects-by-reference=false
-# ${configurationKey}.memcached.kryo-registration-required=false
+= ${configurationKey}.终点=/本地主
+：8000 = ${configurationKey}。区域US_WEST_2|US_EAST_2|EU_WEST_2|<REGION-NAME>
+# ${configurationKey}.本地地址=
+# ${configurationKey}.重试模式=标准|遗产
+
+# ${configurationKey}.代理主机]
+# ${configurationKey}.代理密码]
+# ${configurationKey}.代理用户名]
+
+# ${configurationKey}. 读取容量 = 10
+# ${configurationKey}. 写容量 = 10
+# ${configurationKey}.连接超时=5000
+= ${configurationKey}.插座超时 =5000
+= ${configurationKey}.使用-收割机=虚假
+
+# ${configurationKey}.客户端执行超时 =10000
+= ${configurationKey}.max连接=10
 ```
 
-## Password Policy Settings
 
-The following  options are shared and apply when CAS is configured to integrate with account sources and authentication strategies that support password policy enforcement and detection, given the provider's *configuration key*. Note that certain setting may only be applicable if the underlying account source is LDAP and are only taken into account if the authentication strategy configured in CAS is able to honor and recognize them:
+
+
+## 合并集成设置
+
+鉴于提供商的 *配置密钥，当 CAS 配置为集成 memcached（即票务注册表等）时，将共享以下选项*并应用：
+
+
 
 ```properties
-# ${configurationKey}.type=GENERIC|AD|FreeIPA|EDirectory
+# ${configurationKey}.memcached.servers=本地主机：11211
+# ${configurationKey}.memcached.定位器类型=ARRAY_MOD
+= ${configurationKey}.memcached.故障模式= 重新分配
+# ${configurationKey}.memcached FNV1_64_HASH
+. ${configurationKey}.memcached.protocol] 文本
+# ${configurationKey}. memcached. 应优化 = 虚假
+# ${configurationKey}. memcached. daemon= 真实
+# ${configurationKey}. memcached.max 重新连接延迟 = 1
+# ${configurationKey}。 ${configurationKey}${configurationKey}. memcached. op 超时
++ 1
 
-# ${configurationKey}.enabled=true
-# ${configurationKey}.policy-attributes.account-locked=javax.security.auth.login.AccountLockedException
-# ${configurationKey}.login-failures=5
-# ${configurationKey}.warning-attribute-value=
-# ${configurationKey}.warning-attribute-name=
-# ${configurationKey}.display-warning-on-match=true
-# ${configurationKey}.warn-all=true
-# ${configurationKey}.warning-days=30
-# ${configurationKey}.account-state-handling-enabled=true
+# ${configurationKey}. memcached. 超时阈值 = 2
+ ${configurationKey}. memcached.max 总计 =20
+= ${configurationKey}. memcached.max - 空闲 = 8
+= ${configurationKey}. memcached. min - 懒惰 = 0
 
-# An implementation of `org.ldaptive.auth.AuthenticationResponseHandler`
-# ${configurationKey}.custom-policy-class=com.example.MyAuthenticationResponseHandler
-
-# ${configurationKey}.strategy=DEFAULT|GROOVY|REJECT_RESULT_CODE
-# ${configurationKey}.groovy.location=file:/etc/cas/config/password-policy.groovy
+= ${configurationKey}. memcached. 转录机 = Kryo|串行|沃林|WHALINV1
+# ${configurationKey}. memcached. 转录机压缩阈值 = 16384
+# ${configurationKey}. memcached. kryo 自动重置 = 假
+# ${configurationKey}. memcached. kryo 对象逐一引用 = 假
+= ${configurationKey}. memcached.
 ```
 
-#### Password Policy Strategies
 
-Password policy strategy types are outlined below. The strategy evaluates the authentication response received from LDAP, etc and is allowed to review it upfront in order to further examine whether account state, messages and warnings is eligible for further investigation.
 
-| Option               | Description                                                                                                                                                                                                                               |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DEFAULT`            | Accepts the authentication response as is, and processes account state, if any.                                                                                                                                                           |
-| `GROOVY`             | Examine the authentication response as part of a Groovy script dynamically. The responsibility of handling account state changes and warnings is entirely delegated to the script.                                                        |
-| `REJECT_RESULT_CODE` | An extension of the `DEFAULT` where account state is processed only if the result code of the authentication response is not denied in the configuration. By default `INVALID_CREDENTIALS(49)` prevents CAS from handling account states. |
 
-If the password policy strategy is to be handed off to a Groovy script, the outline of the script may be as follows:
+## 密码策略设置
+
+当 CAS 配置为与支持密码策略执行和检测的帐户源和身份验证策略集成时，会共享以下选项并应用，因为提供商的 *配置密钥*。 请注意，某些设置仅适用于基础帐户源为 LDAP，并且仅在 CAS 中配置的身份验证策略能够尊重和识别它们时才予以考虑： 
+
+
+
+```properties
+# ${configurationKey}.类型=通用|广告|自由|电子
+
+# ${configurationKey}.启用=真实
+# ${configurationKey}.政策属性.帐户锁定=javax.安全.auth.登录.帐户锁定例外
+# ${configurationKey}.登录 失败=5
+= ${configurationKey}.警告属性值=
+= ${configurationKey}.警告属性名称=
+= ${configurationKey}.匹配显示警告=真实
+# ${configurationKey}.警告所有=真实
+# ${configurationKey}.警告日=30
+= ${configurationKey}.帐户状态处理启用=真实
+
+=实施"org.ld" 身份验证响应汉德勒
+# ${configurationKey}.定制政策类=com.示例.我授权响应手
+
+# ${configurationKey}.策略=默认|格罗夫|REJECT_RESULT_CODE
+# ${configurationKey}.groovy.位置=文件/cas/配置/密码政策。
+```
+
+
+
+
+#### 密码策略策略
+
+密码策略策略类型概述如下。 该策略评估从 LDAP 等机构收到的身份验证响应，并允许提前查看，以便进一步检查帐户状态、消息和警告是否有资格进行进一步调查。
+
+| 选择                   | 描述                                                                                     |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| `违约`                 | 接受身份验证响应，并处理帐户状态（如果有的话）。                                                               |
+| `槽的`                 | 动态检查身份验证响应，作为 Groovy 脚本的一部分。 处理帐户状态更改和警告的责任完全委托给脚本。                                    |
+| `REJECT_RESULT_CODE` | 只有在配置中不拒绝身份验证响应的结果代码时，才处理帐户状态的 `默认` 的扩展。 默认情况下， `INVALID_CREDENTIALS（49）` 阻止CAS处理账户状态。 |
+
+
+如果密码策略要分发到 Groovy 脚本，则脚本的大纲可能如下：
+
+
 
 ```groovy
-import java.util.*
-import org.ldaptive.auth.*
-import org.apereo.cas.*
-import org.apereo.cas.authentication.*
-import org.apereo.cas.authentication.support.*
+进口 java.util.*
+进口组织.ldaptive.auth.*
+进口组织.apereo.cas.*
+进口组织.apereo.cas.认证.*
+进口组织.apereo.cas.认证.支持.*
 
-def List<MessageDescriptor> run(final Object... args) {
-    def response = args[0]
-    def configuration = args[1];
-    def logger = args[2]
-    def applicationContext = args[3]
+<MessageDescriptor> 运行列表（最终对象...args） {
+    def 响应 = args[0]
+    def 配置 = args[1];
+    def 记录器 = args[2]
+    def 应用程序文本 = args[3]
 
-    logger.info("Handling password policy [{}] via ${configuration.getAccountStateHandler()}", response)
+    logger.info （"通过 ${配置处理密码策略 [[}] 响应）
 
-    def accountStateHandler = configuration.getAccountStateHandler()
-    return accountStateHandler.handle(response, configuration)
+    定义帐户状态手=配置。获取帐户状态手勒（）
+    返回帐户状态汉德勒。句柄（响应，配置）
 }
 ```
 
-The parameters passed are as follows:
 
-| Parameter       | Description                                                                         |
-| --------------- | ----------------------------------------------------------------------------------- |
-| `response`      | The LDAP authentication response of type `org.ldaptive.auth.AuthenticationResponse` |
-| `configuration` | The LDAP password policy configuration carrying the account state handler defined.  |
-| `logger`        | The object responsible for issuing log messages such as `logger.info(...)`.         |
+通过的参数如下：
 
-## Email Notifications
+| 参数   | 描述                                |
+| ---- | --------------------------------- |
+| `响应` | `组织.ldap.auth.身份验证响应`             |
+| `配置` | 已定义帐户状态处理程序的 LDAP 密码策略配置。         |
+| `记录` | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
 
-To learn more about this topic, [please review this guide](../notifications/Sending-Email-Configuration.html).
 
-The following options are shared and apply when CAS is configured to send email notifications, given the provider's *configuration key*:
+
+
+## 电子邮件通知
+
+要了解有关此主题的更多内容，请 [](../notifications/Sending-Email-Configuration.html)查看本指南。
+
+鉴于提供商的 *配置密钥，当 CAS 配置为发送电子邮件通知时，将共享以下选项并实施*：
+
+
 
 ```properties
-# ${configurationKey}.mail.from=
-# ${configurationKey}.mail.text=
-# ${configurationKey}.mail.subject=
-# ${configurationKey}.mail.cc=
-# ${configurationKey}.mail.bcc=
-# ${configurationKey}.mail.reply-to=
-# ${configurationKey}.mail.validate-addresses=false
-# ${configurationKey}.mail.html=false
+# ${configurationKey}.mail.mail.
+# ${configurationKey}.mail.文本]
+# ${configurationKey}.mail. 主题=
+# ${configurationKey}.mail.cc]
+# ${configurationKey}. mail. bcc]
+# ${configurationKey}.mail.mail.回复]
+# ${configurationKey}.mail. mail. 验证地址 # 假
+# ${configurationKey}. mail.html = 假
 
-# ${configurationKey}.mail.attribute-name=mail
+# ${configurationKey}. mail.
 ```
 
-The following settings may also need to be defined to describe the mail server settings:
+
+可能还需要定义以下设置来描述邮件服务器设置：
+
+
 
 ```properties
-# spring.mail.host=
-# spring.mail.port=
-# spring.mail.username=
-# spring.mail.password=
-# spring.mail.properties.mail.smtp.auth=true
-# spring.mail.properties.mail.smtp.starttls.enable=true
+[春天. mail. host]
+[ 春天. mail. port]
+[ 春天. mail.
+. mail. 密码]
+[ 春天. mail. 属性. 邮件.
+] 春天. 邮件. 属性. 邮件. smtp.
 ```
 
-## SMS Notifications
 
-The following options are shared and apply when CAS is configured to send SMS notifications, given the provider's *configuration key*:
+
+
+## 短信通知
+
+鉴于提供商的 *配置密钥，当 CAS 配置为发送短信通知时，将共享以下选项并应用*：
+
+
 
 ```properties
-# ${configurationKey}.sms.from=
-# ${configurationKey}.sms.text=
-# ${configurationKey}.sms.attribute-name=phone
+# ${configurationKey}.sms.来自]
+= ${configurationKey}.sms.文本=
+= ${configurationKey}.sms.属性名称=电话
 ```
 
-You will also need to ensure a provider is defined that is able to send SMS messages. To learn more about this topic, [please review this guide](../notifications/SMS-Messaging-Configuration.html).
 
-## Webflow Auto Configuration
+您还需要确保定义能够发送短信的提供商。 要了解有关此 主题的更多内容，请 [](../notifications/SMS-Messaging-Configuration.html)查看本指南。
 
-Control aspects of webflow that relate to auto-configuration of webflow states, transitions and execution order.
+
+
+## 网络流自动配置
+
+与 Web 流状态的自动配置、过渡和执行顺序相关的 Web 流的控制方面。
+
+
 
 ```properties
-# ${configurationKey}.order=
+* ${configurationKey}.订单
 ```
 
-## Delegated Authentication Settings
 
-The following options are shared and apply when CAS is configured to delegate authentication to an external provider such as Yahoo, given the provider's *configuration key*:
 
-```properties
-# ${configurationKey}.id=
-# ${configurationKey}.secret=
-# ${configurationKey}.client-name=My Provider
-# ${configurationKey}.auto-redirect=false
-# ${configurationKey}.css-class=
-# ${configurationKey}.principal-attribute-id=
-# ${configurationKey}.enabled=true
-# ${configurationKey}.callback-url-type=PATH_PARAMETER|QUERY_PARAMETER|NONE
 
-```
+## 委托身份验证设置
 
-The following types are supported with callback URL resolution:
+当 CAS 配置为将身份验证 委托给雅虎等外部提供商时，会共享以下选项并适用，因为提供商的 *配置密钥*：
 
-| Type              | Description                                                                             |
-| ----------------- | --------------------------------------------------------------------------------------- |
-| `PATH_PARAMETER`  | When constructing a callback URL, client name is added to the url as a path parameter.  |
-| `QUERY_PARAMETER` | When constructing a callback URL, client name is added to the url as a query parameter. |
-| `NONE`            | No client name is added to the url.                                                     |
 
-### Delegated Authentication OpenID Connect Settings
-
-The following options are shared and apply when CAS is configured to delegate authentication to an external OpenID Connect provider such as Azure AD, given the provider's *configuration key*:
 
 ```properties
-# ${configurationKey}.discovery-uri=
-# ${configurationKey}.logout-url=
-# ${configurationKey}.max-clock-skew=
-# ${configurationKey}.scope=
-# ${configurationKey}.use-nonce=false
-# ${configurationKey}.disable-nonce=false
-# ${configurationKey}.preferred-jws-algorithm=
-# ${configurationKey}.response-mode=
-# ${configurationKey}.response-type=
-# ${configurationKey}.custom-params.param1=value1
-# ${configurationKey}.read-timeout=PT5S
-# ${configurationKey}.connect-timeout=PT5S
-# ${configurationKey}.expire-session-with-token=false
-# ${configurationKey}.token-expiration-advance=0
-```
-
-## LDAP Connection Settings
-
-The following  options apply  to features that integrate with an LDAP server (i.e. authentication, attribute resolution, etc) given the provider's *configuration key*:
-
-```properties
-# ${configurationKey}.ldap-url=ldaps://ldap1.example.edu ldaps://ldap2.example.edu
-# ${configurationKey}.bind-dn=cn=-directory -manager,dc=example,dc=org
-# ${configurationKey}.bind-credential=Password
-
-# ${configurationKey}.pool-passivator=NONE|BIND
-# ${configurationKey}.connection-strategy=
-# ${configurationKey}.connect-timeout=PT5S
-# ${configurationKey}.trust-certificates=
-# ${configurationKey}.trust-store=
-# ${configurationKey}.trust-store-password=
-# ${configurationKey}.trust-store-type=JKS|JCEKS|PKCS12
-# ${configurationKey}.keystore=
-# ${configurationKey}.keystore-password=
-# ${configurationKey}.keystore-type=JKS|JCEKS|PKCS12
-# ${configurationKey}.disable-pooling=false
-# ${configurationKey}.min-pool-size=3
-# ${configurationKey}.max-pool-size=10
-# ${configurationKey}.validate-on-checkout=true
-# ${configurationKey}.validate-periodically=true
-# ${configurationKey}.validate-period=PT5M
-# ${configurationKey}.validate-timeout=PT5S
-# ${configurationKey}.fail-fast=true
-# ${configurationKey}.idle-time=PT10M
-# ${configurationKey}.prune-period=PT2H
-# ${configurationKey}.block-wait-time=PT3S
-
-# ${configurationKey}.use-start-tls=false
-# ${configurationKey}.response-timeout=PT5S
-# ${configurationKey}.allow-multiple-dns=false
-# ${configurationKey}.allow-multiple-entries=false
-# ${configurationKey}.follow-referrals=false
-# ${configurationKey}.binary-attributes=objectGUID,someOtherAttribute
-# ${configurationKey}.name=
-```
-
-### Connection Initialization
-
-LDAP connection configuration injected into the LDAP connection pool can be initialized with the following parameters:
-
-| Behavior                               | Description                                                         |
-| -------------------------------------- | ------------------------------------------------------------------- |
-| `bindDn`/`bindCredential` provided     | Use the provided credentials to bind when initializing connections. |
-| `bindDn`/`bindCredential` set to `*`   | Use a fast-bind strategy to initialize the pool.                    |
-| `bindDn`/`bindCredential` set to blank | Skip connection initializing; perform operations anonymously.       |
-| SASL mechanism provided                | Use the given SASL mechanism to bind when initializing connections. |
-
-### Passivators
-
-The following options can be used to passivate objects when they are checked back into the LDAP connection pool:
-
-| Type   | Description                                                                                                                                                                               |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NONE` | No passivation takes place.                                                                                                                                                               |
-| `BIND` | The default behavior which passivates a connection by performing a bind operation on it. This option requires the availability of bind credentials when establishing connections to LDAP. |
-
-#### Why Passivators?
-
-You may receive unexpected LDAP failures, when CAS is configured to authenticate using `DIRECT` or `AUTHENTICATED` types and LDAP is locked down to not allow anonymous binds/searches. Every second attempt with a given LDAP connection from the pool would fail if it was on the same connection as a failed login attempt, and the regular connection validator would similarly fail. When a connection is returned back to a pool, it still may contain the principal and credentials from the previous attempt. Before the next bind attempt using that connection, the validator tries to validate the connection again but fails because it's no longer trying with the configured bind credentials but with whatever user DN was used in the previous step. Given the validation failure, the connection is closed and CAS would deny access by default. Passivators attempt to reconnect to LDAP with the configured bind credentials, effectively resetting the connection to what it should be after each bind request.
-
-Furthermore if you are seeing errors in the logs that resemble a *<Operation exception encountered, reopening connection>* type of message, this usually is an indication that the connection pool's validation timeout established and created by CAS is greater than the timeout configured in the LDAP server, or more likely, in the load balancer in front of the LDAP servers. You can adjust the LDAP server session's timeout for connections, or you can teach CAS to use a validity period that is equal or less than the LDAP server session's timeout.
-
-### Connection Strategies
-
-If multiple URLs are provided as the LDAP url, this describes how each URL will be processed.
-
-| Provider         | Description                                                                                |
-| ---------------- | ------------------------------------------------------------------------------------------ |
-| `ACTIVE_PASSIVE` | First LDAP will be used for every request unless it fails and then the next shall be used. |
-| `ROUND_ROBIN`    | For each new connection the next url in the list will be used.                             |
-| `RANDOM`         | For each new connection a random LDAP url will be selected.                                |
-| `DNS_SRV`        | LDAP urls based on DNS SRV records of the configured/given LDAP url will be used.          |
-
-### LDAP SASL Mechanisms
-
-```properties
-# ${configurationKey}.sasl-mechanism=GSSAPI|DIGEST_MD5|CRAM_MD5|EXTERNAL
-# ${configurationKey}.sasl-realm=EXAMPLE.COM
-# ${configurationKey}.sasl-authorization-id=
-# ${configurationKey}.sasl-mutual-auth=
-# ${configurationKey}.sasl-quality-of-protection=
-# ${configurationKey}.sasl-security-strength=
+# ${configurationKey}.id]
+# ${configurationKey}.秘密]
+# ${configurationKey}.客户名] 我的提供商
+# ${configurationKey}.自动重定向 = 虚假
+# ${configurationKey}.css级=
+# ${configurationKey}. 校长属性 - id =
+# ${configurationKey}. 启用= 真实
+= ${configurationKey}. 回调 url 类型 = PATH_PARAMETER|QUERY_PARAMETER|没有
 
 ```
 
-### LDAP Connection Validators
 
-The following LDAP validators can be used to test connection health status:
+以下类型支持回调 URL 分辨率：
 
-| Type      | Description                                                                                                                                             |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NONE`    | No validation takes place.                                                                                                                              |
-| `SEARCH`  | Validates a connection is healthy by performing a search operation. Validation is considered successful if the search result size is greater than zero. |
-| `COMPARE` | Validates a connection is healthy by performing a compare operation.                                                                                    |
+| 类型                | 描述                           |
+| ----------------- | ---------------------------- |
+| `PATH_PARAMETER`  | 构建回调 URL 时，客户名会作为路径参数添加到网址中。 |
+| `QUERY_PARAMETER` | 构建回调 URL 时，客户名将作为查询参数添加到网址中。 |
+| `没有`              | 网址中未添加客户名。                   |
+
+
+
+
+### 委托身份验证打开ID 连接设置
+
+当 CAS 配置为将身份验证 委托给外部 OpenID 连接提供商（如 Azure AD）时，会共享以下选项并应用，因为提供商的 *配置密钥*：
+
+
 
 ```properties
-# ${configurationKey}.validator.type=NONE|SEARCH|COMPARE
-# ${configurationKey}.validator.base-dn=
-# ${configurationKey}.validator.search-filter=(object-class=*)
-# ${configurationKey}.validator.scope=OBJECT|ONELEVEL|SUBTREE
-# ${configurationKey}.validator.attribute-name=objectClass
-# ${configurationKey}.validator.attribute-value=top
-# ${configurationKey}.validator.dn=
+# ${configurationKey}.发现-乌里]
+= ${configurationKey}.logout-url=
+= ${configurationKey}.max时钟偏斜=
+= ${configurationKey}.scope=
+# ${configurationKey}.使用-无-假=假
+= ${configurationKey}.禁用-无名小卒=假
+= ${configurationKey}.首选-jws-算法=
+= ${configurationKey}.响应模式 =
+= ${configurationKey}.响应类型 =
+= ${configurationKey}.自定义参数. param1= 值 1
+# ${configurationKey}. 读取超时 = PT5s
+# ${configurationKey}.连接超时=PT5S
+# ${configurationKey}.过期与代币 # 假
+# ${configurationKey}.令牌到期提前=0
+```
+
+
+
+
+## LDAP 连接设置
+
+鉴于提供商的 *配置密钥，以下选项适用于与 LDAP 服务器集成的功能（即身份验证、属性解析等），*：
+
+
+
+```properties
+• ${configurationKey}. ldap- url=ldaps：//ldap1. ldaps://ldap2.example.edu
+= ${configurationKey}.bind-dn=cn=目录-经理，直流示例，dc=org
+= ${configurationKey}.bind-凭据=密码
+
+# ${configurationKey}.池钝器=无|BIND
+# ${configurationKey}.连接策略]
+# ${configurationKey}.连接超时 # PT5S
+# ${configurationKey}.信任证书]
+# ${configurationKey}. 信任商店 ]
+# ${configurationKey}. 信任商店 - 密码 #
+# ${configurationKey}. 信任商店类型 # Jks|杰克斯|PKCS12
+# ${configurationKey}.钥匙店]
+# ${configurationKey}.钥匙店密码 #
+# ${configurationKey}.钥匙店类型 = JKS|杰克斯|PKCS12
+# ${configurationKey}.禁用池= 假
+# ${configurationKey}.min 池大小 =3
+# ${configurationKey}.max池大小 = 10
+# ${configurationKey}.验证结账=真实
+# ${configurationKey}.定期验证]真实
+= ${configurationKey}.验证期=PT5M
+= ${configurationKey}.验证超时=PT5S
+# ${configurationKey}.失败快=真实
+ ${configurationKey}。 空闲时间=PT10M
+= ${configurationKey}.修剪期=PT2H
+= ${configurationKey}.块等待时间=PT3S
+
+= ${configurationKey}.使用-启动-tls=虚假
+= ${configurationKey}。响应- 超时 =PT5S
+# ${configurationKey}.允许多 dns = 假
+# ${configurationKey}. 允许多条目 = 假
+= ${configurationKey}. 后续推荐 = 假
+= ${configurationKey}. 二进制属性 = 对象指南，一些其他属性
+# ${configurationKey}。名称=
+```
+
+
+
+
+### 连接初始化
+
+注入LDAP连接池的LDAP连接配置可初始化，参数如下：
+
+| 行为                    | 描述                         |
+| --------------------- | -------------------------- |
+| `绑定dn`/`绑定信用` 提供      | 在初始化连接时，使用所提供的凭据进行绑定。      |
+| `绑定Dn`/`绑定信用` 设置为 `*` | 使用快速绑定策略初始化池。              |
+| `绑定Dn`/`绑定信用` 设置为空白   | 跳过连接初始化：匿名执行操作。            |
+| 提供 SASL 机制            | 在初始化连接时，使用给定的 SASL 机制进行绑定。 |
+
+
+
+
+### 钝器
+
+当对象被重新签回LDAP连接池时，以下选项可用于钝化对象：
+
+| 类型   | 描述                                                |
+| ---- | ------------------------------------------------- |
+| `没有` | 不发生钝化。                                            |
+| `捆`  | 默认行为通过在连接上执行绑定操作来钝化连接。 此选项要求在建立与 LDAP 的连接时提供绑定凭据。 |
+
+
+
+
+#### 为什么是钝器？
+
+当 CAS 被配置为使用 `直接` 进行身份验证时，可能会收到意外的 LDAP 故障，或 `` 类型进行身份验证，LDAP 被锁定，不允许匿名绑定/搜索。 如果池中的给定 LDAP 连接与失败的登录尝试处于同一连接上，则每次尝试都会失败，而常规连接验证器同样会失败。 当连接返回到池中时，它仍然可能包含上次尝试的本金和凭据。 在使用该连接的下一次绑定尝试之前，验证器尝试再次验证连接，但失败，因为它不再尝试使用配置的绑定凭据，而是尝试使用前一步骤中使用的任何用户 DN。 如果验证失败，连接将关闭，CAS 默认将拒绝访问。 钝化器尝试使用配置的绑定凭据重新连接到 LDAP，有效地重置连接到每次绑定请求后应连接的内容。
+
+此外，如果您在日志中看到类似于 *<Operation exception encountered, reopening connection>* 类型的消息的错误，这通常表明 CAS 建立和创建的连接池的验证超时大于 LDAP 服务器中配置的超时，或者更有可能大于 LDAP 服务器前负载平衡器中的超时。 您可以调整 LDAP 服务器会话的超时以进行连接，也可以教 CAS 使用等于或小于 LDAP 服务器会话超时的有效期。
+
+
+
+### 连接策略
+
+如果将多个网址作为 LDAP 网址提供，这将描述如何处理每个 URL。
+
+| 供应商              | 描述                                       |
+| ---------------- | ---------------------------------------- |
+| `ACTIVE_PASSIVE` | 第一个LDAP将用于每个请求，除非它失败，然后下一个将被使用。          |
+| `ROUND_ROBIN`    | 对于每个新连接，将使用列表中的下一个网址。                    |
+| `随机`             | 对于每个新连接，将选择随机 LDAP 网址。                   |
+| `DNS_SRV`        | 将使用基于配置/给定 LDAP 网址的 DNS SRV 记录的 LDAP 网址。 |
+
+
+
+
+### LDAP萨斯尔机制
+
+
+
+```properties
+• ${configurationKey}.萨斯尔机制=格萨皮|DIGEST_MD5|CRAM_MD5|外部
+# ${configurationKey}.sasl 领域= 示例.COM
+= ${configurationKey}. sasl 授权 id=
+# ${configurationKey}. sasl - 相互身份验证]
+• ${configurationKey}.sasl 质量保护]
+• ${configurationKey}. sasl 安全强度=
 
 ```
 
-### LDAP SSL Hostname Verification
 
-The following LDAP validators can be used to test connection health status:
 
-| Type      | Description                                                                             |
-| --------- | --------------------------------------------------------------------------------------- |
-| `DEFAULT` | Default option to enable and force hostname verification of the LDAP SSL configuration. |
-| `ANY`     | Skip and ignore the hostname verification of the LDAP SSL configuration.                |
 
-```properties
-#${configurationKey}.hostname-verifier=DEFAULT|ANY
-```
+### LDAP 连接验证器
 
-### LDAP SSL Trust Managers
+以下 LDAP 验证器可用于测试连接健康状况：
 
-Trust managers are responsible for managing the trust material that is used when making LDAP trust decisions, and for deciding whether credentials presented by a peer should be accepted.
+| 类型   | 描述                                        |
+| ---- | ----------------------------------------- |
+| `没有` | 不进行验证。                                    |
+| `搜索` | 通过执行搜索操作验证连接是否健康。 如果搜索结果大小大于零，则验证被认为是成功的。 |
+| `比较` | 通过执行比较操作验证连接是否健康。                         |
 
-| Type      | Description                                      |
-| --------- | ------------------------------------------------ |
-| `DEFAULT` | Enable and force the default JVM trust managers. |
-| `ANY`     | Trust any client or server.                      |
+
+
 
 ```properties
-#${configurationKey}.trust-manager=DEFAULT|ANY
-```
-
-### LDAP Types
-
-A number of components/features in CAS allow you to explicitly indicate a `type` for the LDAP server, specially in cases where CAS needs to update an attribute, etc in LDAP (i.e. consent, password management, etc). The relevant setting would be:
-
-```properties
-#${configurationKey}.type=AD|FreeIPA|EDirectory|Generic
-```
-
-The following types are supported:
-
-| Type         | Description                                      |
-| ------------ | ------------------------------------------------ |
-| `AD`         | Active Directory.                                |
-| `FreeIPA`    | FreeIPA Directory Server.                        |
-| `EDirectory` | NetIQ eDirectory.                                |
-| `GENERIC`    | All other directory servers (i.e OpenLDAP, etc). |
-
-### LDAP Authentication/Search Settings
-
-In addition to common LDAP connection settings above, there are cases where CAS simply need to execute authenticate against an LDAP server to fetch an account or set of attributes or execute a search query in general. The following  options apply  given the provider's *configuration key*:
-
-**Note:** Failure to specify adequate properties such as `type`, `ldapUrl`, etc will simply deactivate LDAP  altogether silently.
-
-```properties
-# ${configurationKey}.type=AD|AUTHENTICATED|DIRECT|ANONYMOUS
-
-# ${configurationKey}.base-dn=dc=example,dc=org
-# ${configurationKey}.subtree-search=true
-# ${configurationKey}.search-filter=cn={user}
-# ${configurationKey}.page-size=0
-
-# ${configurationKey}.enhance-with-entry-resolver=true
-# ${configurationKey}.deref-aliases=NEVER|SEARCHING|FINDING|ALWAYS
-# ${configurationKey}.dn-format=uid=%s,ou=people,dc=example,dc=org
-# ${configurationKey}.principal-attribute-password=password
+# ${configurationKey}.验证器.类型=无|搜索|比较
+# ${configurationKey}.验证器.验证器. base-dn]
+# ${configurationKey}.验证器.搜索过滤器]（对象类=*）
+# ${configurationKey}.验证器.范围=对象|一级|SUBTREE
+# ${configurationKey}.验证器.验证器.属性名称=对象类
+# ${configurationKey}.验证器.属性值 = 顶部
+# ${configurationKey}.验证器.dn=
 
 ```
 
-The following authentication types are supported:
 
-| Type            | Description                                                                                                                                                                                                                                                                                                                                                                             |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AD`            | Active Directory - Users authenticate with `sAMAccountName` typically using a DN format.                                                                                                                                                                                                                                                                                                |
-| `AUTHENTICATED` | Manager bind/search type of authentication. If `principalAttributePassword` is empty then a user simple bind is done to validate credentials. Otherwise the given attribute is compared with the given `principalAttributePassword` using the `SHA` encrypted value of it.                                                                                                              |
-| `DIRECT`        | Compute user DN from a format string and perform simple bind. This is relevant when no search is required to compute the DN needed for a bind operation. This option is useful when all users are under a single branch in the directory, e.g. `ou=Users,dc=example,dc=org`, or the username provided on the CAS login form is part of the DN, e.g. `uid=%s,ou=Users,dc=exmaple,dc=org` |
-| `ANONYMOUS`     | Similar semantics as `AUTHENTICATED` except no `bindDn` and `bindCredential` may be specified to initialize the connection. If `principalAttributePassword` is empty then a user simple bind is done to validate credentials. Otherwise the given attribute is compared with the given `principalAttributePassword` using the `SHA` encrypted value of it.                              |
 
-### LDAP Search Entry Handlers
+
+### LDAP SSL 主机名验证
+
+以下 LDAP 验证器可用于测试连接健康状况：
+
+| 类型   | 描述                            |
+| ---- | ----------------------------- |
+| `违约` | 启用和强制 LDAP SSL 配置的主机名验证的默认选项。 |
+| `任何` | 跳过并忽略LDAP SSL配置的主机名验证。        |
+
+
+
 
 ```properties
-# ${configurationKey}.search-entry-handlers[0].type=
+•${configurationKey}。主机名验证器=默认|任何
+```
 
-# ${configurationKey}.search-entry-handlers[0].case-change.dn-case-change=NONE|LOWER|UPPER
-# ${configurationKey}.search-entry-handlers[0].case-change.attribute-name-case-change=NONE|LOWER|UPPER
-# ${configurationKey}.search-entry-handlers[0].case-change.attribute-value-case-change=NONE|LOWER|UPPER
-# ${configurationKey}.search-entry-handlers[0].case-change.attribute-names=
 
-# ${configurationKey}.search-entry-handlers[0].dn-attribute.dn-attribute-name=entryDN
-# ${configurationKey}.search-entry-handlers[0].dn-attribute.add-if-exists=false
 
-# ${configurationKey}.search-entry-handlers[0].primary-group-id.group-filter=(&(object-class=group)(object-sid={0}))
-# ${configurationKey}.search-entry-handlers[0].primary-group-id.base-dn=
 
-# ${configurationKey}.search-entry-handlers[0].merge-attribute.merge-attribute-name=
-# ${configurationKey}.search-entry-handlers[0].merge-attribute.attribute-names=
+### LDAP SSL 信托经理
 
-# ${configurationKey}.search-entry-handlers[0].recursive.search-attribute=
-# ${configurationKey}.search-entry-handlers[0].recursive.merge-attributes=
+信托经理负责管理 LDAP 信托决策时使用的信任材料， 以及决定是否应接受同行提供的凭据。
+
+| 类型   | 描述                  |
+| ---- | ------------------- |
+| `违约` | 启用并强制默认的 JVM 信托管理器。 |
+| `任何` | 信任任何客户端或服务器。        |
+
+
+
+
+```properties
+#${configurationKey}.信任经理=默认|任何
+```
+
+
+
+
+### LDAP 类型
+
+CAS 中的许多组件/功能允许您明确指示 LDAP 服务器的 `类型` ，尤其是在 CAS 需要更新 LDAP 中的属性等的情况下（即同意、密码管理等）。 相关设置为：
+
+
+
+```properties
+#${configurationKey}.类型=广告|自由|电子编导|通用
+```
+
+
+支持以下类型：
+
+| 类型     | 描述                   |
+| ------ | -------------------- |
+| `广告`   | 活动目录。                |
+| `弗里帕`  | 免费目录服务器。             |
+| `电子编导` | 网易电子编导。              |
+| `通用`   | 所有其他目录服务器（即打开LDAP等）。 |
+
+
+
+
+### LDAP 身份验证/搜索设置
+
+除了上述常见的 LDAP 连接设置外，CAS 还需要执行对 LDAP 服务器进行 身份验证才能提取帐户或属性集，或执行搜索查询。 鉴于提供商的 *配置密钥*，以下选项适用：
+
+**注：如果不能指定足够的属性，如 `型`、 `ldapUrl`等，** 只会默默地停用LDAP。
+
+
+
+```properties
+# ${configurationKey}.类型=广告|认证|直接|匿名
+
+# ${configurationKey}. base - dn = dc = 示例， dc = 组织
+# ${configurationKey}. 子树搜索 = 真实
+= ${configurationKey}. 搜索过滤器 \ cn ]{user}
+# ${configurationKey}.page 大小 =0
+
+# ${configurationKey}. 增强与进入解决器] 真正的
+# ${configurationKey}. deref - 别名 = 永远|搜索|查找|始终
+# ${configurationKey}.dn 格式=%s，人，例如，直流组织
+# ${configurationKey}。主要属性密码
 
 ```
 
-The following types are supported:
 
-| Type                 | Description                                                                                                                                  |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CASE_CHANGE`        | Provides the ability to modify the case of search entry DNs, attribute names, and attribute values.                                          |
-| `DN_ATTRIBUTE_ENTRY` | Adds the entry DN as an attribute to the result set. Provides a client side implementation of RFC 5020.                                      |
-| `MERGE`              | Merges the values of one or more attributes into a single attribute.                                                                         |
-| `OBJECT_GUID`        | Handles the `objectGUID` attribute fetching and conversion.                                                                                  |
-| `OBJECT_SID`         | Handles the `objectSid` attribute fetching and conversion.                                                                                   |
-| `PRIMARY_GROUP`      | Constructs the primary group SID and then searches for that group and puts it's DN in the 'memberOf' attribute of the original search entry. |
-| `RANGE_ENTRY`        | Rewrites attributes returned from Active Directory to include all values by performing additional searches.                                  |
-| `RECURSIVE_ENTRY`    | This recursively searches based on a supplied attribute and merges those results into the original entry.                                    |
+支持以下身份验证类型：
 
-### LDAP Multiple Base DNs
+| 类型   | 描述                                                                                                                                        |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `广告` | 活动目录 - 用户使用 `sAM 帐户名` 进行身份验证，通常使用 DN 格式。                                                                                                  |
+| `认证` | 管理器绑定/搜索身份验证类型。 如果 `主属性密码` 是空的，则用户将进行简单的绑定来验证凭据。 否则，给定属性将与使用 `SHA` 加密值的给定 `主要归因密码` 进行比较。                                                  |
+| `直接` | 从格式字符串计算用户 DN 并执行简单的绑定。 当不需要搜索来计算绑定操作所需的 DN 时，这是相关的。 当所有用户都在目录中的单个分支下时，此选项是有用的，例如 `用户、例如，`或 CAS 登录表单上提供的用户名是 DN 的一部分，例如 `=%s，用户，直流，直流+组织` |
+| `匿名` | 与 `认证` 类似的语义，除非没有 `绑定Dn` ，并且可以指定 `绑定信用` 来初始化连接。 如果 `主属性密码` 是空的，则用户将进行简单的绑定来验证凭据。 否则，给定属性将与使用 `SHA` 加密值的给定 `主要归因密码` 进行比较。                  |
 
-There may be scenarios where different parts of a single LDAP tree could be considered as base-dns. Rather than duplicating the LDAP configuration block for each individual base-dn, each entry can be specified and joined together using a special delimiter character. The user DN is retrieved using the combination of all base-dn and DN resolvers in the order defined. DN resolution should fail if multiple DNs are found. Otherwise the first DN found is returned.
+
+
+
+### LDAP 搜索进入处理程序
+
+
 
 ```properties
-# ${configurationKey}.base-dn=subtreeA,dc=example,dc=net|subtreeC,dc=example,dc=net
+# ${configurationKey}.搜索进入处理程序[0].类型=
+
+# ${configurationKey}.搜索进入处理程序[0].case-change.dn 案例更改=无|更低|上
+# ${configurationKey}.搜索进入处理程序[0]。案例更改.属性-名称-案例更改=无|更低|上
+# ${configurationKey}.搜索进入处理程序[0]。案例更改.属性值案例更改=无|更低|上
+# ${configurationKey}.搜索输入处理程序[0].case-change.属性名称]
+
+= ${configurationKey}.搜索进入处理程序[0].dn 属性.dn 属性名称=条目 DN
+# ${configurationKey}.search 进入处理程序[0].dn-属性.add-如果存在=假
+
+= ${configurationKey}。搜索-输入处理程序[0]。主要组-id.组-过滤器=（&（对象类=组）（对象-sid={0}
+
+# ${configurationKey}.搜索-输入-处理程序[0]。主要组-id.base-dn]
+
+= ${configurationKey}.搜索-输入-处理程序[0].合并属性.合并属性-名称=
+= ${configurationKey}.search- 条目处理程序[0].合并属性.属性名称]
+
+# ${configurationKey}.搜索-输入处理程序[0].递归.搜索-属性]  = ${configurationKey}.搜索-输入-处理程序[0].递归.合并属性=
+
+```
+
+
+支持以下类型：
+
+| 类型                   | 描述                                      |
+| -------------------- | --------------------------------------- |
+| `CASE_CHANGE`        | 提供修改搜索条目 DN、属性名称和属性值的情况的能力。             |
+| `DN_ATTRIBUTE_ENTRY` | 将条目 DN 添加为结果集的属性。 提供 RFC 5020 的客户端实施。   |
+| `合并`                 | 将一个或多个属性的值合并到单个属性中。                     |
+| `OBJECT_GUID`        | 处理 `对象GUID` 属性提取和转换。                    |
+| `OBJECT_SID`         | 处理 `对象` 属性提取和转换。                        |
+| `PRIMARY_GROUP`      | 构建主组 SID，然后搜索该组，并将 DN 置于原始搜索条目的"成员"属性中。 |
+| `RANGE_ENTRY`        | 重写从活动目录返回的属性，通过执行其他搜索来包含所有值。            |
+| `RECURSIVE_ENTRY`    | 此基于提供的属性进行递归搜索，并将这些结果合并到原始条目中。          |
+
+
+
+
+### LDAP多个基础数据库
+
+可能有些情况下，单个 LDAP 树的不同部分可被视为碱基 dns。 每个条目可以使用特殊的标界字符指定并连接在一起，而不是复制每个基础 dn 的 LDAP 配置块 。 使用定义顺序中所有基础 dn 和 DN 解析器的组合检索用户 DN。 如果发现多个DN ，DN分辨率应失败。 否则，找到的第一个DN将返回。
+
+
+
+```properties
+# ${configurationKey}. 基地 - dn = 子树， 直流示例， 直流|净|子树， dc = 示例， 直流网
 ```
