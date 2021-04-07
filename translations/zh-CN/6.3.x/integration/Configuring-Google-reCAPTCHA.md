@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Google reCAPTCHA
-category: Integration
+layout: 默认
+title: CAS-Google reCAPTCHA
+category: 一体化
 ---
 
 # Google reCAPTCHA
 
-reCAPTCHA is a [Google service](https://developers.google.com/recaptcha) that protects your CAS deployment from spam and abuse. It uses advanced risk analysis techniques to tell humans and bots apart. CAS supports the reCAPTCHA API `v2` and `v3`.
+验证码是 [谷歌服务](https://developers.google.com/recaptcha) 保护免受垃圾邮件和滥用您的CAS部署。 它使用先进的风险分析技术来区分人和机器人。 CAS支持reCAPTCHA API `v2` 和 `v3`。
 
-Support is enabled by including the following module in the Overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -18,8 +18,8 @@ Support is enabled by including the following module in the Overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#google-recaptcha-integration).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#google-recaptcha-integration)。
 
-## Internet Explorer
+## IE浏览器
 
-Remember to disable Internet Explorer's "Compatibility View" mode. reCAPTCHA may not render correctly when that mode is turned on.
+切记禁用Internet Explorer的“兼容性视图”模式。 打开该模式时，reCAPTCHA可能无法正确呈现。
