@@ -1,15 +1,15 @@
 ---
-layout: default
-title: CAS - Services Management Webapp
-category: Services
+layout: 默认
+title: CAS-服务管理Webapp
+category: 服务
 ---
 
-# Services Management Webapp
+# 服务管理Webapp
 
-The management web application is purely an administrative interface that may be deployed in a completely different environment separate from CAS. It allows CAS administrators and application owners delegated access via a graphical user interface so they can manage and modify policies associated with their applications. The operational capacity of the CAS server itself is not in any way tied to the deployment status of the management web application; you may decide to take the application offline for maintenance or completely remove it from your deployment scenario at any given time.
+管理Web应用程序纯粹是一个管理界面，可以部署在与CAS完全不同的环境中。 它允许CAS管理员和应用程序所有者通过图形用户界面委派访问权限，以便他们可以管理和修改与其应用程序关联的策略。 CAS服务器本身的操作能力与管理Web应用程序的部署状态没有任何关系；您可以决定在任何给定时间使该应用程序脱机以进行维护，或者将其从部署方案中完全删除。
 
-## Overlay Installation
+## 覆盖安装
 
-- [WAR Overlay](https://github.com/apereo/cas-management-overlay)
+- [战争叠加](https://github.com/apereo/cas-management-overlay)
 
-The services management webapp is not part of the CAS server and is a standalone web application [located here](https://github.com/apereo/cas-management).
+服务管理Web应用程序不是CAS服务器的一部分，而是位于此处</a>。</p>
