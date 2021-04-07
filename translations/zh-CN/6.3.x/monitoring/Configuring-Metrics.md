@@ -1,99 +1,99 @@
 ---
-layout: default
-title: CAS - Metrics
-category: Monitoring & Statistics
+layout: 违约
+title: CAS - 指标
+category: 监测 & 统计
 ---
 
-# CAS Metrics
+# CAS 指标
 
-CAS via Spring Boot registers the following core metrics when applicable:
+CAS 通过弹簧启动在适用时注册以下核心指标：
 
-JVM metrics, report utilization of:
+JVM 指标，报告使用情况：
 
-- Various memory and buffer pools
-- Statistics related to garbage collection
-- Threads utilization
-- Number of classes loaded/unloaded
-- CPU metrics
-- File descriptor metrics
-- Logback metrics: record the number of events logged to Logback at each level
-- Uptime metrics: report a gauge for uptime and a fixed gauge representing the application’s absolute start time
-- Tomcat metrics
-- Spring Integration metrics
+- 各种内存和缓冲池
+- 与垃圾收集有关的统计数据
+- 线程利用率
+- 加载/卸载的类数
+- CPU 指标
+- 文件描述符指标
+- 日志返还指标：记录在每个级别登录到日志返回的事件数
+- 正常运行时间指标：报告正常运行时间的仪表和表示应用程序绝对开始时间的固定仪表
+- 汤姆卡特指标
+- 春季集成指标
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-metrics</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>个</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-Auto-configuration enables the instrumentation of all available DataSource objects with a metric named `jdbc`. Data source instrumentation results in gauges representing the currently active, maximum allowed, and minimum allowed connections in the pool. Each of these gauges has a name that is prefixed by `jdbc`. Metrics are also tagged by the name of the `DataSource` computed based on the bean name. Also, Hikari-specific metrics are exposed with a `hikaricp` prefix. Each metric is tagged by the name of the Pool.
+自动配置使所有可用的数据源对象的仪器 与一个名为 `jdbc`的指标。 数据源仪器可产生表示当前池中活动、最大允许和最小允许连接 的仪表。 这些仪表中的每一个都有一个名字，由 `jdbc`前缀。 指标还标有 `数据源的名称，` 根据豆名计算。 此外，针对 Hikari 的指标还带有 `的 hikaricp` 前缀。 每个指标都标有池的名称。
 
-Auto-configuration enables the instrumentation of all available Caches on startup with metrics prefixed with cache. Cache instrumentation is standardized for a basic set of metrics. Additional, cache-specific metrics are also available.
+自动配置使启动时所有可用缓存的仪表都能够进行仪器仪表，其指标以缓存为前缀。 缓存仪表是针对一组基本指标进行标准化的。 此外，还提供特定于缓存的指标。
 
-Auto-configuration will enable the instrumentation of all available RabbitMQ connection factories with a metric named `rabbitmq`.
+自动配置将使所有可用的兔子MQ连接工厂的仪器与一个名为 `兔子q`的指标。
 
-CAS Metrics are accessed and queried using the CAS actuator admin endpoints. Navigating to the endpoint displays a list of available meter names. You can drill down to view information about a particular meter by providing its name as a selector.
+使用 CAS 执行器管理端点访问和查询 CAS 指标。 导航到端点显示可用仪表名称列表。 您可以通过提供特定仪表作为选择器的名称来向下钻取有关特定仪表的信息。
 
-[See this guide](Monitoring-Statistics.html) to learn more.
+[本指南](Monitoring-Statistics.html) 了解更多。
 
-## Administrative Endpoints
+## 行政终点
 
-The following endpoints are provided by CAS:
+CAS 提供以下端点：
 
-| Endpoint     | Description                                                                      |
-| ------------ | -------------------------------------------------------------------------------- |
-| `statistics` | Exposes statistics data on tickets, memory, server availability and uptime, etc. |
+| 端点    | 描述                             |
+| ----- | ------------------------------ |
+| `统计学` | 公开有关门票、内存、服务器可用性和正常运行时间等的统计数据。 |
 
-## Custom Metrics
+## 自定义指标
 
-To register custom metrics, inject `MeterRegistry` into your component, as shown in the following example:
+要注册自定义指标，请将 `仪表注册` 注入您的组件中，如下所示：
 
 ```java
-public class Dictionary {
-    private final List<String> words = new CopyOnWriteArrayList<>();
+公共类词典=
+    个私人最终列表<String> 单词=新的"复印文列表"<>（）;
 
-    Dictionary(final MeterRegistry registry) {
-        registry.gaugeCollectionSize("dictionary.size", Tags.empty(), this.words);
-    }
+    词典（最终仪表注册注册表）=
+        注册表。仪表集合大小（"字典。大小"，标签.空（），此。字）;
+    =
 }
 ```
 
-If you find that you repeatedly instrument a suite of metrics across components or applications, you may encapsulate this suite in a `MeterBinder` implementation. By default, metrics from all `MeterBinder` beans will be automatically bound to the Spring-managed `MeterRegistry`.
+如果您发现您反复在组件或应用程序中对一套指标进行仪表， 您可以将此套件封装在 `MeterBinder` 实现中。 默认情况下，所有 `计量器` 豆 指标将自动绑定到春季管理的 `仪表注册`。
 
-# Customizing Metrics
+# 自定义指标
 
-If you need to apply customizations to specific Meter instances you can use the `io.micrometer.core.instrument.config.MeterFilter` interface. By default, all `MeterFilter` beans will be automatically applied to the micrometer `MeterRegistry.Config`.
+如果您需要将自定义应用于特定的仪表实例，您可以使用 `io.微米.核心.仪器.配置.仪表过滤器` 接口。 默认情况下，所有 `仪表过滤器` 豆类将自动应用于仪表</code>注册 `微米。</p>
 
-For example, if you want to rename the `mytag.region` tag to `mytag.area` for all meter IDs beginning with `com.example`, you can do the following:
+<p spaces-before="0">例如，如果您想将 <code>mytag.区域` 标签重命名为 `mytag.区域` ，以便 `com.`开头的所有仪表 ID，您可以以下以下几点：
 
 ```java
 @Bean
-public MeterFilter renameRegionTagMeterFilter() {
-    return MeterFilter.renameTag("com.example", "mytag.region", "mytag.area");
+公共仪表过滤器重命名区域标记过滤器 （） [
+    返回仪表过滤器. 重命名标签 （"com. 示例"， "mytag. 区域"， "mytag. 区域"）;
 }
 ```
 
-## Storage
+## 存储
 
-CAS metrics may be routed to varying types of databases for storage and analytics. The following options are available:
+CAS 指标可以路由到不同类型的数据库进行存储和分析。 可用以下选项：
 
-- Simple (In Memory)
-- Graphite
-- Ganglia
+- 简单（内存）
+- 石墨
+- 神经节
 - JMX
-- Atlas
-- Signal FX
-- Statsd
-- InfluxDb
-- Prometheus
-- Wavefront
-- New Relic
-- CloudWatch
+- 地图集
+- 信号外汇
+- 统计
+- 拉布斯德布
+- 普罗 米修斯
+- 波
+- 新遗物
+- 云观察
 - ...
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#metrics).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#metrics)。
