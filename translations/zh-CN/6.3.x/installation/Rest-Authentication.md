@@ -1,58 +1,58 @@
 ---
-layout: default
-title: CAS - REST Authentication
-category: Authentication
+layout: 违约
+title: CAS - 休息认证
+category: 认证
 ---
 
-# REST Authentication
+# 休息认证
 
-<div class="alert alert-warning"><strong>Be Careful</strong><p>This documentation describes
-how to delegate and submit authentication requests to a remote REST endpoint. It has nothing
-to do with the native CAS REST API, whose configuration and caveats are
-<a href="../protocol/REST-Protocol.html">documented here</a>.</p></div>
+<div class="alert alert-warning"><strong>小心</strong><p>此文档描述了
+如何将身份验证请求委托并提交到远程 REST 端点。 它与本地的CAS REST API无关
+，其配置和警告
+<a href="../protocol/REST-Protocol.html">记录在这里</a>。</p></div>
 
-REST authentication is enabled by including the following dependencies in the WAR overlay:
+通过在战争覆盖中包括以下依赖项来启用 REST 身份验证：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-rest-authentication</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>套机服务器支持-休息-认证</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-This allows the CAS server to reach to a remote REST endpoint via a `POST` for verification of credentials. Credentials are passed via an `Authorization` header whose value is `Basic XYZ` where XYZ is a Base64 encoded version of the credentials.
+这允许 CAS 服务器通过 `邮政` 到达远程 REST 端口，以验证凭据。 凭据通过 `授权` 标题传递，其值 `基本 XYZ` 其中 XYZ 是 Base64 编码版本的凭据。
 
-The response that is returned must be accompanied by a `200` status code where the body should contain `id` and `attributes` fields, the latter being optional, which represent the authenticated principal for CAS:
+返回的响应必须附有一个 `200` 状态代码，其中主体应包含 `ID` 和 `属性` 字段，后者是可选的， 代表 CAS 的认证本金：
 
 ```json
-{"@class":"org.apereo.cas.authentication.principal.SimplePrincipal","id":"casuser","attributes":{}}
+{"@class"："org.apereo.cas.认证.校长.简单原则"，"id"："卡苏瑟"，"属性"：{}
 ```
 
-Expected responses from the REST endpoint are mapped to CAS as such:
+从 REST 端点的预期响应映射到 CAS 如下：
 
-| Code  | Result                                          |
-| ----- | ----------------------------------------------- |
-| `200` | Successful authentication.                      |
-| `403` | Produces a `AccountDisabledException`           |
-| `404` | Produces a `AccountNotFoundException`           |
-| `423` | Produces a `AccountLockedException`             |
-| `412` | Produces a `AccountExpiredException`            |
-| `428` | Produces a `AccountPasswordMustChangeException` |
-| Other | Produces a `FailedLoginException`               |
+| 法典    | 结果              |
+| ----- | --------------- |
+| `200` | 成功的身份验证。        |
+| `403` | 生成 `帐户禁用例外`     |
+| `404` | 生成 `帐户未发现例外`    |
+| `423` | 生成 `帐户锁定例外`     |
+| `412` | 生成 `帐户初始`       |
+| `428` | 生成 `帐户密码必须改变例外` |
+| 其他    | 生成 `失败日志初始`     |
 
-## Warnings
+## 警告
 
-The remote REST endpoint can send warnings back to the CAS server using custom headers. If the authentication is successful, these warnings will be shown to the user directly after the login.
+远程 REST 端点可以使用自定义标题将警告发回 CAS 服务器。 如果身份验证成功，这些警告将在登录后直接显示给用户。
 
-### `X-CAS-Warning`
+### `X-CAS 警告`
 
-For each `X-CAS-Warning` header present in the response, a corresponding message will be shown to the user. The header value can either be the key for a [localized message](../ux/User-Interface-Customization-Localization.html) or the message itself.
+对于响应中显示的每个 `X-CAS 警告` 标题，将向用户显示相应的消息。 标题值可以是 [本地化消息](../ux/User-Interface-Customization-Localization.html) 的关键，也可以是消息本身的关键。
 
-### `X-CAS-PasswordExpirationDate`
+### `X-CAS-密码清除日`
 
-If this header is present in the response and contains a `RFC1123 date` a special message will be shown to warn the user about the expiring password. If a [password management provider](../password_management/Password-Management.html) is configured, the user will be able to directly change the password.
+如果此标题存在于响应中，并包含 `RFC1123 日期` 将显示一条特殊消息 ，以警告用户有关过期密码的信息。 如果配置了 [密码管理提供商](../password_management/Password-Management.html) ， 用户将能够直接更改密码。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#rest-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#rest-authentication)。
