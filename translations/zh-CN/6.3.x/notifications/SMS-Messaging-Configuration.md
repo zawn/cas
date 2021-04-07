@@ -1,137 +1,137 @@
 ---
-layout: default
-title: CAS - SMS Messaging
-category: Notifications
+layout: 违约
+title: CAS - 短信消息
+category: 通知
 ---
 
-# SMS Messaging
+# 短信消息
 
-CAS presents the ability to notify users on select actions via SMS messaging. Example actions include notification of risky authentication attempts or password reset links/tokens. SMS providers supported by CAS are listed below. Note that an active/professional subscription may be required for certain providers.
+CAS 提供通过短信通知用户选择操作的能力。 示例操作包括通知 或密码重置链接/令牌的风险身份验证尝试。 中科院支持的短信提供商如下。 请注意，某些 提供商可能需要主动/专业订阅。
 
-Default support for SMS notifications is automatically enabled/included by the relevant modules using the following module:
+相关模块使用以下模块自动启用/包括对短信通知的默认支持：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-core-notifications</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-核心通知</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-You need not explicitly include this module in WAR Overlay configurations, except when there is a need to access components and APIs at compile-time. See below on how to customize or override the default behavior with specific providers.
+您不需要在 WAR 叠加配置中明确包含此模块，除非需要在编译时间访问组件和 ABI。 有关如何自定义或覆盖特定提供商的默认行为，请参阅下文。
 
-## Custom
+## 习惯
 
-Send text messages using your own custom implementation.
+使用您自己的自定义实现发送短信。
 
 ```java
 @Bean
-public SmsSender smsSender() {
+公开短信发送者（）{
     ...
 }    
 ```
 
-## Groovy
+## 槽的
 
-Send text messages using an external Groovy script.
+使用外部 Groovy 脚本发送短信。
 
 ```groovy
-import java.util.*
+导入java.ul.*
 
-def run(Object[] args) {
-    def from = args[0]
-    def to = args[1]
-    def message = args[2]
-    def logger = args[3]
+def运行（对象[]args）{
+    def从=args[0]
+    def到=args[1]
+    def消息=args[2]
+    def记录器=args[3]
 
-    logger.debug("Sending message ${message} to ${to} from ${from}")
-    true
+    记录器.debug（"发送消息 ${message} ${to} 从 ${from}"）
+    真正的
 }
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#groovy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#groovy)。
 
-## REST
+## 休息
 
-  Send text messages using a RESTful API. This is a `POST` with the following parameters:
+  使用回复API发送短信。 这是一个具有以下参数的 `开机自检` ：
 
-| Field             | Description                               |
-| ----------------- | ----------------------------------------- |
-| `clientIpAddress` | The client IP address.                    |
-| `serverIpAddress` | The server IP address.                    |
-| `from`            | The from address of the text message.     |
-| `to`              | The target recipient of the text message. |
+| 田       | 描述         |
+| ------- | ---------- |
+| `客户地址`  | 客户端 IP 地址。 |
+| `服务器地址` | 服务器 IP 地址。 |
+| `从`     | 短信的地址。     |
+| `自`     | 短信的目标收件人。  |
 
-The request body contains the actual message. A status code of `200` is expected from the endpoint.
+请求主体包含实际消息。 预计端点将 `200` 的状态代码。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#rest-2).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#rest-2)。
 
-## Twilio
+## 特维利奥
 
-To learn more, [visit this site](https://www.twilio.com/).
+要了解更多信息， [访问此网站](https://www.twilio.com/)。
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-sms-twilio</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 短信 - twilio</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#twilio).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#twilio)。
 
-## TextMagic
+## 文本魔术
 
-To learn more, [visit this site](https://www.textmagic.com/).
+要了解更多信息， [访问此网站](https://www.textmagic.com/)。
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-sms-textmagic</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 短信 - 文本魔术</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#textmagic).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#textmagic)。
 
-## Clickatell
+## 点击
 
-To learn more, [visit this site](http://www.clickatell.com/).
+要了解更多信息， [访问此网站](http://www.clickatell.com/)。
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-sms-clickatell</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 短信 - 点击</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#clickatell).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#clickatell)。
 
-## Amazon SNS
+## 亚马逊 SNS
 
-To learn more, [visit this site](https://docs.aws.amazon.com/sns).
+要了解更多信息， [访问此网站](https://docs.aws.amazon.com/sns)。
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-sms-aws-sns</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 短信 - aws - sns</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#amazon-sns).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#amazon-sns)。
 
-## Nexmo
+## 内克斯莫
 
-To learn more, [visit this site](https://dashboard.nexmo.com/).
+要了解更多信息， [访问此网站](https://dashboard.nexmo.com/)。
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-sms-nexmo</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 短信 - 内克斯莫</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#nexmo).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#nexmo)。
