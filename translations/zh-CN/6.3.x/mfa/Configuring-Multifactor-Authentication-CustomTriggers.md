@@ -1,25 +1,25 @@
 ---
-layout: default
-title: CAS - Configuring Multifactor Authentication Custom Triggers
-category: Multifactor Authentication
+layout: 默认
+title: CAS-配置多因素身份验证自定义触发器
+category: 多因素身份验证
 ---
 
-# Multifactor Authentication Custom Triggers
+# 多因素身份验证自定义触发器
 
-To create your own custom multifactor authentication trigger, you will need to design a component that is able to resolve events in the CAS authentication chain. The trigger's (i.e. event resolver's) job is to examine a set of conditions and requirements and provide an event id to CAS that would indicate the next step in the authentication flow.
+要创建自己的自定义多因素身份验证触发器，您将需要设计一个能够解析CAS身份验证链中事件的组件。 触发器（即事件解析器）的工作是检查一组条件和要求，并将事件ID提供给CAS，以指示身份验证流程中的下一步。
 
-A typical custom trigger, as an example, might be:
+例如，典型的自定义触发器可能是：
 
-- Activate MFA provider identified by `mfa-duo` if the client browser's IP address matches the pattern `123.+`.
+- 如果客户端浏览器的IP地址与模式 `123. +``mfa-duo` 标识的MFA提供程序。
 
-Note that:
+注意：
 
-- You are really not doing anything *custom* per se. All built-in CAS triggers behave in the same exact way when they attempt to resolve the next event.
-- As you will observe below, the event resolution machinery is completely oblivious to multifactor authentication; all it cares about is finding the next event in the chain in a very generic way. Our custom implementation of course wants to have the next event deal with some form of MFA via a provider, but in theory we could have resolved the next event to be `hello-world`.
+- 您实际上并没有做任何 *自定义*。 所有内置的CAS触发器尝试解决下一个事件时，其行为均相同。
+- 正如您将在下面看到的，事件解决机制完全不考虑多因素身份验证；它关心的只是以一种非常通用的方式查找链中的下一个事件。 我们的自定义实现当然希望通过提供程序使下一个事件处理某种形式的MFA，但是从理论上讲，我们可以将下一个事件解析为 `hello-world`。
 
-## Requirements
+## 要求
 
-You will need to have compile-time access to the following modules in the Overlay:
+您将需要对覆盖中的以下模块进行编译时访问：
 
 ```xml
 <dependency>
@@ -29,69 +29,69 @@ You will need to have compile-time access to the following modules in the Overla
 </dependency>
 ```
 
-These are modules that ship with CAS by default and thou shall mark them with a `compile` or `provided` scope in your build configuration.
+这些是默认情况下随CAS一起提供的模块，您应在构建配置中 `编译` 或 `提供的`
 
-## Design Triggers
+## 设计触发器
 
-The below example demonstrates a reasonable outline of a custom event resolver:
+下面的示例演示了自定义事件解析器的合理概述：
 
 ```java
-package org.apereo.cas.custom.mfa;
+包org.apereo.cas.custom.mfa;
 
-public class ExampleMultifactorAuthenticationTrigger implements MultifactorAuthenticationTrigger {
+公共类ExampleMultifactorAuthenticationTrigger实现MultifactorAuthenticationTrigger {
 
     @Autowired
-    private CasConfigurationProperties casProperties;
+    私有CasConfigurationProperties casProperties;
 
    @Override
-   public Optional<MultifactorAuthenticationProvider> isActivated(final Authentication authentication,
-                                                                  final RegisteredService registeredService,
-                                                                  final HttpServletRequest httpServletRequest,
-                                                                  final Service service) {
+   public Optional<MultifactorAuthenticationProvider> isActivated（最终身份验证身份验证，
+                                                                  最终RegisteredService的registeredService，
+                                                                  最终HttpServletRequest的httpServletRequest，
+                                                                  最终的Service的服务）{
 
-       return Optional.empty();
+       return Optional.empty（）;
    }
 }
 ```
 
-## Register Triggers
+## 注册触发器
 
-The event resolver trigger then needs to be registered. [See this guide](../configuration/Configuration-Management-Extensions.html) for better details.
+然后需要注册事件解析器触发器。 [有关更多详细信息，请参见本指南](../configuration/Configuration-Management-Extensions.html)
 
-The below example demonstrates a reasonable outline of a custom event resolver:
+下面的示例演示了自定义事件解析器的合理概述：
 
 ```java
-package org.apereo.cas.custom.config;
+包org.apereo.cas.custom.config;
 
-@Configuration("SomethingConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class SomethingConfiguration {
+@Configuration（“ SomethingConfiguration”）
+@EnableConfigurationProperties（CasConfigurationProperties.class）
+公共类SomethingConfiguration {
 
     @Autowired
-    @Qualifier("initialAuthenticationAttemptWebflowEventResolver")
-    private CasDelegatingWebflowEventResolver initialEventResolver;
+    @Qualifier（“ initialAuthenticationAttemptWebflowEventResolver”）
+    私人CasDelegatingWebflowEventResolver initialEventResolver;
 
     @Bean
-    public MultifactorAuthenticationTrigger exampleMultifactorAuthenticationTrigger() {
-        return new ExampleMultifactorAuthenticationTrigger();
+    public MultifactorAuthenticationTrigger exampleMultifactorAuthenticationTrigger（）{
+        返回新的ExampleMultifactorAuthenticationTrigger（）;
     }
 
     @Bean
     @RefreshScope
-    public CasWebflowEventResolver exampleMultifactorAuthenticationWebflowEventResolver() {
-        val r = new DefaultMultifactorAuthenticationProviderEventResolver(
-            authenticationSystemSupport.getObject(),
-            centralAuthenticationService.getObject(),
-            servicesManager.getObject(),
-            ticketRegistrySupport.getObject(),
-            warnCookieGenerator.getObject(),
-            authenticationRequestServiceSelectionStrategies.getObject(),
-            multifactorAuthenticationProviderSelector.getObject(),
-            exampleMultifactorAuthenticationTrigger());
-        this.initialAuthenticationAttemptWebflowEventResolver.addDelegate(r);
+    公共CasWebflowEventResolver exampleMultifactorAuthenticationWebflowEventResolver（）{
+        val r = new DefaultMultifactorAuthenticationProviderEventResolver（
+            authenticationSystemSupport.getObject（），
+            centralAuthenticationService.getObject（），
+            servicesManager.getObject（），
+            ticketRegistrySupport.getObject（），
+            warnCookieGenerator.getObject（），
+            authenticationRequestServiceSelectionStrategies.getObject（），
+            multifactorAuthenticationProviderSelector.getObject（），
+            exampleMultifactorAuthenticationTrigger（））;
+        this.initialAuthenticationAttemptWebflowEventResolver.addDelegate（r）;
         return r;
     }
 }
 ```
 
-Do not forget to register the configuration class with CAS. [See this guide](../configuration/Configuration-Management-Extensions.html) for better details.
+不要忘记在CAS中注册配置类。 [有关更多详细信息，请参见本指南](../configuration/Configuration-Management-Extensions.html)
