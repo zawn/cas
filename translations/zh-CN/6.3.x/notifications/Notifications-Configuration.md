@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - Notifications
-category: Notifications
+layout: 默认
+title: CAS-通知
+category: 通知事项
 ---
 
-# Notifications
+# 通知事项
 
-CAS presents the ability to notify users and accounts on select actions via platform-specific notifications. Example actions include notification of risky authentication attempts or password reset links/tokens or one-time tokens for multifactor authentication. Providers and platforms supported by CAS are listed below. Note that an active/professional subscription may be required for certain providers.
+CAS提供了通过特定于平台的通知向用户和帐户发出有关选择操作的通知的功能。 示例操作包括 危险身份验证尝试通知或密码重置链接/令牌或用于多重身份验证的一次性令牌。 下面列出了提供程序 和CAS支持的平台。 请注意，某些提供商可能需要活跃/专业订阅。
 
-## Google Firebase Cloud Messaging
+## Google Firebase云消息传递
 
-Support is enabled via the relevant modules using the following module:
+使用以下模块，可以通过相关模块启用支持：
 
 ```xml
 <dependency>
@@ -20,4 +20,4 @@ Support is enabled via the relevant modules using the following module:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#google-cloud-firebase-messaging).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#google-cloud-firebase-messaging)。
