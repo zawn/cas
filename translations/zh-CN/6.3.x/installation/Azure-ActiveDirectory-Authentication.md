@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - Microsoft Azure Active Directory Authentication
-category: Authentication
+layout: 默认
+title: CAS-Microsoft Azure Active Directory身份验证
+category: 验证
 ---
 
-# Microsoft Azure Active Directory Authentication
+# Microsoft Azure Active Directory身份验证
 
-[Azure Active Directory (Azure AD)](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) is Microsoft’s cloud-based identity and access management service. The functionality described here allows one to authenticate credentials using Azure Active Directory as the account store and optionally fetch user attributes using Microsoft Graph.
+[Azure Active Directory（Azure AD）](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) 是Microsoft的基于云的身份和访问管理服务。 此处描述的功能允许使用 Azure Active Directory作为帐户存储来验证凭据，并可以选择使用Microsoft Graph获取用户属性。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -20,8 +20,8 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#microsoft-azure-active-directory-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#microsoft-azure-active-directory-authentication)。
 
-## Principal Attributes
+## 主要属性
 
-The above dependency may also be used, in the event that principal attributes need to be fetched from Azure Active Directory without necessarily authenticating credentials . To see the relevant list of CAS properties, please \[review this guide\](..configuration/Configuration-Properties.html#microsoft-azure-active-directory.
+如果需要从Azure Active Directory中获取主体属性，而无需对 进行身份验证，则可以使用上述依赖项。 要查看CAS属性的相关列表，请[阅读本指南]（.. configuration / Configuration-Properties.html＃microsoft-azure-active-directory。
