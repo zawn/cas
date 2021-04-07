@@ -1,17 +1,17 @@
 ---
-layout: default
-title: CAS - Apache Syncope Authentication
-category: Authentication
+layout: 默认
+title: CAS-Apache Syncope身份验证
+category: 验证
 ---
 
-# Apache Syncope Authentication
+# Apache Syncope身份验证
 
-CAS support handling the authentication event via [Apache Syncope](http://syncope.apache.org/). This is done by using the `rest/users/self` REST API that is exposed by a running Syncope instance. As part of a successful authentication attempt, the properties of the provided user object are transformed into CAS attributes that can then be released to applications, etc.
+[Apache Syncope](http://syncope.apache.org/)处理身份验证事件。 这是通过使用正在运行的Syncope实例公开 `rest / users / self` 作为成功身份验证尝试的一部分，将提供的用户对象的属性转换为CAS属性，然后可以将其发布给应用程序等。
 
 
-## Components
+## 成分
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -21,13 +21,13 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#syncope-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#syncope-authentication)。
 
-## Attributes
+## 属性
 
-As part of a successful authentication attempt, the following attributes provided by Apache Syncope are collected by CAS:
+作为成功身份验证尝试的一部分，CAS收集了Apache Syncope提供的以下属性：
 
-| Attribute Name                |
+| 属性名称                          |
 | ----------------------------- |
 | `syncopeUserRoles`            |
 | `syncopeUserSecurityQuestion` |
@@ -44,4 +44,4 @@ As part of a successful authentication attempt, the following attributes provide
 | `syncopeUserDynRelationships` |
 | `syncopeUserAttrs`            |
 
-Note that attributes are only collected if they contain a value.
+请注意，仅当属性包含值时才收集它们。
