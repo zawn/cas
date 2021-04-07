@@ -1,29 +1,29 @@
 ---
-layout: default
-title: CAS - Configuring Service Custom Properties
-category: Services
+layout: 默认
+title: CAS-配置服务自定义属性
+category: 服务
 ---
 
-# Configure Service Custom Properties
+# 配置服务自定义属性
 
-CAS has ability to add arbitrary attributes to a registered service. These attributes are considered extra metadata about the service that indicate settings such as contact phone number, email, etc or extra attributes and fields that may be used by extensions for custom functionality on a per-service basis.
+CAS具有向注册服务添加任意属性的能力。 这些属性被视为有关服务的额外元数据，其中 表示诸如联系人电话号码，电子邮件等之类的设置，或者 额外属性和字段可被扩展 用于基于每个服务的自定义功能。
 
-A sample JSON file follows:
+以下是一个示例JSON文件：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "sample service",
-  "id" : 100,
-  "properties" : {
-    "@class" : "java.util.HashMap",
-    "email" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "person@place.edu", "admin@place.edu" ] ]
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ ^ https：//.+”，
+  “ name”：“示例服务”，
+  “ id”：100 ，
+  “ properties”：{
+    “ @class”：“ java.util.HashMap”，
+    “ email”：{
+      “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceProperty”，
+      “ values”： [“ java.util.HashSet”，[“ person@place.edu”，“ admin@place.edu”]]
     }
   }
 }
 ```
 
-Registered service property values can use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax.
+注册的服务属性值可以使用 [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) 语法。
