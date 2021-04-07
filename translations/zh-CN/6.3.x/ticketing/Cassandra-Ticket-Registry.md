@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - Cassandra Ticket Registry
-category: Ticketing
+layout: 默认
+title: CAS-卡桑德拉机票登记处
+category: 售票处
 ---
 
-# Cassandra Ticket Registry
+# 卡桑德拉门票登记处
 
-Cassandra integration is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用Cassandra集成：
 
 ```xml
 <dependency>
@@ -16,11 +16,11 @@ Cassandra integration is enabled by including the following dependency in the WA
 </dependency>
 ```
 
-This registry stores tickets in [Apache Cassandra](http://cassandra.apache.org/) instances. Tickets are expected to be found/stored in a `castickets` table with a default write consistency of `LOCAL_QUORUM` and read consistency of `ONE`.
+该注册表将票证存储在 [Apache Cassandra](http://cassandra.apache.org/) 实例中。 票证预计将在 `个小城堡` 表 找到/存储，默认写一致性为 `LOCAL_QUORUM` ，读一致性为 `ONE`。
 
-## Troubleshooting
+## 故障排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他日志记录，请配置log4j配置文件以添加以下级别：
 
 ```xml
 ...
@@ -31,6 +31,6 @@ To enable additional logging, configure the log4j configuration file to add the 
 ...
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#cassandra-ticket-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#cassandra-ticket-registry)。
