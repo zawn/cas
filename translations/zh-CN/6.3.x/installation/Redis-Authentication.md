@@ -1,13 +1,13 @@
 ---
-layout: default
-title: CAS - Redis Authentication
+layout: 默认
+title: CAS-Redis身份验证
 ---
 
-# Redis Authentication
+# Redis认证
 
-Verify and authenticate credentials using [Redis](https://redis.io/).
+[Redis](https://redis.io/)验证和认证凭据。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -17,18 +17,18 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-User accounts are mapped to a `username` field as the key. The user account record would contain the following fields:
+用户帐户被映射到 `用户名` 字段作为键。 用户帐户记录将包含以下字段：
 
-| Field        | Description                                                           |
-| ------------ | --------------------------------------------------------------------- |
-| `password`   | User password with applicable encoding, if any.                       |
-| `status`     | One of `OK`, `LOCKED`, `DISABLED`, `EXPIRED`, `MUST_CHANGE_PASSWORD`. |
-| `attributes` | User attributes modeled as `Map<String, List<Object>>`.   |
+| 场地   | 描述                                                                |
+| ---- | ----------------------------------------------------------------- |
+| `密码` | 具有适用编码的用户密码（如果有）。                                                 |
+| `地位` | 之一的 `行`， `LOCKED`， `DISABLED`， `EXPIRED`， `MUST_CHANGE_PASSWORD`。 |
+| `属性` | 用户属性建模为 `Map<String, List<Object>>`。                  |
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#redis-authentication).
+要查看CAS属性的相关列表，请 [本指南](../configuration/Configuration-Properties.html#redis-authentication)。
 
-## Redis Principal Attributes
+## Redis主体属性
 
-The above dependency may also be used, in the event that principal attributes need to be fetched from a Redis database without necessarily authenticating credentials against Redis.
+Redis数据库中获取主体属性而不必对Redis进行身份验证的情况下，也可以使用上述依赖关系。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#redis).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#redis)。
