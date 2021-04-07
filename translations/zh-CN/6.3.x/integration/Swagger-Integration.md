@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Swagger API Integration
-category: Integration
+layout: 默认
+title: CAS-Swagger API集成
+category: 一体化
 ---
 
-# Overview
+# 概述
 
-CAS takes advantages of [Swagger](https://swagger.io/) to produce API documentation automatically. The generated documentation supports all CAS endpoints and REST APIs provided they are made available to the runtime application context and are present in the overlay.
+CAS利用 [Swagger](https://swagger.io/) 优势自动生成API文档。 生成的文档支持所有CAS终结点和REST API，只要它们可用于运行时 应用程序上下文并存在于叠加层中即可。
 
-Support is enabled by including the following dependency in the overlay:
+通过在叠加层中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,11 +18,11 @@ Support is enabled by including the following dependency in the overlay:
 </dependency>
 ```
 
-## Endpoints
+## 终点
 
-The following Swagger endpoints may be used to analyze and test the APIs:
+以下Swagger端点可用于分析和测试API：
 
-| Description               | URL                                           |
-| ------------------------- | --------------------------------------------- |
-| Swagger API Specification | `https://sso.example.org/cas/v3/api-docs`     |
-| Swagger UI                | `https://sso.example.org/cas/swagger-ui.html` |       
+| 描述            | 网址                                            |
+| ------------- | --------------------------------------------- |
+| Swagger API规范 | `https://sso.example.org/cas/v3/api-docs`     |
+| 招摇UI          | `https://sso.example.org/cas/swagger-ui.html` |       
