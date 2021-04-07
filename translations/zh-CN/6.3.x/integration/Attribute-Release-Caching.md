@@ -1,190 +1,221 @@
 ---
-layout: default
-title: CAS - Attribute Release Caching
-category: Attributes
+layout: 违约
+title: CAS - 属性释放缓存
+category: 属性
 ---
 
-# Attribute Release Caching
+# 属性释放缓存
 
-By default, [resolved attributes](Attribute-Resolution.html) are cached to the length of the SSO session. If there are any attribute value changes since the commencement of SSO session, the changes are not reflected and returned back to the service upon release time.
+默认情况下， [已解决的属性](Attribute-Resolution.html) 缓存到 SSO 会话的 长度。 如果自 SSO 会话 开始以来有任何属性值更改，则更改不会反映，并在发布时间 返回服务。
 
-Note: Remember that while the below policies are typically applied at release time on a per-service level, CAS automatically does create attribute release caching policies at a more global with configurable timeouts and durations. See [the relevant settings](../configuration/Configuration-Properties.html#authentication-attributes) for more info.
+注意：请记住，虽然以下策略通常在每个服务级别的发布时间应用，但 CAS 自动创建属性释放缓存策略，具有可配置的超时 和持续时间。 有关设置</a> ，请参阅
 
-The following settings are shared by all principal attribute repositories:
+了解更多信息。</p> 
 
-| Name                       | Value                                                                                                                                          |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mergingStrategy`          | Indicate the merging strategy when combining attributes from multiple sources. Accepted values are `MULTIVALUED`, `ADD`, `NONE`, `MULTIVALUED` |
-| `attributeRepositoryIds`   | A `Set` of attribute repository identifiers to consult for attribute resolution at release time.                                               |
-| `ignoreResolvedAttributes` | Ignore the collection of attributes that may have been resolved during the principal resolution phase, typically via attribute repositories.   |
+以下设置由所有主要属性存储库共享：
 
-## Default
+| 名字         | 价值                                                  |
+| ---------- | --------------------------------------------------- |
+| `合并战略`     | 在组合来自多个来源的属性时，指示合并策略。 被接受的值 `多价值`， `添加`， `无`， `多价值` |
+| `属性存储ID`   | `设置属性存储库标识符的` ，以在发布时咨询属性解析。                         |
+| `忽略雷索韦德属性` | 忽略主要分辨率阶段可能已解决的属性的集合，通常是通过属性存储库。                    |
 
-The default relationship between a CAS `Principal` and the underlying attribute repository source, such that principal attributes are kept as they are without any additional processes to evaluate and update them. This need not be configured explicitly.
 
-## Caching
 
-The relationship between a CAS `Principal` and the underlying attribute repository source, that describes how and at what length the CAS `Principal` attributes should be cached. Upon attribute release time, this component is consulted to ensure that appropriate attribute values are released to the scoped service, per the cache expiration policy. If the expiration policy has passed, the underlying attribute repository source will be consulted to figure out the available set of attributes.
 
-This component also has the ability to resolve conflicts between existing principal attributes and those that are retrieved from repository source via a `mergingStrategy` property. This is useful if you want to preserve the collection of attributes that are already available to the principal that were retrieved from a different place during the authentication event, etc.
+## 违约
 
-<div class="alert alert-info"><strong>Caching Upon Release</strong><p>Note
-that the policy is only consulted at release time, upon a service ticket validation event. If there are
-any custom webflows and such that wish to rely on the resolved <code>Principal</code> AND also wish to
-receive an updated set of attributes, those components must consult the underlying source directory
-without relying on the <code>Principal</code>.</p></div>
+CAS `委托` 与存储库源 标的属性之间的默认关系，因此，主要属性保持为没有 任何其他过程来评估和更新它们。 无需明确配置此配置。
 
-Sample configuration follows:
 
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "principalAttributesRepository" : {
-      "@class" : "org.apereo.cas.authentication.principal.cache.CachingPrincipalAttributesRepository",
-      "timeUnit" : "HOURS",
-      "expiration" : 2,
-      "mergingStrategy" : "NONE"
-    }
-  }
-}
-```
 
-## Merging Strategies
+## 缓存
 
-By default, no merging strategy takes place, which means the principal attributes are always ignored and attributes from the source are always returned. But any of the following merging strategies may be a suitable option:
+CAS `主` 与存储库源 底层属性之间的关系，该属性描述了 CAS `主` 属性应 缓存的程度和长度。 在属性发布时间，请咨询此组件，以确保根据缓存到期策略向范围服务发布适当的 属性值。 如果到期策略已过，将 咨询基础属性存储库源，以找出可用的属性集。
 
-### Merge
+此组件还能够解决现有主要属性与通过 `合并战略` 属性从存储库源中检索的属性 之间的冲突。 如果您想要保留在身份验证事件期间从不同位置检索到的委托人已 可用的属性集合，则此很有用，等等。
 
-Attributes with the same name are merged into multi-valued lists.
+<div class="alert alert-info"><strong>释放时的缓存</strong><p>请注意
+，该政策仅在发布时间，在服务票证验证事件后才咨询。 如果有任何自定义网络流
+，并且希望依赖已解决的 <code>本金</code> 并且希望
+收到一组更新的属性，则这些组件必须在不依赖 <code>主</code>的情况下，查阅基础源目录
+。</p></div>
 
-For example:
+示例配置如下：
 
-1. Principal has attributes `{email=eric.dalquist@example.com, phone=123-456-7890}`
-2. Source has attributes `{phone=[111-222-3333, 000-999-8888], office=3233}`
-3. The resulting merged would have attributes: `{email=eric.dalquist@example.com, phone=[123-456-7890, 111-222-3333, 000-999-8888], office=3233}`
 
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "principalAttributesRepository" : {
-      "@class" : "org.apereo.cas.authentication.principal.cache.CachingPrincipalAttributesRepository",
-      "timeUnit" : "HOURS",
-      "expiration" : 2,
-      "mergingStrategy" : "MULTIVALUED"
-    }
-  }
-}
-```
-
-### Add
-
-Attributes are merged such that attributes from the source that don't already exist for the principal are produced.
-
-For example:
-
-1. Principal has attributes `{email=eric.dalquist@example.com, phone=123-456-7890}`
-2. Source has attributes `{phone=[111-222-3333, 000-999-8888], office=3233}`
-3. The resulting merged would have attributes: `{email=eric.dalquist@example.com, phone=123-456-7890, office=3233}`
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "principalAttributesRepository" : {
-      "@class" : "org.apereo.cas.authentication.principal.cache.CachingPrincipalAttributesRepository",
-      "timeUnit" : "HOURS",
-      "expiration" : 2,
-      "mergingStrategy" : "ADD"
-    }
-  }
-}
-```
-
-### Replace
-
-Attributes are merged such that attributes from the source always replace principal attributes.
-
-For example:
-
-1. Principal has attributes `{email=eric.dalquist@example.com, phone=123-456-7890}`
-2. Source has attributes `{phone=[111-222-3333, 000-999-8888], office=3233}`
-3. The resulting merged would have attributes: `{email=eric.dalquist@example.com, phone=[111-222-3333, 000-999-8888], office=3233}`
-
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "principalAttributesRepository" : {
-      "@class" : "org.apereo.cas.authentication.principal.cache.CachingPrincipalAttributesRepository",
-      "timeUnit" : "HOURS",
-      "expiration" : 2,
-      "mergingStrategy" : "REPLACE"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回返回属性释放政策"，
+    "主要属性存储库"：{
+      "@class"："组织.apereo.cas.认证.委托.缓存。 "，
+      "时间统一"："小时"，
+      "到期"：2，
+      "融合战略"："无"
     }
   }
 }
 ```
 
 
-## Attribute Repository Filtering
 
-Principal attribute repositories can consult attribute sources defined and controlled by [Person Directory](Attribute-Resolution.html). Assuming a JSON attribute repository source is defined with the identifier `MyJsonRepository`, the following definition disregards all previously-resolved attributes and contacts `MyJsonRepository` again to fetch attributes and cache them for `30` minutes.
+
+## 合并策略
+
+默认情况下，不会实施合并策略，这意味着主要属性始终被忽略，并且始终返回源 属性。 但以下任何合并策略都可能是一个合适的选择：
+
+
+
+### 合并
+
+同名属性合并到多值列表中。
+
+例如：
+
+1. 校长具有属性 `[email=eric.dalquist@example.com， 电话=123-456-7890]`
+2. 源具有属性 `[电话][111-222-3333，000-999-8888]，办公室=3233]`
+3. 由此产生的合并将具有属性： `[email=eric.dalquist@example.com，电话=123-456-7890，111-222-3333，000-999-8888]，办公室=3233}`
+
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "name" : "HTTPS and IMAPS",
-  "id" : 1,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy",
-    "principalAttributesRepository" : {
-        "@class" : "org.apereo.cas.authentication.principal.cache.CachingPrincipalAttributesRepository",
-        "timeUnit" : "MINUTES",
-        "expiration" : 30,
-        "ignoreResolvedAttributes": true,
-        "attributeRepositoryIds": ["java.util.HashSet", [ "MyJsonRepository" ]],
-        "mergingStrategy" : "MULTIVALUED"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。
+    "主要归因"：[
+      "@class"："组织.apereo.cas.认证.委托.缓存.缓存"，
+      "时间统一"："小时"，
+      "到期"：2，
+      "合并战略"："多重"
     }
   }
 }
 ```
 
-Here is a similar example with caching turned off for the service where CAS attempts to combine previously-resolved attributes with the results from the attribute repository identified as `MyJsonRepository`. The expectation is that the attribute source `MyJsonRepository` is excluded from principal resolution during the authentication phase and should only be contacted at release time for this service:
+
+
+
+### 加
+
+属性被合并，因此产生本金不存在的来源属性。
+
+例如：
+
+1. 校长具有属性 `[email=eric.dalquist@example.com， 电话=123-456-7890]`
+2. 源具有属性 `[电话][111-222-3333，000-999-8888]，办公室=3233]`
+3. 由此产生的合并将具有属性： `+email=eric.dalquist@example.com，电话=123-456-7890，办公室=3233}`
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^(https|imaps)://.*",
-  "name" : "HTTPS and IMAPS",
-  "id" : 1,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy",
-    "principalAttributesRepository" : {
-        "@class" : "org.apereo.cas.authentication.principal.DefaultPrincipalAttributesRepository",
-        "ignoreResolvedAttributes": false,
-        "attributeRepositoryIds": ["java.util.HashSet", [ "MyJsonRepository" ]],
-        "mergingStrategy" : "MULTIVALUED"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回归因释放政策"，
+    "主要属性" ： [
+      "@class"： "org. apereo. cas. 认证. 校长. 缓存。
+      "时间统一"："小时"，
+      "到期"：2，
+      "合并战略"："添加"
     }
   }
 }
 ```
+
+
+
+
+### 取代
+
+属性被合并，因此源中的属性始终替换主要属性。
+
+例如：
+
+1. 校长具有属性 `[email=eric.dalquist@example.com， 电话=123-456-7890]`
+2. 源具有属性 `[电话][111-222-3333，000-999-8888]，办公室=3233]`
+3. 由此合并的属性包括： `[email=eric.dalquist@example.com，电话][111-222-3333，000-999-8888]，办公室=3233}`
+
+
+
+
+```json
+•
+  "@class"： "org. apereo. cas. 服务. 注册服务"，
+  "服务"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回归因释放政策"，
+    "主要属性存储库"： [
+      "@class"： "org. apereo. cas. 认证. 校长. 缓存。 "，
+      "时间统一"： "小时"，
+      "到期"： 2，
+      "合并战略"： "替换"
+    [
+  ]
+}
+```
+
+
+
+
+
+## 属性存储库筛选
+
+主要属性存储库可以查阅 [人名录](Attribute-Resolution.html)定义和控制的属性源。 假设 JSON 属性 存储库源 `MyJson 存储库`标识符定义，以下定义将忽略 MyJson 存储库 `以前解决的所有属性和联系人，` 再次提取属性并将其缓存 `30` 分钟。
+
+
+
+```json
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："^（https|图片）"，
+  "名称"："HTTPS 和 IMAPS"，
+  "id"： 1，
+  "属性释放政策"： [
+    "@class"： "org. apereo. cas. 服务. 返回所有归因重新发布政策"，
+    "主要属性报表"： [
+        "@class"： "org. apereo. cas. 认证. 校长. cache. 缓存" ，
+        "时间统一"： "分钟"，
+        "到期"： 30，
+        "忽略估计属性"： 真实，
+        "属性存储"： [ "java.ul.il.哈希塞特"，["我的Json仓库"]]，
+        "合并战略"："多重价值"
+    }
+  =
+}
+```
+
+
+下面是一个类似的例子，缓存关闭的服务，CAS试图结合以前解决的属性与属性 存储库的结果确定为 `MyJson存储库`。 期望在认证阶段 期间，MyJson 存储库</code> `属性源排除在主要分辨率之外，并且仅应在此服务发布时间联系：</p>
+
+<pre><code class="json">•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："^（https|图片）/*"，
+  "名称"："HTTPS和IMAPS"，
+  "id"：1，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回所有属性发布政策"，
+    "主要归因仓库"： [
+        "@class"： "org. apereo. cas. 认证. 校长. 默认原则归因仓库"，
+        "忽略resolved 属性"： 虚假 ，
+        "属性存储"："java.ul.ut.哈希集"，"MyJson存储库"]]，
+        "合并战略"："多重"
+    =
+  =
+}
+`</pre>
