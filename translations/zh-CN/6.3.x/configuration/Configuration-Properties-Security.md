@@ -1,80 +1,80 @@
 ---
-layout: default
-title: CAS - Securing Configuration Properties
-category: Configuration
+layout: 默认
+title: CAS-保护配置属性
+category: 配置
 ---
 
-# Configuration Security
+# 配置安全
 
-This document describes how to retrieve and secure CAS configuration and properties.
+本文档介绍了如何检索和保护CAS配置和属性。
 
-## Standalone
+## 单机版
 
-If you are running CAS in standalone mode without the presence of the configuration server, you can take advantage of built-in [Jasypt](http://www.jasypt.org/) functionality to decrypt sensitive CAS settings.
+如果您在没有配置服务器的情况下以独立模式运行CAS，则 可以利用内置的 [Jasypt](http://www.jasypt.org/) 功能来解密敏感的CAS设置。
 
-Jasypt supplies command-line tools useful for performing encryption, decryption, etc. In order to use the tools, you should download the Jasypt distribution. Once unzipped, you will find a `jasypt-$VERSION/bin` directory a number of `bat|sh` scripts that you can use for encryption/decryption operations `(encrypt|decrypt).(bat|sh)`.
+Jasypt提供了可用于执行加密，解密等的命令行工具。 为了使用这些工具，您应该下载Jasypt发行版。 解压缩后，您将在 `jasypt-$VERSION/ bin` 目录中找到 `bat | sh` 脚本，您可以将它们用于加密/解密操作 `（encrypt | decrypt）。（bat | sh）`。
 
-Encrypted settings need to be placed into CAS configuration files as:
+加密的设置需要按以下方式放入CAS配置文件中：
 
 ```properties
-cas.something.sensitive={cas-cipher}FKSAJDFGYOS8F7GLHAKERGFHLSAJ
+cas.something.sensitive ={cas-cipher}FKSAJDFGYOS8F7GLHAKERGFHLSAJ
 ```
 
-You also need to instruct CAS to use the proper algorithm, decryption key and other relevant parameters when attempting to decrypt settings. To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#configuration-security).
+尝试解密设置时，还需要指示CAS使用正确的算法，解密密钥和其他相关参数 功能的CAS属性的相关列表，请 [查看本指南](Configuration-Properties.html#configuration-security)。
 
 
-## Spring Cloud
+## 春云
 
-Securing CAS settings and decrypting them is entirely handled by the [Spring Cloud](https://github.com/spring-cloud/spring-cloud-config) project as [described in this guide](Configuration-Server-Management.html).
+固定CAS设置和解密它们完全由处理 的 [弹簧云](https://github.com/spring-cloud/spring-cloud-config) 项目 为 [本指南中描述](Configuration-Server-Management.html)。
 
-The CAS configuration server exposes `/encrypt` and `/decrypt` endpoints to support encrypting and decrypting values. Both endpoints accept a `POST` payload; you can use `/encrypt` to secure and encrypt settings and place them inside your CAS configuration. CAS will auto-decrypt at the appropriate moment.
+CAS配置服务器公开 `/ encrypt` 和 `/ decrypt` 端点以支持加密和解密值。 两个端点都接受 `POST` 负载；您可以使用 `/ encrypt` 来保护和加密设置，并将其放入CAS配置中。 CAS将在适当的时候自动解密。
 
-To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#configuration-security).
+要查看此功能的CAS属性的相关列表，请 [查看本指南](Configuration-Properties.html#configuration-security)。
 
-<div class="alert alert-info"><strong>JCE Requirements</strong><p>To use the encryption and decryption
-features you need the full-strength "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files"
-installed in your JVM version (if it’s not there by default).</p></div>
+<div class="alert alert-info"><strong>JCE要求</strong><p>要使用加密和解密
+功能，您需要在JVM版本中安装完整强度的“ Java密码学扩展（JCE）无限强度管辖策略文件”
+（如果默认情况下不存在）。</p></div>
 
-To encrypt a given setting, use:
+要加密给定的设置，请使用：
 
 ```bash
-curl -u casuser:Mellon https://config.server.endpoint/encrypt -d sensitiveValue
+curl -u casuser：梅隆https：//config.server.endpoint/encrypt -dsensitiveValue
 ```
 
-Then, copy the encrypted setting into your CAS configuration using the method specified below.
+然后，使用以下指定的方法将加密的设置复制到CAS配置中。
 
-<div class="alert alert-info"><strong>URL Encoding</strong><p>Be careful with <code>curl</code>.
-You may have to use <code>--data-urlencode</code> or set an explicit <code>Content-Type: text/plain</code>
-to account for special characters such as <code>+</code>.</p></div>
+<div class="alert alert-info"><strong>URL编码</strong><p>小心 <code>curl</code>。
+您可能必须使用 <code>--data-urlencode</code> 或设置一个明确的 <code>Content-Type：text / plain</code>
+以解决特殊字符，例如 <code>+</code>。</p></div>
 
-If you wish to manually encrypt and decrypt settings to ensure the functionality is sane, use:
+如果您希望手动加密和解密设置以确保功能正常，请使用：
 
 ```bash
-export ENCRYPTED=`curl -u casuser:Mellon https://config.server.endpoint/encrypt -d sensitiveValue | python -c 'import sys,urllib;print urllib.quote(sys.stdin.read().strip())'`
+导出ENCRYPTED =`curl -u casuser：Mellon https：//config.server.endpoint/encrypt -dsensitiveValue | python -c'import sys，urllib; print urllib.quote（sys.stdin.read（）。strip（））'`
 echo $ENCRYPTED
-curl -u casuser:Mellon https://config.server.endpoint/decrypt -d $ENCRYPTED | python -c 'import sys,urllib;print urllib.quote(sys.stdin.read().strip())'
+curl -u casuser：Mellon https：//config.server.endpoint/decrypt- d $ENCRYPTED | python -c'导入sys，urllib;打印urllib.quote（sys.stdin.read（）。strip（））'
 ```
 
-Properties that are prefixed with `{cipher}` are automatically decrypted by the CAS configuration server at runtime, such as:
+前缀为 `{cipher}` 属性在运行时由CAS配置服务器自动解密，例如：
 
 ```yml
 cas
-    something
-        sensitive: '{cipher}FKSAJDFGYOS8F7GLHAKERGFHLSAJ'
+    某些东西
+        敏感：“{cipher}FKSAJDFGYOS8F7GLHAKERGFHLSAJ”
 ```
 
-Or:
+或者：
 
 ```properties
-# Note that there are no quotes around the value!
-cas.something.sensitive={cipher}FKSAJDFGYOS8F7GLHAKERGFHLSAJ
+＃请注意，该值周围没有引号！
+cas.something.sensitive ={cipher}FKSAJDFGYOS8F7GLHAKERGFHLSAJ
 ```
 
-## Vault
+## 金库
 
-You can also store sensitive settings inside [Vault](https://www.vaultproject.io/). Vault can store your existing secrets, or it can dynamically generate new secrets to control access to third-party resources or provide time-limited credentials for your infrastructure. To learn more about Vault and its installation process, please visit the project website.
+您还可以将敏感设置存储在 [Vault](https://www.vaultproject.io/)。 保险柜可以存储您现有的机密信息，也可以动态生成新的机密信息 以控制对第三方资源的访问或为您的基础结构提供限时凭证。 要了解有关Vault及其安装过程的更多信息，请访问项目网站。
 
-Once vault is accessible and configured inside CAS, support is provided via the following dependency:
+一旦可以在CAS中访问和配置了保管库，就可以通过以下依赖项提供支持：
 
 ```xml
 <dependency>
@@ -84,34 +84,34 @@ Once vault is accessible and configured inside CAS, support is provided via the 
 </dependency>
 ```
 
-To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#vault).
+要查看此功能的CAS属性的相关列表，请 [查看本指南](Configuration-Properties.html#vault)。
 
-With CAS, secrets are picked up at startup of the application server. CAS uses the data and settings from the application name (i.e. `cas`) and active profiles to determine contexts paths in which secrets should be stored and later fetched.
+使用CAS，可以在应用程序服务器启动时获取机密。 CAS使用来自应用程序名称（即 `cas`）和活动配置文件的数据和设置 中应存储并稍后提取秘密的上下文路径。
 
-These context paths typically are:
-
-```bash
-/secret/{application}/{profile}
-/secret/{application}
-```
-
-As an example, you may write the following CAS setting to Vault:
+这些上下文路径通常是：
 
 ```bash
-vault write secret/cas/native <setting-name>=<value>
+/秘密/{application}/{profile}
+/秘密/{application}
 ```
 
-CAS will execute the equivalent of the following command to read settings later when needed:
+例如，您可以将以下CAS设置写入保险柜：
 
 ```bash
-vault read secret/cas/native
+保管库写入密钥/ cas /本机 <setting-name>=<value>
 ```
 
-All settings and secrets that are stored inside Vault may be reloaded at any given time. To learn more about how CAS allows you to reload configuration changes, please [review this guide](Configuration-Management-Reload.html). To learn more about how configuration is managed and profiled by CAS, please [review this guide](Configuration-Management.html).
+CAS将在需要时执行与以下命令等效的命令，以在以后读取设置：
 
-### Troubleshooting
+```bash
+保管库读取机密/ cas /本机
+```
 
-To enable additional logging, modify the logging configuration file to add the following:
+可以在任何给定时间重新加载Vault中存储的所有设置和机密。 要了解有关CAS如何允许您重新加载配置更改的更多信息，请 [本指南](Configuration-Management-Reload.html)。 要了解有关CAS如何管理和配置文件的更多信息，请 [本指南](Configuration-Management.html)。
+
+### 故障排除
+
+要启用其他日志记录，请修改日志记录配置文件以添加以下内容：
 
 ```xml
 <Logger name="org.springframework.cloud.vault" level="debug" additivity="false">
