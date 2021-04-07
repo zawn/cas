@@ -1,15 +1,15 @@
 ---
-layout: default
-title: CAS - OIDC Protocol
-category: Protocols
+layout: 默认
+title: CAS-OIDC协议
+category: 通讯协定
 ---
 
-# OpenID Connect Protocol
+# OpenID连接协议
 
-You can configure the CAS server with:
+您可以使用以下方式配置CAS服务器：
 
-* [OIDC client support](../integration/Delegate-Authentication.html), which means authentication can be delegated through a link on the login page to OpenID Connect provider.
-* [OIDC server support](../installation/OIDC-Authentication.html), which means you will be able to communicate with your CAS server through the [OpenID Connect protocol](http://openid.net/connect/), having CAS act as an OP.
+* [OIDC客户端支持](../integration/Delegate-Authentication.html) 登录页面上的链接将身份验证委派给OpenID Connect提供程序。
+* [OIDC服务器支持](../installation/OIDC-Authentication.html)，这意味着您可以通过CAS作为OP [OpenID Connect协议](http://openid.net/connect/)
 
 
 
