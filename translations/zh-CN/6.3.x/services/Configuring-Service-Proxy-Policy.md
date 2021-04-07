@@ -1,46 +1,46 @@
 ---
-layout: default
-title: CAS - Configuring Service Proxy Policy
-category: Services
+layout: 默认
+title: CAS-配置服务代理策略
+category: 服务
 ---
 
-# Configure Proxy Authentication Policy
+# 配置代理身份验证策略
 
-Each registered application in the registry may be assigned a proxy policy to determine whether the service is allowed for proxy authentication. This means that a PGT will not be issued to a service unless the proxy policy is configured to allow it. Additionally, the policy could also define which endpoint urls are in fact allowed to receive the PGT.
+可以为注册表中的每个注册应用程序分配一个代理策略，以确定是否允许该服务进行代理身份验证。 这意味着除非将代理策略配置为允许PGT，否则不会将PGT发布给服务。 另外，该策略还可以定义实际上允许哪些端点URL接收PGT。
 
-Note that by default, the proxy authentication is disallowed for all applications.
+请注意，默认情况下，所有应用程序都不允许使用代理身份验证。
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>Think <strong>VERY CAREFULLY</strong> before allowing an application to exercise proxy authentication. Blindly authorizing an application to receive a proxy-granting ticket may produce an opportunity for security leaks and attacks. Make sure you actually need to enable those features and that you understand the why. Avoid where and when you can.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>在允许应用程序执行代理身份验证之前，请考虑 <strong>非常谨慎</strong> 盲目授权应用程序接收授权代理票证可能会导致安全漏洞和攻击。 确保您确实需要启用这些功能，并且了解其原因。 避免在何时何地可以。</p></div>
 
-## Refuse
+## 拒绝
 
-Disallows proxy authentication for a service. This is default policy and need not be configured explicitly.
+禁止服务的代理身份验证。 这是默认策略，无需明确配置。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "proxyPolicy" : {
-    "@class" : "org.apereo.cas.services.RefuseRegisteredServiceProxyPolicy"
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ testId”，
+  “ name”：“ testId”，
+  “ id”：
+  “ proxyPolicy”：{
+    “ @class”：“ org.apereo.cas.services.RefuseRegisteredServiceProxyPolicy”
   }
 }
 ```
 
-## Regex
+## 正则表达式
 
-A proxy policy that only allows proxying to PGT urls that match the specified regex pattern.
+仅允许代理到与指定正则表达式模式匹配的PGT url的代理策略。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "proxyPolicy" : {
-    "@class" : "org.apereo.cas.services.RegexMatchingRegisteredServiceProxyPolicy",
-    "pattern" : "^https?://.*"
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ testId”，
+  “ name”：“ testId”，
+  “ id”：
+  “ proxyPolicy”：{
+    “ @class”：“ org.apereo.cas.services.RegexMatchingRegisteredServiceProxyPolicy”，
+    “ pattern”：“ ^ https？：//.*”
   }
 }
 ```
