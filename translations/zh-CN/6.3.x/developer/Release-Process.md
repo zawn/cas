@@ -1,127 +1,134 @@
 ---
-layout: default
-title: CAS - Release Process
-category: Developer
+layout: 默认
+title: CAS-发布流程
+category: 开发者
 ---
 
-# CAS Release Process
+# CAS发布过程
 
-This page documents the steps that a release engineer should take for cutting a CAS server release.
+本页记录了发行工程师应采取的削减CAS服务器发行版的步骤。
 
-## Sonatype Setup
+## 声纳类型设置
 
-You will need to sign up for a [Sonatype account](https://central.sonatype.org/pages/ossrh-guide.html) and must ask to be authorized to publish releases to the `org.apereo` package by creating a JIRA. Once you have, you may be asked to have one of the current project members *vouch* for you.
+您将需要注册一个 [Sonatype帐户](https://central.sonatype.org/pages/ossrh-guide.html) 并且必须要求 被授权通过创建JIRA将发布发布到 `org.apereo` 拥有之后，系统可能会要求您为 当前项目成员之一提供 *凭证*。
 
-## GPG Setup
+## GPG设定
 
-You will need to [generate your own PGP signatures](https://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/) to sign the release artifacts prior to uploading them to a central repository. In order to create OpenPGP signatures, you will need to generate a key pair. You need to provide the build with your key information, which means three things:
+您需要 [生成自己的PGP签名](https://blog.sonatype.com/2010/01/how-to-generate-pgp-signatures-with-maven/) 以在将发布工件上载到中央存储库之前对发布工件进行签名。 为了创建OpenPGP签名，您将需要生成一个密钥对。 您需要向构建提供关键信息，这意味着三件事：
 
-- The public key ID (The last 8 symbols of the keyId. You can use `gpg -K` to get it
-- The absolute path to the secret key ring file containing your private key. Since gpg 2.1, you need to export the keys with command:
-
-```bash
-gpg --keyring secring.gpg --export-secret-keys > ~/.gnupg/secring.gpg
-```
-
-- The passphrase used to protect your private key.
-
-The above settings will need to be placed into the `~/.gradle/gradle.properties` file:
-
-```properties
-signing.keyId=7A24P9QB
-signing.password=P@$$w0rd
-signing.secretKeyRingFile=/Users/example/.gnupg/secring.gpg
-```
-
-Additional notes on how artifacts are signed using the Gradle signing plugin are [available here](https://docs.gradle.org/current/userguide/signing_plugin.html)
-
-## Environment Setup
-
-- Load your SSH key and ensure this SSH key is also referenced in GitHub.
-- Adjust `$GRADLE_OPTS` to initialize the JVM heap size, if necessary.
-- Load your `~/.gradle/gradle.properties` file with the following *as an example*:
-
-```properties
-org.gradle.daemon=false
-org.gradle.parallel=false
-```
-
-- Checkout the CAS project: `git clone git@github.com:apereo/cas.git cas-server`
-- Make sure you have the [latest version of JDK 11](https://openjdk.java.net/projects/jdk/11/) installed via `java -version`.
-
-## Preparing the Release
-
-Apply the following steps to prepare the release environment. There are a few variations to take into account depending on whether a new release branch should be created.
-
-### Create Branch
+- 公钥ID（keyId的后8个符号。 您可以使用 `gpg -K` 来获取它
+- 包含您的私钥的密钥环文件的绝对路径。 从gpg 2.1开始，您需要使用以下命令导出密钥：
 
 ```bash
-# Replace $BRANCH with CAS version (i.e. 5.3.x)
+GPG --keyring secring.gpg --export秘密密钥 > 〜/ .gnupg / secring.gpg
+```
+
+- 用于保护您的私钥的密码短语。
+
+上述设置将需要被放置到 `〜/ .gradle / gradle.properties` 文件：
+
+```properties
+signing.keyId = 7A24P9QB
+$w0rd
+signing.secretKeyRingFile = / Users / example / .gnupg / secring.gpg
+```
+
+如何文物的其他注意事项使用的摇篮签署 签署插件是 [可以在这里](https://docs.gradle.org/current/userguide/signing_plugin.html)
+
+## 环境设定
+
+- 加载您的SSH密钥，并确保GitHub中也引用了该SSH密钥。
+- 如有必要，请调整 `$GRADLE_OPTS` 来初始化JVM堆大小。
+- 加载 `〜/ .gradle / gradle.properties` 与下列文件 *作为一个例子*：
+
+```properties
+org.gradle.daemon = false
+org.gradle.parallel = false
+```
+
+- 检出CAS项目： `git clone git@github.com：apereo / cas.git cas-server`
+- 确保您已通过 `java -version`[最新版本的JDK 11](https://openjdk.java.net/projects/jdk/11/)。
+
+## 准备发布
+
+应用以下步骤准备发布环境。 有考虑到这取决于是否有一些变化 新版本的分支应该被创建。
+
+### 创建分支
+
+```bash
+＃将 $BRANCH 替换为CAS版本（即5.3.x）
 git checkout -b $BRANCH
 ```
 
-<div class="alert alert-warning"><strong>Remember</strong><p>You should do this only for major or minor 
-releases (i.e. <code>4.2.x</code>, <code>5.0.x</code>).
-If there already exists a remote tracking branch for the version you are about to release, you should <code>git checkout</code> that branch, 
-skip this step and move on to next section to build and release.</p></div>
+<div class="alert alert-warning"><strong>记住</strong><p>您应该只为主要或次要做到这一点 
+版本（即 <code>4.2.x版</code>， <code>5.0.x版本</code>）。
+如果已经存在要发布的版本的远程跟踪分支，则应 <code>git checkout</code> 该分支， 
+跳过此步骤，继续进行下一部分以进行构建和发布。</p></div>
 
-### GitHub Actions
+### GitHub动作
 
-<div class="alert alert-warning"><strong>Remember</strong><p>You should do this only for major or minor 
-releases, when new branches are created.</p></div>
+<div class="alert alert-warning"><strong>记住</strong><p>创建新分支后，仅应在主要或次要 
+</p></div>
 
-- Change `.github/workflows/cas-build.yml` to trigger and *only* build the newly-created release branch. Scan the file to make sure all references point to the newly-created release branch.
-- Examine all CI shell scripts under the `ci` folder to make sure nothing points to `development` or `master`. This is particularly applicable to how CAS documentation is published to the `gh-pages` branch.
-- Disable jobs in CI that report new dependency versions, update dependencies using Renovate, publish Docker images, etc.
+- 将 `.github / workflows / cas-build.yml更改为` 来触发，仅 ** 建立新创建的发行分支。 扫描文件，以确保所有引用都指向新创建的发行分支。
+- `ci` 文件夹下的所有CI shell脚本，确保没有东西指向 `development` 或 `master`。 这尤其适用于将CAS文档发布到 `gh-pages` 分支的方式。
+- 在CI中禁用报告新依赖项版本的作业，使用Renovate更新依赖项，发布Docker映像等。
 
-Do not forget to commit all changes and push changes upstream, creating a new remote branch to track the release.
+不要忘记提交所有更改并将更改推送到上游，从而创建一个新的远程分支来跟踪发布。
 
-## Performing the Release
+## 执行发布
 
-- In the project's `gradle.properties`, change the project version to the release version and remove the `-SNAPSHOT`. (i.e. `6.0.0-RC1`).
-- Build and release the project using the following command:
+- 在项目的 `gradle.properties`，将项目版本更改为发行版，然后删除 `-SNAPSHOT`。 （即 `6.0.0-RC1`）。
+- 使用以下命令生成和发布项目：
 
 ```bash
 ./release.sh
 ```
 
-## Finalizing the Release
+## 最终发布
 
-- Create a tag for the released version, commit the change and push the tag to the upstream repository. (i.e. `v5.0.0-RC1`).
+- 为发布的版本创建标签，提交更改，然后将标签推送到上游存储库。 （即 `v5.0.0-RC1`）。
 
-You should also switch back to the main development branch (i.e. `master`) and follow these steps:
+您还应该切换回主开发分支（即 `master`），并按照以下步骤操作：
 
-- In the project's `gradle.properties`, change the project version to the *next* development version (i.e. `5.0.0-SNAPSHOT`).
-- Push your changes to the upstream repository.
+- 在项目的 `gradle.properties`，将项目版本更改为 *next* 开发版本（即 `5.0.0-SNAPSHOT`）。
+- 将您的更改推送到上游存储库。
 
-## Housekeeping
+## 家政
 
-<div class="alert alert-info"><strong>Remember</strong><p>When updating the release description, try to be keep 
-consistent and follow the same layout as previous releases.</p></div>
+<div class="alert alert-info"><strong>记住</strong><p>更新发行说明时，请尝试使 
+保持一致，并遵循与先前发行版相同的布局。</p></div>
 
-- Mark the release tag as pre-release, when releasing RC versions of the project on GitHub.
+- 在GitHub上发布项目的RC版本时，将release标签标记为预发布。
 
-## Update Overlays
+## 更新叠加层
 
-Update the following overlay projects to point to the newly released CAS version. You may need to move the current `master` branch over to a maintenance branch for each of the below overlay projects, specially if/when dealing with major/minor releases and if the release process here had you create a new branch.
+更新以下覆盖项目，以指向新发布的CAS版本。 对于下面的每个重叠项目，您可能需要将当前的 `主` 分支 移到维护分支，尤其是在处理主要/次要发行版 以及此处的发行过程中是否创建了新分支的情况下。
 
-- [CAS WAR Overlay](https://github.com/apereo/cas-overlay-template)
+- [CAS WAR叠加](https://github.com/apereo/cas-overlay-template)
 
-## Update Documentation
+## 更新文件
 
-<div class="alert alert-warning"><strong>Remember</strong><p>You should do this only for major or minor releases, when new branches are created.</p></div>
+<div class="alert alert-warning"><strong>记住</strong><p>创建新分支后，仅应针对主要版本或次要版本执行此操作。</p></div>
 
-- Configure docs to point `current` to the latest available version [here](https://github.com/apereo/cas/blob/gh-pages/current/index.html).
-- Configure docs to include the new release in the list of [available versions](https://github.com/apereo/cas/blob/gh-pages/_layouts/default.html).
-- [Update docs](https://github.com/apereo/cas/edit/gh-pages/Older-Versions.md/) and add the newly released version.
-- Update the project's [`README.md` page](https://github.com/apereo/cas/blob/master/README.md) to list the new version, if necessary.
-- Update [the build process](Build-Process.html) to include any needed information on how to build the new release.
-- Update [the release notes](../release_notes/Overview.html) and remove all previous entries.
+- 配置文档以将 `当前` 指向此处的最新可用版本 [](https://github.com/apereo/cas/blob/gh-pages/current/index.html)。
+- 配置文档以将新版本包括在 [可用版本](https://github.com/apereo/cas/blob/gh-pages/_layouts/default.html)。
+- [更新文档](https://github.com/apereo/cas/edit/gh-pages/Older-Versions.md/) 并添加新发布的版本。
+- 如有必要，更新项目的 [`README.md` 第](https://github.com/apereo/cas/blob/master/README.md) 页以列出新版本。
+- 将构建过程</a> 更新为
 
-## Update Maintenance Policy
+，以包含有关如何构建新发行版的任何所需信息。</li> 
+  
+  - 更新 [发行说明](../release_notes/Overview.html) 并删除所有以前的条目。</ul> 
 
-Update the [Maintenance Policy](https://github.com/apereo/cas/edit/gh-pages/developer/Maintenance-Policy.md/) to note the release schedule and EOL timeline. This task is only relevant when dealing with major or minor releases.
 
-## Update Demos
 
-(Optional) A number of CAS demos today run on Heroku and are tracked in dedicated branches inside the codebase. Take a pass and update each, when relevant.
+## 更新维护政策
+
+更新 [维护策略](https://github.com/apereo/cas/edit/gh-pages/developer/Maintenance-Policy.md/) 以记下发布时间表和EOL时间线。 仅当处理主要或次要版本时，此任务才有意义。
+
+
+
+## 更新演示
+
+（可选）如今，许多CAS演示都在Heroku上运行，并且在代码库内的 进行一次通行证，并在相关时进行更新。
