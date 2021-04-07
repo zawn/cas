@@ -1,34 +1,34 @@
 ---
-layout: default
-title: CAS - Password Policy Enforcement
-category: Authentication
+layout: 默认
+title: CAS-密码策略执行
+category: 验证
 ---
 
-# Password Policy Enforcement
+# 密码策略执行
 
-Password policy enforcement attempts to:
+密码策略实施尝试：
 
-- Detect a number of scenarios that would otherwise prevent user authentication based on user account status.
-- Warn users whose account status is near a configurable expiration date and redirect the flow to an external identity management system.
+- 根据用户帐户状态检测许多方案，这些方案原本会阻止用户身份验证。
+- 对帐户状态接近可配置的到期日期的用户发出警告，并将流重定向到外部身份管理系统。
 
 ## LDAP
 
-The below scenarios are by default considered errors preventing authentication in a generic manner through the normal CAS login flow. LPPE intercepts the authentication flow, detecting the above standard error codes. Error codes are then translated into proper messages in the CAS login flow and would allow the user to take proper action, fully explaining the nature of the problem.
+以下情况是通过防止在一个通用的方式通过认证默认视为错误 正常CAS登录流程。 LPPE截取身份验证流，检测上述标准错误代码。 错误代码随后在CAS登录流程中转换为正确的消息，并允许用户采取适当的措施， 完全说明了问题的性质。
 
-- `ACCOUNT_LOCKED`
-- `ACCOUNT_DISABLED`
+- `帐户被锁定`
+- `帐户已禁用`
 - `ACCOUNT_EXPIRED`
 - `INVALID_LOGON_HOURS`
 - `INVALID_WORKSTATION`
 - `PASSWORD_MUST_CHANGE`
 - `PASSWORD_EXPIRED`
 
-The translation of LDAP errors into CAS workflow is all handled by [ldaptive](http://www.ldaptive.org/docs/guide/authentication/accountstate). To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ldap-authentication).
+LDAP错误到CAS的翻译工作都是 的处理 [ldaptive](http://www.ldaptive.org/docs/guide/authentication/accountstate)。 要查看CAS属性的相关列表，请 [本指南](../configuration/Configuration-Properties.html#ldap-authentication)。
 
-### Account Expiration Notification
+### 帐户到期通知
 
-LPPE is also able to warn the user when the account is about to expire. The expiration policy is determined through pre-configured LDAP attributes with default values in place.
+当帐户即将到期时，LPPE也可以警告用户。 到期策略为 这是通过预先配置的LDAP属性确定的，并具有默认值。
 
 ## JDBC
 
-A certain number of database authentication schemes have limited support for detecting locked/disabled/etc accounts via column names that are defined in the CAS settings. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#database-authentication).
+某些数据库身份验证方案对通过CAS设置中定义的列名检测锁定/禁用/等帐户 要查看CAS属性的相关列表，请 [本指南](../configuration/Configuration-Properties.html#database-authentication)。
