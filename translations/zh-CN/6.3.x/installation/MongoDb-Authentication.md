@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - MongoDb Authentication
-category: Authentication
+layout: 默认
+title: CAS-MongoDb认证
+category: 验证
 ---
 
-# MongoDb Authentication
+# MongoDb验证
 
-Verify and authenticate credentials against a [MongoDb](https://www.mongodb.org/) instance. Support is enabled by including the following dependency in the WAR overlay:
+[MongoDb](https://www.mongodb.org/) 实例验证和认证凭据。 通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -16,15 +16,15 @@ Verify and authenticate credentials against a [MongoDb](https://www.mongodb.org/
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#mongodb-authentication).
+要查看CAS属性的相关列表，请 [本指南](../configuration/Configuration-Properties.html#mongodb-authentication)。
 
-Accounts are expected to be found as such in collections:
+可以在集合中找到这样的帐户：
 
 ```json
 {
-    "username": "casuser",
-    "password": "34598dfkjdjk3487jfdkh874395",
-    "first_name": "john",
-    "last_name": "smith"
+    “用户名”：“ casuser”，
+    “密码”：“ 34598dfkjdjk3487jfdkh874395”，
+    “ first_name”：“ john”，
+    “ last_name”：“ smith”
 }
 ```
