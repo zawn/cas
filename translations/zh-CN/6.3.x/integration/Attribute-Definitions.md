@@ -1,189 +1,190 @@
 ---
-layout: default
-title: CAS - Attribute Definitions
-category: Attributes
+layout: 违约
+title: CAS - 属性定义
+category: 属性
 ---
 
-# Attribute Definitions
+# 属性定义
 
-The definition of an attribute in CAS, when fetched and resolved from an authentication or attribute repository source, tends to be defined and referenced using its name without any additional *metadata* or decorations. For example, you may wish to retrieve a `uid` attribute and virtually rename and map it to a `userIdentifier` attribute either globally or for specific application integrations. For most use cases, this configuration works quite comfortably and yet, depending on the nature of the target application and the authentication protocol used to complete the integration, additional requirements could be imposed and may have to be specified to define an attribute with additional pointers, when shared and released with a relying party. For example, a SAML2 service provider may require a *scoped* attribute for an `eduPersonPrincipalName` whose value is always determined from the `uid` attribute with a special friendly-name that is always provided regardless of the target application.
+CAS 中属性的定义，当从身份验证或属性存储库源中提取和解决时，往往 定义，并使用其名称进行引用，而没有任何额外的 *元数据* 或装饰。 例如，您可能需要检索 `uid` 属性，并几乎 重命名并映射为 `用户标识符` 属性，无论是全球还是特定应用集成。 对于大多数使用案例，此配置 工作得相当舒适，但是，根据目标应用程序的性质和用于完成集成的认证协议，可以施加 附加要求，并且可能需要指定使用附加指点定义属性，当与 依赖方共享和发布时。 例如，SAML2 服务提供商可能需要一个 *范围的* 属性，用于 `eduPersonPrinal name` 其价值 始终由具有特殊友好名称的 `uid` 属性确定，无论目标应用程序如何，该属性始终提供。
 
-While bits and pieces of metadata about a given attribute can be defined either globally in CAS configuration settings or defined inside a service definition, an attribute definition store allows one to describe metadata about necessary attributes with special decorations to be considered during attribute resolution and release. The specification of the attribute definition store is entirely optional and the store may not contain any attribute definitions.
+虽然有关给定属性的元数据位和部分可以在 的 CAS 配置设置中在全球定义，也可以在服务定义中定义，但属性定义存储允许一个人描述有关必要属性的元数据， 在属性解析和发布过程中需要考虑特殊装饰。 属性定义存储的规格完全 可选，并且存储可能不包含任何属性定义。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#attribute-definitions).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#attribute-definitions)。
 
-## JSON Attribute Definitions
+## 杰森属性定义
 
-Attribute definitions may be defined inside a JSON file whose location is provided via CAS settings. The structure of the JSON file may match the following:
-
-```json 
-{
-    "@class" : "java.util.TreeMap",
-    "employeeId" : {
-      "@class" : "org.apereo.cas.authentication.attribute.DefaultAttributeDefinition",
-      "key" : "employeeId",
-      "scoped" : true,
-      "attribute" : "empl_identifier"
-    }
-}
-```
-
-Attribute definitions are specified using a `Map` whose key is the attribute name, as resolved by the CAS [attribute resolution engine](Attribute-Resolution.html). The attribute name as the key to the `Map` must match the `key` attribute of the attribute definition itself.
-
-The following settings can be specified by an attribute definition:
-
-| Name            | Description                                                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `key`           | Attribute name, as resolved by the CAS [attribute resolution engine](Attribute-Resolution.html)                                       |
-| `name`          | Attribute name to be used and shared with the target application during attribute release.                                            |
-| `scoped`        | (Optional) If `true`, the attribute value be scoped to the scope of the CAS server deployment defined in settings.                    |
-| `encrypted`     | (Optional) If `true`, the attribute value will be encrypted and encoded in base-64 using the service definition's defined public key. |
-| `attribute`     | (Optional) The source attribute to provide values for the attribute definition itself, replacing that of the original source.         |
-| `patternFormat` | (Optional) Template used in a `java.text.MessageFormat` to decorate the attribute values.                                             |
-| `script`        | (Optional) Groovy script, external or embedded to process and produce attributes values.                                              |
-
-The following operations in the order given should take place, if an attribute definition is to produce values:
-
-- Produce attribute values based on the `attribute` setting specified in the attribute definition, if any.
-- Produce attribute values based on the `script` setting specified in the attribute definition, if any.
-- Produce attribute values based on the `scoped` setting specified in the attribute definition, if any.
-- Produce attribute values based on the `patternFormat` setting specified in the attribute definition, if any.
-- Produce attribute values based on the `encrypted` setting specified in the attribute definition, if any.
-
-## Examples
-
-### Basic
-
-Define an attribute definition for `employeeId` to produce scoped attributes based on another attribute `empl_identifier` as the source:
+属性定义可在 JSON 文件中定义，该文件的位置通过 CAS 设置提供。 JSON 文件 的结构可能与以下情况相匹配：
 
 ```json 
-{
-    "@class" : "java.util.TreeMap",
-    "employeeId" : {
-      "@class" : "org.apereo.cas.authentication.attribute.DefaultAttributeDefinition",
-      "key" : "employeeId",
-      "scoped" : true,
-      "attribute" : "empl_identifier"
-    }
-}
+•
+    "@class"："爪哇。利用。树图"，
+    "员工id"：{
+      "@class"："org.apereo.cas.认证.属性.属性"，
+      "密钥"："员工ID"，
+      "范围"：真实、
+      "属性"："empl_identifier"
+    =
+
 ```
 
-Now that the definition is available globally, the attribute [can then be released](Attribute-Release-Policies.html) as usual with the following definition:
+属性定义使用 `映射` 其关键是属性名称，由 CAS [属性分辨率引擎](Attribute-Resolution.html)解决。 属性名称作为 `映射` 的键必须与属性定义本身的 `键` 属性匹配。
+
+属性定义可以指定以下设置：
+
+| 名字     | 描述                                                |
+| ------ | ------------------------------------------------- |
+| `钥匙`   | 属性名称，由 CAS [属性分辨率引擎](Attribute-Resolution.html)解决 |
+| `名字`   | 属性名称将在属性发布期间与目标应用程序使用和共享。                         |
+| `范围`   | （可选）如果 `真正的`，属性值将范围定位于设置中定义的 CAS 服务器部署范围。         |
+| `加密`   | （可选）如果 `真实`，则属性值将使用服务定义的公钥在 base-64 中加密和编码。       |
+| `属性`   | （可选）源属性为属性定义本身提供值，取代了原始源的值。                       |
+| `模式形式` | （可选） `java.text.消息表中使用的模板` 来装饰属性值。                |
+| `脚本`   | （可选）Groovy 脚本，外部或嵌入处理和生成属性值。                      |
+
+如果属性定义是为了生成值，则应按给出的顺序执行以下操作：
+
+- 根据属性定义中指定的 `属性` 设置生成属性值（如果有）。
+- 根据属性定义中指定的 `脚本` 设置生成属性值（如果有的话）。
+- 根据属性定义中指定的 `范围` 设置生成属性值（如果有）。
+- 根据属性定义中指定的 `模式` 设置生成属性值（如果有的话）。
+- 根据属性定义中指定的加密</code> 设置 `生成属性值（如果有）。</li>
+</ul>
+
+<h2 spaces-before="0">例子</h2>
+
+<h3 spaces-before="0">基本</h3>
+
+<p spaces-before="0">定义 <code>员工的属性定义id` 根据另一个属性 `empl_identifier` 作为来源 生成范围属性：</p>
+
+```json 
+•
+    "@class"："爪哇。利用。树图"，
+    "员工id"：{
+      "@class"："org.apereo.cas.认证.属性.属性"，
+      "密钥"："员工ID"，
+      "范围"：真实、
+      "属性"："empl_identifier"
+    =
+
+```
+
+现在，该定义已在全球可用，则属性 [可以像往常一样](Attribute-Release-Policies.html) 发布，定义如下：
 
 ```json
 ...
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "allowedAttributes" : [ "java.util.ArrayList", [ "employeeId" ] ]
-  }
+  "属性释放政策"： [
+    "@class"： "org. apereo. cas. 服务. 返回允许的属性释放政策"，
+    "允许属性"： [java. util. Arraylist"， [员工" ]
+  ]
 ...
 ```
 
-### Encrypted Attribute
+### 加密属性
 
-Same use case as above, except the attribute value will be encrypted and encoded using the service definition's public key:
+与上述使用案例相同，但属性值除外，将使用服务定义的公钥进行加密和编码：
 
 ```json 
-{
-    "@class" : "java.util.TreeMap",
-    "employeeId" : {
-      "@class" : "org.apereo.cas.authentication.attribute.DefaultAttributeDefinition",
-      "key" : "employeeId",
-      "encrypted" : true,
-      "attribute" : "empl_identifier"
-    }
-}
+•
+    "@class"："爪哇。利用。树图"，
+    "员工id"：{
+      "@class"："org.apereo.cas.认证.属性"，
+      "密钥"："员工ID"，
+      "加密"：真实、
+      "属性"："empl_identifier"
+    =
+
 ```
 
-The service definition should have specified a public key definition:
+服务定义应指定一个公共关键定义：
 
 ```json
 ...
-  "publicKey" : {
-    "@class" : "org.apereo.cas.services.RegisteredServicePublicKeyImpl",
-    "location" : "classpath:public.key",
-    "algorithm" : "RSA"
-  }
-...
+  "公共钥匙"：{
+    "@class"："org.apereo.cas.服务.注册服务"，
+    "位置"："类路径：公共.key"，
+    "算法"："RSA"
+  =
+。。。
 ```
 
-The keys can be generated via the following commands:
+密钥可以通过以下命令生成：
 
 ```bash
-openssl genrsa -out private.key 1024
-openssl rsa -pubout -in private.key -out public.key -inform PEM -outform DER
-openssl pkcs8 -topk8 -inform PER -outform DER -nocrypt -in private.key -out private.p8
+打开斯尔根萨 - 出私人.key 1024
+打开斯尔 rsa - 酒吧 - 在私人.key - 出公共.key - 通知 Pem - 超越 Der
+打开 pkcs8 - topk8 - 通知每 - 通知佩尔 - 诺克里普特 - 在私人.key - 出私人. p8
 ```
 
-### Pattern Formats
+### 模式格式
 
-Define an attribute definition to produce values based on a pattern format:
+定义属性定义，以根据模式格式生成值：
 
 ```json 
-{
-    "@class" : "java.util.TreeMap",
-    "eduPersonPrincipalName" : {
-      "@class" : "org.apereo.cas.authentication.attribute.DefaultAttributeDefinition",
-      "key" : "eduPersonPrincipalName",
-      "name" : "urn:oid:1.3.6.1.4.1.5923.1.1.1.6",
-      "friendlyName" : "eduPersonPrincipalName",
-      "scoped" : true,
-      "patternFormat": "hello,{0}",
-      "attribute" : "uid"
+•
+    "@class"： "java. util. treemap"，
+    "爱德华森原则名"： [
+      "@class"： "org. apereo. cas. 认证. 属性. 默认属性定义"，
+      "钥匙"："爱德华人原则名称"，
+      "姓名"："urn：oid：1.3.6.1.4.1.5923.1.1.1.6"，
+      "友好姓名"："爱德华人姓名"，
+      "范围"：真实，
+      "模式形式"："你好，{0}"，
+      "属性"："uid"
     }
 }
 ```
 
-If the resolved set of attributes are `uid=[test1, test2]` and the CAS server has a scope of `example.org`, the final values of `eduPersonPrincipalName` would be [`hello,test1@example.org`,`hello,test2@example.org`] released as `urn:oid:1.3.6.1.4.1.5923.1.1.1.6` with a friendly name of `eduPersonPrincipalName`.
+如果已解决的属性集 `uid=[测试1， test2]` 和CAS服务器具有 `example.org`的范围， `爱德华个人主名` 的最终值将是[`hello,test1@example.org`，`hello,test2@example.org`] 发布为 `u oid：1.3.6.1.4.1.5923.1.1.1.6` 友好名称 `爱德华·佩尔森`。
 
-### Embedded Script
+### 嵌入式脚本
 
-Same use case as above, except the attribute value be additional processed by an embedded Groovy script
+与上述使用案例相同，但属性值除外，由嵌入式 Groovy 脚本进行附加处理
 
 ```json 
-{
-    "@class" : "java.util.TreeMap",
-    "eduPersonPrincipalName" : {
-      "@class" : "org.apereo.cas.authentication.attribute.DefaultAttributeDefinition",
-      "key" : "eduPersonPrincipalName",
-      "name" : "urn:oid:1.3.6.1.4.1.5923.1.1.1.6",
-      "friendlyName" : "eduPersonPrincipalName",
-      "scoped" : true,
-      "script": " groovy { logger.info(\" name: ${attributeName}, values: ${attributeValues} \"); return ['hello', 'world'] } "
-    }
+•
+    "@class"： "java. util. treemap"，
+    "爱德华个人原则名"： [
+      "@class"： "org. apereo. cas. 认证. 属性. 默认属性定义"，
+      "键"："eduPerson原则名称"，
+      "名称"："urn：oid：1.3.6.1.4.1.5923.1.1.1.6"，
+      "友好名称"："eduPerson原则名称"，
+      "范围"：真实，
+      "脚本"："凹凸不清{logger.info（\"名称： ${attributeName}，价值观： ${attributeValues} "）;返回['你好'，'世界']]]"
+    [
+]
+```
+
+如果 CAS 服务器具有 `example.org`范围，则 `eduPerson 主名` 的最终值将是 [`hello@example.org`、 `world@example.org`] 以 `骨灰盒：oid 发布 ：1.3.6.1.4.1.5923.1.1.1.6` ，友好名称为 `爱德华·佩尔森`。
+
+### 外部脚本
+
+与上述使用案例相同，但属性值除外，则由外部 Groovy 脚本进行附加处理：
+
+```json 
+•
+    "@class"： "java. util. treemap"，
+    "爱德华个人原则名"： [
+      "@class"： "org. apereo. cas. 认证. 属性. 默认属性定义"，
+      "键"："爱德华人原则名称"，
+      "名称"："urn：oid：1.3.6.1.4.1.5923.1.1.1.6"，
+      "友好名称"："教育个人主名"，
+      "范围"：真实，
+      "脚本"："文件：/属性定义。groovy"
+    =
 }
 ```
 
-If the CAS server has a scope of `example.org`, the final values of `eduPersonPrincipalName` would be [`hello@example.org`, `world@example.org`] released as `urn:oid:1.3.6.1.4.1.5923.1.1.1.6` with a friendly name of `eduPersonPrincipalName`.
-
-### External Script
-
-Same use case as above, except the attribute value be additionally processed by an external Groovy script:
-
-```json 
-{
-    "@class" : "java.util.TreeMap",
-    "eduPersonPrincipalName" : {
-      "@class" : "org.apereo.cas.authentication.attribute.DefaultAttributeDefinition",
-      "key" : "eduPersonPrincipalName",
-      "name" : "urn:oid:1.3.6.1.4.1.5923.1.1.1.6",
-      "friendlyName" : "eduPersonPrincipalName",
-      "scoped" : true,
-      "script": "file:/attribute-definitions.groovy"
-    }
-}
-```
-
-The outline of the Groovy script should be defined as:
+Groovy 脚本的大纲应定义为：
 
 ```groovy
-def run(Object[] args) {
-    def attributeName = args[0]
-    def attributeValues = args[1]
-    def logger = args[2]
-    logger.info("name: ${attributeName}, values: ${attributeValues}")
-    return ["casuser", "groovy"]
+def运行（对象[]args）{
+    def属性名称=args[0]
+    d值=args[1]
+    def记录器=args[2]
+    logger.info（"名称： ${attributeName}，值： ${attributeValues}"）
+    返回["卡苏瑟"，"凹槽"]
 }
 ```
 
-If the CAS server has a scope of `example.org`, the final values of `eduPersonPrincipalName` would be [`casuser@example.org`, `groovy@example.org`] released as `urn:oid:1.3.6.1.4.1.5923.1.1.1.6` with a friendly name of `eduPersonPrincipalName`.
+如果 CAS 服务器具有 `example.org`的范围，则 `eduPerson 主名` 的最终值将是 [`casuser@example.org`、 `groovy@example.org`] 发布为 `骨灰盒：oid： 1.3.6.1.4.1.5923.1.1.1.6` ，友好名称为 `教名`。
