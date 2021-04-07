@@ -1,38 +1,38 @@
 ---
-layout: default
-title: CAS - InMemory Service Registry
-category: Services
+layout: 默认
+title: CAS-InMemory服务注册表
+category: 服务
 ---
 
-# InMemory Service Registry
+# InMemory服务注册表
 
-This is an in-memory services management tool seeded from registration beans wired via Spring beans.
+这是一个内存中的服务管理工具，该工具源于通过Spring Bean连线的注册Bean。
 
 ```java
-@Configuration("myConfiguration")
-public class MyConfiguration {
+@Configuration（“ myConfiguration”）
+公共类MyConfiguration {
 
   @Bean
-  public List inMemoryRegisteredServices() {
-      final List services = new ArrayList<>();
-      final RegexRegisteredService service = new RegexRegisteredService();
-      ...
-      services.add(service);
-      return services;
+  公共列表inMemoryRegisteredServices（）{
+      最终列表服务=新的ArrayList<>（）;
+      最后的RegexRegisteredService服务=新的RegexRegisteredService（）;
+...
+      services.add（service）;
+      退货服务；
   }
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[请参阅本指南](../configuration/Configuration-Management-Extensions.html) 以了解有关如何将配置注册到CAS运行时的更多信息。
 
-Given registered services are injected into the context as Spring bean definitions, you will need to consult the project's javadocs to learn more about the CAS service API, and how to inject various other components into the service definition. 
+给定注册的服务作为Spring bean定义注入到上下文中，您将需要查阅项目的javadocs 以了解有关CAS服务API的更多信息，以及如何将各种其他组件注入服务定义。 
 
-<div class="alert alert-info"><strong>Caveat</strong><p>
-This component is <strong>NOT</strong> suitable for use with the service management webapp since it does not persist data.
-On the other hand, it is perfectly acceptable for deployments where the hard-coded configuration is authoritative and good-enough for
-service registry data and the UI will not be used where there only exist a handful of applications integrated with CAS.
+<div class="alert alert-info"><strong>警告</strong><p>
+此组件是 <strong>NOT</strong> ，因为它不保留数据，因此适合与服务管理Webapp一起使用。
+另一方面，对于硬编码配置具有权威性且足以满足
+服务注册表数据的部署，如果仅存在少量与CAS集成的应用程序，则将不使用UI，这是完全可以接受的。
 </p></div>
 
-## Auto Initialization
+## 自动初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+在启动和配置允许的情况下，注册表可以根据CAS可用的默认JSON服务定义自动进行初始化。 有关更多信息，请参见 [本指南](AutoInitialization-Service-Management.html)
