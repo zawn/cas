@@ -1,68 +1,68 @@
 ---
-layout: default
-title: CAS - Audit Configuration
-category: Logs & Audits
+layout: 默认
+title: CAS-审核配置
+category: 记录 & 审核
 ---
 
-# Audits
+# 稽核
 
-CAS uses the [Inspektr framework](https://github.com/apereo/inspektr) for auditing purposes and statistics. The Inspektr project allows for non-intrusive auditing and logging of the coarse-grained execution paths e.g. Spring-managed beans method executions by using annotations and Spring-managed `@Aspect`-style aspects.
+CAS使用 [Inspektr框架](https://github.com/apereo/inspektr) 进行审计 和统计。 和Spring管理的 `@Aspect`样式方面 粗粒度的执行路径进行非侵入式审核和日志记录，例如Spring管理的bean方法执行。
 
-CAS server auto-configures all the relevant Inspektr components.   All the available configuration options that are injected to Inspektr classes are available to deployers via relevant CAS properties. Note that the audit record management functionality of CAS supports handling multiple audit record destinations at the same time. In other words, you may choose to route audit records to both a database and a REST endpoint as well as any number of logger-based destinations all at the same time.
+CAS服务器自动配置所有相关的Inspektr组件。   注入到Inspektr类的所有可用配置选项都可以通过相关的CAS属性提供给部署者。 请注意，CAS的审核记录管理功能支持同时处理多个审核记录目标。 换句话说，您可以选择将审核记录同时路由到数据库和REST端点以及任意数量的基于记录器的目的地。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#audits).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#audits)。
 
-## Administrative Endpoints
+## 行政端点
 
-The following endpoints are provided by CAS:
+CAS提供了以下端点：
 
-| Endpoint   | Description                                          |
-| ---------- | ---------------------------------------------------- |
-| `auditLog` | Provides a JSON representation of all the audit log. |
+| 终点         | 描述                 |
+| ---------- | ------------------ |
+| `auditLog` | 提供所有审核日志的JSON表示形式。 |
 
-You can specify an interval of log entries to return by adding a Duration Syntax to the navigated path. This interval will be subtracted from the current date and time when the query is executed. For instance `/actuator/auditLog/PT1H` will return only entries for the past hour.
+您可以通过向导航路径添加持续时间语法来指定要返回的日志条目的间隔。 执行查询时， 期和时间中减去此时间间隔。 例如， `/ actuator / auditLog / PT1H` 将仅返回过去一小时的条目。
 
-The actuator endpoint can also accept a JSON object through a POST method containing criteria to filter log entries by.
+执行器端点还可以通过POST方法接受JSON对象，该方法包含过滤日志条目所依据的条件。
 
-The following filters that can be applied:
+可以应用以下过滤器：
 
-| Key                  | Value                                              |
+| 钥匙                   | 价值                                                 |
 | -------------------- | -------------------------------------------------- |
-| `interval`           | `PT1H`, `PT10M`, `P1D`                             |
-| `actionPerformed`    | `TICKET_GRANTING_TICKET_CREATED`, `SERVICE_TICK.*` |
-| `clientIpAddress`    | `111.111.111.111`, `111.111.*`                     |
-| `username`           | `casuser`, `cas.*`                                 |
-| `resourceOperatedOn` | `ST-1.*`, `TGT-1-.*`                               |
+| `间隔`                 | `PT1H`， `PT10M`， `P1D`                             |
+| `动作已执行`              | `TICKET_GRANTING_TICKET_CREATED`， `SERVICE_TICK。*` |
+| `clientIpAddress`    | `111.111.111.111`， `111.111。*`                     |
+| `用户名`                | `箱`箱， `箱*`                                         |
+| `resourceOperatedOn` | `ST-1 *。`， `TGT-1 - *`                             |
 
-Each filter other than `interval` can accept a regular expression to match against.
+`间隔` 以外的每个过滤器都可以接受要匹配的正则表达式。
 
-## File-based Audits
+## 基于文件的审核
 
-File-based audit logs appear in a `cas_audit.log` file defined in the [Logging](../logging/Logging.html) configuration. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#audits).
+基于文件的审核日志显示在 [Logging](../logging/Logging.html) 配置中 `cas_audit.log` 文件中。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#audits)。
 
-### Sample Log Output
+### 样本日志输出
 
 ```bash
-WHO: org.apereo.cas.support.oauth.authentication.principal.OAuthCredentials@6cd7c975
-WHAT: supplied credentials: org.apereo.cas.support.oauth.authentication.principal.OAuthCredentials@6cd7c975
-ACTION: AUTHENTICATION_SUCCESS
-APPLICATION: CAS
-WHEN: Mon Aug 26 12:35:59 IST 2013
-CLIENT IP ADDRESS: 172.16.5.181
-SERVER IP ADDRESS: 192.168.200.22
+WHO：org.apereo.cas.support.oauth.authentication.principal.OAuthCredentials@6cd7c975
+：提供的凭据：org.apereo.cas.support.oauth.authentication.principal.OAuthCredentials@6cd7c975
+操作：AUTHENTICATION_SUCCESS
+应用程序：CAS
+时间：IST 2013年8月26日星期一12:35:59
+客户IP地址：172.16.5.181
+服务器IP地址：192.168.200.22
 
-WHO: org.apereo.cas.support.oauth.authentication.principal.OAuthCredentials@6cd7c975
-WHAT: TGT-9-qj2jZKQUmu1gQvXNf7tXQOJPOtROvOuvYAxybhZiVrdZ6pCUwW-cas01.example.org
-ACTION: TICKET_GRANTING_TICKET_CREATED
-APPLICATION: CAS
-WHEN: Mon Aug 26 12:35:59 IST 2013
-CLIENT IP ADDRESS: 172.16.5.181
-SERVER IP ADDRESS: 192.168.200.22
+WHO：org.apereo.cas.support.oauth.authentication.principal.OAuthCredentials@6cd7c975
+内容：TGT-9-qj2jZKQUmu1gQvXNf7tXQOJPOtROvOuvYAxybhZiVrdZ6pCUwW-cas01.example.org
+操作：TICKET_GRANTING_TICKET_CREATED
+应用程序：CAS
+时机：IP 8月26日12:35:59 DDR ESS ESS 2013年
+月18日：IP地址：ADDRESS DDR2地址：ADDRESS
+服务器地址：ADDR 26 12:35:59 IST 2013 11 CLI。
 ```
 
-## Database Audits
+## 数据库审核
 
-If you intend to use a database for auditing functionality, enable the following module in your configuration:
+如果打算将数据库用于审核功能，请在配置中启用以下模块：
 
 ```xml
 <dependency>
@@ -72,11 +72,11 @@ If you intend to use a database for auditing functionality, enable the following
 </dependency>
 ```
 
-To learn how to configure database drivers, please [review this guide](JDBC-Drivers.html). To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#database-audits).
+要了解如何配置数据库驱动程序，请 [本指南](JDBC-Drivers.html)。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#database-audits)。
 
-## MongoDb Audits
+## MongoDb审核
 
-If you intend to use a MongoDb database for auditing functionality, enable the following module in your configuration:
+如果打算将MongoDb数据库用于审核功能，请在配置中启用以下模块：
 
 ```xml
 <dependency>
@@ -86,11 +86,11 @@ If you intend to use a MongoDb database for auditing functionality, enable the f
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#mongodb-audits).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#mongodb-audits)。
 
-## Redis Audits
+## Redis审核
 
-If you intend to use a Redis database for auditing functionality, enable the following module in your configuration:
+如果打算将Redis数据库用于审核功能，请在配置中启用以下模块：
 
 ```xml
 <dependency>
@@ -100,11 +100,11 @@ If you intend to use a Redis database for auditing functionality, enable the fol
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#redis-audits).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#redis-audits)。
 
-## CouchDb Audits
+## CouchDb审核
 
-If you intend to use a CouchDb database for auditing functionality, enable the following module in your configuration:
+如果打算将CouchDb数据库用于审核功能，请在配置中启用以下模块：
 
 ```xml
 <dependency>
@@ -114,11 +114,11 @@ If you intend to use a CouchDb database for auditing functionality, enable the f
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchdb-audits).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchdb-audits)。
 
-## Couchbase Audits
+## Couchbase审核
 
-If you intend to use a Couchbase database for auditing functionality, enable the following module in your configuration:
+如果打算将Couchbase数据库用于审核功能，请在配置中启用以下模块：
 
 ```xml
 <dependency>
@@ -128,11 +128,11 @@ If you intend to use a Couchbase database for auditing functionality, enable the
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchbase-audits).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchbase-audits)。
 
-## DynamoDb Audits
+## DynamoDb审核
 
-If you intend to use a DynamoDb database for auditing functionality, enable the following module in your configuration:
+如果打算将DynamoDb数据库用于审核功能，请在配置中启用以下模块：
 
 ```xml
 <dependency>
@@ -142,11 +142,11 @@ If you intend to use a DynamoDb database for auditing functionality, enable the 
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#dynamodb-audits).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#dynamodb-audits)。
 
-## REST Audits
+## REST审核
 
-Audit events may also be `POST`ed to an endpoint of your choosing. To activate this feature, enable the following module in your configuration:
+审计事件也可能是您选择的端点的 `POST` 要激活此功能，请在您的配置中启用以下模块：
 
 ```xml
 <dependency>
@@ -156,38 +156,38 @@ Audit events may also be `POST`ed to an endpoint of your choosing. To activate t
 </dependency>
 ```
 
-The body of the HTTP request is a JSON representation of the audit record. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#rest-audits).
+HTTP请求的主体是审核记录的JSON表示形式。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#rest-audits)。
 
-## Audit Events
+## 审核事件
 
-The following events are tracked and recorded in the audit log:
+在审核日志中跟踪并记录了以下事件：
 
-| Event                                               | Action                                |
+| 事件                                                  | 行动                                    |
 | --------------------------------------------------- | ------------------------------------- |
-| `TICKET_GRANTING_TICKET`                            | `CREATED`, `NOT_CREATED`, `DESTROYED` |
-| `PROXY_GRANTING_TICKET`                             | `CREATED`, `NOT_CREATED`, `DESTROYED` |
-| `SERVICE_TICKET`                                    | `CREATED`, `NOT_CREATED`              |
-| `PROXY_TICKET`                                      | `CREATED`, `NOT_CREATED`              |
-| `AUTHENTICATION`                                    | `SUCCESS`, `FAILED`                   |
-| `AUTHENTICATION_EVENT`                              | `TRIGGERED`                           |
-| `AUP_VERIFY`                                        | `TRIGGERED`                           |
-| `AUP_SUBMIT`                                        | `TRIGGERED`                           |
-| `EVALUATE_RISKY_AUTHENTICATION`                     | N/A                                   |
-| `MITIGATE_RISKY_AUTHENTICATION`                     | N/A                                   |
-| `MULTIFACTOR_AUTHENTICATION_BYPASS`                 | N/A                                   |
-| `SAVE_SERVICE`                                      | `SUCCESS`, `FAILURE`                  |
-| `SAVE_CONSENT`                                      | `SUCCESS`, `FAILURE`                  |
-| `CHANGE_PASSWORD`                                   | `SUCCESS`, `FAILURE`                  |
-| `DELETE_SERVICE`                                    | `SUCCESS`, `FAILURE`                  |
-| `SAML2_RESPONSE`                                    | `CREATED`, `FAILED`                   |
-| `SAML2_REQUEST`                                     | `CREATED`, `FAILED`                   |
-| `OAUTH2_USER_PROFILE`                               | `CREATED`, `FAILED`                   |
-| `OAUTH2_ACCESS_TOKEN_REQUEST`                       | `CREATED`, `FAILED`                   |
-| `OAUTH2_ACCESS_TOKEN_RESPONSE`                      | `CREATED`, `FAILED`                   |
-| `OAUTH2_CODE_RESPONSE`                              | `CREATED`, `FAILED`                   |
-| `REST_API_TICKET_GRANTING_TICKET`                   | `CREATED`, `FAILED`                   |
-| `REST_API_SERVICE_TICKET`                           | `CREATED`, `FAILED`                   |
-| `SERVICE_ACCESS_ENFORCEMENT`                        | `TRIGGERED`                           |
-| `DELEGATED_CLIENT`                                  | `SUCCESS`, `FAILURE`                  |
-| `SURROGATE_AUTHENTICATION_ELIGIBILITY_VERIFICATION` | `TRIGGERED`                           |
-| `SURROGATE_AUTHENTICATION_ELIGIBILITY_SELECTION`    | `TRIGGERED`                           |
+| `TICKET_GRANTING_TICKET`                            | `CREATED`， `NOT_CREATED`， `DESTROYED` |
+| `PROXY_GRANTING_TICKET`                             | `CREATED`， `NOT_CREATED`， `DESTROYED` |
+| `SERVICE_TICKET`                                    | `CREATED`， `NOT_CREATED`              |
+| `PROXY_TICKET`                                      | `CREATED`， `NOT_CREATED`              |
+| `验证`                                                | `SUCCESS`， `FAILED`                   |
+| `AUTHENTICATION_EVENT`                              | `已触发`                                 |
+| `AUP_VERIFY`                                        | `已触发`                                 |
+| `AUP_SUBMIT`                                        | `已触发`                                 |
+| `EVALUATE_RISKY_AUTHENTICATION`                     | 不适用                                   |
+| `MITIGATE_RISKY_AUTHENTICATION`                     | 不适用                                   |
+| `MULTIFACTOR_AUTHENTICATION_BYPASS`                 | 不适用                                   |
+| `SAVE_SERVICE`                                      | `SUCCESS`， `FAILURE`                  |
+| `SAVE_CONSENT`                                      | `SUCCESS`， `FAILURE`                  |
+| `更改密码`                                              | `SUCCESS`， `FAILURE`                  |
+| `DELETE_SERVICE`                                    | `SUCCESS`， `FAILURE`                  |
+| `SAML2_RESPONSE`                                    | `CREATED`， `FAILED`                   |
+| `SAML2_REQUEST`                                     | `CREATED`， `FAILED`                   |
+| `OAUTH2_USER_PROFILE`                               | `CREATED`， `FAILED`                   |
+| `OAUTH2_ACCESS_TOKEN_REQUEST`                       | `CREATED`， `FAILED`                   |
+| `OAUTH2_ACCESS_TOKEN_RESPONSE`                      | `CREATED`， `FAILED`                   |
+| `OAUTH2_CODE_RESPONSE`                              | `CREATED`， `FAILED`                   |
+| `REST_API_TICKET_GRANTING_TICKET`                   | `CREATED`， `FAILED`                   |
+| `REST_API_SERVICE_TICKET`                           | `CREATED`， `FAILED`                   |
+| `SERVICE_ACCESS_ENFORCEMENT`                        | `已触发`                                 |
+| `DELEGATED_CLIENT`                                  | `SUCCESS`， `FAILURE`                  |
+| `SURROGATE_AUTHENTICATION_ELIGIBILITY_VERIFICATION` | `已触发`                                 |
+| `SURROGATE_AUTHENTICATION_ELIGIBILITY_SELECTION`    | `已触发`                                 |
