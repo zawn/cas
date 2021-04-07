@@ -1,51 +1,51 @@
 ---
-layout: default
-title: CAS - Logout & Single Logout
+layout: 默认
+title: CAS-注销 & 单次注销
 category: SSO & SLO
 ---
 
-# Logout and Single Logout (SLO)
+# 注销和单次注销（SLO）
 
-There are potentially many active application sessions during a CAS single sign-on session, and the distinction between logout and single logout is based on the number of sessions that are ended upon a _logout_ operation.
+CAS单点登录会话期间可能有许多活动的应用程序会话，并且 注销和单注销 _注销_ 操作结束的会话数。
 
-<div class="alert alert-info"><strong>Protocol Support</strong><p>Note that SLO described here specifically deals with the semantics of the CAS protocol. All other available protocols in CAS may offer and behave differently when it comes to handling, receiving and publishing logout requests whether CAS is acting as an identity provider or service provider. SLO support for each protocol implementation may vary and you should always verify the extent of available functionality for each protocol implementation.</p></div>
+<div class="alert alert-info"><strong>协议支持</strong><p>请注意，此处描述的SLO特别处理CAS协议的语义。 无论是CAS作为身份提供者还是服务提供者，在处理，接收和发布注销请求时，CAS中的所有其他可用协议都可能会提供不同的服务并表现不同的行为。 SLO对每种协议实现的支持可能会有所不同，您应始终验证每种协议实现的可用功能范围。</p></div>
 
-The scope of logout is determined by where the action takes place:
+注销的范围由操作发生的位置决定：
 
-1. Application logout - ends a single application session
-2. CAS logout - ends the CAS SSO session
+1. 应用程序注销-结束单个应用程序会话
+2. CAS注销-结束CAS SSO会话
 
-Note that the logout action in each case has no effect on the other in the simple case. Ending an application session does not end the CAS session and ending the CAS session does not affect application sessions. This is a common cause of confusion for new users and deployers of an SSO system.
+请注意，在简单情况下，注销操作在每种情况下都不会对其他情况产生影响。 结束应用程序会话 不会结束CAS会话，并且结束CAS会话不会影响应用程序会话。 对于SSO系统的新用户和部署者，这是造成
 
-The single logout support in CAS attempts to reconcile the disparity between CAS logout and application logout. When CAS is configured for SLO, it attempts to send logout messages to every application that requested authentication to CAS during the SSO session. While this is a best-effort process, in many cases it works well and provides a consistent user experience by creating symmetry between login and logout.
+CAS中的单一注销支持尝试调和CAS注销和应用程序注销之间的差异。 CAS时，它将尝试在SSO会话期间 CAS进行身份验证的应用程序发送注销消息。 尽管这是尽力而为的过程，但在许多情况下，它都能很好地发挥作用，并且通过在登录和注销之间建立对称性来 
 
-<div class="alert alert-info"><strong>SSO Sessions</strong><p>It is possible to review the current collection of active SSO sessions,
-and determine if CAS itself maintains an active SSO session via the <a href="../monitoring/Monitoring-Statistics.html">CAS administration panels.</a></p></div>
+<div class="alert alert-info"><strong>SSO会议</strong><p>可以查看当前活动SSO会话的集合
+ <a href="../monitoring/Monitoring-Statistics.html">CAS管理面板确定CAS本身是否维护活动SSO会话。</a></p></div>
 
-## CAS Logout
+## CAS注销
 
-Per the [CAS Protocol](../protocol/CAS-Protocol.html), the `/logout` endpoint is responsible for destroying the current SSO session. Upon logout, it may also be desirable to redirect back to a service. This is controlled via specifying the redirect link via the `service` parameter. The specified `service` must be registered in the service registry of CAS and enabled and CAS must be allowed to follow service redirects.
+每 [CAS协议](../protocol/CAS-Protocol.html)中， `/注销` 端点是负责销毁当前SSO会话。 注销后，也可能需要重定向回服务。 这是 `service` 参数 链接来控制的。 指定的 `服务` 必须在CAS的服务注册表中注册并启用，并且 CAS必须被允许遵循服务重定向。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#logout).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#logout)。
 
-## Single Logout (SLO)
+## 单一登出（SLO）
 
-CAS is designed to support single sign out: it means that it will be able to invalidate client application sessions in addition to its own SSO session.  
-Whenever a ticket-granting ticket is explicitly expired, the logout protocol will be initiated. Clients that do not support the logout protocol may notice extra requests in their access logs that appear not to do anything.
+CAS旨在支持单点注销：这意味着除了其自己的SSO会话之外，它将能够使客户端应用程序会话无效。  
+每当授予票证的票证明确到期时，都会启动注销协议。 不支持 注销协议的客户端可能会在其访问日志中注意到额外的请求，这些请求似乎没有任何作用。
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>Single Logout is turned on by default.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>默认情况下，“单一注销”处于打开状态。</p></div>
 
-When a CAS session ends, it notifies each of the services that the SSO session is no longer valid, and that relying parties need to invalidate their own session. Remember that the callback submitted to each CAS-protected application is a notification; nothing more. It is the **responsibility of the application** to intercept that notification and properly destroy the user authentication session, either manually, via a specific endpoint or more commonly via a CAS client library that supports SLO.
+当CAS会话结束时，它将通知每个服务SSO会话不再有效，并且依赖方 需要使自己的会话无效。 请记住，提交给每个受CAS保护的应用程序的回调为 是一个通知；而已。 </strong> 负责拦截该通知，并正确地 破坏用户身份验证会话，这是 **责任，这既可以通过特定端点手动进行，也可以通过支持SLO的CAS客户端库更常见地进行。</p>
 
-Also note that since SLO is a global event, all applications that have an authentication record with CAS will by default be contacted, and this may disrupt user experience negatively if those applications are individually distinct from each other. As an example, if user has logged into a portal application and an email application, logging out of one through SLO will also destroy the user session in the other which could mean data loss if the application is not carefully managing its session and user activity.
+还要注意，由于SLO是一个全球性的活动，即有CAS认证记录所有的应用程序在默认情况下是 联系，如果这些应用程序是彼此独立不同，这可能不利破坏用户体验。 举个例子，如果用户已经登录到门户应用程序和电子邮件应用程序，通过SLO记录一出将 还破坏其他用户会话这可能意味着数据丢失，如果应用没有谨慎地管理其会话和用户活动。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#single-logout).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#single-logout)。
 
-### Back Channel
+### 后通道
 
-CAS sends an HTTP POST message directly to the service. This is the traditional way of performing notification to the service.
+CAS将HTTP POST消息直接发送到服务。 这是对服务执行通知的传统方式。
 
-A sample back channel SLO message:
+样本反向通道SLO消息：
 
 ```xml
 <samlp:LogoutRequest
@@ -54,86 +54,86 @@ A sample back channel SLO message:
     ID="[RANDOM ID]"
     Version="2.0"
     IssueInstant="[CURRENT DATE/TIME]">
-    <saml:NameID>@NOT_USED@</saml:NameID>
-    <samlp:SessionIndex>[SESSION IDENTIFIER]</samlp:SessionIndex>
+    <saml:NameID>@ NOT_USED @</saml:NameID>
+    <samlp:SessionIndex>[会议标识符]</samlp:SessionIndex>
 </samlp:LogoutRequest>
 ```
 
-### Front Channel
+### 前通道
 
-CAS issues asynchronous AJAX `GET` logout requests via `JSONP` to authenticated services. The expected behaviour of the CAS client is to invalidate the application web session.
+`JSONP` 向已认证的服务发出异步AJAX `GET` 注销请求。 CAS客户端的预期行为是使应用程序Web会话无效。
 
-<div class="alert alert-warning"><strong>Usage Warning</strong><p>Front channel logout may not be available for all CAS clients. Ensure your CAS client does support this behavior before trying it out.</p></div>
+<div class="alert alert-warning"><strong>使用警告</strong><p>前通道注销可能不适用于所有CAS客户端。 在尝试之前，请确保您的CAS客户端确实支持此行为。</p></div>
 
-A sample front channel SLO request submitted by CAS resembles the following format:
+CAS提交的示例前通道SLO请求类似于以下格式：
 
 ```
-curl 'https://service.url?callback=jQuery112409319555380089843_1509437967792&logoutRequest=[BASE64 encoded request]&_=1509437967793'
+curl'https：//service.url？callback = jQuery11240931955555589089843_1509437967792&logoutRequest = [BASE64编码的请求]&_ = 1509437967793'
 ```
 
-## SLO Requests
+## SLO要求
 
-The way the notification is done (_back_ or _front_ channel) is configured at a service level through the `logoutType` property. This value is set to `LogoutType.BACK_CHANNEL` by default. The message is delivered or the redirection is sent to the URL presented in the _service_ parameter of the original CAS protocol ticket request.
+通过 `logoutType` 属性在服务级别 配置完成通知的方式（_后_ 或 _前_ 默认情况下，此值设置为 `LogoutType.BACK_CHANNEL` 消息已 或将重定向发送到原始CAS协议票证请求 _service_
 
-The session identifier is the CAS service ticket ID that was provided to the service when it originally authenticated to CAS. The session identifier is used to correlate a CAS session with an application session; for example, the SLO session identifier maps to a servlet session that can subsequently be destroyed to terminate the application session.
+会话标识符是最初向CAS 时提供给服务的CAS服务凭单ID。 会话标识符用于将CAS会话与应用程序会话相关联；例如，SLO 会话标识符映射到一个Servlet会话，该Servlet会话随后可以被销毁以终止应用程序会话。
 
-### Turning Off Single Logout
+### 关闭单一登出
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#single-logout).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#single-logout)。
 
-### Redirecting Logout to Service
+### 将注销重定向到服务
 
-Logout requests may be optionally routed to an external URL bypassing the CAS logout screen. In order to to do you will need to specify the target destination typically in form of a `service` parameter to the CAS logout endpoint per the [CAS protocol specification](../protocol/CAS-Protocol-Specification.html).
+注销请求可以选择绕过CAS注销屏幕，路由到外部URL。 为此，通常需要 [CAS协议规范](../protocol/CAS-Protocol-Specification.html)为CAS注销端点 `服务` 参数的形式指定目标目的地。
 
-### Single Logout Per Service
+### 每项服务单次登出
 
-Registered applications with CAS have the option to control single logout behavior individually via the [Service Management](../services/Service-Management.html) component. Each registered service in the service registry will include configuration that describes how to the logout request should be submitted. This behavior is controlled via the `logoutType` property which allows to specify whether the logout request should be submitted via back/front channel or turned off for this application.
+通过CAS注册的应用程序可以选择通过 [服务管理](../services/Service-Management.html) 组件分别控制单个注销行为。 服务注册表中的每个已注册服务都将包含配置 ，该配置0描述了应如何提交注销请求。 此行为通过 `logoutType` 属性 进行控制，该属性2可以指定注销请求是应通过后向/前向通道提交还是应针对该应用程序关闭。
 
-Sample configuration follows:
+配置示例如下：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "logoutType" : "BACK_CHANNEL"
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “testId”，
+  “名称”： “testId”，
+  “ID”：1，
+  “logoutType”：“ BACK_CHANNEL“
 }
 ```
 
-### Service Endpoint for Logout Requests
+### 注销请求的服务端点
 
-By default, logout requests are submitted to the original service id collected at the time of authentication. CAS has the option to submit such requests to a specific service endpoint that is different from the original service id, and of course can be configured on a per-service level. This is useful in cases where the application that is integrated with CAS does not exactly use a CAS client that supports intercepting such requests and instead, exposes a different endpoint for its logout operations.
+默认情况下，注销请求将提交到身份验证时收集的原始服务ID。 CAS可以选择将此类请求提交到 的特定服务端点，并且当然可以在每个服务级别上进行配置。 集成的应用程序不完全使用支持拦截此类请求的CAS客户端，而是 不同的终结点时，这在
 
-To configure a service specific endpoint, try the following example:
+要配置特定于服务的端点，请尝试以下示例：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "logoutType" : "BACK_CHANNEL",
-  "logoutUrl" : "https://web.application.net/logout"
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “testId”，
+  “名称”： “testId”，
+  “ID”：1，
+  “logoutType”：“ BACK_CHANNEL“，
+  ” logoutUrl“：” https://web.application.net/logout“
 }
 ```
 
-### Asynchronous SLO Messages
+### 异步SLO消息
 
-By default, backchannel logout messages are sent to endpoint in an asynchronous fashion. This behavior can be modified via CAS settings. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#logout).
+默认情况下，反向通道注销消息以异步方式发送到端点。 可以通过CAS设置修改此行为。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#logout)。
 
-## SSO Session vs. Application Session
+## SSO会话与应用程序会话
 
-In order to better understand the SSO session management of CAS and how it regards application sessions, one important note is to be first and foremost considered:
+为了更好地了解CAS的SSO会话管理，以及如何对应用的会话， 一个重要的一点是要首先考虑的：
 
-<div class="alert alert-info"><strong>CAS is NOT a session manager</strong><p>Application session is the responsibility of the application.</p></div>
+<div class="alert alert-info"><strong>CAS不是会话管理器</strong><p>应用程序会话是应用程序的责任。</p></div>
 
-CAS wants to maintain and control the SSO session in the form of the `TicketGrantingTicket` and a TGT id which is shared between the user-agent and the CAS server in the form of a secure cookie.
+CAS希望维持和的形式控制所述SSO会话 的 `TicketGrantingTicket` 以及设置在之间共享的TGT ID 的用户代理和在安全cookie的形式的CAS服务器。
 
-CAS is not an application session manager in that it is the responsibility of the applications to maintain and control their own application sessions.  Once authentication is completed, CAS is typically out of the picture in terms of the application sessions. Therefore, the expiration policy of the application session itself is entirely independent of CAS and may be loosely coordinated and adjusted depending on the ideal user experience in the event that the application session expires.
+CAS不是应用程序会话管理器，因为维护和控制自己的 应用程序会话 一旦完成身份验证，就应用程序会话而言 因此，应用程序会话本身的到期策略 完全独立于CAS，可以在应用程序会话到期的情况下根据理想的用户体验
 
-In the event that Single Logout is not activated, typically, application may expose a logout endpoint in order to destroy the session and next, redirect the agent to the CAS `logout` endpoint in order to completely destroy the SSO session as well.
+在未激活“单一注销”的情况下，通常，应用程序可能会公开注销端点以破坏会话，然后将 重定向到CAS `注销` 端点，以便也完全破坏SSO会话。
 
-Here's a brief diagram that demonstrates various application session configuration and interactions with CAS:
+这是一个简短的图，演示了各种应用程序会话配置以及与CAS的交互：
 
 ![](http://i.imgur.com/0XyuLgz.png)
