@@ -1,37 +1,37 @@
 ---
-layout: default
-title: CAS - LDAP Service Registry
-category: Services
+layout: 违约
+title: CAS - LDAP 服务注册处
+category: 服务业
 ---
 
-# LDAP Service Registry
+# LDAP 服务注册表
 
-Service registry implementation which stores the services in a LDAP Directory and attempts to *map* service records to LDAP entries in order to configure settings for retrieval, search and persistence of service definitions. By default, entries are assigned the `objectclass` that is `casRegisteredService` attribute and are looked up by the `uid` attribute.
+服务注册表实施，将服务存储在 LDAP 目录中，并尝试 *将* 服务记录映射到 LDAP 条目中，以便配置 设置，以便检索、搜索和持续执行服务定义。 默认情况下，条目被分配 `对象类` ，该 `cas 注册服务` 属性，并由 `uid` 属性查找。
 
-Support is enabled by adding the following module into the overlay:
+支持通过在覆盖中添加以下模块来实现：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-ldap-service-registry</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>卡-服务器-支持-ldap-服务-注册</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-The default mapper has support for the following optional items:
+默认映像器支持以下可选项目：
 
-| Field                        | Default Value        |
-| ---------------------------- | -------------------- |
-| `objectClass`                | casRegisteredService |
-| `serviceDefinitionAttribute` | description          |
-| `idAttribute`                | uid                  |
+| 田        | 默认值    |
+| -------- | ------ |
+| `对象类`    | 卡斯注册服务 |
+| `服务定义归因` | 描述     |
+| `伊德属性`   | 乌伊德    |
 
-Service definitions are by default stored inside the `serviceDefinitionAttribute` attribute as JSON objects. The format and syntax of the JSON is identical to that of [JSON Service Registry](JSON-Service-Management.html). That's all, as far as the schema goes.
+默认情况下，服务定义存储在 `服务定义属性` 属性中， JSON 对象。 JSON 的格式和语法与 [JSON 服务注册处的格式和语法](JSON-Service-Management.html)相同。 就模式而言，就全部而言。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ldap-service-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ldap-service-registry)。
 
-## Auto Initialization
+## 自动初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+在启动和配置允许的情况下，注册表能够自动从 CAS 可用的默认 JSON 服务定义中初始化。 有关详细信息，请参阅本指南</a> 。</p>
