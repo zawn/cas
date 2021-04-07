@@ -1,21 +1,26 @@
 ---
-layout: default
-title: CAS - Apache Cassandra Authentication
-category: Authentication
+layout: 违约
+title: CAS - 阿帕奇·卡桑德拉认证
+category: 认证
 ---
 
-# Apache Cassandra Authentication
+# 阿帕奇·卡桑德拉认证
 
-Verify and authenticate credentials using [Apache Cassandra](http://cassandra.apache.org/).
+使用阿帕奇·卡桑德拉</a>
 
-Support is enabled by including the following dependency in the WAR overlay:
+验证和验证凭据。</p> 
+
+支持通过在 WAR 叠加中包括以下依赖性来启用：
+
+
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-cassandra-authentication</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-卡桑德拉-认证</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#cassandra-authentication).
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#cassandra-authentication)。
