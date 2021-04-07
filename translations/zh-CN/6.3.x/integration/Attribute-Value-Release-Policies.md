@@ -1,245 +1,254 @@
 ---
-layout: default
-title: CAS - Attribute Value Release Policies
-category: Attributes
+layout: 违约
+title: CAS - 属性值释放策略
+category: 属性
 ---
 
-# Attribute Value Filters
+# 属性值筛选器
 
-While each policy defines what principal attributes may be allowed for a given service, there are optional attribute filters that can be set per policy to further weed out attributes based on their **values**.
+虽然每个策略都定义了给定服务可能允许哪些主要属性，但 每个策略都可以设置可选属性筛选器，以进一步清除基于其</strong>**值的属性。</p>
 
-## Chaining Filters
+## 链式过滤器
 
-Attribute filters can be chained together so as to associate multiple filters with a single service definition.
+属性筛选器可以链在一起，以便将多个筛选器与单个服务定义关联在一起。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 200,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "attributeFilter" : {
-      "@class" : "org.apereo.cas.services.support.RegisteredServiceChainingAttributeFilter",
-      "filters": [ "java.util.ArrayList",
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：200，
+  "描述"："样本"，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.services.服务。
+    "属性过滤器"： [
+      "@class"： "org. apereo. cas. 服务. 支持. 注册服务链归因过滤器"，
+      "过滤器"： [java. util. Arraylist"，
         [
+            ]
+              "@class ""："org.apereo.cas.服务.支持.支持.注册服务注册分流过滤器"，
+              "模式"："{3}美元"，
+              "订单"：10
+            }，
             {
-              "@class" : "org.apereo.cas.services.support.RegisteredServiceRegexAttributeFilter",
-              "pattern" : "^\\w{3}$",
-              "order": 10
-            },
-            {
-              "@class" : "..."
-            }
+              "@class"："。。。。。。"
+            [
         ]
       ]
-    },
-    "allowedAttributes" : [ "java.util.ArrayList", [ "uid", "groupMembership" ] ]
+    [，
+    "允许的归因"："java.利用。Arraylist"，"uid"，"团体成员"]]
   }
 }
 ```
 
-Chained attribute filters are sorted given their `order` property first before execution.
+链式属性筛选器在执行前先</code> 属性 `顺序进行排序。</p>
 
-## Regex
+<h2 spaces-before="0">雷格克斯</h2>
 
-The regex filter that is responsible to make sure only attributes whose value matches a certain regex pattern are released.
+<p spaces-before="0">负责确保仅值
+与特定 regex 模式匹配的属性的 regex 筛选器被释放。</p>
 
-Suppose that the following attributes are resolved:
+<p spaces-before="0">假设解决了以下属性：</p>
 
-| Name              | Value     |
-| ----------------- | --------- |
-| `uid`             | jsmith    |
-| `groupMembership` | std       |
-| `cn`              | JohnSmith |
+<table spaces-before="0">
+<thead>
+<tr>
+  <th>名字</th>
+  <th>价值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>乌伊德`</td> 
 
-The following configuration for instance considers the initial list of `uid`, `groupMembership` and then only allows and releases attributes whose value's length is 3 characters. Therefore, out of the above list, only `groupMembership` is released to the application.
+</tr> 
+
+</tbody> </table>
+
+例如，以下配置考虑 `uid`的初始列表， `组成员` 然后只允许和释放其值长度 为 3 个字符的属性。 因此，在上述清单中，只有 `组成员` 发布到申请中。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 200,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "attributeFilter" : {
-      "@class" : "org.apereo.cas.services.support.RegisteredServiceRegexAttributeFilter",
-      "pattern" : "^\\w{3}$"
-    },
-    "allowedAttributes" : [ "java.util.ArrayList", [ "uid", "groupMembership" ] ]
+•
+  "@class"： "org. apereo. cas. 服务. 注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：200，
+  "描述"："样本"，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回归因释放政策"，
+    "属性过滤器"：{
+      "@class"："org.apereo.cas.服务.支持.支持.注册服务属性过滤器"，
+      "模式"："^\w{3}$"
+    }，
+    "允许归因"："java.利用.Arraylist"，"uid"，"团体成员"]]
   }
 }
 ```
 
-## Mapped Regex
+## 映射雷格克斯
 
-The regex filter that is responsible to make sure only a selected set of attributes whose value matches a certain regex pattern are released. The filter selectively applies patterns to attributes mapped in the configuration. If an attribute is mapped, it is only allowed to be released if it matches the linked pattern. If an attribute is not mapped, it may optionally be excluded from the released set of attributes.
+负责确保仅发布其值与特定 regex 模式匹配的选定属性集的regex筛选器。 筛选器有选择地将模式应用于配置中映射的属性。 如果映射了属性，则仅允许在与链接模式匹配时发布属性。 如果属性未映射，则可以可选地将其排除在已发布的属性集之外。
 
-For example, the below example only allows release of `memberOf` if it contains a value that is 3 characters in length. If no values are found, the `memberOf` is excluded from the final released bundle.
+例如，如果 `包含长度为 3 个字符的值，则仅允许释放` 成员。 如果没有找到值，则</code> `成员将排除在最终发布的捆绑包之外。</p>
+
+<pre><code class="json">•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：200，
+  "描述"："样本"，
+  "属性发布政策"：{
+    "@class"："org.apereo.cas.服务。返回"，
+    "属性过滤器"：{
+      " @class"："org.apereo.cas.服务.支持.注册服务映射属性过滤器"，
+      "模式"：{
+          "@class"："java.util.TreeMap"，
+          "会员"："^\w{3}$"
+      }，
+      "排除不匹配的属性"：虚假的，
+      的"完全匹配"：虚假的，
+      "案件敏感"： 诚然，
+      "订单"：0
+    }，
+    "允许归因"："java.利用。Arraylist"，"uid"，"成员"]]]
+  }
+}
+`</pre>
+
+此筛选器支持以下字段：
+
+| 名字          | 描述                    |
+| ----------- | --------------------- |
+| `模式`        | 属性及其关联模式的地图尝试与值（s）对比。 |
+| `完整匹配`      | 指示模式匹配是否应在整个值区域执行。    |
+| `不包括已映射的属性` | 指示是否应从最终捆绑包中删除未映射的属性。 |
+| `案例敏感`      | 指示模式匹配是否应以不敏感的情况下进行。  |
+
+## 反向映射雷格克斯
+
+与映射的 Regex</em> 滤镜 *相同，但该滤镜仅允许在发布特定 regex 模式</strong> 其值 **不匹配的选定属性集。</p>
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 200,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "attributeFilter" : {
-      "@class": "org.apereo.cas.services.support.RegisteredServiceMappedRegexAttributeFilter",
-      "patterns": {
-          "@class" : "java.util.TreeMap",
-          "memberOf": "^\\w{3}$"
-      },
-      "excludeUnmappedAttributes": false,
-      "completeMatch": false,
-      "caseInsensitive": true,
-      "order": 0
-    },
-    "allowedAttributes" : [ "java.util.ArrayList", [ "uid", "memberOf" ] ]
-  }
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：200，
+  "描述"："样本"，
+  "属性发布政策"：{
+    "@class"："org.apereo.cas.服务。返回"，
+    "属性过滤器"：{
+      "@class "："org.apereo.cas.服务.支持.支持.注册服务反映射属性过滤器"，
+      "模式"：{
+          "成员"："^\w{3}$"
+      }，
+      "排除未映射属性"：虚假的，
+      的"完全匹配"：虚假的，
+      的"案件敏感"：真实，
+      "顺序"：0
+    }，
+    "允许归因"：[java.util.Arraylist"，"uid"，"成员"]][
+  ]
 }
 ```
 
-The following fields are supported by this filter:
+## 突变映射雷格克斯
 
-| Name                        | Description                                                                     |
-| --------------------------- | ------------------------------------------------------------------------------- |
-| `patterns`                  | A map of attributes and their associated pattern tried against value(s).        |
-| `completeMatch`             | Indicates whether pattern-matching should execute over the entire value region. |
-| `excludeUnmappedAttributes` | Indicates whether unmapped attributes should be removed from the final bundle.  |
-| `caseInsensitive`           | Indicates whether pattern matching should be done in a case-insensitive manner. |
+从设置和属性来看，此滤镜在结构上与映射的 Regex</em> 滤镜 *相同。 它的主要能力是通过一组模式过滤属性值，然后根据regex匹配的结果动态取代值。</p>
 
-## Reverse Mapped Regex
-
-Identical to the *Mapped Regex* filter, except that the filter only allows a selected set of attributes whose value **does not match** a certain regex pattern are released.
+例如，以下定义尝试根据给定模式筛选分配给属性 `成员` 的所有值。 每个模式都通过 `链接 ->` 到预期的回报值，该回报值可能会在生成的 regex 结果中引用特定组。 假设</code> `成员的属性值为 <code>数学101` 和 `马拉松101`，该筛选器将在处理后产生 `课程A-athon101` 和 `课程B-h101` 值。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 200,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "attributeFilter" : {
-      "@class": "org.apereo.cas.services.support.RegisteredServiceReverseMappedRegexAttributeFilter",
-      "patterns": {
-          "memberOf": "^\\w{3}$"
-      },
-      "excludeUnmappedAttributes": false,
-      "completeMatch": false,
-      "caseInsensitive": true,
-      "order": 0
-    },
-    "allowedAttributes" : [ "java.util.ArrayList", [ "uid", "memberOf" ] ]
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：200，
+  "描述"："样本"，
+  "属性重新发布政策"：{
+    "@class"："org.apereo.cas.服务.返回"，
+    "属性过滤器"：{
+      "@class"："org.apereo" .cas.服务.支持.注册服务.注册服务属性过滤器"，
+      "模式"：{
+          "@class"："java.util.TreeMap"，
+          "成员"："java.util.Arraylist"， [ [mar （.+） -> 课程 A -$1$2"， "^mat （101） -> 课程 B -$1$2] [
+      ]，
+      "排除非地图属性"： 虚假，
+
+      "完全匹配"：虚假的、的"案例敏感"：真实、
+      的"顺序"：0
+    }，
+    "允许归因"："java.util.Arraylist"，"uid"，"成员"]]
   }
 }
 ```
 
-## Mutant Mapped Regex
+## 槽的
 
-This filter structurally, in terms of settings and properties, is identical to the *Mapped Regex* filter. Its main ability is to filter attribute values by a collection of patterns and then supplant the value dynamically based on the results of the regex match.
+属性值筛选也可以使用内联或外部 Groovy 脚本进行。 脚本可以通过</code> 的 `属性和 <code>记录器`访问当前已解决的属性。 脚本返回的结果必须是 `地图<String, Object>`。
 
-For example, the following definition attempts to filter all values assigned to the attribute `memberOf` based on the given patterns. Each pattern is linked via `->` to the expected return value that may reference specific groups in the produced regex result. Assuming the attribute `memberOf` has values of `math101` and `marathon101`, the filter will produce values `courseA-athon101` and `courseB-h101` after processing.
+### 内衬沟
+
+内联凹槽滤镜允许您将脚本直接嵌入到服务定义中。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 200,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "attributeFilter" : {
-      "@class": "org.apereo.cas.services.support.RegisteredServiceMutantRegexAttributeFilter",
-      "patterns": {
-          "@class" : "java.util.TreeMap",
-          "memberOf": [ "java.util.ArrayList", [ "^mar(.+)(101) -> courseA-$1$2", "^mat(.+)(101) -> courseB-$1$2" ] ]
-      },
-      "excludeUnmappedAttributes": false,
-      "completeMatch": false,
-      "caseInsensitive": true,
-      "order": 0
-    },
-    "allowedAttributes" : [ "java.util.ArrayList", [ "uid", "memberOf" ] ]
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：200，
+  "描述"："样本"，
+  "属性释放政策"：\
+    "@class"："org.apereo.cas.服务。返回归因释放政策"，
+    "属性过滤器"： [
+      "@class"： "org. apereo. cas. 服务. 支持. 注册服务脚本归因过滤器"，
+      "脚本"： "groovy" { return attributes }"
+    [，
+    "允许的属性"："java.利用.Arraylist"，"uid"，"团体成员"]]
   }
 }
 ```
 
-## Groovy
+### 外部格罗夫
 
-Attribute value filtering may also be carried out using an inline or external Groovy script. Scripts have access to the current resolved attributes via `attributes` and a `logger`. The returned result of the script must be a `Map<String, Object>`.
-
-### Inlined Groovy
-
-An inline groovy filter allows you to embed the script directly in the service definition.
+外部凹槽过滤器允许您定义位于 CAS Web 应用程序之外的文件中的脚本。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 200,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "attributeFilter" : {
-      "@class" : "org.apereo.cas.services.support.RegisteredServiceScriptedAttributeFilter",
-      "script" : "groovy { return attributes }"
-    },
-    "allowedAttributes" : [ "java.util.ArrayList", [ "uid", "groupMembership" ] ]
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：200，
+  "描述"："样本"，
+  "属性释放政策"：\
+    "@class"："org.apereo.cas.services.服务。
+    "属性过滤器"： [
+      "@class"： "org. apereo. cas. 服务. 支持. 注册服务脚本归因过滤器"，
+      "脚本"： "文件：/ 等/ cas / 过滤器" -这个。groovy"
+    [，
+    "允许的属性"："java.使用。Arraylist"，"uid"，"团体成员"]]
   }
 }
 ```
 
-### External Groovy
-
-An external groovy filter allows you to define the script in file located outside of the CAS web application.
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 200,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "attributeFilter" : {
-      "@class" : "org.apereo.cas.services.support.RegisteredServiceScriptedAttributeFilter",
-      "script" : "file:/etc/cas/filter-this.groovy"
-    },
-    "allowedAttributes" : [ "java.util.ArrayList", [ "uid", "groupMembership" ] ]
-  }
-}
-```
-
-The outline of the script may be as follows:
+脚本的大纲如下：
 
 ```groovy
-import java.util.*
+导入java.利用。*
 
-def run(final Object... args) {
-    def attributes = args[0]
-    def logger = args[1]
+def运行（最终对象。。。args）{
+    def属性=args[0]
+    定义记录器=args[1]
 
-    logger.info "Attributes currently resolved: ${attributes}"
-    def map =...
-    return map
+    logger.info"当前已解决的属性： ${attributes}"
+    def地图=。。。
+    返回地图
 }
 ```
 
-The parameters passed are as follows:
+通过的参数如下：
 
-| Parameter    | Description                                                                 |
-| ------------ | --------------------------------------------------------------------------- |
-| `attributes` | A `Map` of current  attributes resolved from sources.                       |
-| `logger`     | The object responsible for issuing log messages such as `logger.info(...)`. |
+| 参数   | 描述                                |
+| ---- | --------------------------------- |
+| `属性` | 从源头解决的当前属性的 `地图` 。                |
+| `记录` | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
