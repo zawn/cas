@@ -1,21 +1,21 @@
 ---
-layout: default
-title: CAS - Long Term Authentication
+layout: 默认
+title: CAS-长期认证
 category: SSO & SLO
 ---
 
-# Long Term Authentication
+# 长期认证
 
-This feature, also known as *Remember Me*, extends the length of the SSO session beyond the typical period of hours such that users can go days or weeks without having to log in to CAS. See the [security guide](../planning/Security-Guide.html) for discussion of security concerns related to long term authentication.
+此功能也称为 *记住我*，将SSO会话的时间延长到典型的小时数 这样用户无需登录CAS就可以花费数天或数周的时间。 有关与长期身份验证有关的安全问题的讨论，请参见 [安全指南](../planning/Security-Guide.html)
 
-## Policy and Deployment Considerations
+## 政策和部署注意事项
 
-While users can elect to establish a long term authentication session, the duration is established through configuration as a matter of security policy. Deployers must determine the length of long term authentication sessions by weighing convenience against security risks.
+尽管用户可以选择建立长期身份验证会话，但是根据安全策略 部署人员必须通过权衡便利性和安全风险来确定长期身份验证会话的长度
 
-The use of long term authentication sessions dramatically increases the length of time ticket-granting tickets are stored in the ticket registry. Loss of a ticket-granting ticket corresponding to a long-term SSO session would require the user to re-authenticate to CAS. A security policy that requires that long term authentication sessions MUST NOT be terminated prior to their natural expiration would mandate a ticket registry component that provides for durable storage, such as the [JPA Ticket Registry](../ticketing/JPA-Ticket-Registry.html).
+长期身份验证会话的使用大大增加了将授予票证的票证在票证注册表中存储 丢失与长期SSO会话对应的授予票证的票证将需要 的用户重新向CAS进行身份验证。 这需要长期的验证会话安全策略必须不 自然过期将强制规定把票之前被终止 注册表组件，它提供了耐久存，如 [JPA票登记](../ticketing/JPA-Ticket-Registry.html)。
 
-## Configuration
+## 配置
 
-Adjust your expiration policy so that remember-me authentication requests are handled via a long-term timeout expiration policy, and other requests are handled via the CAS default SSO session expiration policy.
+调整你的到期策略，这样记得，我的身份验证请求 通过长期超时过期策略处理，以及其他请求 经由CAS默认SSO会话过期策略处理。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ticket-granting-cookie) and [this guide](../configuration/Configuration-Properties.html#remember-me).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ticket-granting-cookie) 和 [本指南](../configuration/Configuration-Properties.html#remember-me)。
