@@ -1,29 +1,29 @@
 ---
-layout: default
-title: CAS - Passwordless Authentication
-category: Authentication
+layout: 默认
+title: CAS-无密码身份验证
+category: 验证
 ---
 
-# Passwordless Authentication
+# 无密码认证
 
-Passwordless Authentication is a form of authentication in CAS where passwords take the form of tokens that expire after a configurable period of time. Using this strategy, users are asked for an identifier (i.e. username) which is used to locate the user record that contains forms of contact such as email and phone number. Once located, the CAS-generated token is sent to the user via the configured notification strategies (i.e. email, sms, etc) where the user is then expected to provide the token back to CAS in order to proceed. 
+无密码身份验证是CAS中的一种身份验证形式，其中密码采用 形式，该令牌在可配置的时间段后过期。 使用此策略，要求用户提供标识符（即用户名），该标识符用于查找用户记录 ，该记录包含联系人形式，例如电子邮件和电话 号码。 找到后，将通过配置的通知 策略（即电子邮件，短信等） 将令牌提供回CAS以继续进行。 
 
-<div class="alert alert-info"><strong>No Magic Link</strong><p>
-Presently, there is no support for magic links that would remove the task of providing the token 
-back to CAS allowing the user to proceed automagically.
-This variant may be worked out in future releases.</p></div>
+<div class="alert alert-info"><strong>没有魔术链接</strong><p>
+当前，不支持魔术链接，该魔术链接将取消将令牌 
+提供回CAS的任务，从而使用户能够自动进行。
+将来的发行版中可能会解决此变体。</p></div>
 
-In order to successfully implement this feature, configuration needs to be in place to contact account stores that hold user records who qualify for passwordless authentication. Similarly, CAS must be configured to manage issued tokens in order to execute find, validate, expire or save operations in appropriate data stores.
+为了成功实现此功能，需要进行配置以联系 帐户存储，这些帐户存储包含有资格进行无密码身份验证的用户记录。 同样，必须将CAS配置为管理已发行的令牌，以便在适当的数据存储区中
 
-## Passwordless Variants
+## 无密码的变体
 
-Passwordless authentication can also be activated using [QR Code Authentication](QRCode-Authentication.html), allowing end users to login by scanning a QR code using a mobile device.
+密码认证还可以使用激活 [QR代码验证](QRCode-Authentication.html)， 能够让最终用户登录通过使用移动设备扫描QR码。
 
-Passwordless authentication can also be achieved via [FIDO2 WebAuthn](../mfa/FIDO2-WebAuthn-Authentication.html) which lets users verify their identities without passwords and login using FIDO2-enabled devices.
+也可以通过 [FIDO2 WebAuthn](../mfa/FIDO2-WebAuthn-Authentication.html) 来实现无密码身份验证，该身份使用户 无需密码即可验证其身份，并使用启用FIDO2的设备登录。
 
-## Overview
+## 概述
 
-Support is enabled by including the following module in the overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -33,21 +33,21 @@ Support is enabled by including the following module in the overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#passwordless-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#passwordless-authentication)。
 
-## Account Stores
+## 帐户商店
 
-User records that qualify for passwordless authentication must be found by CAS using one of the following strategies. All strategies may be configured using CAS settings and are activated depending on the presence of configuration values.
+CAS必须使用以下策略之一找到符合无密码身份验证的用户记录。 可以使用CAS设置将所有策略配置为 ，并根据配置值的存在将其激活。
 
-### Simple
+### 简单的
 
-This strategy provides a static map of usernames that are linked to their method of contact, such as email or phone number. It is best used for testing and demo purposes. The key in the map is taken to be the username eligible for authentication while the value can either be an email address or phone number that would be used to contact the user with issued tokens.
+该策略提供了一个静态的用户名映射，该用户名链接到其联系方式，例如电子邮件或电话号码。 最好将 用于测试和演示目的。 映射中的密钥被视为有资格进行身份验证的用户名，而该值可以是电子邮件 地址或电话号码，该电子邮件地址或电话号码将用于与发出令牌的用户联系。
 
 ### MongoDb
 
-This strategy allows one to locate a user record in MongoDb. The designated MongoDb collection is expectd to carry objects of type `PasswordlessUserAccount` in JSON format. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#passwordless-authentication).
+这种策略允许人们在MongoDb中定位用户记录。 预期指定的MongoDb集合将以JSON格式 `PasswordlessUserAccount` 要查看CAS 属性的相关列表，请 [查阅本指南](../configuration/Configuration-Properties.html#passwordless-authentication)。
 
-Support is enabled by including the following module in the overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -59,9 +59,9 @@ Support is enabled by including the following module in the overlay:
 
 ### LDAP
 
-This strategy allows one to locate a user record in an LDAP directory. The record is expected to carry the user's phone number or email address via configurable attributes. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#passwordless-authentication).
+这种策略允许人们在LDAP目录中定位用户记录。 预期该记录将通过可配置的属性携带用户的电话号码 要查看CAS 属性的相关列表，请 [查阅本指南](../configuration/Configuration-Properties.html#passwordless-authentication)。
 
-Support is enabled by including the following module in the overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -71,103 +71,103 @@ Support is enabled by including the following module in the overlay:
 </dependency>
 ```
 
-### JSON
+### JSON格式
 
-This strategy allows one to locate user records via a JSON resource, as such:
+这种策略允许人们通过JSON资源来定位用户记录，例如：
 
 ```json 
 {
-  "@class" : "java.util.LinkedHashMap",
-  "casuser" : {
-    "@class": "org.apereo.cas.api.PasswordlessUserAccount",
-    "username": "casuser",
-    "attributes": {
-        "@class": "java.util.LinkedHashMap",
-        "name": [ "java.util.ArrayList", ["value"] ]
-    },
-    "multifactorAuthenticationEligible": "TRUE",
-    "delegatedAuthenticationEligible": "TRUE",
-    "requestPassword": false
+  “ @class”：“ java.util.LinkedHashMap”，
+  “ casuser”：{
+    “ @class”：“ org.apereo.cas.api.PasswordlessUserAccount”，
+    “ username”：“ casuser”，
+    “属性“：{
+        ” @class“：” java.util.LinkedHashMap“，
+        ” name“：[” java.util.ArrayList“，[” value“]]
+    }，
+    ” multifactorAuthenticationEligible“：” TRUE“，
+    “ delegatedAuthenticationEligible”：“ TRUE”，
+    “ requestPassword”：false
   }
 }
 ```
 
 ### Groovy
 
-This strategy allows one to locate user records via a Groovy script. The body of the script may be defined as such:
+这一策略允许通过Groovy脚本定位用户记录。 脚本的主体可以这样定义：
 
 ```groovy
-import org.apereo.cas.api.*
+import org.apereo.cas.api。*
 
-def run(Object[] args) {
-    def username = args[0]
+def run（Object [] args）{
+    def用户名= args[0]
     def logger = args[1]
 
-    logger.info("Locating user record for user $username")
+    logger.info（“查找用户 $username用户记录”）
 
-    /*
+    / *
+...
+     找到给定用户名的记录，然后将结果返回给CAS。
      ...
-     Locate the record for the given username, and return the result back to CAS.
-     ...
-    */
+    * /
 
-    def account = new PasswordlessUserAccount()
-    account.setUsername(username)
-    account.setEmail("username@example.org")
-    account.setName("TestUser")
-    account.setPhone("123-456-7890") 
-    account.setAttributes(Map.of("...", List.of("...", "...")) 
-    account.setMultifactorAuthenticationEligible(TriStateBoolean.FALSE)  
-    account.setRequestPassword(false)
-    return account
+    def帐户=新的PasswordlessUserAccount（）
+    account.setUsername（username）
+    account.setEmail（“ username@example.org”）
+    account.setName（“ TestUser”）
+    account.setPhone（“ 123-456-7890 “） 
+    account.setAttributes（Map.of（” ...“，List.of（” ...“，” ...“）） 
+    account.setMultifactorAuthenticationEligible（TriStateBoolean.FALSE）  
+    account.setRequestPassword（false）
+    返回帐户
 }
 ```
 
-### REST
+### 休息
 
-This strategy allows one design REST endpoints in charge of locating passwordless user records. A successful execution of the endpoint  
-would produce a response body similar to the following:
+该策略允许一个设计REST端点负责查找无密码用户记录。   
+成功执行将产生类似于以下内容的响应主体：
 
 ```json
 {
-  "@class" : "org.apereo.cas.api.PasswordlessUserAccount",
-  "username" : "casuser",
-  "email" : "cas@example.org",
-  "phone" : "123-456-7890",
-  "name" : "CASUser",        
-  "multifactorAuthenticationEligible": "FALSE",  
-  "delegatedAuthenticationEligible": "FALSE",  
-  "requestPassword": false,
-  "attributes":{ "lastName" : ["...", "..."] }
+  “ @class”：“ org.apereo.cas.api.PasswordlessUserAccount”，
+  “ username”：“ casuser”，
+  “ email”：“ cas@example.org”，
+  “ phone”：“ 123-456 -7890“，
+  ” name“：” CASUser“，        
+  ” multifactorAuthenticationEligible“：” FALSE“，  
+  ” delegatedAuthenticationEligible“：” FALSE“，  
+  ” requestPassword“：false，
+  ” attributes“：{” lastName“：[” ...“，” ...“] }
 }
 ```
 
-### Custom
+### 风俗
 
-You may also define your own user account store using the following bean definition and by implementing `PasswordlessUserAccountStore`:
+您还可以使用以下bean定义并通过实现 `PasswordlessUserAccountStore`来定义自己的用户帐户存储：
 
 ```java 
 @Bean
-public PasswordlessUserAccountStore passwordlessUserAccountStore() {
-    ...
+public PasswordlessUserAccountStore passwordlessUserAccountStore（）{
+...
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[请参阅本指南](../configuration/Configuration-Management-Extensions.html) 以了解有关如何将配置注册到CAS运行时的更多信息。
 
-## Token Management
+## 代币管理
 
-The following strategies define how issued tokens may be managed by CAS.
+以下策略定义了CAS如何管理发行的令牌。
 
-### Memory
+### 记忆
 
-This is the default option where tokens are kept in memory using a cache with a configurable expiration period. Needless to say, this option is not appropriate in clustered CAS deployments inside there is not a way to synchronize and replicate tokens across CAS nodes.
+这是默认选项，其中使用具有可配置有效期限的缓存将令牌保存在内存中。 不用说，此选项 在集群CAS部署内部不适用，因为没有办法在CAS节点之间同步和复制令牌。
 
 ### JPA
 
-This strategy allows one to store tokens and manage their expiration policy using a relational database.
+这种策略允许使用关系数据库存储令牌并管理其过期策略。
 
-Support is enabled by including the following module in the overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -177,80 +177,80 @@ Support is enabled by including the following module in the overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#passwordless-authentication).
+要查看CAS 属性的相关列表，请 [查阅本指南](../configuration/Configuration-Properties.html#passwordless-authentication)。
 
-### REST
+### 休息
 
-This strategy allows one design REST endpoints in charge of managing tokens and their expiration policy entirely. CAS continues to generate tokens and the endpoint is only acting as a facade to the real token store, receiving tokens from CAS in an encrypted fashion.
+此策略允许一个设计REST端点完全负责管理令牌及其过期策略。 CAS继续生成令牌，并且端点仅充当真实令牌存储的外观，以加密方式
 
-The following operations need to be supported by the endpoint:
+端点需要支持以下操作：
 
-| HTTP Method | Description                         | Parameter(s)        | Response                    |
-| ----------- | ----------------------------------- | ------------------- | --------------------------- |
-| `GET`       | Locate tokens for the user.         | `username`          | Token in the response body. |
-| `DELETE`    | Delete all tokens for the user.     | `username`          | N/A                         |
-| `DELETE`    | Delete a single token for the user. | `username`, `token` | N/A                         |
-| `POST`      | Save a token for the user.          | `username`, `token` | N/A                         |
+| HTTP方法 | 描述          | 参数）          | 回复        |
+| ------ | ----------- | ------------ | --------- |
+| `得到`   | 找到用户的令牌。    | `用户名`        | 响应主体中的令牌。 |
+| `删除`   | 删除该用户的所有令牌。 | `用户名`        | 不适用       |
+| `删除`   | 为用户删除一个令牌。  | `的用户名`， `令牌` | 不适用       |
+| `邮政`   | 为用户保存令牌。    | `的用户名`， `令牌` | 不适用       |
 
-### Custom
+### 风俗
 
-You may also define your own token management store using the following bean definition and by implementing `PasswordlessTokenRepository`:
+您还可以使用以下bean定义并通过实现 `PasswordlessTokenRepository`来定义自己的令牌管理存储：
 
 ```java 
 @Bean
-public PasswordlessTokenRepository passwordlessTokenRepository() {
-    ...
+public PasswordlessTokenRepository passwordlessTokenRepository（）{
+...
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[请参阅本指南](../configuration/Configuration-Management-Extensions.html) 以了解有关如何将配置注册到CAS运行时的更多信息。
 
-### Messaging & Notifications
+### 消息传送 & 通知
 
-Users may be notified of tokens via text messages, mail, etc. To learn more about available options, please [see this guide](../notifications/SMS-Messaging-Configuration.html) or [this guide](../notifications/Sending-Email-Configuration.html).
+可以通过文本消息，邮件等向用户通知令牌。 要了解更多有关可用选项，请 [参阅本指南](../notifications/SMS-Messaging-Configuration.html) 或 [本指南](../notifications/Sending-Email-Configuration.html)。
 
-## Disabling Passwordless Authentication Flow
+## 禁用无密码认证流程
 
-Passwordless authentication can be disabled conditionally on a per-user basis. If the passwordless account retrieved from the account store carries a user whose `requestPassword` is set to `true`, the passwordless flow (i.e. as described above with token generation, etc) will be disabled and skipped in favor of the more usual CAS authentication flow, challenging the user for a password. Support for this behavior may depend on each individual account store implementation.
+可以基于每个用户有条件地禁用无密码身份验证。 检索到的无密码帐户 `requestPassword` 设置为 `true`的用户，则无密码流程（即，如上面所描述的令牌生成等）将 并被跳过，而更常用CAS身份验证流程，要求用户输入密码。 对这种行为的支持可能取决于每个单独的帐户存储实现为
 
-## Multifactor Authentication Integration
+## 多因素身份验证集成
 
-Passwordless authentication can be integrated with [CAS multifactor authentication providers](../mfa/Configuring-Multifactor-Authentication.html). In this scenario, once CAS configuration is enabled to support this behavior via settings or the located passwordless user account is considered *eligible* for multifactor authentication, CAS will allow passwordless authentication to skip its own *intended normal* flow (i.e. as described above with token generation, etc) in favor of multifactor authentication providers that may be available and defined in CAS.
+无密码身份验证可以与 [CAS多因素身份验证提供程序](../mfa/Configuring-Multifactor-Authentication.html) 。 在这种情况下， 一旦CAS配置被启用以支持通过设置这种行为 或位于密码的用户帐户被认为是 *合格* 为多因素认证， CAS将允许密码认证跳过其自身 *预期的正常* 流（即，作为上面描述的带有令牌生成等内容）支持 多因素身份验证提供程序，这些提供程序可以在CAS中使用并定义。
 
-This means that if [multifactor authentication providers](../mfa/Configuring-Multifactor-Authentication.html) are defined and activated, and defined [multifactor triggers](../mfa/Configuring-Multifactor-Authentication-Triggers.html) in CAS signal availability and eligibility of an multifactor flow for the given passwordless user, CAS will skip its normal passwordless authentication flow in favor of the requested multifactor authentication provider and its flow. If no multifactor providers are available, or if no triggers require the use of multifactor authentication for the verified passwordless user, passwordless authentication flow will commence as usual.
+这意味着，如果定义并激活了 [多因素身份验证提供程序](../mfa/Configuring-Multifactor-Authentication.html) ，并且在给定的无密码用户的CAS信号可用性和多因素流的资格中 [多因素触发器](../mfa/Configuring-Multifactor-Authentication-Triggers.html) 其正常的无密码身份验证流，而倾向于请求的多因素身份验证提供程序及其流程。 如果没有可用的多因素提供者 ，或者如果没有触发器要求已验证的无密码用户使用多因素身份验证，则无密码 身份验证流程将照常开始。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#passwordless-authentication).
+要查看CAS 属性的相关列表，请 [查阅本指南](../configuration/Configuration-Properties.html#passwordless-authentication)。
 
-## Delegated Authentication Integration
+## 委托身份验证集成
 
-Passwordless authentication can be integrated with [CAS delegated authentication](../integration/Delegate-Authentication.html). In this scenario, once CAS configuration is enabled to support this behavior via settings or the located passwordless user account is considered *eligible* for delegated authentication, CAS will allow passwordless authentication to skip its own *intended normal* flow (i.e. as described above with token generation, etc) in favor of delegated authentication that may be available and defined in CAS.
+无密码身份验证可以与 [CAS委托身份验证](../integration/Delegate-Authentication.html)集成在一起。 在这种情况下， 一旦CAS配置被启用以支持经由设置或位于密码的用户帐户此行为被认为是 *资格* 为委托身份验证， CAS将允许密码认证跳过其自己的 *预期的正常* 流（即，如所描述以上，以及令牌生成等），以支持 委托身份验证，这些身份验证可能在CAS中可用并定义。
 
-This means that if [delegated authentication providers](../integration/Delegate-Authentication.html) are defined and activated, CAS will skip its normal passwordless authentication flow in favor of the requested multifactor authentication provider and its flow. If no delegated identity providers are available, passwordless authentication flow will commence as usual.
+这意味着，如果 [委派的身份验证提供程序](../integration/Delegate-Authentication.html) ，则CAS将跳过 其常规的无密码身份验证流程，而转向请求的多因素身份验证提供程序及其流程。 如果没有可用的委派身份提供者 ，则无密码身份验证流程将照常开始。
 
-The selection of a delegated authentication identity provider for a passwordless user is handled using a script. The script may be defined as such:
+使用脚本将为无密码用户选择委派身份验证身份提供程序的操作处理为 脚本可以这样定义：
 
 ```groovy
-def run(Object[] args) {
+def run（Object [] args）{
     def passwordlessUser = args[0]
-    def clients = (Set) args[1]
+    def客户端=（设置）args[1]
     def httpServletRequest = args[2]
     def logger = args[3]
 
-    logger.info("Testing username $passwordlessUser")
+    logger.info（“ Testing username $passwordlessUser”）
 
-    return clients[0]
+    返回客户端[0]
 }
 ```
 
-The parameters passed are as follows:
+传递的参数如下：
 
-| Parameter            | Description                                                                 |
-| -------------------- | --------------------------------------------------------------------------- |
-| `passwordlessUser`   | The object representing the `PasswordlessUserAccount`.                      |
-| `clients`            | The object representing the collection of identity provider configurations. |
-| `httpServletRequest` | The object representing the http request.                                   |
-| `logger`             | The object responsible for issuing log messages such as `logger.info(...)`. |
+| 范围                   | 描述                                 |
+| -------------------- | ---------------------------------- |
+| `无密码的用户`             | `PasswordlessUserAccount`的对象。      |
+| `客户`                 | 代表身份提供者配置集合的对象。                    |
+| `httpServletRequest` | 代表http请求的对象。                       |
+| `记录器`                | 负责发布日志消息的对象，例如 `logger.info（...）`。 |
 
-The outcome of the script can be `null` to skip delegated authentication for the user, or it could a selection from the available identity providers passed into the script.
+脚本的结果可以是 `null` 以跳过用户的委托身份验证，也可以是从传递到脚本
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#passwordless-authentication).
+要查看CAS 属性的相关列表，请 [查阅本指南](../configuration/Configuration-Properties.html#passwordless-authentication)。
