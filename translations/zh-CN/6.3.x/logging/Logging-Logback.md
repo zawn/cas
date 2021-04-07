@@ -1,18 +1,18 @@
 ---
-layout: default
-title: CAS - Logback Configuration
-category: Logs & Audits
+layout: 默认
+title: CAS-登录配置
+category: 记录 & 审核
 ---
 
-# Logback Logging
+# 登录回日志
 
-CAS does also support [Logback](https://logback.qos.ch/) as an alternative logging engine. At a high level, the Logback architecture is similar to that of [Log4j](Logging.html) where you have `Logger`, `Appender` and `Layout` components typically defined inside a `logback.xml` file.
+CAS还支持 [Logback](https://logback.qos.ch/) 作为备用日志记录引擎。 在较高的级别上， 的Logback架构类似于 [Log4j](Logging.html) ，其中您具有 `Logger` `Appender` 和 `Layout` 组件，这些组件通常在 `logback.xml` 文件中定义。
 
-Refer to the [Logback documentation](https://logback.qos.ch/documentation.html) to learn more.
+请参阅 [Logback文档](https://logback.qos.ch/documentation.html) 以了解更多信息。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -22,33 +22,33 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-You must also make sure the following modules and dependencies are excluded from the WAR overlay:
+您还必须确保WAR叠加层中排除了以下模块和依赖项：
 
 ```groovy
-configurations.all {
-    exclude(group: "org.apache.logging.log4j", module: "log4j-api")
-    exclude(group: "org.apache.logging.log4j", module: "log4j-web")
-    exclude(group: "org.apache.logging.log4j", module: "log4j-jcl")
-    exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
+configuration.all {
+    排除（组：“ org.apache.logging.log4j”，模块：“ log4j-api”）
+    排除（组：“ org.apache.logging.log4j”，模块：“ log4j-web”）
+    排除（组：“ org.apache.logging.log4j”，模块：“ log4j-jcl”）
+    排除（组：“ org.apache.logging.log4j”，模块：“ log4j-slf4j-impl”）
 
-    exclude(group: "org.apereo.cas", module: "cas-server-core-logging")
+    排除（组：“ org.apereo.cas”，模块：“ cas-server-core-logging”）
 }
 ```
 
-<div class="alert alert-warning"><strong>YMMV</strong><p>
-Logback support for Java 9 and above is still not quite finalized and released. In the WAR overlay, you may need to strictly <i>force</i>
-the Logback and Slf4j module versions to <code>1.2.3</code> and <code>1.7.5</code> respectively to get around JDK compatibility issues.
-This is expected to be fixed in future CAS releases once Logback is officially released and you should keep an eye out for related changes and fixes in the CAS release notes.
+<div class="alert alert-warning"><strong>青年汽车</strong><p>
+Java 9及更高版本的Logback支持仍未最终确定和发布。 在WAR叠加中，您可能需要严格 <i>强制</i>
+将Logback和Slf4j模块版本分别设为 <code>1.2.3</code> 和 <code>1.7.5</code> 以解决JDK兼容性问题。
+正式发布Logback后，预计将在将来的CAS版本中解决此问题，您应该密切注意CAS版本说明中的相关更改和修复。
 </p></div>
 
-A sample `logback.xml` file follows:
+示例 `logback.xml` 文件如下：
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
+<吗？xml版本=“ 1.0”编码=“ UTF-8”？>
 <configuration scan="true" scanPeriod="30 seconds">
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%white(%d{yyyy-MM-dd HH:mm:ss}) %highlight(%-5level) %cyan(%logger{15}) - %msg%n</Pattern>
+            <Pattern>％白色（%d{yyyy-MM-dd HH:mm:ss}） %highlight（%-5level） %cyan（%logger{15}） %msg%n</Pattern>
         </layout>
     </appender>
     <logger name="org.apereo.cas" level="info" additivity="false">
@@ -60,9 +60,9 @@ A sample `logback.xml` file follows:
 </configuration>
 ```
 
-<div class="alert alert-warning"><strong>Be Careful</strong><p>
-Sanitizing log data to remove sensitive ticket ids such as ticket-granting tickets or proxy-granting tickets is not handled by CAS when Logback is used. While this 
-may be worked out in future releases, you should be extra careful to cleanse log data prior to sharing it with external systems such as Splunk or Syslog, etc. 
+<div class="alert alert-warning"><strong>小心</strong><p>
+使用Logback时，CAS不会处理对日志数据进行消毒以删除敏感的凭单ID（如授予凭单的凭单或授予代理凭单的凭单）的情况。 尽管 
+，但在与外部系统（例如Splunk或Syslog等）共享日志数据之前，应格外小心地清理日志数据。 
 </p></div>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#logging).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#logging)。
