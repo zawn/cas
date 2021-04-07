@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Password Management
-category: Password Management
+layout: 默认
+title: CAS-密码管理
+category: 密码管理
 ---
 
-# Password Management - REST
+# 密码管理-REST
 
-Tasks such as locating users' email and security questions as well as management and updating of the password are delegated to user-defined rest endpoints.
+查找用户的电子邮件和安全问题以及管理 和密码更新等任务被委派给用户定义的其余端点。
 
-REST support is enabled by including the following dependencies in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用REST支持：
 
 ```xml
 <dependency>
@@ -18,11 +18,11 @@ REST support is enabled by including the following dependencies in the WAR overl
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#rest-password-management).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#rest-password-management)。
 
-| Endpoint               | Method | Headers                               | Expected Response                          |
-| ---------------------- | ------ | ------------------------------------- | ------------------------------------------ |
-| Get Email Address      | `GET`  | `username`                            | `200`. Email address in the body.          |
-| Get Phone Number       | `GET`  | `username`                            | `200`. Phone number in the body.           |
-| Get Security Questions | `GET`  | `username`                            | `200`. Security questions map in the body. |
-| Update Password        | `POST` | `username`, `password`, `oldPassword` | `200`. `true/false` in the body.           |
+| 终点       | 方法   | 标头                  | 预期回应                |
+| -------- | ---- | ------------------- | ------------------- |
+| 获取电子邮件地址 | `得到` | `用户名`               | `200`。 正文中的电子邮件地址。  |
+| 获取电话号码   | `得到` | `用户名`               | `200`。 体内的电话号码。     |
+| 获取安全问题   | `得到` | `用户名`               | `200`。 安全问题在体内映射。   |
+| 更新密码     | `邮政` | `的用户名`， `密码`， `旧密码` | `200`。 `正确/错误` 在体内。 |
