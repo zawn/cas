@@ -1,162 +1,162 @@
 ---
-layout: default
-title: Dynamic Themes - User Interface Customization - CAS
-category: User Interface
+layout: 违约
+title: 动态主题 - 用户界面定制 - CAS
+category: 用户界面
 ---
 
-# Dynamic Themes
+# 动态主题
 
-With the introduction of [Service Management application](../services/Service-Management.html), deployers are now able to switch the themes based on different services. For example, you may want to have different login screens (different styles) for staff applications and student applications, or you want to show two layouts for day time and night time. This document could help you go through the basic settings to achieve this.
+随着 [服务管理应用](../services/Service-Management.html)的推出，部署人员现在能够根据不同的服务 切换主题。 例如，您可能需要为员工应用程序和学生应用程序提供不同的登录屏幕（不同样式），或者要显示两个 布局，用于白天和黑夜。 此文档可以帮助您通过基本设置来实现此目的。
 
-## Static Themes
+## 静态主题
 
-CAS is configured to decorate views based on the `theme` property of a given registered service in the Service Registry. The theme that is activated via this method will still preserve the default views for CAS but will apply decorations such as CSS and Javascript to the views. The physical structure of views cannot be modified via this method.
+CAS 的配置是根据服务注册处特定注册服务的 `主题` 属性来装饰视图。 通过此方法激活的主题仍将保留 CAS 的默认视图，但将在视图中应用 CSS 和 Javascript 等装饰。 无法通过此方法修改视图的物理结构。
 
-### Configuration
+### 配置
 
-- Add a `[theme_name].properties` placed to the root of `src/main/resources` folder. Contents of this file should match the following:
+- 添加 `[theme_name].属性` 放置在 `src/主/资源` 文件夹的根部。 此文件的内容应匹配以下内容：
 
 ```properties 
-# Path to theme CSS file
-cas.standard.css.file=/themes/[theme_name]/css/cas.css
+•主题CSS文件路径
+cas.标准.css.文件=/主题/[theme_name]/css/cas.css
 
-# Path to theme JS file
-cas.standard.js.file=/themes/[theme_name]/js/cas.js
+主题JS文件路径
+cas.标准.js.文件]/主题/[theme_name]/js/cas.js
 
-# Path to theme logo to display via the common layout
-# cas.logo.file=/images/logo.png     
+布局
+# cas.logo.file]/图像/徽标.png     
 
-# Decide whether drawer menu should be displayed
-# cas.drawer-menu.enabled=true                    
+# 决定抽屉菜单是否应该显示
+# cas.抽屉菜单.启用]真实                    
 
-# Theme name used in various titles/captions
-# cas.theme.name=Example Theme
+# 主题名称用于各种标题/标题
+# cas.
 
-# Path to theme favicon file.
-# cas.favicon.file=/themes/example/images/favicon.ico
+.
+#cas.favicon.file=/主题/示例/图像/法维肯.ico
 
-# Enable and display the notifications menu
-# cas.notifications-menu.enabled=true
+启用并显示通知菜单
+# cas.通知-菜单.启用]真实
 
-# Enable and display the drawer menu
-# cas.drawer-menu.enabled=true
+# 启用和显示抽屉菜单
+# cas.抽屉菜单。
 ```
 
-- Create the directory `src/main/resources/static/themes/[theme_name]`. Put the theme-specific `cas.css` and `cas.js` inside the appropriate directories for `css` and `js`.
-- Specify `[theme_name]` for the service definition under the `theme` property.
+- 创建目录 `src/主/资源/静态/主题/[theme_name]`。 将主题特定的 `.css` 和 `cas.js` 放入适当的目录内 `css` 和 `js`。
+- 根据 `主题` 属性指定服务定义 `[theme_name]` 。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://www.example.org",
-  "name" : "MyTheme",
-  "theme" : "[theme_name]",
-  "id" : 1000
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："^https://www.example.org"，
+  "名称"："我的主题"，
+  "主题"："[theme_name]"，
+  "id"：1000
 }
 ```
 
-Values can use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax.
+值可以使用 [弹簧表达语言](../configuration/Configuration-Spring-Expressions.html) 语法。
 
-## Themed Views
+## 主题视图
 
-CAS can also utilize a service's associated theme to selectively choose which set of UI views will be used to generate the standard views (`casLoginView.html`, etc). This is specially useful in cases where the set of pages for a theme that are targeted for a different type of audience are entirely different structurally that using a simple theme is not practical to augment the default views. In such cases, new view pages may be required.
+CAS还可以利用服务的相关主题，选择哪组UI视图将用于生成 标准视图（`卡罗金视图.html`等）。 对于针对不同类型的受众 的主题的一组页面在结构上完全不同的情况下，这特别有用，即使用简单主题不实际来增加默认视图。 在这种情况下，可能需要新的视图页面。
 
-Views associated with a particular theme by default are expected to be found at: `src/main/resources/templates/<theme-id>`. Note that CAS views and theme-based views may both be externalized out of the web application context. When externalized, themed views are expected to be found at the specified path via CAS properties under a directory named after the theme. For instance, if the external path for CAS views is `/etc/cas/templates`, view template files for theme `sample` may be located `/etc/cas/templates/sample/`.
+默认情况下，与特定主题相关联的视图预计在： `src/主/资源/模板/<theme-id>`。 请注意，CAS 视图和基于主题的视图都可以从 Web 应用上下文中外部化。 当外部化时，主题视图将通过 CAS 属性在指定路径上找到，该目录以主题命名的 目录下。 例如，如果 CAS 视图的外部路径 `/等/cas/模板`，则 主题 `样本` 的视图模板文件可能位于 `/等/cas/模板/样本/`。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#views).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#views)。
 
-### Configuration
+### 配置
 
-- Add a `[theme_name].properties` placed to the root of `src/main/resources` folder. Contents of this file should match the following:
+- 添加 `[theme_name].属性` 放置在 `src/主/资源` 文件夹的根部。 此文件的内容应匹配以下内容：
 
 ```properties
-cas.standard.css.file=/themes/[theme_name]/css/cas.css
-cas.standard.js.file=/themes/[theme_name]/js/cas.js
+cas.标准.css.文件=/主题/[theme_name]/css/cas.css
+案例标准.js.文件=/主题/[theme_name]/js/cas.js
 ```
 
-- Clone the default set of view pages into a new directory based on the theme id (i.e. `src/main/resources/templates/<theme-id>`).
-- Specify the name of your theme for the service definition under the `theme` property.
+- 将默认的视图集页克隆到基于主题 ID 的新目录中（即 `src/主/资源/模板/<theme-id>`）。
+- 根据 `主题` 属性指定您的主题名称，以定义服务。
 
-## Theme Collections
+## 主题集合
 
-CAS provides a module that presents a number of ready-made themes. The intention for each themes to account for common and provide for common use cases when it comes to user interface modifications and samples, and attempt to automate much of the configuration.
+CAS 提供了一个模块，提供许多现成的主题。 每个主题的意图 考虑到共同的，并规定共同使用的情况下，当涉及到用户界面修改 和样品，并试图自动化的大部分配置。
 
-Support is enabled by including the following module in the WAR overlay:
+支持通过在 WAR 叠加中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-theme-collections</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>的卡-服务器-支持-主题-集合</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-The following themes are provided by this module and can be assigned to service definitions:
+本模块提供以下主题，可分配给服务定义：
 
-| Theme     | Description                                                                  |
-| --------- | ---------------------------------------------------------------------------- |
-| `example` | A reference example theme that combines customized CSS, Javascript and views |
+| 主题  | 描述                       |
+| --- | ------------------------ |
+| `例` | 结合自定义 CSS、爪哇脚本和视图的参考示例主题 |
 
-The collection of themes above can also serve as reference examples of how to define a theme with custom CSS, Javascript and associated views and fragments.
+以上主题的集合还可以作为如何定义主题的参考示例， 自定义CSS、Javascript以及相关视图和片段。
 
-## Groovy Themes
+## 格罗夫主题
 
-If you have multiple themes defined, it may be desirable to dynamically determine a theme for a given service definition. In order to do, you may calculate the final theme name via a Groovy script of your own design. The theme assigned to the service definition needs to point to the location of the script:
+如果您定义了多个主题，则最好动态确定给定服务定义的主题。 为了做到这一点，您可以通过您自己设计的 Groovy 脚本计算最终的主题名称。 分配给服务定义的主题需要指向脚本的位置：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://www.example.org",
-  "name" : "MyTheme",
-  "theme" : "file:///etc/cas/config/themes.groovy",
-  "id" : 1000
-}
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："^https://www.example.org"，
+  "名称"："我的主题"，
+  "主题"："file:///etc/cas/config/themes.groovy"，
+  "id"：1000
+
 ```
 
-The script itself may be designed as:
+脚本本身可设计为：
 
 ```groovy
-import java.util.*
+导入java.利用。*
 
-def String run(final Object... args) {
-    def service = args[0]
-    def registeredService = args[1]
-    def queryStrings = args[2]
-    def headers = args[3]
-    def logger = args[4]
+def字符串运行（最终对象。。。args）{
+    def服务=args[0]
+    def注册服务=args[1]
+    def查询串=args[2]
+    def标题=args[3]
+    定义记录器=args[4]
 
-    // Determine theme ...
+    //确定主题。。。
 
-    return null
+    返回无效
 }
 ```
 
-Returning `null` or blank will have CAS switch to the default theme. The following parameters may be passed to a Groovy script:
+返回 `无效` 或空白将有CAS切换到默认主题。 以下参数可传递到 Groovy 脚本：
 
-| Parameter           | Description                                                                 |
-| ------------------- | --------------------------------------------------------------------------- |
-| `service`           | The object representing the requesting service.                             |
-| `registeredService` | The object representing the matching registered service in the registry.    |
-| `queryStrings`      | Textual representation of all query strings found in the request, if any.   |
-| `headers`           | `Map` of all request headers and their values found in the request, if any. |
-| `logger`            | The object responsible for issuing log messages such as `logger.info(...)`. |
+| 参数     | 描述                                |
+| ------ | --------------------------------- |
+| `服务`   | 表示请求服务的对象。                        |
+| `注册服务` | 表示注册表中匹配注册服务的对象。                  |
+| `查询弦`  | 请求中发现的所有查询字符串的文本表示（如果有的话）。        |
+| `头`    | `地图` 请求中发现的所有请求标题及其值（如果有的话）。      |
+| `记录`   | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
 
-## RESTful Themes
+## 主题十足
 
-Somewhat similar to the above option, you may calculate the final theme name via a REST endpoint of your own design. The theme assigned to the service definition needs to point to the location of the REST API. Endpoints must be designed to accept/process `application/json` via `GET` requests. A returned status code `200` allows CAS to read the body of the response to determine the theme name. Empty response bodies will have CAS switch to the default theme.
+与上述选项有些类似，您可以通过自己设计的 REST 终点计算最终主题名称。 分配给服务定义的主题需要指向 REST API 的位置。 端点必须设计为通过获取</code> 请求 `接受/处理 <code>申请/json` 。 返回的状态代码 `200` 允许 CAS 读取响应的主体以确定主题名称。 空响应机构将有CAS切换到默认主题。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://www.example.org",
-  "name" : "MyTheme",
-  "theme" : "https://themes.example.org",
-  "id" : 1000
-}
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："^https://www.example.org"，
+  "名称"："我的主题"，
+  "主题"："https://themes.example.org"，
+  "id"：1000
+
 ```
 
-The following parameters may be passed to a Groovy script:
+以下参数可传递到 Groovy 脚本：
 
-| Parameter | Description                        |
-| --------- | ---------------------------------- |
-| `service` | The requesting service identifier. |
+| 参数   | 描述       |
+| ---- | -------- |
+| `服务` | 请求服务标识符。 |
