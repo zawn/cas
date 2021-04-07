@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - JDBC Drivers
-category: Configuration
+layout: 默认
+title: CAS-JDBC驱动程序
+category: 配置
 ---
 
-# JDBC Drivers
+# JDBC驱动程序
 
-While in most cases this is unnecessary and handled by CAS automatically, you may need to also include the following module to account for various database drivers:
+尽管在大多数情况下这是不必要的，并由CAS自动处理，但是 可能还需要包括以下模块来说明各种数据库驱动程序：
 
 ```xml
 <dependency>
@@ -16,51 +16,51 @@ While in most cases this is unnecessary and handled by CAS automatically, you ma
 </dependency>
 ```
 
-## Database Support
+## 数据库支持
 
-Automatic support for drivers includes the following databases. All other drivers need to be manually added to the build configuration. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties-Common.html#hibernate--jdbc).
+驱动程序的自动支持包括以下数据库。 所有其他驱动程序都需要手动添加到构建配置中。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties-Common.html#hibernate--jdbc)。
 
 ### H2
 
-Available drivers are:
+可用的驱动程序是：
 
 1. `org.h2.Driver`
 
-| Dialects                          |
+| 方言                                |
 | --------------------------------- |
 | `org.hibernate.dialect.H2Dialect` |
 
-### HSQLDB
+### 数据库
 
-Available drivers are:
+可用的驱动程序是：
 
 1. `org.hsqldb.jdbcDriver`
 
-| Dialects                            |
+| 方言                                  |
 | ----------------------------------- |
 | `org.hibernate.dialect.HSQLDialect` |
 
-### Oracle
+### 甲骨文
 
-Available drivers are:
+可用的驱动程序是：
 
 1. `oracle.jdbc.driver.OracleDriver`
 
-| Dialects                                 |
+| 方言                                       |
 | ---------------------------------------- |
 | `org.hibernate.dialect.Oracle8iDialect`  |
 | `org.hibernate.dialect.Oracle9iDialect`  |
 | `org.hibernate.dialect.Oracle10gDialect` |
 | `org.hibernate.dialect.Oracle12cDialect` |
 
-### MYSQL
+### MySQL数据库
 
-Available drivers are:
+可用的驱动程序是：
 
 1. `com.mysql.jdbc.Driver`
 2. `com.mysql.cj.jdbc.Driver`
 
-| Dialects                                     |
+| 方言                                           |
 | -------------------------------------------- |
 | `org.hibernate.dialect.MySQLDialect`         |
 | `org.hibernate.dialect.MySQL5Dialect`        |
@@ -70,13 +70,13 @@ Available drivers are:
 | `org.hibernate.dialect.MySQL57InnoDBDialect` |
 | `org.hibernate.dialect.MySQL8Dialect`        |
 
-### PostgreSQL
+### PostgreSQL的
 
-Available drivers are:
+可用的驱动程序是：
 
 1. `org.postgresql.Driver`
 
-| Dialects                                    |
+| 方言                                          |
 | ------------------------------------------- |
 | `org.hibernate.dialect.PostgreSQL81Dialect` |
 | `org.hibernate.dialect.PostgreSQL82Dialect` |
@@ -88,13 +88,13 @@ Available drivers are:
 | `org.hibernate.dialect.PostgreSQL95Dialect` |
 | `org.hibernate.dialect.PostgresPlusDialect` |
 
-### MariaDB
+### 玛丽亚数据库
 
-Available drivers are:
+可用的驱动程序是：
 
 1. `org.mariadb.jdbc.Driver`
 
-| Dialects                                  |
+| 方言                                        |
 | ----------------------------------------- |
 | `org.hibernate.dialect.MariaDBDialect`    |
 | `org.hibernate.dialect.MariaDB53Dialect`  |
@@ -102,14 +102,14 @@ Available drivers are:
 | `org.hibernate.dialect.MariaDB102Dialect` |
 | `org.hibernate.dialect.MariaDB103Dialect` |
 
-### Microsoft SQL Server
+### Microsoft SQL服务器
 
-Available drivers are:
+可用的驱动程序是：
 
 1. `net.sourceforge.jtds.jdbc.Driver`
 2. `com.microsoft.sqlserver.jdbc.SQLServerDriver`
 
-| Dialects                                     |
+| 方言                                           |
 | -------------------------------------------- |
 | `org.hibernate.dialect.SQLServerDialect`     |
 | `org.hibernate.dialect.SQLServer2005Dialect` |
