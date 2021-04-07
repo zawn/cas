@@ -1,180 +1,187 @@
 ---
-layout: default
-title: CAS - Delegate Authentication
-category: Authentication
+layout: 违约
+title: CAS - 委托认证
+category: 认证
 ---
 
-# Delegated Authentication
+# 委托身份验证
 
-CAS can act as a client (i.e. service provider or proxy) using the [Pac4j library](https://github.com/pac4j/pac4j) and delegate the authentication to:
+CAS 可以使用 [Pac4j 库](https://github.com/pac4j/pac4j) 充当客户端（即服务提供商或代理），并将认证委托给：
 
-* CAS servers
-* SAML2 identity providers
-* OAuth2 providers such as Facebook, Twitter, GitHub, Google, LinkedIn, etc
-* OpenID Connect identity providers such as Google, Apple
-* [ADFS](ADFS-Integration.html)
+* CAS服务器
+* SAML2 身份提供者
+* OAuth2提供商，如脸谱网、推特、GitHub、谷歌、LinkedIn等
+* 开放ID连接身份提供商，如谷歌，苹果
+* [民主同盟军](ADFS-Integration.html)
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-pac4j-webflow</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - pac4j - 网络流</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-<div class="alert alert-info"><strong>Note</strong><p>The client issuing the authentication request can be of any type (SAML, OAuth2, OpenID Connect, etc) and is allowed to submit the authentication request using any protocol that the CAS server supports and is configured to understand. This means that you may have an OAuth2 client using CAS in delegation mode to authenticate at an external SAML2 identity provider, another CAS server or Facebook and in the end of that flow receiving an OAuth2 user profile. The CAS server is able to act as a proxy, doing the protocol translation in the middle.</p></div>
+<div class="alert alert-info"><strong>注意</strong><p>发出身份验证请求的客户端可以是任何类型的（SAML、OAuth2、OpenID 连接等），并且允许使用 CAS 服务器支持并配置为理解的任何协议提交身份验证请求。 这意味着，您可能有 OAuth2 客户端在委托模式下使用 CAS 在外部 SAML2 身份提供商、另一个 CAS 服务器或 Facebook 进行身份验证，并在该流程结束时接收 OAuth2 用户配置文件。 CAS 服务器能够充当代理，在中间执行协议翻译。</p></div>
 
-## Register Providers
+## 注册提供商
 
-An identity provider is a server which can authenticate users (like Google, Yahoo...) instead of a CAS server. If you want to delegate the CAS authentication to Twitter for example, you have to add an OAuth client for the Twitter provider, which will be done automatically for you once provider settings are taught to CAS.
+身份提供商是一种服务器，可以验证用户（如谷歌，雅虎...），而不是CAS服务器。 例如，如果您想将 CAS 身份验证委托给 Twitter，则必须为 Twitter 提供商添加一个 OAuth 客户端，一旦向 CAS 传授提供商设置，该客户端将自动为您完成。
 
-Notice that for each OAuth provider, the CAS server is considered as an OAuth client and therefore should be declared as an OAuth client at the OAuth provider. After the declaration, a key and a secret is given by the OAuth provider which has to be defined in the CAS configuration as well.
+请注意，对于每个非授权提供商，CAS 服务器被视为非授权客户端，因此应 非授权提供商的非授权客户端声明。 申报后，非授权提供商会提供密钥和机密，该提供商 在 CAS 配置中定义。
 
-### Default
+### 违约
 
-Identity providers for delegated authentication can be registered with CAS using settings. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#pac4j-delegated-authn).
+授权身份验证的身份提供商可以使用设置在 CAS 注册。 有关 中科院物业名单，请 [本指南](../configuration/Configuration-Properties.html#pac4j-delegated-authn)。
 
-### REST
+### 休息
 
-Identity providers for delegated authentication can be provided to CAS using an external REST endpoint. This allows the CAS server to reach to a remote REST endpoint whose responsibility is to produce the following payload in the response body:
+授权身份验证的身份提供商可以使用外部 REST 端点提供给 CAS。 这使得 CAS 服务器能够到达 远程 REST 端点，其职责是在响应机构中生成以下有效载荷：
 
 ```json
-{
-    "callbackUrl": "https://sso.example.org/cas/login",
-    "properties": {
-        "github.id": "...",
-        "github.secret": "...",
+\
+    "回调url"："https://sso.example.org/cas/login"，
+    "属性"：{
+        "github.id"："。。。"，
+        "github.秘密"："。。。"，
 
-        "cas.loginUrl.1": "...",
-        "cas.protocol.1": "..."
-    }
+        "cas.loginUrl.1"："。。。"，
+        "cas.协议1"："。。。"
+    •
 }
 ```
 
-The syntax and collection of available `properties` in the above payload is controlled by \[Pac4j\]((https://pac4j.org/docs/index.html). The response that is returned must be accompanied by a 200 status code.
+上述有效载荷中</code> 可用 `属性的语法和集合由 [Pac4j]（https://pac4j.org/docs/index.html）控制。 
+返回的响应必须附有 200 状态代码。</p>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#pac4j-delegated-authn).
+<p spaces-before="0">要查看 CAS 属性的相关列表，请 <a href="../configuration/Configuration-Properties.html#pac4j-delegated-authn">查看本指南</a>。</p>
 
-## User Interface
+<h2 spaces-before="0">用户界面</h2>
 
-All available clients are automatically displayed on the login page as clickable buttons. CAS does allow options for auto-redirection of the authentication flow to a provider, if only there is a single provider available and configured.
+<p spaces-before="0">所有可用的客户端将自动显示在登录页面上，作为可点击按钮。
+CAS 确实允许将身份验证流自动重定向到提供商的选项，
+只要有一个可用和配置的单个提供商。</p>
 
-## Authenticated User Id
+<h2 spaces-before="0">已验证用户 ID</h2>
 
-After a successful delegated authentication, a user is created inside the CAS server with a specific identifier: this one can be created only from the technical identifier received from the external identity provider (like `1234`) or as a "typed identifier" (like `FacebookProfile#1234`), which is the default.
+<p spaces-before="0">在成功委托身份验证后，在 CAS 服务器内创建了具有特定标识符的用户：
+只能从外部身份提供商（如 1234`） 或作为"键入标识符"（如 `FacebookProfile#1234`） `技术标识符创建此标识符，这是默认的。</p>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#pac4j-delegated-authn).
+<p spaces-before="0">要查看 CAS 属性的相关列表，请 <a href="../configuration/Configuration-Properties.html#pac4j-delegated-authn">查看本指南</a>。</p>
 
-## Returned Payload
+<h2 spaces-before="0">返回的有效载荷</h2>
 
-Once you have configured (see information above) your CAS server to act as an OAuth, CAS, OpenID (Connect) or SAML client, users will be able to authenticate at a OAuth/CAS/OpenID/SAML provider (like Facebook) instead of authenticating directly inside the CAS server.
+<p spaces-before="0">一旦您将 CAS 服务器配置（见上文信息）作为非正统、
+CAS、OpenID（连接）或 SAML 客户端，用户将能够在非真实/CAS/OpenID/SAML
+提供商（如 Facebook）进行身份验证，而不是直接在 CAS 服务器内进行身份验证。</p>
 
-In the CAS server, after this kind of delegated authentication, users have specific authentication data. These include:
+<p spaces-before="0">在 CAS 服务器中，此类委托身份验证后，用户具有特定的身份验证数据。 其中包括：</p>
 
-* An identifier which is the profile type + `#` + the identifier of the user for this provider (i.e `FacebookProfile#0000000001`)
-* Attributes populated by the data retrieved from the provider (first name, last name, birthdate...)
+<ul>
+<li>个人资料类型+ <code>#` +此提供商用户标识符（即 `Facebook 配置文件#000000001`）</li>
+* 由从提供商检索的数据填充的属性（姓名、姓氏、出生日...）</ul>
 
-## Profile Attributes
+## 配置文件属性
 
-In CAS-protected applications, through service ticket validation, user information are pushed to the CAS client and therefore to the application itself.
+在 CAS 保护的应用程序中，通过服务票证验证，将用户信息 推至 CAS 客户端，从而推至应用程序本身。
 
-The identifier of the user is always pushed to the CAS client. For user attributes, it involves both the configuration at the server and the way of validating service tickets.
+用户标识符始终被推入 CAS 客户端。 对于用户属性，它既涉及服务器上的配置 ，也涉及验证服务票证的方式。
 
-On CAS server side, to push attributes to the CAS client, it should be configured in the expected service:
+在 CAS 服务器端，要向 CAS 客户端推送属性，应将其配置在预期服务中：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "allowedAttributes" : [ "java.util.ArrayList", [ "name", "first_name", "middle_name" ] ]
-  }
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "描述"："样本"，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务"，
+    "允许的归因"："java.util.Arraylist"，"名称"，"first_name"，"middle_name"]]
+  =
 }
 ```
 
-## Access Strategy
+## 访问策略
 
-Service definitions may be conditionally authorized to use an external identity provider by defining their own access strategy and policy:
+服务定义可以通过定义自己的访问策略和策略有条件地授权使用外部身份提供商：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "accessStrategy" : {
-    "@class" : "org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy",
-    "delegatedAuthenticationPolicy" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceDelegatedAuthenticationPolicy",
-      "allowedProviders" : [ "java.util.ArrayList", [ "Facebook", "Twitter" ] ],
-      "permitUndefined": true,
-      "exclusive": true
-    }
-  }
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "访问战略"： [
+    "@class"： "org. apereo. cas. 服务. 默认注册服务访问战略"，
+    "授权验证政策"： [
+      "@class"： "org. apereo. cas. 服务. 默认注册服务服务授权服务" ，
+      "允许的提供者"： [java. util. Arraylist"， [脸谱'， '推特] ]]，
+      "允许未定义"： 真实，
+      "独家"： 真正的
+    [
+  ]
 }
 ```
 
-Note that:
+请注意：
 
-- The list of allowed providers should contain the external identity provider names (i.e. client names).
-- The `permitUndefined` flag decides whether access should be granted in the event that no allowed providers are defined explicitly.
-- The `exclusive` flag decides whether authentication should be exclusively limited to allowed providers, disabling other methods such as username/password, etc.
+- 允许的提供商列表应包含外部身份提供商名称（即客户名）。
+- `允许未定义的` 标志决定在未明确定义允许的提供商的情况下是否应授予访问权限。
+- `独家` 标志决定认证是否应仅限于允许的提供商，禁用其他方法，如用户名/密码等。
 
-## Provisioning
+## 供应
 
-By default, user profiles that are extracted from external identity providers and merged into a CAS authenticated principal are not stored or tracked anywhere. CAS does provide additional options to allow such profiles to be managed outside of CAS and/or provisioned into identity stores, allowing you optionally to link external/guest accounts with their equivalent found in the authentication source used by CAS, etc.
+默认情况下，从外部身份提供商提取并合并到 CAS 认证本金的用户配置文件不会在任何地方存储或跟踪。 CAS 确实提供了其他选项，允许 此类配置文件在 CAS 之外管理和/或配置到身份存储中，允许您可选择地将 外部/客户帐户与 CAS 使用的身份验证源中的等效帐户等联系起来。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#pac4j-delegated-authn).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#pac4j-delegated-authn)。
 
-### Groovy Provisioner
+### 格罗夫提供器
 
-Provisioning tasks can be carried out using an external Groovy script with the following structure:
+可使用具有以下结构的外部 Groovy 脚本执行配置任务：
 
 ```groovy
-def run(Object[] args) {
-    def principal = args[0]
-    def userProfile = args[1]
-    def client = args[2]
-    def logger = args[3]
-    ...
+def运行（对象[]args）{
+    def本金=args[0]
+    定义用户档案=args[1]
+    def客户端=args[2]
+    除号器=args[3]
+    。。。
 }
 ```
 
-It is not expected for the script to return a value. The following parameters are passed to the script:
+预计脚本不会返回值。 以下参数传递到脚本：
 
-| Parameter     | Description                                                                                    |
-| ------------- | ---------------------------------------------------------------------------------------------- |
-| `principal`   | CAS authenticated `Principal` that contains all attributes and claims.                         |
-| `userProfile` | The original `UserProfile` extracted from the external identity provider.                      |
-| `client`      | The `Client` configuration responsible for the exchange between CAS and the identity provider. |
-| `logger`      | The object responsible for issuing log messages such as `logger.info(...)`.                    |
+| 参数     | 描述                                |
+| ------ | --------------------------------- |
+| `主要`   | CAS 认证了包含所有属性和索赔的 `主` 。           |
+| `用户档案` | 原始 `用户档案` 从外部身份提供商提取。             |
+| `客户`   | `客户端` 配置，负责 CAS 与身份提供商之间的交换。      |
+| `记录`   | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
 
-### REST Provisioner
+### 休息提供者
 
-Provisioning tasks can be carried out using an external REST endpoint expected to receive the following:
+可使用预期接收以下的外部 REST 端点执行备置任务：
 
-| Header                | Description                                                                         |
-| --------------------- | ----------------------------------------------------------------------------------- |
-| `principalId`         | CAS authenticated principal identifier.                                             |
-| `principalAttributes` | CAS authenticated principal attributes.                                             |
-| `profileId`           | The identifier of the user profile extracted from the identity provider.            |
-| `profileTypedId`      | The *typed* identifier of the user profile extracted from the identity provider.    |
-| `profileAttributes`   | Collection of attributes extracted from the identity provider's response.           |
-| `clientName`          | The client name responsible for the exchange between CAS and the identity provider. |
+| 页眉       | 描述                        |
+| -------- | ------------------------- |
+| `主要ID`   | CAS 验证了主要标识符。             |
+| `主要属性`   | CAS 验证了主要属性。              |
+| `配置文件`   | 从身份提供商提取的用户配置文件标识符。       |
+| `配置文件打卡` | *从身份提供商提取的用户配置文件中键入* 标识符。 |
+| `简介属性`   | 从身份提供商的响应中提取的属性集合。        |
+| `客户名`    | 负责 CAS 与身份提供商之间交换的客户名。    |
 
-## SAML2 Identity Providers
+## SAML2 身份提供者
 
-To learn more about delegating authentication to SAML2 identity providers, please [review this guide](Delegate-Authentication-SAML.html).
+要了解有关将身份认证授权给 SAML2 身份提供商的更多内容，请 [查看本指南](Delegate-Authentication-SAML.html)。
 
-## Troubleshooting
+## 故障 排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下 级别：
 
 ```xml
 ...
