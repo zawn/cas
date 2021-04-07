@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - GeoTracking Authentication Requests
-category: Authentication
+layout: 默认
+title: CAS-GeoTracking身份验证请求
+category: 验证
 ---
 
-# GeoTracking Authentication Requests
+# GeoTracking身份验证请求
 
-Authentication requests can be mapped and translated to physical locations.
+身份验证请求可以映射并转换到物理位置。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,9 +18,9 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-## Google Maps
+## 谷歌地图
 
-Uses the [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/start) to translate authentication requests into a geo-location.
+使用 [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/start) 将 身份验证请求转换为地理位置。
 
 ```xml
 <dependency>
@@ -30,11 +30,11 @@ Uses the [Google Maps Geocoding API](https://developers.google.com/maps/document
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#googlemaps-geotracking).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#googlemaps-geotracking)。
 
-## Maxmind
+## 最大思维
 
-Uses [Maxmind](https://www.maxmind.com/en/home) to translate authentication requests into a geo-location.
+使用 [Maxmind](https://www.maxmind.com/en/home) 将 身份验证请求转换为地理位置。
 
 ```xml
 <dependency>
@@ -44,4 +44,4 @@ Uses [Maxmind](https://www.maxmind.com/en/home) to translate authentication requ
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#maxmind-geotracking).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#maxmind-geotracking)。
