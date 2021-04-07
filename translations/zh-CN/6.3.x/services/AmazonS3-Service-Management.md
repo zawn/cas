@@ -1,30 +1,41 @@
 ---
-layout: default
-title: CAS - Amazon S3 Service Registry
-category: Services
+layout: 违约
+title: CAS - 亚马逊S3服务注册处
+category: 服务业
 ---
 
-# Amazon S3 Service Registry
+# 亚马逊 S3 服务注册表
 
-Stores registered service data in a [Amazon S3](https://aws.amazon.com/s3/) buckets. Each service definition is managed inside its own separate bucket and the body of the service definition is managed as a JSON blob, similar to that of [JSON service registry](JSON-Service-Management.html).
+将注册服务数据存储在亚马逊 S3</a> 桶
 
-Support is enabled by adding the following module into the overlay:
+中。 每个服务定义都管理在自己的单独存储桶 中，服务定义的主体管理为 JSON blob，类似于 [JSON 服务注册表](JSON-Service-Management.html)。</p> 
+
+支持通过在覆盖中添加以下模块来实现：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-aws-s3-service-registry</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-aws-s3-服务-注册</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#amazon-s3-service-registry).
 
-## Troubleshooting
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+## 配置
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#amazon-s3-service-registry)。
+
+
+
+## 故障 排除
+
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
+
+
 
 ```xml
 ...
@@ -35,6 +46,9 @@ To enable additional logging, configure the log4j configuration file to add the 
 ...
 ```
 
-## Auto Initialization
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+
+
+## 自动初始化
+
+在启动和配置允许的情况下，注册表能够自动初始化自己从默认的JSON服务 CAS可用的定义。 有关详细信息，请参阅本指南</a> 。</p>
