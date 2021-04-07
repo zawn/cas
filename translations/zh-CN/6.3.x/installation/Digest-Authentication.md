@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Digest Authentication
-category: Authentication
+layout: 默认
+title: CAS-摘要身份验证
+category: 验证
 ---
 
-# Digest Authentication
+# 摘要式身份验证
 
-Digest authentication is one of the agreed-upon methods CAS can use to negotiate credentials with a user's web browser. This can be used to confirm the identity of a user before sending sensitive information. It applies a hash function to the username and password before sending them over the network. Technically, digest authentication is an application of MD5 cryptographic hashing with usage of nonce values to prevent replay attacks. It uses the HTTP protocol.
+摘要身份验证是CAS可以用来与用户的 Web浏览器协商凭据的公认方法之一。 这可以用于在发送敏感信息之前确认用户的身份。 在通过网络发送用户名和密码之前，它将哈希函数应用于用户名和密码。 从技术上讲，摘要身份验证是MD5密码 散列的一种应用，它使用nonce值来防止重放攻击。 它使用HTTP协议。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,55 +18,55 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-For additional information on how digest authentication works, please [review this guide](https://en.wikipedia.org/wiki/Digest_access_authentication).
+有关摘要式身份验证如何工作的其他信息，请 [本指南](https://en.wikipedia.org/wiki/Digest_access_authentication)。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#digest-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#digest-authentication)。
 
-## Credential Management
+## 凭证管理
 
-By default, CAS attempts to cross-check computed hash values against what the client reports in the authentication request. In order for this to succeed, CAS will need access to the data store where MD5 representations of credentials are kept. The store needs to keep the hash value at a minimum of course.
+默认情况下，CAS尝试对照客户端在身份验证请求中报告的内容对计算的哈希值进行交叉检查。 为了使此操作成功，CAS将需要访问保存凭据的MD5表示形式的数据存储。 存储区 需要将哈希值保持在最低限度。
 
-By default, CAS uses its properties file to house the hashed credentials. Real production-level deployments of this module will need to provide their own data store that provides a collection of hashed values as authenticating accounts.
+默认情况下，CAS使用其属性文件来存储哈希凭证。 该模块的实际生产级别部署 将需要提供自己的数据存储，该存储提供哈希值的集合作为身份验证帐户。
 
-## Client Requests
+## 客户要求
 
-The following snippets demonstrate how a given Java client may use CAS digest authentication, via Apache's HttpClient library:
+以下代码片段演示了给定的Java客户端如何通过Apache的HttpClient库
 
 ```java
-final HttpHost target = new HttpHost("localhost", 8080, "http");
+最终的HttpHost目标=新的HttpHost（“ localhost”，8080，“ http”）;
 
-final CredentialsProvider credsProvider = new BasicCredentialsProvider();
-credsProvider.setCredentials(
-        new AuthScope(target.getHostName(), target.getPort()),
-        new UsernamePasswordCredentials("casuser", "Mellon"));
+final CredentialsProvider credsProvider = new BasicCredentialsProvider（）;
+credsProvider.setCredentials（
+        新的AuthScope（target.getHostName（），target.getPort（）），
+        新的UsernamePasswordCredentials（“ casuser”，“ Mellon”）））;
 
-final CloseableHttpClient httpclient = HttpClients.custom()
-        .setDefaultCredentialsProvider(credsProvider)
-        .build();
+最后的CloseableHttpClient httpclient = HttpClients.custom（）
+        .setDefaultCredentialsProvider（credsProvider）
+        .build（）;
 
-try {
-    HttpGet httpget = new HttpGet("http://localhost:8080/cas/login");
+试试{
+    HttpGet httpget = new HttpGet（“ http：// localhost：8080 / cas / login”）;
 
-    // Create AuthCache instance
-    final AuthCache authCache = new BasicAuthCache();
+    //创建AuthCache实例
+    最后的AuthCache authCache = new BasicAuthCache（）;
 
-    // Generate DIGEST scheme object, initialize it and add it to the local auth cache
-    final DigestScheme digestAuth = new DigestScheme();
-    digestAuth.overrideParamter("realm", "CAS");
-    authCache.put(target, digestAuth);
+    //生成DIGEST方案对象，对其进行初始化，并将其添加到本地auth缓存中
+    。
+    summaryAuth.overrideParamter（“ realm”，“ CAS”）;
+    authCache.put（target，digestAuth）;
 
-    // Add AuthCache to the execution context
-    final HttpClientContext localContext = HttpClientContext.create();
-    localContext.setAuthCache(authCache);
+    //将AuthCache添加到执行上下文
+    最后的HttpClientContext localContext = HttpClientContext.create（）;
+    localContext.setAuthCache（authCache）;
 
-    System.out.println("Executing request " + httpget.getRequestLine() + " to target " + target);
-    try (CloseableHttpResponse response = httpclient.execute(target, httpget, localContext)) {
-        System.out.println(response.getStatusLine());
-        System.out.println(EntityUtils.toString(response.getEntity()));
+    System.out.println（“执行请求” + httpget.getRequestLine（）+“到目标” + target）;
+    试试（CloseableHttpResponse响应= httpclient.execute（target，httpget，localContext））{
+        System.out.println（response.getStatusLine（））;
+        System.out.println（EntityUtils.toString（response.getEntity（）））;
     }
-} finally {
-    httpclient.close();
+}最后{
+    httpclient.close（）;
 }
 ```
