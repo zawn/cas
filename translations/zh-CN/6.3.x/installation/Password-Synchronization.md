@@ -1,20 +1,20 @@
 ---
-layout: default
-title: CAS - Password Synchronization
-category: Authentication
+layout: 默认
+title: CAS-密码同步
+category: 验证
 ---
 
-# Password Synchronization
+# 密码同步
 
-CAs presents the ability to synchronize and update the account password in a variety of destinations as part of the authentication event. If the authentication attempt is successful, CAS will attempt to capture the provided password and update destinations that are specified in CAS settings. Failing to synchronize an account password generally produces errors in the logs and the event is not considered a catastrophic failure.
+作为身份验证事件的一部分， 目标中同步和更新帐户密码的功能。 如果身份验证尝试成功，则 CAS将尝试捕获提供的密码并更新在CAS设置 无法同步帐户密码通常会在日志 产生错误，并且该事件不被视为灾难性故障。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#password-synchronization).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#password-synchronization)。
 
 ## LDAP
 
-Synchronize account passwords with one or more LDAP servers. Support is enabled by including the following dependencies in the WAR overlay:
+将帐户密码与一台或多台LDAP服务器同步。 通过在WAR叠加中 依赖项来启用支持：
 
 ```xml
 <dependency>
