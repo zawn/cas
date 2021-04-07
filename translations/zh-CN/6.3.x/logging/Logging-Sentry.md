@@ -1,35 +1,35 @@
 ---
-layout: default
-title: CAS - Sentry Monitoring Integration
-category: Logs & Audits
+layout: 违约
+title: 中科院 - 哨兵监测集成
+category: 日志 & 审计
 ---
 
-# Overview
+# 概述
 
-[Sentry](https://sentry.io) allows you to track logs and error in real time. It provides insight into production deployments and information to reproduce and fix crashes.
+[哨兵](https://sentry.io) 允许您实时跟踪日志和错误。 它提供了对生产部署和信息的洞察，以复制和修复崩溃。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-sentry</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持哨兵</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-The [Logging](../logging/Logging.html) configuration file must be adjusted to match the following:
+必须调整 [记录](../logging/Logging.html) 配置文件，以匹配以下情况：
 
 ```xml
 <Configuration packages="...,org.apache.logging.log4j.core,com.getsentry.raven.log4j2">
     <Appenders>
         <Raven name="Sentry">
-          <dsn><!-- provided by sentry --></dsn>
-          <tags>tag1:value1,tag2:value2</tags>
+          <dsn><!--由哨兵提供 -></dsn>
+          <tags>标签1：价值1，标签2：价值2</tags>
         </Raven>
-    ...
+    。。。
     </Appenders>
     ...
     <Loggers>
@@ -45,4 +45,4 @@ The [Logging](../logging/Logging.html) configuration file must be adjusted to ma
 </Configuration>
 ```
 
-The `Sentry` appender can be mapped to any of the available logger elements defined.
+`哨兵` 应用程序可以映射到定义的任何可用的记录器元素。
