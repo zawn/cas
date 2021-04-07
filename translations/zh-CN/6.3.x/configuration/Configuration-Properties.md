@@ -1,5 +1,5 @@
 ---
-layout: 默认
+layout: default
 title: CAS特性
 category: 配置
 ---
