@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - JavaMelody Monitoring
-category: Monitoring & Statistics
+layout: 默认
+title: CAS-JavaMelody监视
+category: 监控 & 统计
 ---
 
-# JavaMelody Monitoring
+# JavaMelody监视
 
-Use [JavaMelody](https://github.com/javamelody/javamelody) is to monitor CAS in QA and production environments.
+使用 [JavaMelody](https://github.com/javamelody/javamelody) 用于监视QA和生产环境中的CAS。
 
-Support is added by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖关系来添加支持：
 
 ```xml
 <dependency>
@@ -18,8 +18,8 @@ Support is added by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-JavaMelody monitoring is by default exposed at `${context-path}/monitoring` where `${context-path}` is typically set to `/cas`.
+JavaMelody监视默认情况下为 `${context-path}/ monitoring` ，其中 `${context-path}` 通常设置为 `/ cas`。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#javamelody).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#javamelody)。
