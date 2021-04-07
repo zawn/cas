@@ -1,52 +1,52 @@
 ---
-layout: default
-title: CAS - Protocol Overview
-category: Protocols
+layout: 违约
+title: CAS - 协议概述
+category: 协议
 ---
 
-# Protocols Overview
+# 协议概述
 
-The following protocols are supported and provided by CAS:
+以下协议由中科院支持和提供：
 
-*   [CAS](CAS-Protocol.html)
-*   [OpenID](OpenID-Protocol.html)
-*   [OAuth](OAuth-Protocol.html)
-*   [OpenID Connect](OIDC-Protocol.html)
-*   [WS Federation](WS-Federation-Protocol.html)
-*   [SAML1](SAML-Protocol.html)
-*   [SAML2](../installation/Configuring-SAML2-Authentication.html)
-*   [REST Protocol](REST-Protocol.html)
+*   [中国科学院](CAS-Protocol.html)
+*   [开放ID](OpenID-Protocol.html)
+*   [澳大利亚](OAuth-Protocol.html)
+*   [打开ID连接](OIDC-Protocol.html)
+*   [WS 联合会](WS-Federation-Protocol.html)
+*   [萨姆尔1](SAML-Protocol.html)
+*   [萨姆尔2](../installation/Configuring-SAML2-Authentication.html)
+*   [休息协议](REST-Protocol.html)
 
-## Design
+## 设计
 
-CAS presents itself as a multilingual platform supporting protocols such as CAS, SAML2, OAuth2 and OpenID Connect, etc. Support and functionality for each of these protocols continually improves per every iteration and release of the software thanks to excellent community feedback and adoption. While almost all such protocols are similar in nature and intention, they all have their own specific bindings, parameters, payload and security requirements. This section provides a quick introduction on how existing protocols are supported in CAS.
+中科院以多语种平台为支撑，如中科院、SAML2、OAuth2、开放ID连接等。 由于出色的社区反馈和采用，每个协议的支持和功能在软件的每一次迭代和发布中都会不断改进。 虽然几乎所有此类协议的性质和意图都相似，但它们都有各自的具体绑定、参数、有效载荷和安全要求。 本节提供了关于 CAS 中如何支持现有协议的快速介绍。
 
-It all starts with something rather trivial: The Bridge.
+这一切都始于一些相当琐碎的事情：桥。
 
-### The Bridge
+### 大桥
 
-The bridge *design pattern* is an approach where an intermediary sits between the client and the server, translating requests back and forth. It simply acts as a link between the two sides allowing authentication requests from the client to be translated, massaged and transformed and then routed "invisibly" to CAS and then back.
+桥 *设计模式* 是中间人位于客户端和服务器之间，来回翻译请求的方法。 它只是作为双方之间的一个链接，允许客户端的认证请求被翻译、按摩和转换，然后"无形地"路由到CAS，然后返回。
 
-This is a neat trick because the client does not care how the authentication request is processes once it's submitted. The *thing* that receives that request, acting as a bridge can do anything required to process that request and ultimately submitting some sort of response back to the client. The bridge also does not care what external authentication system handles and honors that request and how all that processing internally works. All the bridge cares about is, "I routed the request to X. As long as X gives me back the right stuff, I should be fine to resume".
+这是一个巧妙的技巧，因为客户端不在乎认证请求提交后流程如何。 接收该请求 ** ，充当桥梁可以做任何处理该请求所需的任何工作，并最终向客户提交某种回复。 桥也不在乎外部认证系统处理什么和尊重该请求，以及所有这些处理内部工作原理。 所有桥梁关心的是，"我路由的请求到X。只要X给我回正确的东西，我应该可以恢复"。
 
-So the bridge for the most part is the "control tower" of the operation. It speaks many languages and protocols, and just like any decent translator, it knows about the quirks and specifics of each language and as such is able to dynamically translate the technical lingo.
+因此，桥梁大部分是操作的"控制塔"。 它讲许多语言和协议，就像任何像样的翻译一样，它知道每种语言的怪癖和细节，因此能够动态地翻译技术语言。
 
-### Supported Protocols
+### 支持的协议
 
-If you understand the above strategy, then you would be glad to learn that *almost* all protocols supported by CAS operate with the same exact intentions. A given CAS deployment is equipped with embedded plugins/bridges/modules that know how to speak SAML2 and CAS, OAuth2 and CAS, or OpenID Connect and CAS or whatever. The right-hand side of that equation is always CAS when you consider, as an example, the following authentication flow with an OAuth2-enabled client application:
+如果您了解上述策略，那么您将很高兴地了解到， *几乎* CAS 支持的所有协议都以相同的意图运行。 给定的 CAS 部署配备了嵌入式插件/桥梁/模块，这些插件/桥梁/模块知道如何说 SAML2 和 CAS、OAuth2 和 CAS，或 OpenID 连接和 CAS 或其他什么。 当您考虑以下支持 OAuth2 的客户端应用程序的身份验证流程时，该方程的右侧始终为 CAS：
 
-1. The CAS deployment has turned on the OAuth2 plugin.
-2. An OAuth2 authorization request is submitted to the relevant CAS endpoint.
-3. The OAuth2 plugin verifies the request and translates it to a CAS authentication request!
-4. The authentication request is routed to the relevant CAS login endpoint.
-5. User authenticates and CAS routes the flow back to the OAuth2 plugin, having issued a service ticket for the plugin.
-6. The OAuth2 plugin attempts to validate that ticket to retrieve the necessary user profile and attributes.
-7. The OAuth2 plugin then proceeds to issue the right OAuth2 response by translating and transforming the profile and validated assertions into what the client application may need.
+1. CAS 部署已打开 OAuth2 插件。
+2. 向相关 CAS 终点提交了 OAuth2 授权请求。
+3. OAuth2 插件验证了请求并将其转换为 CAS 认证请求！
+4. 认证请求路由到相关 CAS 登录端点。
+5. 用户身份验证和 CAS 将流量返回到 OAuth2 插件，并已签发插件服务票证。
+6. OAuth2 插件尝试验证该票证以检索必要的用户配置文件和属性。
+7. 然后，OAuth2 插件通过将配置文件和经过验证的断言转换为客户端应用程序可能需要的内容，从而发布正确的 OAuth2 响应。
 
-<div class="alert alert-info"><strong>Note</strong><p>The above strategy applies exactly the same, if CAS decides to delegate the authentication to an external identity provider such as Facebook or a SAML2 identity provider.</p></div>
+<div class="alert alert-info"><strong>注意</strong><p>如果 CAS 决定将身份验证委托给 Facebook 或 SAML2 身份提供商等外部身份提供商，则上述策略适用完全相同。</p></div>
 
-The right-hand side of the flow is always CAS, because the plugin always translates protocol requests into CAS requests. Another way of looking at it is that all protocol plugins and modules are themselves clients of the CAS server! They are issued service tickets and they proceed to validate them just like any other CAS-enabled client. Just like above, to the OAuth2-enabled client all such details are totally transparent and as long as “the right stuff” is produced back to the client, it shall not care.
+流的右侧始终是 CAS，因为插件始终将协议请求转换为 CAS 请求。 另一种看待它的方式是，所有的协议插件和模块本身就是CAS服务器的客户端！ 他们获得服务票证，然后像任何其他支持 CAS 的客户一样进行验证。 与上文一样，对于支持OAuth2的客户，所有这些细节都是完全透明的，只要将"正确的东西"制作回客户端，它就不会在意。
 
-There are some internal technical and architectural advantages to this approach. Namely:
+这种方法有一些内部技术和架构优势。 即：
 
-The core of the CAS authentication engine, flow and components need not be modified at all. After all, we are just integrating yet another client even if it’s embedded directly in CAS itself. Because of that, support for that protocol can be very easily removed, if needed. After all, protocols come and go every day. Finally and just like any other CAS client, all features of the CAS server are readily available and translated to the relevant client removing the need to duplicate and re-create protocol-specific configuration as much as  possible. Things like access strategies, attribute release, username providers, etc.
+CAS 认证引擎、流和组件的核心根本不需要修改。 毕竟，我们只是集成了另一个客户端，即使它直接嵌入到CAS本身。 因此，如果需要，可以很容易地删除对该协议的支持。 毕竟，协议每天都来来去去。 最后，与任何其他 CAS 客户端一样，CAS 服务器的所有功能都随时可用，并翻译为相关客户端，无需尽可能多地复制和重创建特定于协议的配置。 访问策略、属性发布、用户名提供商等。
