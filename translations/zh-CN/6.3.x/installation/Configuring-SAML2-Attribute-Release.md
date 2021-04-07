@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - SAML2 Attribute Release
-category: Attributes
+layout: 默认
+title: CAS-SAML2属性发布
+category: 属性
 ---
 
-# SAML2 Attribute Release
+# SAML2属性发布
 
-Attribute filtering and release policies are defined per SAML service. See [this guide](../integration/Attribute-Release-Policies.html) for more info.
+每个SAML服务都定义了属性过滤和发布策略。 有关更多信息，请参见 [本指南](../integration/Attribute-Release-Policies.html)
 
-## Attribute Value Types
+## 属性值类型
 
-By default, attribute value blocks that are created in the final SAML2 response do not carry any type information in the encoded XML. You can, if necessary, enforce a particular type for an attribute value per the requirements of the SAML2 service provider, if any. An example of an attribute that is encoded with specific type information would be:
+默认情况下，在最终SAML2响应中创建的属性值块在编码的XML中不携带任何类型信息。 如果有必要，可以根据SAML2服务提供者的要求对属性值强制使用特定类型。 用特定类型信息编码的属性的示例为：
 
 ```xml
 <saml2:Attribute FriendlyName="givenName" Name="givenName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
@@ -18,304 +18,304 @@ By default, attribute value blocks that are created in the final SAML2 response 
 </saml2:Attribute>
 ```
 
-The following attribute value types are supported:
+支持以下属性值类型：
 
-| Type             | Description                                                                         |
-| ---------------- | ----------------------------------------------------------------------------------- |
-| `XSString`       | Mark the attribute value type as `string`.                                          |
-| `XSURI`          | Mark the attribute value type as `uri`.                                             |
-| `XSBoolean`      | Mark the attribute value type as `boolean`.                                         |
-| `XSInteger`      | Mark the attribute value type as `integer`.                                         |
-| `XSDateTime`     | Mark the attribute value type as `datetime` .                                       |
-| `XSBase64Binary` | Mark the attribute value type as `base64Binary`.                                    |
-| `XSObject`       | Skip the attribute value type and serialize the value as a complex XML object/POJO. |
+| 类型               | 描述                             |
+| ---------------- | ------------------------------ |
+| `XS字符串`          | 将属性值类型标记为 `字符串`。               |
+| `XSURI`          | 将属性值类型标记为 `uri`。               |
+| `XSBoolean`      | 将属性值类型标记为 `布尔`。                |
+| `XSInteger`      | 将属性值类型标记为 `整数`。                |
+| `XSDateTime`     | 将属性值类型标记为 `datetime`。          |
+| `XSBase64Binary` | 将属性值类型标记为 `base64Binary`。      |
+| `XS对象`           | 跳过属性值类型，并将值序列化为复杂的XML对象/ POJO。 |
 
-...where the types for each attribute would be defined as such:
+...每个属性的类型应定义如下：
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId" : "the-entity-id-of-the-sp",
-  "name": "SAML Service",
-  "metadataLocation" : "../../sp-metadata.xml",
-  "id": 1,
-  "attributeValueTypes": {
-    "@class": "java.util.HashMap",
-    "<attribute-name>": "<attribute-value-type>"
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ the-entity-id-of-the-sp”，
+  “ name”：“ SAML服务“
+  ”metadataLocation“：” ../../sp-metadata.xml “
+  ”ID“：1，
+  ”attributeValueTypes“：{
+    ”@class“： ”的java.util.HashMap“，
+    ”<attribute-name>“：”<attribute-value-type>“
   }
 }
 ```
 
-## Attribute Name Formats
+## 属性名称格式
 
-Attribute name formats can be specified per relying party in the service registry.
+可以在服务注册表中为每个依赖方指定属性名称格式。
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId" : "the-entity-id-of-the-sp",
-  "name": "SAML Service",
-  "metadataLocation" : "../../sp-metadata.xml",
-  "id": 100001,
-  "attributeNameFormats": {
-    "@class": "java.util.HashMap",
-    "attributeName": "basic|uri|unspecified|custom-format-etc"
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ the-entity-id-of-the-sp”，
+  “ name”：“ SAML服务“
+  ”metadataLocation“：” ../../sp-metadata.xml “
+  ”ID“：100001，
+  ”attributeNameFormats“：{
+    ”@class“： ”的java.util.HashMap“，
+    ” attributeName“：”基本| uri |未指定|自定义格式等“
   }
 }
 ```
 
-You may also have the option to define attributes and their relevant name format globally via CAS properties. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#saml-idp).
+您还可以选择通过CAS属性全局定义属性及其相关名称格式 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#saml-idp)。
 
-## Attribute Friendly Names
+## 属性友好名称
 
-Attribute friendly names can be specified per relying party in the service registry, as well as globally via CAS settings. If there is no friendly name defined for the attribute, the attribute name will be used instead in its place. Note that the name of the attribute is one that is designed to be released to the service provider, specially if the original attribute is *mapped* to a different name.
+可以在服务注册中心为每个依赖方指定属性友好名称，也可以通过CAS设置在全局范围内指定属性名称。 如果没有为属性定义友好名称，则将使用 属性名称代替它。 请注意，该属性的名称是设计用于发布给服务提供商的名称，特别是如果原始属性为 *映射为* 到另一个名称
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId" : "the-entity-id-of-the-sp",
-  "name": "SAML Service",
-  "metadataLocation" : "../../sp-metadata.xml",
-  "id": 100001,
-  "attributeFriendlyNames": {
-    "@class": "java.util.HashMap",
-    "urn:oid:2.5.4.42": "friendly-name-to-use"
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ the-entity-id-of-the-sp”，
+  “ name”：“ SAML服务“
+  ”metadataLocation“：” ../../sp-metadata.xml “
+  ”ID“：100001，
+  ”attributeFriendlyNames“：{
+    ”@class“： ”的java.util.HashMap“，
+    ” urn：oid：2.5.4.42“：”要使用的友好名称“
   }
 }
 ```
 
 
-## InCommon Research and Scholarship
+## 不常见的研究和奖学金
 
-A specific attribute release policy is available to release the [attribute bundles](https://spaces.internet2.edu/display/InCFederation/Research+and+Scholarship+Attribute+Bundle) needed for InCommon Research and Scholarship service providers using the entity attribute value `http://id.incommon.org/category/research-and-scholarship`:
+可以使用特定的属性释放策略 `http://id.incommon.org/category/research-and-scholarship`释放InCommon Research和Scholarship服务提供商所需 [属性束](https://spaces.internet2.edu/display/InCFederation/Research+and+Scholarship+Attribute+Bundle) ：
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "entity-ids-allowed-via-regex",
-  "name": "SAML",
-  "id": 10,
-  "metadataLocation": "path/to/incommon/metadata.xml",
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.services.ChainingAttributeReleasePolicy",
-    "policies": [ "java.util.ArrayList",
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ entity-ids-allowed-via-regex”，
+  “ name”：“ SAML”，
+  “ID”：10，
+  “metadataLocation”： “路径/到/ incommon / metadata.xml中”，
+  “attributeReleasePolicy”：{
+    “@class”： “org.apereo.cas.services.ChainingAttributeReleasePolicy”，
+    “政策“：[” java.util.ArrayList“，
       [
-         {"@class": "org.apereo.cas.support.saml.services.InCommonRSAttributeReleasePolicy"}
+         {” @class“：” org.apereo.cas.support.saml.services.InCommonRSAttributeReleasePolicy“}
       ]
     ]
   }
 }
 ```
 
-Attributes authorized for release are set to be `eduPersonPrincipalName`, `eduPersonTargetedID`, `email`, `displayName`, `givenName`, `surname`, `eduPersonScopedAffiliation`.
+属性授权释放被设定为 `eduPersonPrincipalName`， `eduPersonTargetedID`， `电子邮件`， `的displayName`， `给定名称`， `姓`， `eduPersonScopedAffiliation`。
 
-## REFEDS Research and Scholarship
+## REFEDS研究与奖学金
 
-A specific attribute release policy is available to release the [attribute bundles](https://refeds.org/category/research-and-scholarship) needed for REFEDS Research and Scholarship service providers using the entity attribute value `http://refeds.org/category/research-and-scholarship`:
+可以使用特定的属性释放策略来释放REFEDS研究和奖学金服务提供商使用实体属性值 `http://refeds.org/category/research-and-scholarship`[属性束](https://refeds.org/category/research-and-scholarship) ：
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "entity-ids-allowed-via-regex",
-  "name": "SAML",
-  "id": 10,
-  "metadataLocation": "path/to/incommon/metadata.xml",
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.services.ChainingAttributeReleasePolicy",
-    "policies": [ "java.util.ArrayList",
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ entity-ids-allowed-via-regex”，
+  “ name”：“ SAML”，
+  “ID”：10，
+  “metadataLocation”： “路径/到/ incommon / metadata.xml中”，
+  “attributeReleasePolicy”：{
+    “@class”： “org.apereo.cas.services.ChainingAttributeReleasePolicy”，
+    “政策“：[” java.util.ArrayList“，
       [
-         {"@class": "org.apereo.cas.support.saml.services.RefedsRSAttributeReleasePolicy"}
+         {” @class“：” org.apereo.cas.support.saml.services.RefedsRSAttributeReleasePolicy“}
       ]
     ]
   }
 }
 ```
 
-This policy is an extension of `InCommonRSAttributeReleasePolicy` that operates based on different entity attribute value.
+此策略是对 `InCommonRSAttributeReleasePolicy` 的扩展，它基于不同的实体属性值进行操作。
 
-## Releasing `eduPersonTargetedID`
+## 发布 `eduPersonTargetedID`
 
-If you do not have pre-calculated values for the `eduPersonTargetedID` attribute to fetch before release, you can let CAS calculate the `eduPersonTargetedID` attribute dynamically at release time using the following policy:
+如果没有要在发布前获取 `eduPersonTargetedID` 可以让CAS使用以下策略在发布时动态地 `eduPersonTargetedID`
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "entity-ids-allowed-via-regex",
-  "name": "SAML",
-  "id": 10,
-  "metadataLocation": "path/to/metadata.xml",
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.support.saml.services.EduPersonTargetedIdAttributeReleasePolicy",
-    "salt": "OqmG80fEKBQt",
-    "attribute": ""
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ entity-ids-allowed-via-regex”，
+  “ name”：“ SAML”，
+  “ID”：10，
+  “metadataLocation”： “路径/到/ metadata.xml中”，
+  “attributeReleasePolicy”：{
+    “@class”： “org.apereo.cas.support.saml.services.EduPersonTargetedIdAttributeReleasePolicy”，
+    “ salt”：“ OqmG80fEKBQt”，
+    “ attribute”：“”
   }
 }
 ```
 
-The generated id may be based off of an existing principal attribute. If left unspecified or attribute not found, the authenticated principal id is used.
+所生成的id可以基于现有的主体属性。 如果未指定或找不到属性， 身份验证的主体ID。
 
-## Groovy Script
+## Groovy脚本
 
-This policy allows a Groovy script to calculate the collection of released attributes.
+该策略允许Groovy脚本计算已发布属性的集合。
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "entity-ids-allowed-via-regex",
-  "name": "SAML",
-  "id": 10,
-  "metadataLocation": "path/to/incommon/metadata.xml",
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.support.saml.services.GroovySamlRegisteredServiceAttributeReleasePolicy",
-    "groovyScript": "file:/etc/cas/config/script.groovy"
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ entity-ids-allowed-via-regex”，
+  “ name”：“ SAML”，
+  “ID”：10，
+  “metadataLocation”： “路径/到/ incommon / metadata.xml中”，
+  “attributeReleasePolicy”：{
+    “@class”： “org.apereo.cas.support.saml.services.GroovySamlRegisteredServiceAttributeReleasePolicy” ，
+    “ groovyScript”：“文件：/etc/cas/config/script.groovy”
   }
 }
 ```
 
-The configuration of this component qualifies to use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax.
+该组件的配置符合使用 [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) 语法的条件。
 
-The outline of the script may be designed as:
+脚本的大纲可以设计为：
 
 ```groovy
-import java.util.*
-import org.apereo.cas.support.saml.services.*
-import org.apereo.cas.support.saml.*
+import java.util。*
+import org.apereo.cas.support.saml.services。*
+import org.apereo.cas.support.saml。*
 
-def Map<String, Object> run(final Object... args) {
-    def attributes = args[0]
-    def service = args[1]
-    def resolver = args[2]
-    def facade = args[3]
-    def entityDescriptor = args[4]
+def Map<String, Object> run（final Object ... args）{
+    def属性= args[0]
+    def服务= args[1]
+    def解析器= args[2]
+    def外观= args[3]
+    def实体描述符= args[4]
     def applicationContext = args[5]
     def logger = args[6]
-    ...
-    return null;
+...
+    返回null；
 }
 ```
 
-The following parameters are passed to the script:
+以下参数传递到脚本：
 
-| Parameter            | Description                                                                           |
-| -------------------- | ------------------------------------------------------------------------------------- |
-| `attributes`         | Map of current attributes resolved and available for release.                         |
-| `service`            | The SAML service definition matched in the service registry.                          |
-| `resolver`           | The metadata resolver instance of this service provider.                              |
-| `facade`             | A wrapper on top of the metadata resolver that allows access to utility functions.    |
-| `entityDescriptor`   | The `EntityDescriptor` object matched and linked to this service provider's metadata. |
-| `applicationContext` | CAS application context allowing direct access to beans, etc.                         |
-| `logger`             | The object responsible for issuing log messages such as `logger.info(...)`.           |
+| 范围                   | 描述                                      |
+| -------------------- | --------------------------------------- |
+| `属性`                 | 当前属性的映射已解决，可以发布。                        |
+| `服务`                 | 服务注册表中匹配的SAML服务定义。                      |
+| `解析器`                | 此服务提供者的元数据解析器实例。                        |
+| `正面`                 | 元数据解析器顶部的包装，允许访问实用程序功能。                 |
+| `实体描述符`              | `EntityDescriptor` 对象已匹配并链接到该服务提供商的元数据。 |
+| `applicationContext` | CAS应用程序上下文允许直接访问bean等                   |
+| `记录器`                | 负责发布日志消息的对象，例如 `logger.info（...）`。      |
 
-An example script follows:
+示例脚本如下：
 
 ```groovy
-import java.util.*
-import org.apereo.cas.support.saml.services.*
-import org.apereo.cas.support.saml.*
+import java.util。*
+import org.apereo.cas.support.saml.services。*
+import org.apereo.cas.support.saml。*
 
-def Map<String, Object> run(final Object... args) {
-    def attributes = args[0]
-    def service = args[1]
-    def resolver = args[2]
-    def facade = args[3]
+def Map<String, Object> run（final Object ... args）{
+    def属性= args[0]
+    def服务= args[1]
+    def解析器= args[2]
+    def外观= args[3]
     def entityDescriptor = args[4]
     def applicationContext = args[5]
     def logger = args[6]
 
-    if (entityDescriptor.entityId == "TestingSAMLApplication") {
-      return [username:["something"], another:"attribute"]
+    if（entityDescriptor.entityId ==“ TestingSAMLApplication “）{
+      返回[用户名：[”某物“]，另一个：”属性“]
     }
-    return [:]
+    返回[：]
 }
 ```
 
-## Pattern Matching Entity Ids
+## 模式匹配实体ID
 
-In the event that an aggregate is defined containing multiple entity ids, the below attribute release policy may be used to release a collection of allowed attributes to entity ids grouped together by a regular expression pattern:
+如果定义的聚合包含多个实体ID，则以下属性释放策略可用于将允许的属性的集合释放给按正则表达式模式分组在一起的实体ID：
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "entity-ids-allowed-via-regex",
-  "name": "SAML",
-  "id": 10,
-  "metadataLocation": "path/to/incommon/metadata.xml",
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.support.saml.services.PatternMatchingEntityIdAttributeReleasePolicy",
-    "allowedAttributes" : [ "java.util.ArrayList", [ "cn", "mail", "sn" ] ],
-    "fullMatch" : "true",
-    "reverseMatch" : "false",
-    "entityIds" : "entityId1|entityId2|somewhere.+"
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ entity-ids-allowed-via-regex”，
+  “ name”：“ SAML”，
+  “ID”：10，
+  “metadataLocation”： “路径/到/ incommon / metadata.xml中”，
+  “attributeReleasePolicy”：{
+    “@class”： “org.apereo.cas.support.saml.services.PatternMatchingEntityIdAttributeReleasePolicy” ，
+    “ allowedAttributes”：[“ java.util.ArrayList”，[“ cn”，“ mail”，“ sn”]]，
+    “ fullMatch”：“ true”，
+    “ reverseMatch”：“ false”，
+    “ entityIds“：” entityId1 | entityId2 |某处。+“
   }
 }
 ```
 
-## Entity Attributes Filter
+## 实体属性过滤器
 
-This attribute release policy authorizes the release of defined attributes, provided the accompanying metadata for the service provider contains attributes that match certain values.
+如果服务提供者随附的元数据包含与某些值匹配的属性，则此属性释放策略将授权释放已定义的属性。
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "entity-ids-allowed-via-regex",
-  "name": "SAML",
-  "id": 10,
-  "metadataLocation": "path/to/metadata.xml",
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.support.saml.services.MetadataEntityAttributesAttributeReleasePolicy",
-    "allowedAttributes" : [ "java.util.ArrayList", [ "cn", "mail", "sn" ] ],
-    "entityAttributeValues" : [ "java.util.LinkedHashSet", [ "entity-attribute-value" ] ],
-    "entityAttribute" : "http://somewhere.org/category-x",
-    "entityAttributeFormat" : "urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ entity-ids-allowed-via-regex”，
+  “ name”：“ SAML”，
+  “ID”：10，
+  “metadataLocation”： “路径/到/ metadata.xml中”，
+  “attributeReleasePolicy”：{
+    “@class”： “org.apereo.cas.support.saml.services.MetadataEntityAttributesAttributeReleasePolicy”，
+    “ allowedAttributes”：[“ java.util.ArrayList”，[“ cn”，“ mail”，“ sn”]]，
+    “ entityAttributeValues”：[“ java.util.LinkedHashSet”，[“实体属性值” ]，
+    “entityAttribute”： “http://somewhere.org/category-x”，
+    “entityAttributeFormat”： “瓮：绿洲：名称：TC：SAML：2.0：attrname格式：未指定”
   }
 }
 ```
 
-The specification of `entityAttributeFormat` is optional.
+`实体属性格式` 的规范是可选的。
 
-## Requested Attributes Filter
+## 请求的属性过滤器
 
-This attribute release policy authorizes the release of defined attributes, based on the accompanying metadata for the service provider having requested attributes as part of its `AttributeConsumingService` element.
+`AttributeConsumingService` 元素的一部分的服务提供商的随附元数据，授权释放已定义的属性。
 
 ```json
 {
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": "entity-ids-allowed-via-regex",
-  "name": "SAML",
-  "id": 10,
-  "metadataLocation": "path/to/metadata.xml",
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.support.saml.services.MetadataRequestedAttributesAttributeReleasePolicy",
-    "useFriendlyName" : false
+  “ @class”：“ org.apereo.cas.support.saml.services.SamlRegisteredService”，
+  “ serviceId”：“ entity-ids-allowed-via-regex”，
+  “ name”：“ SAML”，
+  “ID”：10，
+  “metadataLocation”： “路径/到/ metadata.xml中”，
+  “attributeReleasePolicy”：{
+    “@class”： “org.apereo.cas.support.saml.services.MetadataRequestedAttributesAttributeReleasePolicy”，
+    “ useFriendlyName”：假
   }
 }
 ```
 
-The `useFriendlyName` allows the filter to compare the requested attribute's friendly name with the resolved attribute.
+`useFriendlyName` 允许过滤器将请求的属性的友好名称与已解析的属性进行比较。
 
-### SAML IdP Attribute Definition
+### SAML IdP属性定义
 
-SAML attributes can be defined as part of the [Attribute Definition Store](../integration/Attribute-Definitions.html). The `SamlIdPAtrributeDefinition` inherits all the properties form `DefaultAttributeDefinition` and adds two optional properties specific to SAML attributes.  Defining an attribute with this definition does not prevent it from being released by other protocols.
+可以将SAML属性定义为 [属性定义存储](../integration/Attribute-Definitions.html)。 `SamlIdPAtrributeDefinition` `DefaultAttributeDefinition` 形式的所有属性，并添加了两个特定于 SAML属性的可选属性。  使用此定义定义属性不会阻止其被其他协议释放。
 
 ```json
 {
-  "@class": "java.util.TreeMap",
-  "eduPersonPrincipalName": {
-    "@class": "org.apereo.cas.support.saml.web.idp.profile.builders.attr.SamlIdPAttributeDefinition",
-    "key": "eduPersonPrincipalName",
-    "name": "eduPersonPrincipalName",
-    "urn": "urn:oid:1.3.6.1.4.1.5923.1.1.1.6",
-    "scoped": true,
-    "encrypted": false,
-    "attribute": "uid",
-    "friendlyName": "eduPersonPrincipalName"
+  “ @class”：“ java.util.TreeMap”，
+  “ eduPersonPrincipalName”：{
+    “ @class”：“ org.apereo.cas.support.saml.web.idp.profile.builders.attr.SamlIdPAttributeDefinition” ，
+    “ key”：“ eduPersonPrincipalName”，
+    “ name”：“ eduPersonPrincipalName”，
+    “ urn”：“ urn：oid：1.3.6.1.4.1.5923.1.1.1.6”，
+    “ scoped”：true，
+    “ encrypted”：假，
+    “ attribute”：“ uid”，
+    “ friendlyName”：“ eduPersonPrincipalName”
   }
 }
 ```
 
-The following additional settings can be specified for a Saml IdP attribute definition:
+可以为Saml IdP属性定义指定以下附加设置：
 
-| Name           | Description                                                                                            |
-| -------------- | ------------------------------------------------------------------------------------------------------ |
-| `friendlyName` | (Optional) Friendly name of the attribute shared with the target application during attribute release. |
-| `urn`          | (Optional) Defined Universal Resource name for an attribute (i.e. urn:oid:1.3.6.1.4.1.5923.1.1.1.6).   |
+| 姓名     | 描述                                                   |
+| ------ | ---------------------------------------------------- |
+| `友好名称` | （可选）在属性发布期间与目标应用程序共享的属性的友好名称。                        |
+| `瓮`    | （可选）为属性定义的通用资源名称（即urn：oid：1.3.6.1.4.1.5923.1.1.1.6）。 |
