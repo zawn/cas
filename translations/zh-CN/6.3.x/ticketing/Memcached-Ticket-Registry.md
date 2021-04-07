@@ -1,106 +1,106 @@
 ---
-layout: default
-title: CAS - Memcached Ticket Registry
-category: Ticketing
+layout: 违约
+title: CAS - 梅卡奇票务注册处
+category: 票务
 ---
 
-# Memcached Ticket Registry
+# 被没收的机票注册处
 
-Memcached integration is enabled by including the following dependency in the WAR overlay:
+通过在 WAR 叠加中包括以下依赖性，启用了 Memcach 集成：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-memcached-ticket-registry</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 梅卡奇 - 票务注册</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-This registry stores tickets in one or more [memcached](http://memcached.org/) instances. Memcached stores data in exactly one node among many in a distributed cache, thus avoiding the requirement to replicate or otherwise share data between nodes. A deterministic function is used to locate the node, _N'_, on which to store key _K_:
+此注册表在一个或多个 [](http://memcached.org/) 实例中存储门票。 Memcached 将数据存储在分布式缓存中的多个节点中的多个节点中，从而避免了在节点之间复制 或其他共享数据的要求。 一个决定性函数用于定位节点， _N'_，用于存储 关键 _K_：
 
-    N' = f(h(K), N1, N2, N3, ... Nm)
+    N'=f（h（K），N1，N2，N3，... Nm）
 
-where _h(K)_ is the hash of key _K_, _N1 ... Nm_ is the set of cache nodes, and _N'_ ∈ _N ... Nm_.
+其中 _h（K）_ 是关键 _K_的哈希， _N1.。 Nm_ 是缓存节点的集合， _N'_ ∈ _N.。。 恩姆_。
 
-The function is deterministic in that it consistently produces the same result for a given key and set of cache nodes. Note that a change in the set of available cache nodes may produce a different target node on which to store the key.
+该函数具有决定性，因为它始终为给定密钥和缓存节点集生成相同的结果。 请注意，可用缓存节点集的更改可能会产生存储密钥的不同目标节点。
 
-The actual memcached implementation may be supported via one of the following options, expected to be defined in the overlay.
+实际的 memcach 实现可以通过以下选项之一进行支持，预计在叠加中定义。
 
-## Spymemcached
+## 间谍梅卡奇
 
-Enable support via the [spymemcached library](https://code.google.com/p/spymemcached/). This is a simple, asynchronous, single-threaded memcached client that should be the default choice for the majority of deployments.
+通过 [间谍图书馆](https://code.google.com/p/spymemcached/)提供支持。 这是一个简单的、异步的、 单线程 memcached 客户端，它应该是大多数部署的默认选择。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-memcached-spy</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 机械 - 间谍</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-## AWS ElastiCache
+## AWS弹性缓存
 
-You may also use [AWS ElastiCache](https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/AutoDiscovery.html) which is a web service that makes it easy to set up, manage, and scale a distributed in-memory data store or cache environment in the cloud. It provides a high-performance, scalable, and cost-effective caching solution, while removing the complexity associated with deploying and managing a distributed cache environment.
+您还可以使用 [AWS 弹性缓存](https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/AutoDiscovery.html) 这是一个 Web 服务，便于在云中设置、管理和扩展分布式内存 数据存储或缓存环境。 它提供了高性能、可扩展且经济高效的缓存 解决方案，同时消除了与部署和管理分布式缓存环境相关的复杂性。
 
-For clusters running the Memcached engine, ElastiCache supports Auto Discovery—the ability for client programs to automatically identify all of the nodes in a cache cluster, and to initiate and maintain connections to all of these nodes. With Auto Discovery, CAS does not need to manually connect to individual cache nodes; instead, CAS connects to one Memcached node and retrieves the list of nodes. From that list, CAS is aware of the rest of the nodes in the cluster and can connect to any of them. You do not need to hard code the individual cache node endpoints in the configuration
+对于运行 Memcached 引擎的集群，ElastiCache 支持自动发现-客户端程序自动识别缓存群集中的所有节点的能力 ， 并启动并维护与所有这些节点的连接。 通过自动发现， CAS不需要手动连接到单个缓存节点：相反，CAS 连接到一个 memcached 节点并检索节点列表。 从该列表中，CAS 知道聚类中的节点的其余 ，并且可以连接到其中任何一个节点。 您不需要硬 配置中的单个缓存节点端点编码
 
-All of the cache nodes in the cluster maintain a list of metadata about all of the other nodes. This metadata is updated whenever nodes are added or removed from the cluster.
+聚类中的所有缓存节点都保留有关所有其他节点的元数据列表。 每当从群集中添加或删除节点时，都会更新此元数据。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-memcached-aws-elasticache</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 机械 - aws - 弹性</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration Considerations
+## 配置考虑
 
-There are three core configuration concerns with memcached:
+有三个核心配置问题与机械：
 
-1. Hash Algorithm
-2. Node locator strategy
-3. Object serialization mechanism
+1. 哈希算法
+2. 节点定位器策略
+3. 对象序列化机制
 
-### Hash Algorithm
+### 哈希算法
 
-The hash algorithm is used to transform a key value into a memcached storage key that uniquely identifies the corresponding value. The choice of hashing algorithm has implications for failover behavior that is important for HA deployments. The `FNV1_64_HASH` algorithm is recommended since it offers a nice balance of speed and low collision rate; see the [javadocs](https://github.com/couchbase/spymemcached/blob/2.8.1/src/main/java/net/spy/memcached/DefaultHashAlgorithm.java) for alternatives.
+哈希算法用于将键值转换为 memcached 存储密钥，该存储密钥能够唯一识别 相应的值。 哈希算法的选择对故障转移行为有影响，而故障转移行为对于 HA 部署 非常重要。 建议使用 `FNV1_64_HASH` 算法，因为它提供了良好的速度平衡和低 碰撞速率：看到 [爪哇](https://github.com/couchbase/spymemcached/blob/2.8.1/src/main/java/net/spy/memcached/DefaultHashAlgorithm.java) 替代品。
 
-### Node Locator
+### 节点定位器
 
-The node locator serves as the deterministic node selection function for the memcached client provided by the underlying spymemcached library. There are two choices:
+节点定位器是 底层间谍记忆库提供的 memcached 客户端的决定性节点选择功能。 有两种选择：
 
 1. [ARRAY_MOD](https://github.com/couchbase/spymemcached/blob/2.8.1/src/main/java/net/spy/memcached/ArrayModNodeLocator.java)
-2. [CONSISTENT](https://github.com/couchbase/spymemcached/blob/2.9.0/src/main/java/net/spy/memcached/KetamaNodeLocator.java)
+2. [一致](https://github.com/couchbase/spymemcached/blob/2.9.0/src/main/java/net/spy/memcached/KetamaNodeLocator.java)
 
-The array modulus mechanism is the default and suitable for cases when the number of nodes in the memcached pool is expected to be consistent. The algorithm simply computes an index into the array of memcached nodes:
+阵列模组机制是默认的，适用于 预期为一致的模组池中的节点数量时的情况。 该算法只需将索引计算到 memcach 节点的阵列中：
 
-    hash(key) % length(nodes)
+    哈希（键）% 长度（节点）
 
-Obviously the selected index is a function of the number of memcached nodes, so variance in number of nodes produces variance in the node selected to store the key, which is undesirable.
+显然，选定的索引是 memcached 节点数的函数，因此节点数的差异在选定的存储键的节点中产生 方差，这是不可取的。
 
-The consistent strategy generally provides a target node that does not vary with the number of nodes. This strategy should be used in cases where the memcached pool may grow or shrink dynamically, including due to frequent node failure.
+一致的策略通常提供一个目标节点，该节点不会随节点数量而变化。 此策略 应用于 memcach 池可能动态增长或收缩的情况，包括由于频繁的节点 故障。
 
 
-### Object Serialization
+### 对象序列化
 
-Memcached stores bytes of data, so CAS tickets must be serialized to a byte array prior to storage. CAS ships with a custom serialization component `KryoTranscoder` based on the [Kryo](https://code.google.com/p/kryo/) serialization framework. This component is recommended over the default Java serialization mechanism since it produces much more compact data, which benefits both storage requirements and throughput.
+存储了大量数据，因此 CAS 门票必须在存储前串行到字节阵列中。 CAS 基于 [Kryo](https://code.google.com/p/kryo/) 系列化 框架， `KryoTranscoder` 定制序列化组件。 此组件建议采用默认的 Java 序列化机制，因为它可生成更 紧凑的数据，从而既有利于存储要求，也有利于吞吐量。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#memcached-ticket-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#memcached-ticket-registry)。
 
-## High Availability Considerations
+## 高可用性考虑
 
-Memcached does not provide for replication by design, but the client is tolerant to node failures with `failureMode="Redistribute"`. In this mode a write failure will simply cause the client to flag the node as failed and remove it from the set of available nodes. It subsequently recomputes the node location function with the reduced node set to find a new node on which to store the key. If the node location function selects the same node, which is likely for the _CONSISTENT_ strategy, a backup node will be computed. The value is written to and read from the failover node until the primary node recovers. The client will periodically check the failed node for liveliness and restore it to the node pool as soon as it recovers. When the primary node is resurrected, if it contains a value for a particular key, it would supersede the value known to the failover node. The most common effect on CAS behavior in this circumstance would occur when ticket-granting tickets have duplicate values, which could affect single sign-out and prevent access to services. In particular, services accessed and forced authentications that occur while the failover service is active would be lost when the failed node recovers. In most cases this behavior is tolerable, but it can be avoided by restarting the memcached service on the failed node prior to rejoining the cache pool.
+Memcached 不提供复制的设计，但客户端是宽容的节点故障与 `失败模"重新分配"`。 在此模式下，写入失败只会导致客户端将节点标记为失败 并将其从可用节点集中删除。 随后，它将节点定位功能与已缩小的 节点重新计算，以找到存储密钥的新节点。 如果节点位置函数选择同一节点， 这可能是 _"一致_ 策略"，则将计算备份节点。 该值从故障转移节点 写入并读取，直到主节点恢复。 客户端将定期检查故障节点的活力 ，并在恢复后立即将其恢复到节点池中。 当主节点复活时，如果它包含特定密钥的值 ，它将取代故障转移节点已知的值。 在这种情况下，对 CAS 行为的最常见影响 当出票票具有重复值时，可能会影响单个签出 并阻止使用服务。 特别是，当故障节点恢复时，在 故障转移服务处于活动状态时访问的服务和强制身份验证将丢失。 在大多数情况下，这种行为是可以容忍的， 但在重新加入缓存池之前重新启动故障节点上的 memcached 服务是可以避免的。
 
-A read failure in _Redistribute_ mode causes the node to be removed from the set of available nodes, a failover node is computed, and a value is read from that node. In most cases this results in a key not found situation. The effect on CAS behavior depends on the type of ticket requested:
+_重新分配_ 模式的读数故障导致节点从可用节点集中删除，计算故障转移节点 ，并从该节点读取值。 在大多数情况下，这会导致未找到的关键情况。 对 CAS 行为的影响取决于所要求的机票类型：
 
-* Service ticket - Service access would be denied for the requested ticket, but permitted for subsequent attempts since a new ticket would be generated and validated.
-* Ticket-granting ticket - The SSO session would be terminated and re-authentication would be required.
+* 服务票 - 请求的机票将拒绝服务访问，但允许后续尝试，因为 将生成和验证新机票。
+* 出票 - 将终止 SSO 会话，并需要重新认证。
 
-Read failures are thus entirely innocuous for environments where re-authentication is acceptable.
+因此，对于可以进行重新认证的环境，阅读失败是完全无害的。
