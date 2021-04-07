@@ -1,41 +1,41 @@
 ---
-layout: default
-title: CAS - MDC Logging Configuration
-category: Logs & Audits
+layout: 违约
+title: CAS - MDC 记录配置
+category: 日志 & 审计
 ---
 
-# Mapped Diagnostic Context
+# 映射诊断上下文
 
-To uniquely stamp each request, CAS puts contextual information into the `MDC`, the abbreviation of Mapped Diagnostic Context. This effectively translates to a number of special variables available to the logging context that may convey additional information about the nature of the request or the authentication event.
+为了给每个请求盖上唯一的印记，中科院将上下文 信息放入 `MDC`，即映射诊断上下文的缩写。 这实际上 翻译为记录上下文中可用的一些特殊变量， 可能会传达有关请求或身份验证事件性质的其他信息。
 
-| Variable        | Description                              |
-| --------------- | ---------------------------------------- |
-| `remoteAddress` | Remote address of the HTTP request.      |
-| `remoteUser`    | Remote user of the HTTP request.         |
-| `serverName`    | Server name of the HTTP request.         |
-| `serverPort`    | Server port of the HTTP request.         |
-| `locale`        | Locale of the HTTP request.              |
-| `contentType`   | Content type of the HTTP request.        |
-| `contextPath`   | Context path of the HTTP request.        |
-| `localAddress`  | Local address of the HTTP request.       |
-| `localPort`     | Local port of the HTTP request.          |
-| `remotePort`    | Remote port of the HTTP request.         |
-| `pathInfo`      | Path information of the HTTP request.    |
-| `protocol`      | Protocol of the HTTP request.            |
-| `authType`      | Authentication type of the HTTP request. |
-| `method`        | Method of the HTTP request.              |
-| `queryString`   | Query string of the HTTP request.        |
-| `requestUri`    | Request URI of the HTTP request.         |
-| `scheme`        | Scheme of the HTTP request.              |
-| `timezone`      | Timezone of the HTTP request.            |
-| `principal`     | CAS authenticated principal id.          |
+| 变量      | 描述                |
+| ------- | ----------------- |
+| `远程地址`  | HTTP 请求的远程地址。     |
+| `远程使用者` | HTTP 请求的远程用户。     |
+| `服务器名`  | HTTP 请求的服务器名称。    |
+| `服务器端口` | HTTP请求的服务器端口。     |
+| `现场`    | HTTP 请求的本地。       |
+| `内容类型`  | HTTP请求的内容类型。      |
+| `上下文路径` | HTTP 请求的上下文路径。    |
+| `本地地址`  | HTTP 请求的本地地址。     |
+| `本地端口`  | HTTP 请求的本地端口。     |
+| `远程端口`  | HTTP 请求的远程端口。     |
+| `路径信息`  | HTTP 请求的路径信息。     |
+| `协议`    | HTTP 请求的协议。       |
+| `身份类型`  | HTTP 请求的身份验证类型。   |
+| `方法`    | HTTP请求的方法。        |
+| `查询串`   | HTTP 请求的查询字符串。    |
+| `请求乌里`  | 请求 URI 的 HTTP 请求。 |
+| `方案`    | HTTP 请求的方案。       |
+| `时区`    | HTTP请求的时区。        |
+| `主要`    | CAS验证了主ID。        |
 
-Additionally, all available request attributes, headers, and parameters are exposed as variables.
+此外，所有可用的请求属性、标题和参数都作为变量暴露。
 
-The above variables may be used in logging patterns:
+上述变量可用于记录模式：
 
-- Use `%X` by itself to include all variables.
-- Use `%X{key}` to include the specified variable.
+- 自行使用 `%X` 来包含所有变量。
+- 使用 `%X{key}` 包括指定的变量。
 
 ```xml
 <Console name="console" target="SYSTEM_OUT">
