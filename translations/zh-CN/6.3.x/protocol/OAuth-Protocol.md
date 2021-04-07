@@ -1,18 +1,18 @@
 ---
-layout: default
-title: CAS - OAuth Protocol
-category: Protocols
+layout: 违约
+title: 中科院 - 非大议定书
+category: 协议
 ---
 
-# OAuth Protocol
+# 非航空议定书
 
-You can configure the CAS server with:
+您可以将 CAS 服务器配置为：
 
-* [OAuth client support](../integration/Delegate-Authentication.html), which means authentication can be delegated through a link on the login page to a CAS, OpenID or OAuth provider.
-* [OAuth server support](../installation/OAuth-OpenId-Authentication.html), which means you will be able to communicate with your CAS server through the [OAuth 2.0 protocol](http://oauth.net/2/).
+* [OAuth 客户端支持](../integration/Delegate-Authentication.html)，这意味着身份验证可以通过登录页面上的链接 委托给 CAS、OpenID 或 OAuth 提供商。
+* [非授权服务器支持](../installation/OAuth-OpenId-Authentication.html)，这意味着您将能够通过 [OAuth 2.0 协议](http://oauth.net/2/)与 CAS 服务器 通信。
 
-## UMA
+## 乌马
 
-User-Managed Access (UMA) is a lightweight access control protocol that defines a centralized workflow to allow an entity (user or corporation) to manage access to their resources. UMA extends the OAuth protocol and gives resource owners granular management of their protected resources by creating authorization policies on a centralized authorization server, such as CAS. The authorization server grants delegated consent to a requesting party on behalf of the resource owner to authorize who and what can get access to their data and for how long.
+用户管理访问 （UMA） 是一种轻量级的访问控制协议，它定义了集中的工作流，允许实体（用户或公司） 管理对其资源的访问。 UMA 扩展了 OAuth 协议，并通过在 CAS 等集中授权服务器上创建授权策略，为资源所有者提供对其受保护资源 的精细管理。 授权服务器授予授权 代表资源所有者请求方授权谁和什么可以访问其数据以及访问时间。
 
-To learn more about UMA support in CAS, [please see this guide](OAuth-UMA-Protocol.html).
+有关中科院 UMA 支持的更多了解， [请参阅本指南](OAuth-UMA-Protocol.html)。
