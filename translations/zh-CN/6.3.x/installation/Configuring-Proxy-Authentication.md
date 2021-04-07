@@ -1,110 +1,122 @@
 ---
-layout: default
-title: CAS - Proxy Authentication
-category: Authentication
+layout: 违约
+title: CAS - 代理认证
+category: 认证
 ---
 
-# Proxy Authentication
+# 代理身份验证
 
-Proxy authentication support for CAS v1+ protocols is enabled by default, thus it is entirely a matter of CAS client configuration to leverage proxy authentication features.
+默认情况下启用了 CAS v1+ 协议的代理身份验证支持，因此完全由 CAS 客户端配置来利用代理身份验证功能。
 
-<div class="alert alert-info"><strong>Service Configuration</strong><p>
-Note that each registered application in the registry must explicitly be configured
-to allow for proxy authentication. See <a href="../services/Service-Management.html">this guide</a>
-to learn about registering services in the registry.</p></div>
+<div class="alert alert-info"><strong>服务配置</strong><p>
+请注意，注册表中的每个注册申请必须明确配置
+，以便进行代理身份验证。 请参阅本指南 <a href="../services/Service-Management.html"></a>
+了解注册册中的注册服务。</p></div>
 
-Disabling proxy authentication components is recommended for deployments that wish to strategically avoid proxy authentication as a matter of security policy.
+建议将代理身份验证组件禁用，以便将战略性地避免代理 身份验证作为安全策略。
 
-## Use Case
+## 用例
 
-One of the more common use cases of proxy authentication is the ability to obtain a ticket for a back-end [REST-based] service that is also protected by CAS. The scenario usually is:
+代理身份验证的更常见案例之一是能够获得 也受 CAS 保护的后端 [REST-based] 服务的机票。 通常的情况是：
 
-- User is faced with application A which is protected by CAS.
-- Application A on the backend needs to contact a service S to produce data.
-- Service S itself is protected by CAS itself.
+- 用户面临受 CAS 保护的应用程序 A。
+- 后端的应用程序 A 需要联系服务 S 以生成数据。
+- 服务 S 本身受 CAS 本身的保护。
 
-Because A contacts service S via a server-to-service method where no browser is involved, service S would not be able to recognize that an SSO session already exists. In these cases, application A needs to exercise proxying in order to obtain a proxy ticket for service S. The proxy ticket is passed to the relevant endpoint of service S so it can retrieve and validate it via CAS and finally produce a response.
+由于联系人服务 S 通过服务器到服务方法，其中不涉及浏览器， 服务 S 将无法识别 SSO 会话已经存在。 在这些情况下， 申请 A 需要行使代理权才能获得服务 S 的代理票证。代理票证 传递到服务 S 的相关端点，以便通过 CAS 检索和验证，最终产生响应。
 
-The trace route may look like this:
+跟踪路线可能看起来像这样：
 
-1. Browser navigates to A.
-2. A redirects to CAS.
-3. CAS authenticates and redirects back to A with an `ST`.
-4. A attempts to validate the `ST`, and asks for a `PGT`.
-5. CAS confirms `ST` validation, and issues a proxy-granting ticket `PGT`.
-6. A asks CAS to produce a `PT` for service S, supplying the `PGT` in its request.
-7. CAS produces a PT for service S.
-8. A contacts the service S endpoint, passing along `PT` in the request.
-9. Service S attempts to validate the `PT` via CAS.
-10. CAS validates the `PT` and produces a successful response.
-11. Service S receives the response, and produces data for A.
-12. A receives and displays the data in the browser.
+1. 浏览器导航到A。
+2. 重定向到 CAS。
+3. CAS 通过 `ST`进行认证并重定向回 A。
+4. 试图验证 `ST`，并要求 `PGT`。
+5. 中科院确认 `ST` 验证，并 `PGT`发放代理发票。
+6. A 要求 CAS 为服务 S 生产 `PT` ，在其请求中提供 `PGT` 。
+7. CAS为服务S生产PT。
+8. 联系服务S端点，在请求中传递 `PT` 。
+9. 服务S尝试通过CAS验证 `PT` 。
+10. CAS 验证了 PT</code> `，并产生了成功响应。</li>
+<li>服务 S 接收响应，并为 A 生成数据。</li>
+<li>A 在浏览器中接收和显示数据。</li>
+</ol>
 
-See the [CAS Protocol](../protocol/CAS-Protocol.html) for more info.
+<p spaces-before="0">有关详细信息，请参阅 <a href="../protocol/CAS-Protocol.html">CAS 协议</a> 。</p>
 
-## Handling SSL-enabled Proxy URLs
+<h2 spaces-before="0">处理支持 SSL 的代理网址</h2>
 
-By default, CAS ships with a bundled HTTP client that is partly responsible to callback the URL for proxy authentication. Note that this URL need also be authorized by the CAS service registry before the callback can be made. [See this guide](../services/Service-Management.html) for more info.
+<p spaces-before="0">默认情况下，CAS 将附带捆绑的 HTTP 客户端，该客户端部分负责回调 URL
+以进行代理身份验证。 请注意，此 URL 还需要经 CAS 服务注册表授权
+才能进行回拨。 <a href="../services/Service-Management.html">有关详细信息，请参阅本指南</a> 。</p>
 
-If the callback URL is authorized by the service registry, and if the endpoint is under HTTPS and protected by an SSL certificate, CAS will also attempt to verify the validity of the endpoint's certificate before it can establish a successful connection. If the certificate is invalid, expired, missing a step in its chain, self-signed or otherwise, CAS will fail to execute the callback.
+<p spaces-before="0">如果回调 URL 由服务注册表授权，如果端点位于 HTTPS
+并受 SSL 证书保护，CAS 还将尝试验证端点
+证书的有效性，然后才能成功连接。 如果证书无效、过期、
+缺少链条中的一步、自行签名或其他步骤，CAS 将无法执行回调。</p>
 
-The HTTP client of CAS does present a local trust store that is similar to that of the Java platform. It is recommended that this trust store be used to handle the management of all certificates that need to be imported into the platform to allow CAS to execute the callback URL successfully. While by default, the local trust store to CAS is empty, CAS will still utilize **both** the default and the local trust store. The local trust store should only be used for CAS-related functionality of course, and the trust store file can be carried over across CAS and Java upgrades, and certainly managed by the source control system that should host all CAS configuration.
+<p spaces-before="0">CAS 的 HTTP 客户端确实提供类似于 Java 平台的本地信托商店。
+建议使用该信托商店来管理所有需要
+导入平台的证书，以便 CAS 能够成功执行回调 URL。 虽然默认情况下，
+本地信托商店到CAS是空的，但CAS仍将利用 <strong x-id="1"></strong> 违约和本地信托存储。
+当然，本地信托存储只能用于 CAS 相关功能，信托存储文件
+可以跨 CAS 和 Java 升级进行，当然还要由源控制系统管理，该系统应
+托管所有 CAS 配置。</p>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#http-client).
+<p spaces-before="0">要查看 CAS 属性的相关列表，请 <a href="../configuration/Configuration-Properties.html#http-client">查看本指南</a>。</p>
 
-## PGT in Validation Response
+<h2 spaces-before="0">验证响应中的 PGT</h2>
 
-In situations where using `CAS20ProxyHandler` may be undesirable, such that invoking a callback url to receive the proxy granting ticket is not feasible, CAS may be configured to return the proxy-granting ticket id directly in the validation response. In order to successfully establish trust between the CAS server and the application, private/public key pairs are generated by the client application and then **the public key** distributed and configured inside CAS. CAS will use the public key to encrypt the proxy granting ticket id and will issue a new attribute `<proxyGrantingTicketId>` in the validation response, only if the service is authorized to receive it.
+<p spaces-before="0">在使用 <code>CAS20ProxyHandler` 可能不可取的情况下，如果调用回拨网址接收代理授予票证是不可行的，因此，CAS 可配置 在验证响应中直接返回代理授予票证 ID。 为了成功建立 CAS服务器与应用之间的信任，客户端应用程序生成了私钥/公共密钥对，然后 **在CAS内部分发和 配置的公钥** 。 CAS 将使用公钥加密授权票证 ID 的代理，并将在验证响应中发布新的属性 `<proxyGrantingTicketId>` ，前提是服务有权接收它。</p>
 
-Note that the return of the proxy granting ticket id is only carried out by the CAS validation response, provided the client application issues a request to the `/p3/serviceValidate` endpoint (or `/p3/proxyValidate`). Other means of returning attributes to CAS, such as SAML1 will **not** support the additional returning of the proxy granting ticket.
+请注意，仅通过 CAS 验证响应执行代理授予票证 ID 的退货，前提是客户端 申请向 `/p3/服务验证` 端点（或 `/p3/代理验证`）发出请求。 将属性返还给 CAS 的其他方法，如 SAML1 将 **不** 支持代理授予票证的额外返回。
 
-<div class="alert alert-warning">If CAS is configured to return the proxy-granting ticket id directly in the validation response,
-the <code>pgtIou</code> parameter is omitted from the response and no callback to the application is performed.</div>
+<div class="alert alert-warning">如果 CAS 在验证响应中配置为直接返回代理授予票证 ID，则
+ <code>pgtIou</code> 参数从响应中省略，并且不执行对应用程序的回调。</div>
 
-### Register Service
+### 注册服务
 
-Once you have received the public key from the client application owner, it must be first registered inside the CAS server's service registry. The service that holds the public key above must also be authorized to receive the PGT as an attribute for the given attribute release policy of choice.
+一旦您从客户端应用程序所有者处收到公共密钥，它必须首先在 CAS 服务器的服务注册表内注册 。 持有上述公共密钥的服务还必须 授权接收 PGT 作为所选给定属性发布策略的属性。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "test",
-  "id" : 1,
-  "evaluationOrder" : 0,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "authorizedToReleaseProxyGrantingTicket" : true
-  },
-  "publicKey" : {
-    "@class" : "org.apereo.cas.services.RegisteredServicePublicKeyImpl",
-    "location" : "classpath:public.key",
-    "algorithm" : "RSA"
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："^https://.+"，
+  "名称"："测试"，
+  "id"：1，
+  "评估号"：0，
+  "属性发布政策"：{
+    "@class"："org.apereo.cas.服务。返回授权发布政策"，
+    "授权发布价格"：真正的
+  }，
+  "公共钥匙"：{
+    "@class"："org.apereo.cas.服务.注册服务"，
+    "位置"："类路径：公共.key"，
+    "算法"："RSA"
   }
 }
 ```
 
-The keypair must be generated by the application itself that wishes to obtain the PGT. The public key is shared with CAS. The private key is used by the application to decrypt the PGT. Sample instructions to generate the keypair follow:
+密钥对接必须由希望获得 PGT 的应用程序本身生成。 公共密钥与 CAS 共享。 应用程序使用私钥解密 PGT。 生成密钥对流的示例说明如下：
 
 ```bash
-openssl genrsa -out private.key 4096
-openssl rsa -pubout -in private.key -out public.key -inform PEM -outform DER
-openssl pkcs8 -topk8 -inform PER -outform DER -nocrypt -in private.key -out private.p8
+打开sl genrsa-出私人.key 4096
+打开sl rsa-pubout-在私人.key-出公共.key-通知PEM-外型DER
+打开-topk8-通知PER-外型DER-诺克里普特-在私人.key-出私人。p8
 ```
 
-Note that a large key size of `4096` may be required in order to allow CAS to encrypt lengthy proxy-granting tickets. Choosing a small key size will may prevent CAS to correctly encrypt the ticket as there is a limit to the lengths the encryption algorithm of a particular size can handle.
+请注意，可能需要 `4096` 的大密钥大小，以便 CAS 能够加密 冗长的代理授予票证。 选择小密钥大小可能会阻止 CAS 正确 对票证进行加密，因为特定大小的加密算法可以处理的长度有限。
 
-### Decrypt PGT
+### 解密 PGT
 
-Once the client application has received the `proxyGrantingTicket` id attribute in the CAS validation response, it can decrypt it via its own private key. Since the attribute is base64 encoded by default, it needs to be decoded first before decryption can occur. Here's a sample code snippet:
+客户端申请在 CAS 验证响应中收到 `代理"确认卡` ID 属性后，可以通过自己的私钥解密 。 由于该属性在默认情况下是 base64 编码的，因此在进行解密之前，需要先解码 。 下面是示例代码片段：
 
 ```java
-final Map<?, ?> attributes = ...
-final String encodedPgt = (String) attributes.get("proxyGrantingTicket");
-final PrivateKey privateKey = ...
-final Cipher cipher = Cipher.getInstance(privateKey.getAlgorithm());
-final byte[] cred64 = decodeBase64(encodedPgt);
-cipher.init(Cipher.DECRYPT_MODE, privateKey);
-final byte[] cipherData = cipher.doFinal(cred64);
-return new String(cipherData);
+最终地图<?, ?> 属性=...
+最终字符串编码Pgt=（字符串）属性。
+最后的私人钥匙私人钥匙=...
+最后的密码密码=密码。获取安装（私钥。获取高利特）：
+最后一个署名[]信用64=解码Base64（编码Pgt）：
+密码. init （Cipher.DECRYPT_MODE， 私人钥匙）：
+最后的旁特 [] 密码数据 = 密码. dofinal （信用 64）;
+返回新字符串（密码数据）：
 ```
