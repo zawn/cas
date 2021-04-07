@@ -1,36 +1,40 @@
 ---
-layout: default
-title: CAS - CouchDB Service Registry
-category: Services
+layout: 违约
+title: 中科院 - 沙发数据库服务注册处
+category: 服务业
 ---
 
-# CouchDB Service Registry
-CouchDB integration is enabled by including the following dependency in the WAR overlay:
+# 库奇德布服务注册处
+沙发数据库集成通过在 WAR 叠加中包括以下依赖性而实现：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-couchdb-service-registry</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-沙发-服务-注册</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-[CouchDB](http://couchdb.apache.org/) is a highly available, open source NoSQL database server based on [Erlang/OTP](http://www.erlang.org) and its mnesia database. The intention of this registry is to leverage the capability of CouchDB server to provide high availability to CAS across multiple data centers.
+[沙发数据库](http://couchdb.apache.org/) 是基于 [Erlang/OTP](http://www.erlang.org) 及其 mnesia 数据库的高度可用的开源 NoSQL 数据库服务器。 此注册表的目的是利用 CouchDB 服务器的功能，在多个数据中心为 CAS 提供高可用性。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchdb-service-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchdb-service-registry)。
 
-The only truly mandatory setting is the URL. However, CouchDB should not be used in admin party mode in production, so username and password are needed as well.
+唯一真正强制性的设置是网址。 但是，在生产中不应在管理员方模式中使用 CouchDB，因此也需要用户名和密码。
 
-## Auto Initialization
+## 自动初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+在启动和配置允许的情况下，注册表能够自动从 CAS 可用的默认 JSON 服务定义中初始化。 有关详细信息，请参阅本指南</a>。</p> 
 
 
-## Troubleshooting
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+
+## 故障 排除
+
+要启用其他记录，请配置 log4j 配置文件以添加以下 级别：
+
+
 
 ```xml
 ...
