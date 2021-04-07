@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Password Management
-category: Password Management
+layout: 默认
+title: CAS-密码管理
+category: 密码管理
 ---
 
-# Password Management - JDBC
+# 密码管理-JDBC
 
-The account password and security questions may be stored inside a database.
+帐户密码和安全性问题可以存储在数据库中。
 
-JDBC support is enabled by including the following dependencies in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用JDBC支持：
 
 ```xml
 <dependency>
@@ -18,20 +18,20 @@ JDBC support is enabled by including the following dependencies in the WAR overl
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jdbc-password-management).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#jdbc-password-management)。
 
-The expected database schema for the user accounts is:
-
-```sql
-create table pm_table_accounts (id int, userid varchar(255), password varchar(255), email varchar(255), phone varchar(255));
-```
-
-The expected database schema for account security questions is:
+用户帐户的预期数据库架构为：
 
 ```sql
-create table pm_table_questions (id int, userid varchar(255), question varchar(255), answer varchar(255));
+创建表pm_table_accounts（id int，userid varchar（255），密码varchar（255），电子邮件varchar（255），电话varchar（255））;
 ```
 
-## Password History
+帐户安全性问题的预期数据库架构为：
 
-This feature is does also enable password history tracking and storage. Managing passwords via JDBC will switch CAS to use the same JDBC configuration for password history.
+```sql
+创建表pm_table_questions（id int，userid varchar（255），问题varchar（255），答案varchar（255））;
+```
+
+## 密码记录
+
+此功能还可以启用密码历史记录跟踪和存储。 通过JDBC管理密码将使CAS更改密码历史记录以使用相同的JDBC配置。
