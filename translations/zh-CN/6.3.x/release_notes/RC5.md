@@ -1,100 +1,100 @@
 ---
-layout: default
-title: CAS - Release Notes
-category: Planning
+layout: 默认
+title: CAS-发行说明
+category: 规划
 ---
 
-# RC5 Release Notes
+# RC5发行说明
 
-We strongly recommend that you take advantage of the release candidates as they come out. Waiting for a `GA` release is only going to set you up for unpleasant surprises. A `GA` is [a tag and nothing more](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/). Note that CAS releases are *strictly* time-based releases; they are not scheduled or based on specific benchmarks, statistics or completion of features. To gain confidence in a particular release, it is strongly recommended that you start early by experimenting with release candidates and/or follow-up snapshots.
+强烈建议您在发布候选版本时加以利用。 等待 `GA` 发布只会使 感到不愉快。 `GA` 是 [的标记，仅此而已是](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/)。 请注意，CAS 版本是 *严格的* 个基于时间的版本。它们不是预定的，也不是基于特定的基准，统计数据或功能完成情况。 要获得 信任度，强烈建议您从 候选发行版和/或后续快照开始尝试。
 
-## Apereo Membership
+## Apereo会员资格
 
-If you benefit from Apereo CAS as free and open-source software, we invite you to [join the Apereo Foundation](https://www.apereo.org/content/apereo-membership) and financially support the project at a capacity that best suits your deployment. Note that all development activity is performed *almost exclusively* on a voluntary basis with no expectations, commitments or strings attached. Having the financial means to better sustain engineering activities will allow the developer community to allocate *dedicated and committed* time for long-term support, maintenance and release planning, especially when it comes to addressing critical and security issues in a timely manner. Funding will ensure support for the software you rely on and you gain an advantage and say in the way Apereo, and the CAS project at that, runs and operates. If you consider your CAS deployment to be a critical part of the identity and access management ecosystem, this is a viable option to consider.
+如果您从Apereo CAS作为免费和开源软件受益，我们 邀请您 [加入Apereo Foundation](https://www.apereo.org/content/apereo-membership) 并以最适合您的部署的能力为该项目提供财务支持。 请注意，所有开发活动 都是在自愿的基础上几乎完全是</em> 进行的 *，没有任何期望，承诺或附加条件。 可持续工程活动的财务能力，将使开发人员社区可以分配 *专用* 时间来提供长期支持， 维护和发布计划，尤其是在及时解决关键和安全问题时。 资助将 ，从而获得优势并以Apereo和当时的CAS项目运行 并运行的方式发言。 如果您认为您的CAS部署是身份和访问 管理生态系统的关键部分，那么这是一个可行的选择。</p>
 
-## Get Involved
+## 参与其中
 
-- Start your CAS deployment today. Try out features and [share feedback](/cas/Mailing-Lists.html).
-- Better yet, [contribute patches](/cas/developer/Contributor-Guidelines.html).
-- Suggest and apply documentation improvements.
+- 立即开始CAS部署。 试用功能，然后 [分享反馈](/cas/Mailing-Lists.html)。
+- 更好的是， [贡献了补丁](/cas/developer/Contributor-Guidelines.html)。
+- 建议并应用文档改进。
 
-## Resources
+## 资源
 
-- [Release Schedule](https://github.com/apereo/cas/milestones)
-- [Release Policy](/cas/developer/Release-Policy.html)
+- [发布时间表](https://github.com/apereo/cas/milestones)
+- [发行政策](/cas/developer/Release-Policy.html)
 
-## Overlay
+## 覆盖
 
-In the `gradle.properties` of the [CAS WAR Overlay](../installation/WAR-Overlay-Installation.html), adjust the following setting:
+在 [CAS WAR叠加层](../installation/WAR-Overlay-Installation.html)`gradle.properties` 中，调整以下设置：
 
 ```properties
-cas.version=6.3.0-RC5
+cas.version = 6.3.0-RC5
 ```
 
 <div class="alert alert-info">
-  <strong>System Requirements</strong><br/>There are no changes to the minimum system/platform requirements for this release.
+  <strong>系统要求</strong><br/>此版本对最低系统/平台要求没有更改。
 </div>
 
-## New & Noteworthy
+## 新增 & 值得注意
 
-The following items are new improvements and enhancements presented in this release.
+以下各项是此版本中提供的新改进和增强功能。
 
-### Puppeteer Tests
+### 木偶测验
 
-Documentation is now available to highlight [test processes](../developer/Test-Process.html) used by the CAS project and developers/contributors. The newest addition is the availability of functional/browser testing mechanisms that are backed by the Puppeteer framework. The test scenarios that are designed are executed by the CAS continuous integration system and will be improved over time to account for advanced use cases such as ensuring protocol compatibility and other variations of the authentication webflow.
+现在可以使用文档来突出显示 CAS项目和开发人员/贡献者所使用的 [测试过程](../developer/Test-Process.html) 最新添加的功能/浏览器测试 机制由Puppeteer框架支持。 被设计测试场景 由CAS持续集成系统执行的，并且将随着时间的推移能够提高 以考虑高级用例如确保协议的兼容性和认证的Webflow的其它变型。
 
-### Apple Signin
+### 苹果登录
 
-[Delegated authentication](../integration/Delegate-Authentication.html) can now hand off authentication requests to [sign in with Apple](https://developer.apple.com/sign-in-with-apple/).
+[委派的身份验证](../integration/Delegate-Authentication.html) 现在可以将 身份验证请求传递给 [用Apple](https://developer.apple.com/sign-in-with-apple/)登录。
 
-### WebAuthN for Primary Authentication
+### 用于主要身份验证的WebAuthN
 
-[WebAuthn FIDO2](../mfa/FIDO2-WebAuthn-Authentication.html) multifactor authentication can now, optionally, act as a standalone factor for primary authentication, for user accounts and devices that have an existing registration record with CAS.
+[WebAuthn FIDO2](../mfa/FIDO2-WebAuthn-Authentication.html) 多因素身份验证 现在可以选择作为用户身份验证 和具有CAS已有注册记录的设备的主要身份验证的独立因素。
 
-![image](https://user-images.githubusercontent.com/1205228/98920646-96243c80-24e5-11eb-9ebc-b7eb5ac755af.png)
+![图像](https://user-images.githubusercontent.com/1205228/98920646-96243c80-24e5-11eb-9ebc-b7eb5ac755af.png)
 
-### Duo Security Universal Prompt
+### Duo Security通用提示
 
-Support for Duo Security's [Universal Prompt](../mfa/DuoSecurity-Authentication.html) for multifactor authentication is now available.
+现在支持Duo Security的 [Universal Prompt](../mfa/DuoSecurity-Authentication.html) 进行多因素身份验证。
 
-### QR Code Authentication
+### QR码认证
 
-[QR Code authentication](../installation/QRCode-Authentication.html) is a strategy that allows the user to scan a QR code, generated by the CAS server, using a mobile device and subsequently login after having successfully validated it.
+[QR码认证](../installation/QRCode-Authentication.html) 是一种策略，允许用户 CAS服务器生成的QR码，并在成功验证其后登录。
 
-![image](https://user-images.githubusercontent.com/1205228/100055418-111c1a00-2e39-11eb-840f-e9c9b866f106.png)
+![图像](https://user-images.githubusercontent.com/1205228/100055418-111c1a00-2e39-11eb-840f-e9c9b866f106.png)
 
-### WebAuthN LDAP Repository
+### WebAuthN LDAP存储库
 
-[WebAuthn FIDO2](../mfa/FIDO2-WebAuthn-Authentication.html) multifactor authentication can now, manage and track device registration records inside LDAP directories.
+[WebAuthn FIDO2](../mfa/FIDO2-WebAuthn-Authentication.html) 多因素身份验证 现在可以管理和跟踪LDAP目录中的设备注册记录。
 
-### Test Coverage
+### 测试覆盖率
 
-CAS test coverage across all modules in the codebase has now reached `90%` and continues to climb. Additional validation rules are also applied to fail all pull requests that fall below this threshold.
+现在，代码库中所有模块的CAS测试覆盖率已达到 `90％` 并继续攀升。 其他验证规则也适用于使所有低于此阈值的拉取请求失败。
 
-## Other Stuff
+## 其他的东西
 
-- [Attribute resolution](../integration/Attribute-Resolution.html) has gained a new option to force all attribute repositories to produce data and short-circuit the resolution logic if any repository fails to resolve the person details.
-- [Maven repositories](https://spring.io/blog/2020/10/29/notice-of-permissions-changes-to-repo-spring-io-fall-and-winter-2020) managed by the Spring project are removed from the CAS gradle build.
-- Improvements to [password management](../password_management/Password-Management.html) flows to handle invalid tokens more gracefully, and allow password reset with or without single sign-on sessions.
-- Releasing attributes with a space in the attribute name, due to misconfiguration, will force CAS to replace the space with `_` upon release.
-- Loading Kerberos and JAAS configuration files for [SPNEGO authentication](../installation/SPNEGO-Authentication.html) is changed to use Spring resources for syntax. You may need to ensure paths in the CAS configuration start with the `file:` prefix.
-- [Attribute resolution](../integration/Attribute-Resolution.html) for LDAP has been improved to support fetching and mapping attributes with tags/options.
-- All external links found in the CAS documentation are corrected to point to valid resources. Validation processes are also adjusted to prevent bad links.
+- [属性解析](../integration/Attribute-Resolution.html) 获得了一个新选项，可以强制所有属性存储库生成数据，并在任何存储库无法解析人员详细信息的情况下缩短解析逻辑。
+- [Maven存储库](https://spring.io/blog/2020/10/29/notice-of-permissions-changes-to-repo-spring-io-fall-and-winter-2020) 已从CAS gradle构建中删除。
+- [密码管理](../password_management/Password-Management.html) 改进可更优雅地处理无效令牌，并允许在有或没有单点登录会话的情况下重置密码。
+- 释放在属性名的空间，由于错误配置，属性将迫使CAS与替换空间 `_` 时释放。
+- [SPNEGO身份验证](../installation/SPNEGO-Authentication.html) Kerberos和JAAS配置文件已更改为将Spring资源用于语法。 您可能需要确保CAS配置中的路径以 `文件：` 前缀开头。
+- [LDAP的属性解析](../integration/Attribute-Resolution.html) 已得到改进，以支持使用标签/选项获取和映射属性。
+- 更正了CAS文档中找到的所有外部链接，以指向有效资源。 验证过程也进行了调整，以防止不良链接。
 
-## Library Upgrades
+## 图书馆升级
 
 - JRadius
-- Hazelcast
-- MySQL Driver
-- MongoDb Driver
-- HSQL Driver
-- MariaDb Driver
+- 淡褐色
+- MySQL驱动
+- MongoDb驱动程序
+- HSQL驱动程序
+- MariaDb驱动程序
 - Groovy
-- Caffeine
+- 咖啡因
 - Pac4j
-- Apache Tomcat
-- Spring Boot
-- Hibernate
+- 阿帕奇雄猫
+- 春季靴
+- 冬眠
 - Infinispan
-- Thymeleaf Dialect
-- Micrometer
+- 胸腺方言
+- 千分尺
