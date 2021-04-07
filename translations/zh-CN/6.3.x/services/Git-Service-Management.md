@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Git Service Registry
-category: Services
+layout: 默认
+title: CAS-Git服务注册中心
+category: 服务
 ---
 
-# Git Service Registry
+# Git服务注册中心
 
-This registry reads services definitions from remote or local git repositories. Service definition files are expected to be either [JSON](JSON-Service-Management.html) or [YAML](YAML-Service-Management.html) files. The contents of the repository is pulled at defined intervals and changes to service definitions are committed and pushed to the defined remotes.
+该注册表从远程或本地git存储库读取服务定义。 服务定义文件应为 （ [JSON](JSON-Service-Management.html) 或 [YAML](YAML-Service-Management.html) 文件）。 将按定义的时间间隔提取存储库的内容，并提交对服务定义的更改，并将 推送到已定义的远程服务器。
 
-Support is enabled by adding the following module into the overlay:
+通过将以下模块添加到叠加层来启用支持：
 
 ```xml
 <dependency>
@@ -18,11 +18,11 @@ Support is enabled by adding the following module into the overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#git-service-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#git-service-registry)。
 
-<div class="alert alert-warning"><strong>No Interference!</strong><p>
-Be careful to not manually modify the state of the git repository directory that is cloned on the local server. By doing so, you risk 
-interfering with CAS' own service management processes and ultimately may end up corrupting the state of the git repository.
+<div class="alert alert-warning"><strong>无干扰！</strong><p>
+注意不要手动修改在本地服务器上克隆的git信息库目录的状态。 这样做会冒 
+干扰CAS自己的服务管理流程的风险，并最终可能破坏git存储库的状态。
 </p></div>
 
-The service registry is also able to auto detect changes as it will pull changes from defined remotes periodically. It will monitor changes to recognize file additions, removals and updates and will auto-refresh CAS so changes may happen instantly.
+服务注册表还能够自动检测到更改，因为它将定期从定义的遥控器中提取更改。 它将监视更改以识别 文件的添加，删除和更新，并将自动刷新CAS，因此更改可能立即发生。
