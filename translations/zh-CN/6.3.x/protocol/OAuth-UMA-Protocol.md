@@ -1,18 +1,18 @@
 ---
-layout: default
-title: CAS - OAuth User-Managed Access Protocol
-category: Protocols
+layout: 默认
+title: CAS-OAuth用户管理的访问协议
+category: 通讯协定
 ---
 
-# User-Managed Access Protocol
+# 用户管理的访问协议
 
-User-Managed Access (UMA) is a lightweight access control protocol that defines a centralized workflow to allow an entity (user or corporation) to manage access to their resources.
+用户管理的访问（UMA）是一种轻量级的访问控制协议，该协议定义了集中式工作流程，以允许实体（用户或公司） 管理对其资源的访问。
 
-To learn more about UMA, please [read the specification](https://docs.kantarainitiative.org/uma/rec-uma-core.html).
+要了解有关UMA的更多信息，请 [阅读规范](https://docs.kantarainitiative.org/uma/rec-uma-core.html)。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -22,15 +22,15 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties for this feature, please [review this guide](../configuration/Configuration-Properties.html#oauth2-uma).
+要查看此功能的CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#oauth2-uma)。
 
-## Resources Storage
+## 资源储存
 
-Resource definitions are by default kept inside an in-memory repository.
+默认情况下，资源定义保留在内存库中。
 
-CAS also provides an alternative implementation backed by the relational database of choice to track and manage such definitions. The repository choice is activated in CAS properties.
+CAS还提供了由关系数据库 支持的替代实现，以跟踪和管理此类定义。 在CAS属性中激活了存储库选择。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -40,109 +40,109 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-## Endpoints
+## 终点
 
-### Requesting Party Token
+### 请求方令牌
 
-Issue a `GET` request to `/oauth2.0/umaJwks` to retrieve signing public keys.
+`/oauth2.0/umaJwks` 发出 `GET` 请求，以检索签名公钥。
 
-### Policies
+### 政策规定
 
-#### Create
+#### 创造
 
-Issue a `POST` request to `/oauth2.0/${resourceId}/policy` with the payload body as:
+发出 `POST` 请求到 `/oauth2.0/${resourceId}/策略` 与有效载荷体为：
 
 ```json
 {
-  "permissions": [{
-    "subject": "casuser",
-    "scopes": ["read","write"],
-    "claims": {
-        "givenName": "CAS"
+  “权限”：[{
+    “主题”：“ casuser”，
+    “作用域”：[“读”，“写”]，
+    “声明”：{
+        “ givenName”：“ CAS”
       }
-    }]
+    } ]
 }
 ```
 
-#### Delete
+#### 删除
 
-Issue a `DELETE` request as `/oauth2.0/${resourceId}/policy/${policyId}`
+发出 `DELETE` 请求为 `/oauth2.0/${resourceId}/ policy /${policyId}`
 
-#### Update
+#### 更新
 
-Issue a `PUT` request as `/oauth2.0/${resourceId}/policy/${policyId}` with the payload body as one matching the `POST` method.
+发出一个 `PUT` 请求，作为 `/oauth2.0/${resourceId}/ policy /${policyId}` ，有效载荷主体作为一个匹配 `POST` 方法的请求。
 
-#### Find
+#### 找
 
-- Issue a `GET` request as `/oauth2.0/${resourceId}/policy/` to fetch all policy definitions for a resource.
-- Issue a `GET` request as `/oauth2.0/${resourceId}/policy/${policyId}` to fetch a specific policy definition for a resource.
+- 发出 `GET` 请求作为 `/oauth2.0/${resourceId}/ policy /` 以获取资源的所有策略定义。
+- 发出 `GET` 请求作为 `/oauth2.0/${resourceId}/ policy /${policyId}` 来获取资源的特定策略定义。
 
-### Resources
+### 资源
 
-Resource-related operations are handled at endpoint `/oauth2.0/resourceSet`.
+与资源相关的操作在端点 `/oauth2.0/resourceSet`处处理。
 
-#### Create
+#### 创造
 
-The expected `POST` payload body is:
+预期的 `POST` 有效负载主体为：
 
 ```json
 {
-  "uri": "...",
-  "type": "...",
-  "name": "...",
-  "icon_uri": "...",
-  "resource_scopes": ["read","write"]
+  “ uri”：“ ...”，
+  “ type”：“ ...”，
+  “ name”：“ ...”，
+  “ icon_uri”：“ ...”，
+  “ resource_scopes”： [“读取”，“写入”]
 }
 ```
 
-#### Delete
+#### 删除
 
-Issue a `DELETE` request as `${resourceSetEndpoint}/${resourceId}`
+发出 `DELETE` 请求为 `${resourceSetEndpoint}/${resourceId}`
 
-#### Update
+#### 更新
 
-Issue a `PUT` request as `${resourceSetEndpoint}/${resourceId}` with the payload body as one matching the `POST` method.
+发出 `PUT` 请求为 `${resourceSetEndpoint}/${resourceId}` 与有效载荷体作为一个匹配 `POST` 方法。
 
-#### Find
+#### 找
 
-- Issue a `GET` request as `${resourceSetEndpoint}/${resourceId}` to fetch a specific resource definition.
-- Issue a `GET` request as `${resourceSetEndpoint}` to fetch all resource definitions.
+- 发出 `GET` 请求为 `${resourceSetEndpoint}/${resourceId}` 抓取特定资源的定义。
+- 发出一个 `GET` 请求作为 `${resourceSetEndpoint}` 来获取所有资源定义。
 
-### Permission Tickets
+### 许可票
 
-Issue a `POST` request to `/oauth2.0/permission` with the payload body as:
+`/oauth2.0/permission` 发出一个 `POST` 请求，有效载荷主体为：
 
 ```json
 {
-    "claims": {"givenName":"CAS"},
-    "resource_id": 100,
-    "resource_scopes": ["read"]
+    “权利要求书”：{ “给定名称”： “CAS”}，
+    “RESOURCE_ID”：100，
+    “resource_scopes”：[ “读”]
 }
 ```
 
-### Claims Collection
+### 索赔收集
 
-Issue a `GET` request to `/oauth2.0/rqpClaims` with the following query parameters:
+使用以下查询参数向 `/oauth2.0/rqpClaims` 发出 `GET`
 
 - `client_id`
 - `redirect_uri`
-- `ticket`
-- `state` (Optional)
+- `票`
+- `状态` （可选）
 
-### Discovery
+### 发现
 
-UMA discovery is available via `GET` at `/oauth2.0/.well-known/uma-configuration`.
+UMA发现可通过 `/oauth2.0/.well-known/uma-configuration``GET` 获得。
 
-### Authorization
+### 授权
 
-Issue a `POST` request to `/oauth2.0/rptAuthzRequest` with the payload body as:
+`/oauth2.0/rptAuthzRequest` 发出一个 `POST` 请求，有效载荷主体为：
 
 ```json
 {
-    "ticket": "...",
-    "rpt": "...",
-    "grant_type":"urn:ietf:params:oauth:grant-type:uma-ticket",
-    "claim_token": "...",
-    "claim_token_format": "..."
+    “ ticket”：“ ...”，
+    “ rpt”：“ ...”，
+    “ grant_type”：“ ur：ietf：params：oauth：grant-type：uma-ticket”，
+    “ claim_token” ：“ ...”，
+    “ claim_token_format”：“ ...”
 }
 ```
