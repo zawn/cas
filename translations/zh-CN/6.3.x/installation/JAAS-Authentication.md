@@ -1,175 +1,175 @@
 ---
-layout: default
-title: CAS - JAAS Authentication
-category: Authentication
+layout: 默认
+title: CAS-JAAS认证
+category: 验证
 ---
 
-# JAAS Authentication
+# JAAS认证
 
-[JAAS](https://docs.oracle.com/javase/9/security/java-authentication-and-authorization-service-jaas1.htm) is a Java standard authentication and authorization API. JAAS is configured via externalized plain text configuration file. Using JAAS with CAS allows modification of the authentication process without having to rebuild and redeploy CAS and allows for PAM-style multi-module "stacked" authentication.
+[JAAS](https://docs.oracle.com/javase/9/security/java-authentication-and-authorization-service-jaas1.htm) 是Java标准 身份验证和授权API。 JAAS通过外部化的纯文本配置文件进行配置。 将JAAS与CAS一起使用可以修改身份验证过程，而不必重建和重新部署CAS 并且可以进行PAM样式的多模块“堆叠”身份验证。
 
-## Configuration
+## 配置
 
-JAAS components are provided in the CAS core module and require no additional dependencies to use. The JAAS handler delegates to the built-in JAAS subsystem to perform authentication according to the directives in the JAAS config file.
+JAAS组件在CAS核心模块中提供，不需要使用其他依赖项。 JAAS处理程序将委托给内置的JAAS子系统，以根据JAAS配置文件中
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jaas-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#jaas-authentication)。
 
-## JAAS Configuration File
+## JAAS配置文件
 
-The default JAAS configuration file is located at `$JRE_HOME/lib/security/java.security`. It's important to note that JAAS configuration applies to the entire JVM. The path to the JAAS configuration file in effect may be altered by setting the `java.security.auth.login.config` system property to an alternate file path (i.e. `file:/etc/cas/config/jaas.config`).
+缺省的JAAS配置文件位于 `$JRE_HOME/lib/security/java.security`。 重要的是要注意 ，JAAS配置适用于整个JVM。 通过将 `java.security.auth.login.config` 系统属性设置为备用文件路径（即 `file：/etc/cas/config/jaas.config`可以有效地更改JAAS配置文件的路径 ）。
 
-A sample JAAS configuration file is provided for reference.
+提供了一个示例JAAS配置文件以供参考。
 
 ```
-/**
-  * Login Configuration for JAAS with the realm name defined as CAS.
-  */
+/ **
+  * JAAS的登录配置，领域名称定义为CAS。
+  * /
 CAS {
-  org.sample.jaas.login.SampleLoginModule sufficient
-    debug=FALSE;
+  org.sample.jaas.login.SampleLoginModule足够
+    debug = FALSE;
 };
 ```
 
-## Login Modules
+## 登录模块
 
-The following login modules are available with CAS:
+以下登录模块可用于CAS：
 
-### JNDI
+### 日本国家发展研究院
 
-The module prompts for a username and password and then verifies the password against the password stored in a directory service configured under JNDI.
-
-```
-CAS {
-  com.sun.security.auth.module.JndiLoginModule sufficient
-    user.provider.url=name_service_url
-    group.provider.url=name_service_url
-    debug=FALSE;
-};
-```
-
-The value of `name_service_url` specifies the directory service and path where this module can access the relevant user and group information. Because this module only performs one-level searches to find the relevant user information, the URL must point to a directory one level above where the user and group information is stored in the directory service.
-
-For a list of all other options and more comprehensive documentation, please see [this guide](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/JndiLoginModule.html) for more info.
-
-### Kerberos
-
-This module authenticates users using Kerberos protocols. The configuration entry for module has several options that control the authentication process and additions to the `Subject`'s private credential set. Irrespective of these options, the `Subject`'s principal set and private credentials set are updated only when commit is called. When commit is called, the `KerberosPrincipal` is added to the `Subject`'s principal set and KerberosTicket is added to the `Subject`'s private credentials.
-
-If the configuration entry for module has the option `storeKey` set to true, then `KerberosKey` will also be added to the subject's private credentials. `KerberosKey`, the principal's key will be either obtained from the keytab or derived from user's password.
-
-This module also recognizes the `doNotPrompt` option. If set to true the user will not be prompted for the password. The user can specify the location of the ticket cache by using the option `ticketCache` in the configuration entry. The user can specify the keytab location by using the option `keyTab` in the configuration entry.
-
-The principal name can be specified in the configuration entry by using the option `principal`. The principal name can either be a simple user name or a service name such as `host/mission.eng.sun.com`. The principal can also be set using the system property `sun.security.krb5.principal`. This property is checked during login. If this property is not set, then the principal name from the configuration is used. In the case where the principal property is not set and the principal entry also does not exist, the user is prompted for the name. When this property of entry is set, and `useTicketCache` is set to true, only TGT belonging to this principal is used.
-
-Note that a valid `krb5.conf` must be supplied to the JVM for Kerberos auth via setting `-Djava.security.krb5.conf=/etc/krb5.conf`.
+该模块会提示输入用户名和密码，然后根据在JNDI下配置的目录服务中存储的密码来验证密码。
 
 ```
 CAS {
-  com.sun.security.auth.module.Krb5LoginModule sufficient
-    refreshKrb5Config=TRUE/FALSE
-    useTicketCache=TRUE/FALSE
-    ticketCache=...
-    renewTGT=TRUE/FALSE
-    useKeyTab=TRUE/FALSE
-    doNotPrompt=TRUE/FALSE
-    keyTab=TRUE/FALSE
-    storeKey=TRUE/FALSE
-    principal=...
-    debug=FALSE;
+  com.sun.security.auth.module.JndiLoginModule足够
+
+    。provider.url= name_service_url
+    debug = FALSE;
 };
 ```
 
-For a list of all other options and more comprehensive documentation, please see [this guide](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/Krb5LoginModule.html) for more info.
+值 `name_service_url` 指定目录服务和此模块可以在其中访问相关用户和组信息的路径。 因为此模块仅执行一级搜索来找到相关的用户信息，所以URL必须指向目录和目录服务中存储用户和组信息的上一级目录。
 
-### UNIX
+有关所有其他选项的列表和更全面的文档，请参阅 [本指南](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/JndiLoginModule.html) 以获取更多信息。
 
-This module imports a user's Unix Principal information (`UnixPrincipal`, `UnixNumericUserPrincipal`, and `UnixNumericGroupPrincipal`) and associates them with the current `Subject`.
+### 的Kerberos
+
+该模块使用Kerberos协议对用户进行身份验证。 模块的配置条目具有几个选项，这些选项控制 身份验证过程以及对 `Subject`的专用凭据集的添加。 无论这些选项如何， `Subject`的主体集和私有凭证集。 调用commit时，将 `KerberosPrincipal` 添加到 `Subject`的主体集，并将KerberosTicket添加到 `Subject`的专用凭据。
+
+如果模块的配置条目将选项 `storeKey` 设置为true，则 `KerberosKey` 添加到 主题的专用凭据中。 `KerberosKey`，主体的密钥可以从密钥表中获取，也可以从用户的密码中获取。
+
+该模块还识别 `doNotPrompt` 选项。 如果设置为true，则不会提示用户输入密码。 用户可以通过使用配置条目中 `ticketCache` 来指定票证缓存的位置。 用户可以通过使用配置条目中 `keyTab`
+
+主体名称可以在配置条目通过使用选项来指定 `本金`。 主体名称可以是 ，可以是简单用户名，也可以是服务名称，例如 `host / mission.eng.sun.com`。 主体也可以使用系统属性 `sun.security.krb5.principal` 。 登录期间检查此属性。 如果未设置此属性， 然后使用配置中的主体名称。 在没有设置主体属性并且主体 条目也不存在的情况下，系统会提示用户输入名称。 设置该条目的属性并将 `useTicketCache` 设置为 true时，仅使用属于此主体的TGT。
+
+请注意， `-Djava.security.krb5.conf = / etc / krb5.conf``krb5.conf` 提供给JVM进行Kerberos身份验证。
 
 ```
 CAS {
-  com.sun.security.auth.module.UnixLoginModule sufficient
-    debug=FALSE;
+  com.sun.security.auth.module.Krb5LoginModule足够
+    refreshKrb5Config = TRUE / FALSE
+    useTicketCache = TRUE / FALSE
+    ticketCache = ...
+    renewTGT = TRUE / FALSE
+    useKeyTab = TRUE / FALSE
+    doNotPrompt = TRUE / FALSE
+    keyTab = TRUE / FALSE
+    storeKey = TRUE / FALSE
+    主体= ...
+    debug = FALSE;
 };
 ```
 
-For a list of all other options and more comprehensive documentation, please see [this guide](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/UnixLoginModule.html) for more info.
+有关所有其他选项的列表和更全面的文档，请参阅 [本指南](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/Krb5LoginModule.html) 以获取更多信息。
 
-### NT
+### UNIX系统
 
-This module renders a user's NT security information as some number of `Principal`s and associates them with a `Subject`.
+这个模块导入用户的Unix主要信息（`UnixPrincipal`， `UnixNumericUserPrincipal`，和 `UnixNumericGroupPrincipal`）和同事将它们与当前 `主体`。
 
 ```
 CAS {
-  com.sun.security.auth.module.NTLoginModule sufficient
-    debugNative=TRUE
-    debug=FALSE;
+  com.sun.security.auth.module.UnixLoginModule足够
+    debug = FALSE;
 };
 ```
 
-For a list of all other options and more comprehensive documentation, please see [this guide](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/NTLoginModule.html) for more info.
+有关所有其他选项的列表和更全面的文档，请参阅 [本指南](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/UnixLoginModule.html) 以获取更多信息。
+
+### 新台币
+
+该模块将用户的NT安全性信息呈现为 `主体`的数量，并将它们与 `主体`关联。
+
+```
+CAS {
+  com.sun.security.auth.module.NTLoginModule足够
+    debugNative = TRUE
+    debug = FALSE;
+};
+```
+
+有关所有其他选项的列表和更全面的文档，请参阅 [本指南](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/NTLoginModule.html) 以获取更多信息。
 
 ### LDAP
 
-This module performs LDAP-based authentication. A username and password is verified against the corresponding user credentials stored in an LDAP directory. If authentication is successful then a new `LdapPrincipal` is created using the user's distinguished name and a new `UserPrincipal` is created using the user's username and both are associated with the current `Subject`.
+此模块执行基于LDAP的身份验证。 对照存储在LDAP目录中的相应用户凭证来验证用户名和密码。 如果身份验证成功，则使用用户的专有名称创建 `LdapPrincipal` 并使用用户的用户名创建 `UserPrincipal` `Subject`关联。
 
-For a list of all other options and more comprehensive documentation, please see [this guide](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/LdapLoginModule.html) for more info.
+有关所有其他选项的列表和更全面的文档，请参阅 [本指南](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/LdapLoginModule.html) 以获取更多信息。
 
-This module operates in one of three modes. A mode is selected by specifying a particular set of options:
+该模块以三种模式之一运行。 通过指定一组特定的选项来选择一种模式：
 
-#### Search First
+#### 首先搜索
 
-In search-first mode, the LDAP directory is searched to determine the user's distinguished name and then authentication is attempted. An (anonymous) search is performed using the supplied username in conjunction with a specified search filter. If successful then authentication is attempted using the user's distinguished name and the supplied password. To enable this mode, set the `userFilter` option and omit the `authIdentity` option. Use `search-first` mode when the user's distinguished name is not known in advance.
+在搜索优先模式下，将搜索LDAP目录以确定用户的专有名称，然后尝试进行身份验证。 使用提供的用户名和指定的搜索过滤器来执行（匿名）搜索。 如果成功，则尝试使用用户的专有名称和提供的密码进行身份验证。 要启用此模式，请设置 `userFilter` 选项，并省略 `authIdentity` 选项。 如果事先不知道用户的专有名称，请使用 `搜索优先`
 
-The example below identifies the LDAP server and specifies that users' entries be located by their `uid` and `objectClass` attributes. It also specifies that an identity based on the user's `employeeNumber` attribute should be created.
+下面的示例标识了LDAP服务器，并指定了用户条目的 `uid` 和 `objectClass` 属性。 它还指定应基于用户的 `employeeNumber` 属性创建一个标识。
 
 ```
 CAS {
-  com.sun.security.auth.module.LdapLoginModule REQUIRED
-    userProvider="ldap://ldap-svr/ou=people,dc=example,dc=com"
-    userFilter="(&(uid={USERNAME})(objectClass=inetOrgPerson))"
-    authzIdentity="{EMPLOYEENUMBER}"
-    debug=true;
+  com.sun.security.auth.module.LdapLoginModule必需
+    userProvider =“ ldap：// ldap-svr / ou = people，dc = example，dc = com”
+    userFilter =“（&（uid ={USERNAME}） （objectClass = inetOrgPerson））“
+    authzIdentity =”{EMPLOYEENUMBER}“
+    debug = true;
 };
 ```
 
-#### Authentication First
+#### 认证优先
 
-In `authentication-first` mode, authentication is attempted using the supplied username and password and then the LDAP directory is searched. If authentication is successful then a search is performed using the supplied username in conjunction with a specified search filter. To enable this mode, set the `authIdentity` and the `userFilter` options. Use `authentication-first` mode when accessing an LDAP directory that has been configured to disallow anonymous searches.
+在 `认证优先` 模式下，尝试使用提供的用户名和密码进行认证，然后搜索LDAP目录。 如果身份验证成功，则使用提供的用户名和指定的搜索过滤器进行搜索。 要启用此模式，请设置 `authIdentity` 和 `userFilter` 选项。 访问已配置为禁止匿名搜索的LDAP目录时，请使用 `认证优先`
 
-The example below requests that the LDAP server be located dynamically, that authentication be performed using the supplied username directly but without the protection of SSL and that users' entries be located by one of three naming attributes and their `objectClass` attribute.
+下面的示例要求动态定位LDAP服务器，直接使用提供的用户名执行身份验证，但不使用SSL保护，并通过三个命名属性之一及其 `objectClass` 属性来定位用户的条目。
 
 ```
 CAS {
-  com.sun.security.auth.module.LdapLoginModule REQUIRED
-    userProvider="ldap:///cn=users,dc=example,dc=com"
-    authIdentity="{USERNAME}"
-    userFilter="(&(|(samAccountName={USERNAME})(userPrincipalName={USERNAME})(cn={USERNAME}))(objectClass=user))"
-    useSSL=false
-    debug=true;
+  com.sun.security.auth.module.LdapLoginModule必需
+    userProvider =“ ldap：/// cn = users，dc = example，dc = com”
+    authIdentity =“{USERNAME}”
+    userFilter =“（&（| （samAccountName ={USERNAME}）（userPrincipalName ={USERNAME}）（cn ={USERNAME}））（objectClass = user））“
+    useSSL = false
+    debug = true;
 };
 ```
 
-#### Authentication Only
+#### 仅认证
 
-In `authentication-only` mode, authentication is attempted using the supplied username and password. The LDAP directory is not searched because the user's distinguished name is already known. To enable this mode, set the authIdentity option to a valid distinguished name and omit the userFilter option. Use authentication-only mode when the user's distinguished name is known in advance.
+在 `身份验证` 模式下，尝试使用提供的用户名和密码进行身份验证。 由于用户的专有名称是已知的，因此不会搜索LDAP目录。 要启用此模式，请将authIdentity选项设置为有效的专有名称，并省略userFilter选项。 事先知道用户的专有名称时，请使用仅身份验证模式。
 
-The example below identifies alternative LDAP servers, it specifies the distinguished name to use for authentication and a fixed identity to use for authorization. No directory search is performed.
+下面的示例标识了其他LDAP服务器，它指定了用于身份验证的专有名称和用于授权的固定身份。 不执行目录搜索。
 
 ```
 CAS {
-  com.sun.security.auth.module.LdapLoginModule REQUIRED
-    userProvider="ldap://ldap-svr1 ldap://ldap-svr2"
-    authIdentity="cn={USERNAME},ou=people,dc=example,dc=com"
-    authzIdentity="staff"
-    debug=true;
-  };
+  com.sun.security.auth.module.LdapLoginModule必需
+    userProvider =“ ldap：// ldap-svr1 ldap：// ldap-svr2”
+    authIdentity =“ cn ={USERNAME}，ou = people，dc = example， dc = com“
+    authzIdentity =” staff“
+    debug = true;
+};
 ```
 
-### Ldaptive
+### 适应性
 
-Ldaptive provides several [login modules for authentication and authorization](http://www.ldaptive.org/docs/guide/jaas.html) against an LDAP. Each module accepts properties that correspond to the setters on objects in the ldaptive code base. If you are looking to set a specific configuration option that is available as a setter, the chances are that it will be accepted on the module. Any unknown options will be passed to the provider as a generic property.
+Ldaptive提供了 [登录模块，用于针对LDAP的](http://www.ldaptive.org/docs/guide/jaas.html) 每个模块都接受与ldaptive代码库中对象上的setter对应的属性。 如果您希望设置一个特定的配置选项，可以将其作为设置器使用，则很有可能在模块上被接受。 任何未知的选项都将作为通用属性传递给提供程序。
 
-In order to take advantage of the login modules provided by Ldaptive, the following dependency must be present and added to the overlay:
+为了利用Ldaptive提供的登录模块，必须存在以下依赖项并将其添加到叠加层中：
 
 ```xml
 <dependency>
@@ -179,34 +179,34 @@ In order to take advantage of the login modules provided by Ldaptive, the follow
 </dependency>
 ```
 
-### Keystore
+### 密钥库
 
-This module prompts for a key store alias and populates the subject with the alias's principal and credentials. Stores an `X500Principal` for the subject distinguished name of the first certificate in the alias's credentials in the subject's principals, the alias's certificate path in the subject's public credentials, and a `X500PrivateCredential` whose certificate is the first certificate in the alias's certificate path and whose private key is the alias's private key in the subject's private credentials.
+此模块提示输入密钥存储别名，并使用别名的主体和凭据填充主题。 在主题的主体中的别名凭据中存储第一个证书的主题可分辨名称的 `X500Principal` ，在主题的公共凭据中存储别名的证书路径，并在别名的证书路径中存储 `X500PrivateCredential` 其证书是第一个证书），以及其私有密钥是主题的私有证书中别名的私有密钥。
 
 ```
 CAS {
-  com.sun.security.auth.module.KeyStoreLoginModule sufficient
-    keyStoreURL=...
-    keyStoreType=
-    keyStoreProvider=...
-    keyStoreAlias=...
-    keyStorePasswordURL=...
-    privateKeyPasswordURL=...
-    protected=...
-    debug=FALSE;
+  com.sun.security.auth.module.KeyStoreLoginModule足够
+    keyStoreURL = ...
+    keyStoreType =
+    keyStoreProvider = ...
+    keyStoreAlias = ...
+    keyStorePasswordURL = ...
+    privateKeyPasswordURL = ...
+    保护= ...
+    debug = FALSE;
 };
 ```
 
-For a list of all other options and more comprehensive documentation, please see [this guide](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/KeyStoreLoginModule.html) for more info.
+有关所有其他选项的列表和更全面的文档，请参阅 [本指南](http://docs.oracle.com/javase/8/docs/jre/api/security/jaas/spec/com/sun/security/auth/module/KeyStoreLoginModule.html) 以获取更多信息。
 
-## Deployments
+## 部署
 
-If your deployment strategy ultimately uses an [embedded container](Configuring-Servlet-Container.html#embedded), you can pass along the location of the JAAS configuration file in form of a system property as such:
+如果您的部署策略，最终采用了 [嵌入容器](Configuring-Servlet-Container.html#embedded)， ，你可以沿着一个系统属性为这样的形式JAAS配置文件的位置传递：
 
 ```bash
-java -Djava.security.auth.login.config=file:/etc/cas/config/jaas.config -jar ...
+java -Djava.security.auth.login.config =文件：/etc/cas/config/jaas.config -jar ...
 ```
 
-Alternatively, you may activate the login configuration type to be `JavaLoginConfig` in the CAS settings and simply specify the path to the jaas configuration file there in the settings directly.
+或者，您可以在CAS设置中将登录配置类型激活为 `JavaLoginConfig` ，并直接在设置中直接在其中
 
-For more information on configuration management, please [review this guide](../configuration/Configuration-Management.html).
+有关配置管理的更多信息，请 [本指南](../configuration/Configuration-Management.html)。
