@@ -1,30 +1,30 @@
 ---
-layout: default
-title: CAS - CosmosDb Service Registry
-category: Services
+layout: 违约
+title: CAS - 宇宙数据库服务注册处
+category: 服务业
 ---
 
-# CosmosDb Service Registry
+# 宇宙数据库服务注册处
 
-Stores registered service data in an [Azure CosmosDb](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction) instance.
+存储注册服务数据在 [蔚蓝宇宙数据库](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction) 实例。
 
-Support is enabled by adding the following module into the overlay:
+支持通过在覆盖中添加以下模块来实现：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-cosmosdb-service-registry</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 宇宙数据库 - 服务 - 注册</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#cosmosdb-service-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#cosmosdb-service-registry)。
 
-## Troubleshooting
+## 故障 排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
 
 ```xml
 ...
@@ -36,6 +36,6 @@ To enable additional logging, configure the log4j configuration file to add the 
 ```
 
 
-## Auto Initialization
+## 自动初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+在启动和配置允许的情况下，注册表能够自动从 CAS 可用的默认 JSON 服务定义中初始化。 有关详细信息，请参阅本指南</a> 。</p>
