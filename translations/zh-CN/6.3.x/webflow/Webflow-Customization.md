@@ -1,79 +1,79 @@
 ---
-layout: default
-title: CAS - Webflow Customization
-category: Webflow Management
+layout: 默认
+title: CAS-Webflow定制
+category: Webflow管理
 ---
 
-# Webflow Customization
+# Webflow定制
 
-CAS uses [Spring Webflow](http://projects.spring.io/spring-webflow) to do *script* processing of login and logout protocols. Spring Web Flow builds on Spring MVC and allows implementing the "flows" of a web application. A flow encapsulates a sequence of steps that guide a user through the execution of some business task. It spans multiple HTTP requests, has state, deals with transactional data, is reusable, and may be dynamic and long-running in nature. Each flow may contain among many other settings the following major elements:
+CAS使用 [Spring Webflow](http://projects.spring.io/spring-webflow) 来执行 *脚本* 的登录和注销协议处理。 Spring Web Flow建立在Spring MVC的基础上，并允许实现Web应用程序的“流”。 流程封装了一系列 ，这些步骤可指导用户完成某些业务任务。 它跨越多个HTTP请求，具有状态，处理 事务数据，可重用，并且本质上可能是动态的并且可以长时间运行。 每个流可能包含许多其他设置以及以下主要元素：
 
-- Actions: components that describe an executable task and return back a result
-- Transitions: Routing the flow from one state to another; Transitions may be global to the entire flow.
-- Views: Components that describe the presentation layer displayed back to the client
-- Decisions: Components that conditionally route to other areas of flow and can make logical decisions
+- 动作：描述可执行任务并返回结果的组件
+- 过渡：将流量从一种状态路由到另一种状态；过渡可能是整个流程的全局过渡。
+- 视图：描述返回到客户端的表示层的组件
+- 决策：有条件地路由到其他流程区域并可以做出合理决策的组件
 
-Spring Web Flow presents CAS with a pluggable architecture where custom actions, views and decisions may be injected into the flow to account for additional use cases and processes. Note that <strong>to customize the webflow, one must possess a reasonable level of understanding of the webflow's internals and injection policies</strong>. The intention of this document is NOT to describe Spring Web Flow, but merely to demonstrate how the framework is used by CAS to carry out various aspects of the protocol and business logic execution.
+Spring Web Flow为CAS提供了一种可插拔的体系结构，其中可以将自定义操作，视图和决策注入到 流中，以说明其他用例和流程。 请注意， <strong>，则必须对Webflow的内部和注入策略</strong>具有一定程度的理解。 本文档的目的不是描述Spring Web Flow，而是仅演示CAS如何使用该框架执行协议和业务逻辑执行的各个方面。
 
-## Webflow Session
+## Webflow会话
 
-See [this guide](Webflow-Customization-Sessions.html) for more info.
+有关更多信息，请参见 [本指南](Webflow-Customization-Sessions.html)
 
-## Webflow Auto Configuration
+## Webflow自动配置
 
-Most CAS modules, when declared as a dependency, attempt to autoconfigure the CAS webflow to suit their needs. This practically means that the CAS adopter would no longer have to manually massage the CAS webflow configuration, and the module automatically takes care of all required changes. While this is the default behavior, it is possible that you may want to manually handle all such changes. For doing so, you will need to disable the CAS auto-configuration of the webflow.
+当大多数CAS模块声明为依赖项时，它们会尝试自动配置CAS Webflow以适应其需求。 实际上，这意味着CAS采用者将不再需要手动调整CAS webflow配置，即 ，模块将自动处理所有必需的更改。 虽然这是默认的行为，有可能是 ，你可能需要手动处理所有这些变化。 为此，您将需要禁用Webflow
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#spring-webflow).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#spring-webflow)。
 
-<div class="alert alert-warning"><strong>Achtung, liebe Leser!</strong><p>Only attempt to 
-modify the Spring webflow configuration files by hand when/if absolutely necessary and the
-change is rather minimal or decorative. Extensive modifications of the webflow, if not done carefully
-may severely complicate your deployment and future upgrades. If reasonable, consider contributing or
-suggesting the change to the project and have it be maintained directly.</p></div>
+<div class="alert alert-warning"><strong>Achtung，liebe Leser！</strong><p>仅在绝对必要的情况下/如果 
 
-CAS by default is configured to hot reload changes to the Spring webflow configuration.
+很小的修改或修饰。 如果不仔细地对Webflow进行大量修改，则
+可能会使您的部署和将来的升级复杂化。 如果合理，请考虑为
+建议，并直接对其进行维护。</p></div>
 
-## Extending Webflow
+默认情况下，CAS配置为将更改热加载到Spring Webflow配置。
 
-If you want to learn how to modify and extend the CAS authentication flows, [please see this guide](Webflow-Customization-Extensions.html).
+## 扩展Webflow
 
-## Administrative Endpoints
+如果您想了解如何修改和扩展CAS认证的流程， [请参阅本指南](Webflow-Customization-Extensions.html)。
 
-The following endpoints are provided by CAS:
+## 行政端点
 
-| Endpoint        | Description                                                                                                                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `springWebflow` | Provides a JSON representation of the CAS authentication webflows. The endpoint can accept a `flowId` parameter as part of a `GET` operation to only present the flow body of the requested flow id. |
+CAS提供了以下端点：
 
-## Webflow Decorations
+| 终点              | 描述                                                                           |
+| --------------- | ---------------------------------------------------------------------------- |
+| `springWebflow` | 提供CAS身份验证Webflow的JSON表示形式。 端点可以接受 `flowId` 参数作为 `GET` 操作的一部分，以仅显示请求的流id的流主体。 |
 
-Learn how to fetch and display data dynamically from external data sources and endpoints and pass those along to the webflow by [reviewing this guide](Webflow-Customization-Extensions.html).
+## Webflow装饰品
 
-## Required Service for Authentication
+学习如何动态地从外部数据源和端点获取和显示数据，并通过 [阅读本指南](Webflow-Customization-Extensions.html)将它们传递到Webflow。
 
-By default, CAS will present a generic success page if the initial authentication request does not identify the target application. In some cases, the ability to login to CAS without logging in to a particular service may be considered a misfeature because in practice, too few users and institutions are prepared to understand, brand, and support what is at best a fringe use case of logging in to CAS for the sake of establishing an SSO session without logging in to any CAS-reliant service.
+## 身份验证所需的服务
 
-As such, CAS optionally allows adopters to not bother to prompt for credentials when no target application is presented and instead presents a message when users visit CAS directly without specifying a service.
+默认情况下，如果初始身份验证请求未标识目标应用程序为 在某些情况下，在没有登录 到特定服务的情况下登录CAS的功能可能被认为是功能不足，因为在实践中，很少有用户和机构 准备了解，品牌化和支持充其量只是附带的用例在到CAS日志记录的 份在任何CAS-依赖的服务没有建立一个记录SSO会话的。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#global-sso-behavior).
+这样，CAS可选地允许采用者在没有显示目标应用程序 下不必费心提示凭据，而是在用户直接访问CAS而未指定服务时显示消息。
 
-## Acceptable Usage Policy
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#global-sso-behavior)。
 
-CAS presents the ability to allow the user to accept the usage policy before moving on to the application. See [this guide](Webflow-Customization-AUP.html) for more info.
+## 可接受的使用政策
 
-## Customizing Errors
+CAS提供了允许用户在继续应用程序之前接受使用策略的能力。 有关更多信息，请参见 [本指南](Webflow-Customization-AUP.html)
 
-See [this guide](Webflow-Customization-Exceptions.html) for more info.
+## 自定义错误
 
-## Custom Settings
+有关更多信息，请参见 [本指南](Webflow-Customization-Exceptions.html)
 
-All webflow components and CAS views have access to the entire bundle of CAS settings defined from a variety of configuration sources. This allows one to extend and modify any CAS view or webflow component using the variable `casProperties` to gain access to a specific setting. Remember that this syntax only allowed access to settings that are *owned* by CAS, noted by its very own prefix.
+## 自定义设置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#custom-settings).
+所有Webflow组件和CAS视图都可以访问从各种配置源定义的整个CAS设置包。 `casProperties` 扩展和修改任何CAS视图或webflow组件，以访问特定设置。 请记住，此语法仅允许访问CAS拥有</em> *设置，并以其自己的前缀表示。</p>
 
-## Troubleshooting
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#custom-settings)。
 
-To enable additional logging, modify the logging configuration file to add the following:
+## 故障排除
+
+要启用其他日志记录，请修改日志记录配置文件以添加以下内容：
 
 ```xml
 <Logger name="org.springframework.webflow" level="debug" additivity="false">
