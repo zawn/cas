@@ -1,159 +1,159 @@
 ---
-layout: default
-title: CAS - Configuring Authentication Components
-category: Authentication
+layout: 默认
+title: CAS-配置身份验证组件
+category: 验证
 ---
 
-# Configuration
+# 配置
 
-The CAS authentication process is primarily controlled by an authentication manager, which orchestrates a collection of authentication handlers.
+CAS身份验证过程主要由身份验证管理器控制，该管理器负责协调身份验证处理程序的集合。
 
-## Authentication Manager
+## 认证管理器
 
-CAS ships with a single yet flexible authentication manager which performs authentication according to the following contract.
+CAS随附一个单一但灵活的身份验证管理器，该管理器根据以下合同执行身份验证。
 
-For any given credential the manager does the following:
+对于任何给定的凭证，管理器都将执行以下操作：
 
-1. Iterate over all configured authentication handlers.
-2. Attempt to authenticate a credential if a handler supports it.
-3. On success attempt to resolve a principal.
-  1. Check whether a resolver is configured for the handler that authenticated the credential.
-  2. If a suitable resolver is found, attempt to resolve the principal.
-  3. If a suitable resolver is not found, use the principal resolved by the authentication handler.
-4. Check whether the security policy (e.g. any, all) is satisfied.
-  1. If security policy is met return immediately.
-  2. Continue if security policy is not met.
-5. After all credentials have been attempted check security policy again and throw `AuthenticationException` if not satisfied.
+1. 遍历所有已配置的身份验证处理程序。
+2. 如果处理程序支持该证书，则尝试对其进行身份验证。
+3. 成功后，尝试解决一个主体。
+  1. 检查是否为对凭据进行身份验证的处理程序配置了解析程序。
+  2. 如果找到合适的解析器，请尝试解析主体。
+  3. 如果找不到合适的解析程序，请使用身份验证处理程序解析的主体。
+4. 检查是否满足安全策略（例如，任何安全策略）。
+  1. 如果符合安全策略，请立即返回。
+  2. 如果不符合安全策略，请继续。
+5. 在尝试了所有凭据之后，再次检查安全策略，如果不满意 `AuthenticationException`
 
-There is an implicit security policy that requires at least one handler to successfully authenticate a credential.
+有一个隐式安全策略，要求至少一个处理程序成功认证凭据。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-policy).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-policy)。
 
-## Authentication Handlers
+## 身份验证处理程序
 
-There are a variety of authentication handlers and methods supported by CAS. Use the menu to navigate around the site and choose.
+CAS支持多种身份验证处理程序和方法。 使用菜单浏览站点并选择。
 
-<div class="alert alert-warning"><strong>Default Credentials</strong><p>To test the default authentication scheme in CAS,
-use <strong>casuser</strong> and <strong>Mellon</strong> as the username and password respectively. These are automatically
-configured via the static authentication handler, and <strong>MUST</strong> be removed from the configuration
-prior to production rollouts.</p></div>
+<div class="alert alert-warning"><strong>默认凭证</strong><p>为了测试在CAS缺省的认证方案，
+使用 <strong>casuser</strong> 和 <strong>梅隆</strong> 分别作为用户名和密码。 这些都是自动
+通过静态认证处理程序配置，以及 <strong>MUST</strong> 从配置中移除
+在生产之前的推出。</p></div>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#accept-users-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#accept-users-authentication)。
 
-### Administrative Endpoints
+### 行政端点
 
-The following endpoints are provided by CAS:
+CAS提供了以下端点：
 
-| Endpoint                 | Description                                                                                                                                                                                                            |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `authenticationHandlers` | A `GET` request presents the collection of registered authentication handlers. An individual authentication handler can be queried via `GET` by its name using a selector path (i.e. `authenticationHandlers/{name}`). |
+| 终点                       | 描述                                                                                           |
+| ------------------------ | -------------------------------------------------------------------------------------------- |
+| `authenticationHandlers` | `GET` 请求提出了已注册身份验证处理程序的集合。 可以使用选择器路径（即 `authenticationHandlers /{name}`） `GET` 查询单个身份验证处理程序。 |
 
-### Resolution Strategy
+### 解决策略
 
-Authentication handlers are typically defined globally and then executed and tried by the authentication engine. The collection of handlers can be narrowed down using a selection criteria that defines an eligibility criteria for the handler based on the current authentication transaction, provided credentials, service definition policy and many other controls.
+身份验证处理程序通常是全局定义的，然后由身份验证引擎执行和尝试。 可以使用选择标准来缩小处理程序的集合的范围，该选择标准基于当前的身份验证事务，提供的凭据，服务定义策略 和许多其他控件
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-engine).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-engine)。
 
-#### Per Registered Service
+#### 每次注册服务
 
-Each registered application in the registry may be assigned a set of identifiers/names for the required authentication handlers available and configured in CAS. These names can be used to enforce a service definition to only use the authentication strategy carrying that name when an authentication request is submitted to CAS.
+可以为注册表中的每个已注册应用程序分配一组标识符/名称，以供在CAS中可用和配置 这些名称可用于强制执行服务定义，以在将身份验证请求提交给CAS时
 
-Please [review this guide](../services/Configuring-Service-AuthN-Policy.html) to learn more.
+请 [本指南](../services/Configuring-Service-AuthN-Policy.html) 以了解更多信息。
 
-#### Groovy Script
+#### Groovy脚本
 
-The global collection of authentication handlers can also pass through a Groovy script as a filter to narrow down the list of candidates for the current transaction. The outline of the script may be designed as:
+身份验证处理程序的全局集合也可以通过Groovy脚本作为过滤器 传递，以缩小当前事务的候选者列表。 脚本的大纲可以设计为：
 
 ```groovy
-def run(Object[] args) {
-    def handlers = args[0]
-    def transaction = args[1]
+def run（Object [] args）{
+    def处理器= args[0]
+    def事务= args[1]
     def servicesManager = args[2]
     def logger = args[3]
 
-    return handlers
+    返回处理器
 }
 
-def supports(Object[] args) {
-    def handlers = args[0]
-    def transaction = args[1]
+def support（Object [] args）{
+    def处理程序= args[0]
+    def事务= args[1]
     def servicesManager = args[2]
     def logger = args[3]
     true
 }
 ```
 
-The following parameters are passed to the script:
+以下参数传递到脚本：
 
-| Parameter         | Description                                                                                             |
-| ----------------- | ------------------------------------------------------------------------------------------------------- |
-| `handlers`        | Collection of available and candidate `AuthenticationHandler`s.                                         |
-| `transaction`     | The authentication transaction currently in progress.                                                   |
-| `servicesManager` | The `ServicesManager` object responsible for locating service definitions attached to this transaction. |
-| `logger`          | The object responsible for issuing log messages such as `logger.info(...)`.                             |
+| 范围                | 描述                                   |
+| ----------------- | ------------------------------------ |
+| `处理程序`            | 可用和候选 `AuthenticationHandler`s的集合。   |
+| `交易`              | 身份验证事务当前正在进行中。                       |
+| `servicesManager` | `ServicesManager` 对象负责查找附加到此事务的服务定义。 |
+| `记录器`             | 负责发布日志消息的对象，例如 `logger.info（...）`。   |
 
-The outcome of the script should be the collection of selected handlers with the type `Set<AuthenticationHandler>`.
+脚本的结果应该是选择的处理程序的集合，类型为 `Set<AuthenticationHandler>`。
 
-### Authentication Sequence
+### 认证顺序
 
-At runtime, CAS maintains a collection of authentication handlers/strategies that typically execute one after another. Each CAS module that presents a form of authentication strategy will simply insert itself into this collection at bootstrap time. At the end of this process, the result of all authentication transactions is collected and optionally processed by an authentication policy where success/failure of certain strategies/sources may be taken into account to fully satisfy the authentication requirements. The collection of authentication handlers tries to preserve order in a rather more deterministic way. The idea is that adopters can assign an `order` value to an authentication handler thereby explicitly positioning it in the collection and controlling its execution sequence.
+在运行时，CAS维护着一组身份验证处理程序/策略，通常一个接一个地执行。 每个提供一种身份验证策略形式的CAS模块都将在 引导时间将其自身简单地插入到该集合中。 在此过程结束时，将收集所有身份验证事务的结果，并可选地由 身份验证策略处理，其中可以考虑某些策略/源的成功/失败，以完全满足 身份验证要求。 身份验证处理程序的集合尝试以一种更具确定性的方式来保留顺序。 想法是采用者可以将 `阶` 值分配给身份验证处理程序，从而将其显式放置在 集合中并控制其执行顺序。
 
-### Naming Strategy
+### 命名策略
 
-Each authentication handler in CAS can be named via CAS settings and if left undefined, the short name of the handler component itself is used (i.e. `LdapAuthenticationHandler`). The name itself can be any arbitrary string and typically is used to identify and refer to the handler components in areas such as [required authentication for a service](../services/Configuring-Service-AuthN-Policy.html), etc. In the event that multiple authentication handlers *of the same type* are defined, it is **RECOMMENDED** that each be given a unique name so as to avoid conflicts. Authentication failures are typically collected in CAS by the name of each authentication handler. Leaving the name undefined will likely result in subsequent components in the authentication chain overriding previous results.
+可以通过CAS设置来命名CAS中的每个身份验证处理程序，如果未定义，则使用处理程序组件本身 `LdapAuthenticationHandler`）。 名称本身可以是任意字符串，通常使用 来标识和引用处理程序组件，例如 [](../services/Configuring-Service-AuthN-Policy.html)必要身份验证等。 在多种认证的处理程序事件 *相同类型的* 被定义，它是 **推荐** ，每个被赋予一个唯一的名称，以避免冲突。 身份验证失败通常是通过每个身份验证处理程序的名称在CAS中收集的。 保留未定义的名称可能会导致身份验证链中的后续组件覆盖先前的结果。
 
-## Authentication Policy
+## 认证政策
 
-CAS presents a number of strategies for handling authentication security policies. Policies in general control the following:
+CAS提供了许多用于处理身份验证安全策略的策略。 通常，策略控制以下内容：
 
-1. Should the authentication chain be stopped after a certain kind of authentication failure?
-2. Given multiple authentication handlers in a chain, what constitutes a successful authentication event?
+1. 某种身份验证失败后是否应该停止身份验证链？
+2. 给定链中有多个身份验证处理程序，什么构成成功的身份验证事件？
 
-Policies are typically activated after:
+通常在以下情况下激活策略：
 
-1. An authentication failure has occurred.
-2. The authentication chain has finished execution.
+1. 身份验证失败。
+2. 身份验证链已完成执行。
 
-Typical use cases of authentication policies may include:
+身份验证策略的典型用例可能包括：
 
-1. Enforce a specific authentication's successful execution, for the entire authentication event to be considered successful.
-2. Ensure a specific class of failure is not evident in the authentication chain's execution log.
-3. Ensure that all authentication schemes in the chain are executed successfully, for the entire authentication event to be considered successful.
+1. 强制执行特定的身份验证，以使整个身份验证事件都被视为成功。
+2. 确保特定类型的故障在身份验证链的执行日志中不明显。
+3. 确保将链中的所有身份验证方案都成功执行，以使整个身份验证事件都被视为成功。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-policy).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-policy)。
 
-### Administrative Endpoints
+### 行政端点
 
-The following endpoints are provided by CAS:
+CAS提供了以下端点：
 
-| Endpoint                 | Description                                                                                                                                                                                                           |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `authenticationPolicies` | A `GET` request presents the collection of registered authentication policies. An individual authentication policy can be queried via `GET` by its name using a selector path (i.e. `authenticationPolicies/{name}`). |
+| 终点       | 描述                                                                                       |
+| -------- | ---------------------------------------------------------------------------------------- |
+| `身份验证政策` | `GET` 请求提出了已注册身份验证策略的集合。 可以使用选择器路径（即 `authenticationPolicies /{name}`） `GET` 查询单个身份验证策略。 |
 
-## Principal Resolution
+## 主要决议
 
-Please [see this guide](Configuring-Principal-Resolution.html) more full details on principal resolution.
+请 [请参阅本指南](Configuring-Principal-Resolution.html) 有关主体分辨率的更多详细信息。
 
-### Principal Transformation
+### 主体转化
 
-Authentication handlers that generally deal with username-password credentials can be configured to transform the user id prior to executing the authentication sequence. Each authentication strategy in CAS provides settings to properly transform the principal. Refer to the relevant settings for the authentication strategy at hand to learn more.
+可以配置通常处理用户名密码凭证 身份验证处理程序，以在执行身份验证序列之前转换用户ID。 CAS中的每种身份验证策略都提供了正确转换主体的设置。 有关手头认证策略，请参阅相关设置以了解更多信息。
 
-## Long Term Authentication
+## 长期认证
 
-CAS has support for long term Ticket Granting Tickets, a feature that is also referred to as _"Remember Me"_ to extend the length of the SSO session beyond the typical configuration. Please [see this guide](Configuring-LongTerm-Authentication.html) for more details.
+CAS支持长期票证授予票证，此功能也称为 _“记住我”_ 以将SSO会话的长度扩展到典型配置之外。 请 [参阅本指南](Configuring-LongTerm-Authentication.html) 了解更多详情。
 
-## Proxy Authentication
+## 代理验证
 
-Please [see this guide](Configuring-Proxy-Authentication.html) for more details.
+请 [参阅本指南](Configuring-Proxy-Authentication.html) 了解更多详情。
 
-## Multifactor Authentication (MFA)
+## 多因素身份验证（MFA）
 
-Please [see this guide](../mfa/Configuring-Multifactor-Authentication.html) for more details.
+请 [参阅本指南](../mfa/Configuring-Multifactor-Authentication.html) 了解更多详情。
 
-## Login Throttling
+## 登录限制
 
-CAS provides a facility for limiting failed login attempts to support password guessing and related abuse scenarios. Please [see this guide](Configuring-Authentication-Throttling.html) for additional details on login throttling.
+CAS提供了一种限制登录失败尝试的功能，以支持密码猜测和相关的滥用情况。 有关登录限制的更多详细信息，请 [请参阅本指南](Configuring-Authentication-Throttling.html)
 
-## SSO Session Cookie
+## SSO会话Cookie
 
-A ticket-granting cookie is an HTTP cookie set by CAS upon the establishment of a single sign-on session. This cookie maintains login state for the client, and while it is valid, the client can present it to CAS in lieu of primary credentials. Please [see this guide](Configuring-SSO.html) for additional details.
+授予票证的cookie是CAS在建立单点登录会话时设置的HTTP cookie。 该cookie维护客户端的登录状态，并且在有效期间，客户端可以将其提交给CAS代替主要凭证。 请 [参阅本指南](Configuring-SSO.html) 了解更多详细信息。
