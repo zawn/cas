@@ -1,28 +1,28 @@
 ---
-layout: default
-title: CAS - OpenID Protocol
-category: Protocols
+layout: 默认
+title: CAS-OpenID协议
+category: 通讯协定
 ---
 
-# OpenID Protocol
+# OpenID协议
 
-OpenID is an open, decentralized, free framework for user-centric digital identity. Users represent themselves using URIs. For more information see the [http://www.openid.net](http://www.openid.net).
+OpenID是一个开放，分散，免费的框架，用于以用户为中心的数字身份。 用户使用URI自己 有关更多信息，请参见 [http://www.openid.net](http://www.openid.net)。
 
-<div class="alert alert-warning"><strong>Usage</strong>
-<p><strong>This feature is deprecated and is scheduled to be removed in the future.</strong> If you can, consider using
-a more mainstream and recent authentication protocol.</p>
+<div class="alert alert-warning"><strong>用法</strong>
+<p><strong>不推荐使用此功能，并计划在将来将其删除。</strong> 如果可以，请考虑使用
+作为主流和最新的身份验证协议。</p>
 </div>
 
-CAS supports both the "dumb" and "smart" modes of the OpenID protocol. Dumb mode acts in a similar fashion to the existing CAS protocol. The smart mode differs in that it establishes an association between the client and the openId provider (OP) at the beginning. Thanks to that association and the key exchange done during association, information exchanged between the client and the provider are signed and verified using this key. There is no need for the final request (which is equivalent in CAS protocol to the ticket validation).
+CAS支持OpenID协议的“哑”和“智能”模式。 哑模式以类似于现有CAS协议的 智能模式的不同之处在于，它在客户端和 开头的openId提供程序（OP）之间建立了关联。 由于该关联以及关联期间完成的密钥交换，因此使用此密钥对客户端和提供者之间交换的 最终请求不需要 （在CAS协议中等同于票证验证）。
 
-OpenID identifiers are URIs. The default mechanism in CAS support is an uri ending with the actual user login (ie. `http://my.cas.server/openid/myusername` where the actual user login id is `myusername`). This is not recommended and you should think of a more elaborated way of providing URIs to your users.
+OpenID标识符是URI。 CAS支持中的默认机制是一个以实际用户登录名 结尾的uri（即 `http：//my.cas.server/openid/myusername` ，其中实际用户登录ID为 `myusername`）。 不建议这样做，您应该考虑一种为用户提供URI的更精细的方法。
 
-<div class="alert alert-info"><strong>Pay Attention!</strong><p>OpenID protocol is <strong>NOT</strong> the same thing
-as the OpenId Connect protocol whose details are <a href="OIDC-Protocol.html">documented here</a>.</p></div>
+<div class="alert alert-info"><strong>请注意！</strong><p>OpenID协议是 <strong>NOT</strong> 同样的事情
+作为ID连接协议，其细节是 <a href="OIDC-Protocol.html">记录在这里</a>。</p></div>
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -32,26 +32,26 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties for this feature, please [review this guide](../configuration/Configuration-Properties.html#openid-authentication).
+要查看此功能的CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#openid-authentication)。
 
-## Register Clients
+## 注册客户
 
-Register clients in the CAS service registry:
+在CAS服务注册表中注册客户端：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://openid.example.org/myapp",
-  "name" : "openid",
-  "description" : "OpenID Sample Application",
-  "id" : 10
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://openid.example.org/myapp”，
+  “名称”： “的OpenID”，
+  “描述“：” OpenID样本应用程序“，
+  ” id“：10
 }
 ```
 
-## Sample Client Applications
+## 样例客户端应用程序
 
-- [OpenID Client Webapp](https://github.com/cas-projects/openid-sample-java-webapp)
+- [OpenID客户端Webapp](https://github.com/cas-projects/openid-sample-java-webapp)
 
-# OpenID Provider Delegation
+# OpenID提供者委托
 
-Using the OpenID protocol, the CAS server can also be configured to [delegate the authentication](../integration/Delegate-Authentication.html) to an OpenID provider.
+使用OpenID协议，也可以将CAS服务器配置为 [将身份验证](../integration/Delegate-Authentication.html) 委派给OpenID提供者。
