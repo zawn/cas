@@ -1,17 +1,17 @@
 ---
-layout: default
-title: CAS - Shiro Authentication
-category: Authentication
+layout: 默认
+title: CAS-Shiro认证
+category: 验证
 ---
 
 
-# Shiro Authentication
-CAS support handling the authentication event via [Apache Shiro](http://shiro.apache.org/).
+# Shiro认证
+[Apache Shiro](http://shiro.apache.org/)处理身份验证事件。
 
 
-## Components
+## 成分
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -21,13 +21,13 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-## Shiro Configuration
+## Shiro配置
 
-Apache Shiro supports retrieving and checking roles and permissions for an authenticated subject. CAS exposes a modest configuration to enforce roles and permissions as part of the authentication, so that in their absence, the authentication may fail. While by default these settings are optional, you may configure roles and/or permissions for the given authentication handler to check their presence and report back.
+Apache Shiro支持检索和检查经过身份验证的 主题的角色和权限。 CAS公开了一个适度的配置，以强制角色和权限作为 部分，因此，如果角色和权限不存在，则身份验证可能会失败。 尽管默认情况下这些设置是可选的，但您可以 ，以检查其存在并进行报告。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#shiro-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#shiro-authentication)。
 
-Sample `shiro.ini` that needs be placed on the classpath based on the example above:
+根据上面的示例，样本 `shiro.ini` 需要放置在类路径上：
 
 ```ini
 [main]
@@ -35,15 +35,15 @@ cacheManager = org.apache.shiro.cache.MemoryConstrainedCacheManager
 securityManager.cacheManager = $cacheManager
 
 [users]
-casuser = Mellon, admin
+casuser = Mellon，admin
 
 [roles]
-admin = system,admin,staff,superuser:*
+admin = system，admin，staff，superuser：*
 ```
 
-## Logging
+## 记录中
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他日志记录，请配置log4j配置文件以添加以下级别：
 
 ```xml
 ...
