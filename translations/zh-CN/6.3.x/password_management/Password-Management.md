@@ -1,18 +1,18 @@
 ---
-layout: default
-title: CAS - Password Management
-category: Password Management
+layout: 默认
+title: CAS-密码管理
+category: 密码管理
 ---
 
-# Password Management
+# 密码管理
 
-If authentication fails due to a rejected password policy, CAS is able to intercept that request and allow the user to update the account password in place. The password management features of CAS are rather modest, and alternatively should the functionality provide inadequate for your policy, you may always redirect CAS to use a separate and standalone application that is fully in charge of managing the account password and associated flows.
+如果由于拒绝密码策略而导致身份验证失败，则CAS能够截获 ，并允许用户就地更新帐户密码。 CAS的密码管理功能相当适度，或者，如果该功能不足以提供您的策略，则您可以始终将CAS重定向为使用单独的独立应用程序，该应用程序完全负责管理帐户密码和关联的流程。
 
-CAS may also allow users to reset their passwords voluntarily. Those who have forgotten their account password may receive a secure link with a time-based expiration policy at their registered email address and/or phone. The link will allow the user to provide answers to his/her pre-defined security questions, which if successfully done, will allow the user to next reset their password and login again. You may also specify a pattern for accepted passwords.
+CAS还可以允许用户自愿重设密码。 那些忘记了帐户密码 可能会在其注册的电子邮件地址和/或电话上收到带有基于时间的过期策略的安全链接。 链接 将允许用户提供对其预先定义的安全性问题的答案，如果成功完成，则链接 将允许用户接下来重置其密码并再次登录。 您也可以为接受的密码指定一种模式。
 
-By default, after a user has successfully changed their password they will be redirected to the login screen to enter their new password and log in. CAS can also be configured to automatically log the user in after a successful change. This behavior can be altered via CAS settings.
+默认情况下，用户成功更改密码后，他们将被重定向到登录屏幕 以输入其新密码并登录。 也可以将CAS配置为成功更改 可以通过CAS设置更改此行为。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -22,85 +22,85 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-<div class="alert alert-info"><strong>YAGNI</strong><p>You do not need to explicitly include this module
-in your configuration and overlays. This is just to teach you that it exists.</p></div>
+<div class="alert alert-info"><strong>亚尼</strong><p>您无需在配置和覆盖中明确包含此模块
+ 这只是要告诉您它的存在。</p></div>
 
-## Configuration
+## 配置
 
-To learn more about available notification options, please [see this guide](../notifications/SMS-Messaging-Configuration.html) or [this guide](../notifications/Sending-Email-Configuration.html).
+要了解有关可用通知选项的更多信息，请 [请参阅本指南](../notifications/SMS-Messaging-Configuration.html) 或 [本指南](../notifications/Sending-Email-Configuration.html)。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#password-management).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#password-management)。
 
-## reCAPTCHA Integration
+## reCAPTCHA整合
 
-Password reset attempts can be protected and integrated with [Google reCAPTCHA](https://developers.google.com/recaptcha). This requires the presence of reCAPTCHA settings for the basic integration and instructing the password management flow to turn on and verify requests via reCAPTCHA. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#google-recaptcha-integration) and [this guide](../configuration/Configuration-Properties.html#password-management).
+密码重置尝试可以受到保护，并与 [Google reCAPTCHA](https://developers.google.com/recaptcha)集成在一起。 这要求存在用于基本集成的reCAPTCHA设置，并指示密码管理流程打开并通过reCAPTCHA验证请求。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#google-recaptcha-integration) 和 [本指南](../configuration/Configuration-Properties.html#password-management)。
 
-## Password History
+## 密码记录
 
-CAS allows for strategies to track and storage recycled password. Recycled passwords are kept in storage for the user account and are examined upon password updates for validity.
+CAS允许采取策略来跟踪和存储回收的密码。 回收的密码将保留在该用户帐户的存储器中，并且在密码更新时检查
 
-Once password history functionality is enabled, passwords can be tracked in history via a Groovy or an in-memory backend. Specific storage options may also provide their own support for password history.
+一旦启用了密码历史记录功能，就可以通过Groovy或内存后端在历史记录中跟踪密码。 特定的 存储选项也可能提供其自己的密码历史记录支持。
 
 ### Groovy
 
-Password history tracking, once enabled, can be handed off to an external Groovy script as such:
+启用了密码历史记录跟踪后，可以将其移交给外部Groovy脚本，如下所示：
 
 ```groovy
-def exists(Object[] args) {
+def exist（Object [] args）{
     def request = args[0]
     def logger = args[1]
     return false
 }
 
-def store(Object[] args) {
+def store（Object [] args）{
     def request = args[0]
     def logger = args[1]
     return true
 }
 
-def fetchAll(Object[] args) {
+def fetchAll（Object [] args）{
     def logger = args[0]
     return []
 }
 
-def fetch(Object[] args) {
+def fetch（Object [] args）{
     def username = args[0]
     def logger = args[1]
-    return []
+    return [ ]
 }   
 
-def remove(Object[] args) { 
-    def username = args[0]
+def remove（Object [] args）{ 
+    def用户名= args[0]
     def logger = args[1]
 }
 
-def removeAll(Object[] args) { 
+def removeAll（Object [] args）{ 
     def logger = args[0]
 }
 ```
 
-The `request` parameter encapsulates a `PasswordChangeRequest` object, carrying `username` and `password` fields.
+`request` 参数封装了一个 `PasswordChangeRequest` 对象， `用户名` 和 `password` 字段。
 
-## JSON Storage
+## JSON存储
 
-Accounts and password may be stored inside a static modest JSON resource. This option is most useful during development and for demo purposes. To learn more, please [see this guide](Password-Management-JSON.html).
+帐户和密码可以存储在静态适度的JSON资源中。 此选项在开发过程中最有用，对于演示目的， 要了解更多信息，请 [参见本指南](Password-Management-JSON.html)。
 
-## Groovy Storage
+## Groovy存储
 
-Accounts and password may be handled and calculated via a Groovy script. To learn more, please [see this guide](Password-Management-Groovy.html).
+帐户和密码可以通过Groovy脚本进行处理和计算。 要了解更多信息，请 [请参阅本指南](Password-Management-Groovy.html)。
 
-## LDAP Storage
+## LDAP储存
 
-The account password and security questions may be stored inside an LDAP server. To learn more, please [see this guide](Password-Management-LDAP.html).
+帐户密码和安全性问题可以存储在LDAP服务器中。 要了解更多信息，请 [请参阅本指南](Password-Management-LDAP.html)。
 
-## JDBC Storage
+## JDBC存储
 
-The account password and security questions may be stored inside a relational database. To learn more, please [see this guide](Password-Management-JDBC.html).
+帐户密码和安全性问题可以存储在关系数据库中。 要了解更多信息，请 [请参阅本指南](Password-Management-JDBC.html)。
 
-## REST Storage
+## REST存储
 
-The account password and security questions can also be managed using a REST API. To learn more please [see this guide](Password-Management-REST.html).
+帐户密码和安全性问题也可以使用REST API进行管理。 要了解更多 请 [参阅本指南](Password-Management-REST.html)。
 
-## Custom
+## 风俗
 
-To design your own password management storage options and strategy, please [see this guide](Password-Management-Custom.html).
+要设计自己的密码管理存储选项和策略，请 [请参阅本指南](Password-Management-Custom.html)。
