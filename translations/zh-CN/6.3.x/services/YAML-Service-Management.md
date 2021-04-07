@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - YAML Service Registry
-category: Services
+layout: 默认
+title: CAS-YAML服务注册表
+category: 服务
 ---
 
-# YAML Service Registry
+# YAML服务注册表
 
-This registry reads services definitions from YAML configuration files at the application context initialization time. YAML files are expected to be found inside a configured directory location and this registry will recursively look through the directory structure to find relevant files.
+该注册表在应用程序上下文初始化时从YAML配置文件中读取服务定义。 预期会在配置的目录位置内找到YAML文件，并且该注册表将递归地 查找相关文件。
 
-Support is enabled by adding the following module into the overlay:
+通过将以下模块添加到叠加层来启用支持：
 
 ```xml
 <dependency>
@@ -18,54 +18,56 @@ Support is enabled by adding the following module into the overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#yaml-service-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#yaml-service-registry)。
 
 
-A sample YAML file follows:
+以下是一个示例YAML文件：
 
 ```yml
---- !<org.apereo.cas.services.RegexRegisteredService>
-serviceId: "testId"
-name: "YAML"
-id: 1000
-description: "description"
-attributeReleasePolicy: !<org.apereo.cas.services.ReturnAllAttributeReleasePolicy> {}
-accessStrategy: !<org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy>
-  enabled: true
-  ssoEnabled: true
+---！<org.apereo.cas.services.RegexRegisteredService>
+serviceId：“ testId”
+名称：“ YAML”
+id：1000
+描述：“ description”
+attributeReleasePolicy ：！<org.apereo.cas.services.ReturnAllAttributeReleasePolicy> {}
+accessStrategy ：！<org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy>
+  启用：是
+  ssoEnabled：是
 ```
 
-<div class="alert alert-warning"><strong>YAML Validation</strong><p>
-The tags containing classname hints (<code>!&lt;classname&gt;</code>) cause problems with many YAML validators. If you need to validate your YAML, try removing those tags for validation. Remember that an empty map (<code>{}</code>) may be required after the tag if you are not including any attributes for a property.
+<div class="alert alert-warning"><strong>YAML验证</strong><p>
+包含类名提示（<code>！&lt;classname&gt;</code>）的标签会导致许多YAML验证程序出现问题。 如果您需要验证您的YAML，请尝试删除这些标签以进行验证。 请记住，如果您不包括属性的任何属性，则标记后可能需要一个空映射（<code>{}</code>
 </p></div>
 
-<div class="alert alert-warning"><strong>Clustering Services</strong><p>
-You MUST consider that if your CAS server deployment is clustered, each CAS node in the cluster must have
-access to the same set of configuration files as the other, or you may have to devise a strategy to keep
-changes synchronized from one node to the next.
+<div class="alert alert-warning"><strong>集群服务</strong><p>
+您必须考虑到，如果您的CAS服务器部署是集群的，则集群中的每个CAS节点必须
+访问权限，否则您可能必须制定一种策略，以使
+更改从一个节点同步到另一个节点。下一个。
 </p></div>
 
-The service registry is also able to auto detect changes to the specified directory. It will monitor changes to recognize file additions, removals and updates and will auto-refresh CAS so changes do happen instantly.
+服务注册表还能够自动检测对指定目录的更改。 它将监视更改以识别 文件的添加，删除和更新，并将自动刷新CAS，因此更改会立即发生。
 
-<div class="alert alert-info"><strong>Escaping Characters</strong><p>
-Please make sure all field values in the blob are correctly escaped, specially for the service id. If the service is defined as a regular expression, certain regex constructs such as "." and "\d" need to be doubly escaped.
+<div class="alert alert-info"><strong>转义字符</strong><p>
+请确保正确地转义了Blob中的所有字段值，尤其是对于服务ID。 如果将服务定义为正则表达式，则某些正则表达式结构（例如“。”）。和“ \ d”必须加倍转义。
 </p></div>
 
-The naming convention for new files is recommended to be the following:
+建议新文件的命名约定如下：
 
 ```bash
-YAML fileName = serviceName + "-" + serviceNumericId + ".yml"
+YAML fileName = serviceName +“-” + serviceNumericId +“ .yml”
 ```
 
-Remember that because files are created based on the `serviceName`, you will need to make sure [characters considered invalid for file names](https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words) are not used as part of the name. Furthermore, note that CAS **MUST** be given full read/write permissions on directory which contains service definition files.
+请记住，由于文件是基于 `serviceName`创建的，因此您需要确保不会将对</a>
 
-<div class="alert alert-warning"><strong>Duplicate Services</strong><p>
-As you add more files to the directory, you need to be absolutely sure that no two service definitions
-will have the same id. If this happens, loading one definition will stop loading the other. While service ids
-can be chosen arbitrarily, make sure all service numeric identifiers are unique. CAS will also output warnings
-if duplicate data is found.
+字符用作名称的一部分。 此外，请注意，必须 **** 对包含服务定义文件的目录的完全读取/写入权限。</p>
+
+<div class="alert alert-warning"><strong>重复服务</strong><p>
+当您向目录中添加更多文件时，需要绝对确保没有两个服务定义
+具有相同的ID。 如果发生这种情况，加载一个定义将停止加载另一个定义。 尽管可以任意选择服务ID
+，但是请确保所有服务数字标识符都是唯一的。 如果发现重复数据，CAS也将输出警告
+
 </p></div>
 
-## Replication
+## 复写
 
-If CAS is deployed in a cluster, the service definition files must be kept in sync for all CAS nodes. Please [review this guide](Configuring-Service-Replication.html) to learn more about available options.
+如果将CAS部署在群集中，则必须对所有CAS节点保持服务定义文件同步。 请 [本指南](Configuring-Service-Replication.html) 以了解有关可用选项的更多信息。
