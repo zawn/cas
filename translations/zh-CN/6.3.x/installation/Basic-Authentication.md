@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Basic Authentication
-category: Authentication
+layout: 默认
+title: CAS-基本认证
+category: 验证
 ---
 
-# Basic Authentication
+# 基本认证
 
-Verify and authenticate credentials using Basic Authentication.
+使用基本身份验证来验证和身份验证凭据。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,21 +18,21 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To access a CAS-protected application using a command-line client such as `curl`, the following command may be used:
+`curl`类的命令行客户端访问受CAS保护的应用程序，可以使用以下命令：
 
 ```bash
-curl <APPLICATION-URL> -L -u <USER>:<PASSWORD>
+卷曲 <APPLICATION-URL> -L -u <USER>：<PASSWORD>
 ```
 
-Use `--insecure -v` flags to bypass certificate validation and receive additional logs from `curl`.
+使用 `--insecure -v` 标志绕过证书验证，并从 `curl`接收其他日志。
 
-If your `APPLICATION-URL` and CAS server url are not on the same host, curl will **NOT** send the Basic Authentication header to the CAS server when redirected. This behavior in curl can be overridden by passing the `--location-trusted` flag to curl.
+如果您的 `APPLICATION-URL` 和CAS服务器url不在同一主机上，则curl将 **NOT** 重定向时将基本身份验证标头发送到CAS `--location-trusted` 标志传递给curl来覆盖curl中的此行为。
 
-From CURL man page:
+从CURL手册页：
 
 ```bash
 --location-trusted
-        (HTTP/HTTPS) Like -L, --location, but will allow sending the name + password to all hosts that the site may redirect to. This may or may
-        not  introduce a security breach if the site redirects you to a site to which you'll send your authentication info 
-        (which is plaintext in the case of HTTP Basic authentication).
+        （HTTP / HTTPS）与-L一样，--location，但是允许将名称和密码发送到站点可能重定向到的所有主机。 这可能会或可能
+        不是，如果该网站重定向到一个网站，你会送您的身份验证信息引入安全漏洞 
+        （这是明文在HTTP的情况下，基本身份验证）。
 ```
