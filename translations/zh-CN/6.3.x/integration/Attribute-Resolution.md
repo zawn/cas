@@ -1,93 +1,112 @@
 ---
-layout: default
-title: CAS - Attribute Resolution
-category: Attributes
+layout: 违约
+title: CAS - 属性分辨率
+category: 属性
 ---
 
-# Attribute Resolution
+# 属性分辨率
 
-Attribute resolution strategies are controlled by the [Person Directory project](https://github.com/apereo/person-directory). The Person Directory dependency is automatically bundled with the CAS server. Therefore, declaring an additional dependency will not be required. This Person Directory project supports both LDAP and JDBC attribute resolution, caching, attribute aggregation from multiple attribute sources, etc.
+属性解析策略由 [人员目录项目](https://github.com/apereo/person-directory) 控制。 人员目录依赖性会自动与 CAS 服务器捆绑。 因此，不需要 宣布额外的依赖。 此人员目录项目支持 LDAP 和 JDBC 属性解析、 缓存、来自多个属性源的属性聚合等。
 
-<div class="alert alert-info"><strong>Default Caching Policy</strong><p>By default,
-attributes are cached to the length of the SSO session.
-This means that while the underlying component provided by Person Directory may have
-a different caching model, attributes by default and from
-a CAS perspective will not be refreshed and retrieved again on subsequent requests
-as long as the SSO session exists.</p></div>
+<div class="alert alert-info"><strong>默认缓存策略</strong><p>默认情况下，
+属性缓存到 SSO 会话的长度。
+这意味着，虽然"人员目录"提供的基础组件可能
+不同的缓存模型，但默认属性以及从
+CAS 透视不会在后续请求中刷新和检索，只要 SSO 会话存在
+。</p></div>
 
-## Administrative Endpoints
+## 行政终点
 
-The following endpoints are provided by CAS:
+CAS 提供以下端点：
 
-| Endpoint                   | Description                                                                                                |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `resolveAttributes/{name}` | Invoke the CAS [attribute resolution](Attribute-Resolution.html) engine to locate attributes for `{name}`. |
+| 端点            | 描述                                                          |
+| ------------- | ----------------------------------------------------------- |
+| `解决归因/{name}` | 调用 CAS [属性分辨率](Attribute-Resolution.html) 引擎来定位 `{name}`属性。 |
 
-## Person Directory
+## 人员目录
 
-A framework for resolving persons and attributes from a variety of underlying sources. It consists of a collection of components that retrieve, cache, resolve, aggregate, merge person attributes from JDBC, LDAP and more.
+从各种基础来源解决人员和属性的框架。 它包括从 JDBC、LDAP 等处检索、缓存、解析、聚合 合并人员属性的组件集合。
 
-To see the relevant list of CAS properties that deal with resolving principals, please [review this guide](../configuration/Configuration-Properties.html#principal-resolution).
+有关处理解决委托人的中科院物业名单，请 [本指南](../configuration/Configuration-Properties.html#principal-resolution)。
 
-Attribute sources are defined and configured to describe the global set of attributes to be fetched for each authenticated principal. That global set of attributes is then filtered by the service manager according to service-specific attribute release rules.
+属性源被定义和配置，以描述每个经过验证的委托人 提取的全球属性集。 然后， 服务经理根据特定于服务的属性发布规则对该全球属性集进行筛选。
 
-Note that each attribute repository source can be assigned a unique identifier to be used for additional filtering. The attribute resolution engine provided by Person Directory can also be configured to only consult not all but a selection of attribute repository sources, *deferring* the task of attribute retrieval for later phases in the authentication process, such as [releasing attributes](Attribute-Release-Caching.html).
+请注意，每个属性存储库源可以分配一个唯一的标识符用于其他筛选。 "人目录"提供的属性解析引擎 也可以配置为只征用并非全部，而是选择属性存储库源， *推迟* 身份验证过程后期属性检索的任务 ，例如</a>
 
-<div class="alert alert-info"><strong>Principal Resolution</strong><p>Note that in most if not all cases,
-CAS authentication is able to retrieve and resolve attributes from the authentication source, which would
-eliminate the need for configuring a separate resolver specially if both the authentication and the attribute source are the same.
-Using separate resolvers should only be required when sources are different, or when there is a need to tackle more advanced attribute
-resolution use cases such as cascading, merging, etc. <a href="../installation/Configuring-Principal-Resolution.html">See this guide</a> for more info.</p></div>
+发布属性。</p>
 
-The goal of the resolver is to construct a final identifiable authenticated principal for CAS which carries a number of attributes inside it. The behavior of the person-directory resolver is such that it attempts to locate the principal id, which in most cases is the same thing as the credential id provided during authentication or it could be noted by a custom attribute. Then the resolver starts to construct attributes from attribute repositories defined. If it realizes that a custom attribute is used to determine the principal id AND the same attribute is also set to be collected into the final set of attributes, it will then remove that attribute from the final collection.
+<div class="alert alert-info"><strong>主要决议</strong><p>请注意，在大多数（如果不是全部）情况下，
+CAS 认证能够检索和解决身份验证源中的属性，这将
+消除配置单独的解析器的需要，特别是如果身份验证和属性源相同。
+只有在来源不同或需要处理更高级的属性时，才需要使用单独的解析器，
+解决使用案例，如级联、合并等。 <a href="../installation/Configuring-Principal-Resolution.html">有关详细信息，请参阅本指南</a> 。</p></div>
 
-Note that by default, CAS auto-creates attribute repository sources that are appropriate for LDAP, JDBC, etc. If you need something more, you will need to resort to more elaborate measures of defining the bean configuration.
+解析器的目标是为 CAS 构建最终可识别的认证本金，其中载有多个属性。 人目录解析器的行为是试图定位主 ID，这在大多数情况下与身份验证期间提供的凭据 ID 相同，或者可以通过自定义属性进行记录。 然后，解析器开始从定义的属性存储库构建属性。 如果它意识到使用自定义属性来确定主 ID，并且将相同的属性设置为收集到最终属性集中，则它将从最终集合中删除该属性。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-attributes). More about the Person Directory and its configurable sources [can be found here](https://github.com/apereo/person-directory).
+请注意，默认情况下，CAS 会自动创建适合 LDAP、JDBC 等的属性存储库源。 如果你需要更多的东西，你将需要诉诸更详细的措施来定义豆配置。
 
-### JDBC
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-attributes)。 有关人物目录及其可配置来源的更多信息， [可在此处找到](https://github.com/apereo/person-directory)。
 
-CAS does allow for attributes to be retrieved from a variety of SQL databases. To learn how to configure database drivers, [please see this guide](../installation/JDBC-Drivers.html).
 
-JDBC attribute sources can be defined based on the following mechanics:
 
-#### Single Row
+### 京城
 
-Designed to work against a table where there is a mapping of one row to one user. An example of this table format would be:
+CAS 确实允许从各种 SQL 数据库中检索属性。 要了解如何配置数据库驱动程序， [请参阅本指南](../installation/JDBC-Drivers.html)。
 
-| uid      | first_name | last_name | email                |
-| -------- | ---------- | --------- | -------------------- |
-| `jsmith` | `John`     | `Smith`   | `jsmith@example.org` |
+JDBC 属性源可以根据以下机制进行定义：
 
-#### Multi Row
 
-Designed to work against a table where there is a mapping of one row to one user. An example of this table format would be:
 
-| uid      | attr_name    | attr_value           |
-| -------- | ------------ | -------------------- |
-| `jsmith` | `first_name` | `John`               |
-| `jsmith` | `last_name`  | `Smith`              |
-| `jsmith` | `email`      | `jsmith@example.org` |
+#### 单行
 
-You will need to define column mappings in your configuration to map the `attr_name` column to the `attr_value` column
+设计用于对一个表工作，其中有一行映射到一个用户。 此表格式的一个示例是：
 
-## Examples
+| 乌伊德    | first_name | last_name | 电子邮件                 |
+| ------ | ---------- | --------- | -------------------- |
+| `杰史密斯` | `约翰`       | `史密斯`     | `jsmith@example.org` |
 
-Suppose CAS is configured to authenticate against Active Directory. The account whose details are defined below authenticates via `sAMAccountName`.
 
-| Attribute        | Value        |
-| ---------------- | ------------ |
-| `sAMAccountName` | `johnsmith`  |
-| `cn`             | `John Smith` |
 
-### Example #1
 
-If the resolver is configured to use `sAMAccoutName` as the attribute for the principal id, then when authentication is complete the resolver attempts to construct attributes from attribute repository sources, it sees `sAMAccoutName` as the attribute and sees the principal id is to be created by `sAMAccoutName`. So it would remove the `sAMAccoutName` from the attributes. The final result is is a principal whose id is `johnsmith` who has a `cn` attribute of `John Smith`.
+#### 多行
 
-### Example #2
+设计用于对一个表工作，其中有一行映射到一个用户。 此表格式的一个示例是：
 
-If the resolver is configured to use `cn` as the attribute for the principal id, then when authentication is complete the resolver attempts to construct attributes from attribute repository sources. It then sees `sAMAccoutName` as the attribute and sees the principal id is to be created by `cn`. So it would remove the `cn` from the attributes. The final result is is a principal whose id is `John Smith` who has a `sAMAccountName` attribute of `johnsmith`.
+| 乌伊德    | attr_name    | attr_value           |
+| ------ | ------------ | -------------------- |
+| `杰史密斯` | `first_name` | `约翰`                 |
+| `杰史密斯` | `last_name`  | `史密斯`                |
+| `杰史密斯` | `电子邮件`       | `jsmith@example.org` |
 
-## Attribute Definitions
 
-CAS attributes may be decorated with additional metadata which can later be used depending on the requirements of the protocol and nature of the integration with a target application. To learn more, please [see this guide](Attribute-Definitions.html).
+您需要定义配置中 列映射，以将 `attr_name` 列映射到 `attr_value` 列
+
+
+
+## 例子
+
+假设 CAS 被配置为针对活动目录进行身份验证。 详细信息定义在 以下的帐户通过 `个 sAM 帐户名`进行身份验证。
+
+| 属性       | 价值       |
+| -------- | -------- |
+| `萨姆帐户名`  | `约翰史密斯`  |
+| `快递 之 家` | `约翰·史密斯` |
+
+
+
+
+### 示例#1
+
+如果将解析器配置为使用 `sAMAccoutname` 作为主 ID 的属性，则当身份验证完成时，解析器尝试 从属性存储库源构建属性，它将 `sAMAccoutname` 视为属性，并认为主 ID 由 `sAMAccout 名`创建。 因此，它将从属性中删除 `个 sAMAcout 名` 。 最终的结果是一个校长，他的ID是 `约翰史密斯` 谁有一个 `cn` 属性 `约翰史密斯`。
+
+
+
+### 示例#2
+
+如果将解析器配置为使用 `cn` 作为主 ID 的属性，则当身份验证完成时，解析器尝试从属性存储库源 构建属性。 然后，它将 `sAMAcout 名称为` 属性，并看到主 ID 将由 `cn`创建。 因此，它将从属性中删除 `cn` 。 最终的结果是一个校长，他的身份证是 `约翰史密斯` 谁有一个 `sAM帐户名` 属性 `约翰史密斯`。
+
+
+
+## 属性定义
+
+CAS 属性可以附加元数据进行装饰，这些元数据以后可以根据协议的 要求以及与目标应用程序集成的性质使用。 要了解更多 ，请 [本指南](Attribute-Definitions.html)。
