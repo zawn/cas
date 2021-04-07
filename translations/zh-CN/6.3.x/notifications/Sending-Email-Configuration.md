@@ -1,23 +1,23 @@
 ---
-layout: default
-title: CAS - Sending Email
-category: Notifications
+layout: 违约
+title: CAS - 发送电子邮件
+category: 通知
 ---
 
-# Sending Email
+# 发送电子邮件
 
-CAS presents the ability to notify users on select actions via email messages. Example actions include notification of risky authentication attempts or password reset links/tokens, etc. Configuring an email provider (i.e. Amazon Simple Email Service ) is a matter of defining SMTP settings. Each particular feature in need of email functionality should be able to gracefully continue in case settings are not defined.
+CAS 提供通过电子邮件通知用户选择操作的能力。 示例操作包括危险身份验证尝试的通知 或密码重置链接/令牌等。 配置电子邮件提供商（即 亚马逊简单电子邮件服务 ） 是定义 SMTP 设置的问题。 每个需要电子邮件功能的特定功能都应该能够 优雅地继续，以防未定义设置。
 
-Default support for email notifications is automatically enabled/included by the relevant modules using the following module:
+相关模块使用以下模块自动启用/包括对电子邮件通知的默认支持：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-core-notifications</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-核心通知</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-You need not explicitly include this module in WAR Overlay configurations, except when there is a need to access components and APIs at compile-time.
+您不需要在 WAR 叠加配置中明确包含此模块，除非需要在编译时间访问组件和 ABI。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#email-submissions).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#email-submissions)。
