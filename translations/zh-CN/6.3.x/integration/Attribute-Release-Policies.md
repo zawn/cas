@@ -1,463 +1,465 @@
 ---
-layout: default
-title: CAS - Attribute Release Policies
-category: Attributes
+layout: 违约
+title: CAS - 属性发布策略
+category: 属性
 ---
 
-# Attribute Release Policies
+# 属性发布策略
 
-The attribute release policy decides how attributes are selected and provided to a given application in the final CAS response. Additionally, each policy has the ability to apply an optional filter to weed out their attributes based on their values.
+属性发布策略决定如何在 CAS 最终响应中选择属性并提供给给定的应用程序。 此外，每个策略都能够应用可选筛选器来清除其基于其值的属性。
 
-The following settings are shared by all attribute release policies:
+所有属性发布策略共享以下设置：
 
-| Name                                          | Value                                                                                                                                                                                                                                                                                                           |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `authorizedToReleaseCredentialPassword`       | Boolean to define whether the service is authorized to [release the credential as an attribute](ClearPass.html).                                                                                                                                                                                                |
-| `authorizedToReleaseProxyGrantingTicket`      | Boolean to define whether the service is authorized to [release the proxy-granting ticket id as an attribute](../installation/Configuring-Proxy-Authentication.html).                                                                                                                                           |
-| `excludeDefaultAttributes`                    | Boolean to define whether this policy should exclude the default global bundle of attributes for release.                                                                                                                                                                                                       |
-| `authorizedToReleaseAuthenticationAttributes` | Boolean to define whether this policy should exclude the authentication/protocol attributes for release. Authentication attributes are considered those that are not tied to a specific principal and define extra supplementary metadata about the authentication event itself, such as the commencement date. |
-| `principalIdAttribute`                        | An attribute name of your own choosing that will be stuffed into the final bundle of attributes, carrying the CAS authenticated principal identifier. By default, the principal id is *NOT* released as an attribute.                                                                                           |
+| 名字         | 价值                                                                                           |
+| ---------- | -------------------------------------------------------------------------------------------- |
+| `授权发布信用密码` | Boolean 定义服务是否有权 [发布凭据作为属性](ClearPass.html)。                                                 |
+| `授权发布价格授权` | Boolean 定义该服务是否有权 [发布代理授予票证 ID 作为属性](../installation/Configuring-Proxy-Authentication.html)。 |
+| `不包括不良属性`  | Boolean 定义此策略是否应排除用于发布的默认全球属性捆绑。                                                             |
+| `授权发布授权属性` | Boolean 定义此策略是否应排除发布的身份验证/协议属性。 身份验证属性被视为与特定主体无关的属性，并定义有关身份验证事件本身的额外补充元数据，例如开始日期。            |
+| `本金`       | 您自己选择的属性名称，将塞入最终的属性捆绑中，带有 CAS 认证的主要标识符。 默认情况下，本金 ID *而不是作为属性* 发布。                            |
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>Think <strong>VERY CAREFULLY</strong> before turning on the above settings. Blindly authorizing an application to receive a proxy-granting ticket or the user credential
-may produce an opportunity for security leaks and attacks. Make sure you actually need to enable those features and that you understand the why. Avoid where and when you can, specially when it comes to sharing the user credential.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>在打开上述设置之前， <strong></strong> 仔细思考。 盲目授权申请接收代理授权票证或用户凭据
+可能会产生安全泄漏和攻击的机会。 确保您确实需要启用这些功能，并且您了解原因。 避免在可能的地方和时间，特别是当涉及到共享用户凭据。</p></div>
 
-CAS makes a distinction between attributes that convey metadata about the authentication event versus those that contain personally identifiable data for the authenticated principal.
+CAS 区分传达身份验证事件元数据的属性与包含身份验证委托人个人可识别数据的属性 。
 
-## Administrative Endpoints
+## 行政终点
 
-The following endpoints are provided by CAS:
+CAS 提供以下端点：
 
-| Endpoint            | Description                                                                                                               |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `releaseAttributes` | Invoke the CAS [attribute release](../integration/Attribute-Release.html) engine to release attributes to an application. |
+| 端点     | 描述                                                                  |
+| ------ | ------------------------------------------------------------------- |
+| `释放属性` | 调用 CAS [](../integration/Attribute-Release.html) 引擎的属性释放来释放应用程序的属性。 |
 
-Supported parameters are the following:
+支持参数如下：
 
-| Query Parameter | Description                                     |
-| --------------- | ----------------------------------------------- |
-| `username`      | The username to use for authentication.         |
-| `password`      | The password to use for authentication.         |
-| `service`       | Service to which attributes should be released. |
+| 查询参数  | 描述          |
+| ----- | ----------- |
+| `用户名` | 用于身份验证的用户名。 |
+| `密码`  | 用于身份验证的密码。  |
+| `服务`  | 应发布哪些属性的服务。 |
 
-The parameters above can either be added as query string parameters or as a JSON object submitted with a POST:
+以上参数可以添加为查询字符串参数，也可以添加为与POST一起提交的 JSON 对象：
 
 ```json
 { 
-  "username": "USERNAME",
-  "password": "PASSWORD",
-  "service": "SERVICE_URL"
+  "用户名"："用户名"，
+  "密码"："密码"，
+  "服务"："SERVICE_URL"
 }
 ```
 
-## Authentication Attributes
+## 身份验证属性
 
-During the authentication process, a number of attributes get captured and collected by CAS to describe metadata and additional properties about the nature of the authentication event itself. These typically include attributes that are documented and classified by the underlying protocol or attributes that are specific to CAS which may describe the type of credentials used, successfully-executed authentication handlers, date/time of the authentication, etc.
+在身份验证过程中，CAS 捕获并收集了一些属性，以描述有关身份验证事件本身性质的元数据和其他属性。 这些通常包括由基础协议 记录和分类的属性，或特定于 CAS 的属性，这些属性可以描述所使用的凭据类型、成功执行的 身份验证处理程序、身份验证的日期/时间等。
 
-Releasing authentication attributes to service providers and applications can be controlled to some extent. To learn more and see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-attributes).
+向服务提供商和应用程序发布身份验证属性可以在一定程度上 控制。 要了解更多，并查看 CAS 属性的相关列表，请 [](../configuration/Configuration-Properties.html#authentication-attributes)查看本指南。
 
-## Principal Attributes
+## 主要属性
 
-Principal attributes typically convey personally identifiable data about the authenticated user, such as address, last name, etc. Release policies are available in CAS and documented below to explicitly control the collection of attributes that may be authorized for release to a given application.
+主要属性通常传达有关身份验证用户的个人可识别数据， ，如地址、姓氏等。 发布策略可在 CAS 中提供，并记录在以下 ，以明确控制可能授权发布给定应用程序的属性的集合。
 
-<div class="alert alert-info"><strong>Remember</strong><p>Depending on the protocol used and the type/class of service (i.e. relying party) registered with CAS,
-additional release policies may become available that allow more fine-tuned control over attribute release, catering better to the needs of the particular
-authentication protocol at hand. Remember to verify attribute release capabilities of CAS by visiting and studies the appropriate documentation for each protocol.</p></div>
+<div class="alert alert-info"><strong>记得</strong><p>根据所使用的协议和在 CAS 注册的服务类型/类别（即依赖方），可能会提供
+额外的发布策略，以便对属性释放进行更微调的控制，更好地满足手头特定
+认证协议的需求。 请记住，通过访问和研究每个协议的适当文档来验证 CAS 的属性释放功能。</p></div>
 
-### Default
+### 违约
 
-CAS provides the ability to release a bundle of principal attributes to all services by default. This bundle is not defined on a per-service basis and is always combined with attributes produced by the specific release policy of the service, such that for instance, you can devise rules to always release `givenName` and `cn` to every application, and additionally allow other specific principal attributes for only some applications per their attribute release policy.
+CAS 提供默认向所有服务发布捆绑主要属性的能力。 此捆绑包不是按服务定义的，并且始终与服务特定发布策略产生的属性相结合，例如，您可以设计规则，以便始终发布 `给定名` 和 `cn` 每个应用程序，此外，仅允许其他特定主要属性仅针对其属性发布策略的某些应用程序。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#default-bundle).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#default-bundle)。
 
-### Return All
+### 全部返回
 
-Return all resolved principal attributes to the service.
+将所有已解决的主要属性返回到服务中。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回所有归因释放政策"
+  =
+}
+```
+
+### 拒绝所有
+
+切勿将主要属性返回到应用程序。 请注意，此策略 也会跳过并拒绝发布默认属性（如果有的话）。
+
+```json
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "描述"："样本"，
+  "属性重新发布政策"：{
+    "@class"："org.apereo.cas.services
+
+  .服务。
+```
+
+### 允许返回
+
+仅返回服务定义明确允许的主要属性。
+
+```json
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：100，
+  "属性释放政策"： [
+    "@class" ： "org. apereo. cas. 服务.返回允许的属性释放政策"，
+    "允许的属性" ： [ java. util. Arraylist"， [cn"， "邮件"， "sn" ]
+  [
+]
+```
+
+### 返回加密
+
+使用分配的注册服务公钥加密和编码 base-64 中所有允许的属性。
+
+```json
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"： "样本"，
+  "id"： 100，
+  "属性释放政策"： [
+    "@class"： "org. apereo. cas. 服务. 返回加密属性释放政策"，
+    "允许属性"： [ "java. ut. [cn"，"邮件"，"sn"]][
+  ]，
+  "公共钥匙"：{
+    "@class"："org.apereo.cas.服务。注册服务公共钥匙"，
+    "位置"："类路径：公共.key"，
+    "算法"："RSA"
   }
 }
 ```
 
-### Deny All
-
-Never ever return principal attributes to applications. Note that this policy also skips and refuses to release default attributes, if any.
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.DenyAllAttributeReleasePolicy"
-  }
-}
-```
-
-### Return Allowed
-
-Only return the principal attributes that are explicitly allowed by the service definition.
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    "allowedAttributes" : [ "java.util.ArrayList", [ "cn", "mail", "sn" ] ]
-  }
-}
-```
-
-### Return Encrypted
-
-Encrypt and encode all all allowed attributes in base-64 using the assigned registered service public key.
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnEncryptedAttributeReleasePolicy",
-    "allowedAttributes" : [ "java.util.ArrayList", [ "cn", "mail", "sn" ] ]
-  },
-  "publicKey" : {
-    "@class" : "org.apereo.cas.services.RegisteredServicePublicKeyImpl",
-    "location" : "classpath:public.key",
-    "algorithm" : "RSA"
-  }
-}
-```
-
-The keys can be generated via the following commands:
+密钥可以通过以下命令生成：
 
 ```bash
-openssl genrsa -out private.key 1024
-openssl rsa -pubout -in private.key -out public.key -inform PEM -outform DER
-openssl pkcs8 -topk8 -inform PER -outform DER -nocrypt -in private.key -out private.p8
+打开斯尔根萨 - 出私人.key 1024
+打开斯尔 rsa - 酒吧 - 在私人.key - 出公共.key - 通知 Pem - 超越 Der
+打开 pkcs8 - topk8 - 通知每 - 通知佩尔 - 诺克里普特 - 在私人.key - 出私人. p8
 ```
 
-### REST
+### 休息
 
-Only return the principal attributes that are explicitly allowed by contacting a REST endpoint. Endpoints must be designed to accept/process `application/json`. The expected response status code is `200` where the body of the response includes a `Map` of attributes linked to their values.
+仅返回通过联系 REST 端点明确允许的主要属性。 端点必须设计为接受/处理 `申请/json`。 预期响应状态代码 `200` 响应主体包括与其值相关的属性 `地图` 。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 100,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnRestfulAttributeReleasePolicy",
-    "endpoint" : "https://somewhere.example.org"
-  }
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："示例"，
+  "名称"："样本"，
+  "id"：100，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回属性释放政策"，
+    "终点"："https://somewhere.example.org"
+  =
 }
 ```
 
-The following parameters are passed to the endpoint:
+以下参数传递到终点：
 
-| Parameter   | Description                                                                   |
-| ----------- | ----------------------------------------------------------------------------- |
-| `principal` | The object representing the authenticated principal.                          |
-| `service`   | The object representing the corresponding service definition in the registry. |
+| 参数   | 描述               |
+| ---- | ---------------- |
+| `主要` | 表示经过验证的主体的对象。    |
+| `服务` | 表示注册表中相应服务定义的对象。 |
 
-The body of the submitted request may also include a `Map` of currently resolved attributes.
+提交请求的主体可能还包括当前已解决属性的 `地图` 。
 
-### Return Mapped
+### 返回映射
 
-Similar to above, this policy will return a collection of allowed principal attributes for the service, but also allows those principal attributes to be mapped and "renamed" at the more granular service level.
+与上述类似，本政策将返回 服务允许的主要属性集合，但也允许在更精细的服务级别上映射和"重命名"这些主要属性。
 
-For example, the following configuration will recognize the resolved attributes `eduPersonAffiliation` and `groupMembership` and will then release `affiliation` and `group` to the web application configured.
+例如，下列配置将识别已解决的 属性 `eduPerson 关联` 和 `组成员` ，然后 发布 `从属关系` 和 `组` 到已配置的 Web 应用程序。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "description" : "sample",
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnMappedAttributeReleasePolicy",
-    "allowedAttributes" : {
-      "@class" : "java.util.TreeMap",
-      "eduPersonAffiliation" : "affiliation",
-      "groupMembership" : "group"
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：300，
+  "描述"："样本"，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回地图属性释放政策"，
+    "允许属性"：{
+      "@class" ："java.util.TreeMap"，
+      "爱德华人隶属关系"："从属关系"，
+      "团体成员"："群体"
     }
   }
 }
 ```
 
-### Return MultiMapped
+### 返回多映射
 
-The same policy may allow attribute definitions to be renamed and remapped to multiple attribute names, with duplicate attributes values mapped to different names.
+同一策略可能允许属性定义重命名并重新映射为多个属性名称， 具有映射到不同名称的重复属性值。
 
-For example, the following configuration will recognize the resolved attribute `eduPersonAffiliation` and will then release `affiliation` and `personAffiliation` whose values stem from the original `eduPersonAffiliation` attribute while `groupMembership` is released as `group`. In other words, the `eduPersonAffiliation` attribute is released twice under two different names each sharing the same value.
+例如，下列配置将识别已解决的属性 `教育人隶属关系` ，然后发布 `从属关系` 和 `人从属关系` 其值源于原始 `教育人隶属关系` 属性，而 `组成员` 则发布为 `组`。 换句话说， `教育人隶属关系` 属性以两个不同的名称发布两次，每个名称共享相同的值。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnMappedAttributeReleasePolicy",
-    "allowedAttributes" : {
-      "@class" : "java.util.TreeMap",
-      "eduPersonAffiliation" : [ "java.util.ArrayList", [ "affiliation", "personAffiliation" ] ],
-      "groupMembership" : "group"
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：300，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。
+    "允许归因"：{
+      "@class"："java.util.TreeMap"，
+      "爱德华个人从属关系"：["java.3" [组织列表]，"从属关系"，"人格关系"]]，
+      "群体成员"："组"
     }
   }
 }
 ```
 
-### Inline Groovy Attributes
+### 内联沟属性
 
-Principal attributes that are mapped may produce their values from an inline groovy script. As an example, if you currently have resolved a `uid` attribute with a value of `piper`, you could then consider the following:
+映射的主要属性可能从内联凹槽脚本生成其值。 例如，如果您目前 已解决了具有 `吹笛器`值的 `uid` 属性，则可以考虑以下几点：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnMappedAttributeReleasePolicy",
-    "allowedAttributes" : {
-      "@class" : "java.util.TreeMap",
-      "uid" : "groovy { return attributes['uid'].get(0) + ' is great' }"
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：300，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回地图属性释放政策"，
+    "允许属性"：{
+      "@class
+      ："java.ul.treemap"，"uid"："凹凸不正的{返回属性['uid'。get（0）][伟大'}"
     }
   }
 }
 ```
 
-In the above snippet, the value of the `uid` attribute name is mapped to the result of the inline groovy script. Inline scripts always begin with the syntax `groovy {...}` and are passed the current collection of resolved attributes as an `attributes` binding variable. The result of the script can be a single/collection of value(s).
+在上面的片段中， `uid` 属性名称的值映射到内联凹槽脚本的结果。 内联脚本始终从语法 `凹凸不平的 {...}` 开始，并通过已解决的 属性的当前集合，作为 `属性` 绑定变量。 脚本的结果可以是单个/收集值。
 
-The above configuration will produce a `uid` attribute for the application whose value is a concatenation of the original value of `uid` plus the words " is great", so the final result would be "piper is great".
+上述配置将为其价值与 `uid` 的原始值相 加上"很棒"字样的应用程序产生 `uid` 属性，因此最终结果将是"派珀是伟大的"。
 
-### File-based Groovy Attributes
+### 基于文件的格罗夫属性
 
-Identical to inline groovy attribute definitions, except the groovy script can also be externalized to a `.groovy` file:
+与内联凹槽属性定义相同，但凹槽脚本除外化为 `。groovy` 文件：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ReturnMappedAttributeReleasePolicy",
-    "allowedAttributes" : {
-      "@class" : "java.util.TreeMap",
-      "uid" : "file:/etc/cas/sample.groovy"
-    }
-  }
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：300，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。返回地图属性释放政策"，
+    "允许属性"：{
+      "@class"："java.util.Treemap"，
+      "uid"："文件：/等/cas/sample.groovy"
+    =
+  =
 }
 ```
 
-The `sample.groovy` script itself may have the following outline:
+`示例.groovy` 脚本本身可能有以下大纲：
 
 ```groovy
-import java.util.*
+导入java.利用。*
 
-def run(final Object... args) {
-    def attributes = args[0]
-    def logger = args[1]
-    logger.debug("Current attributes are {}", attributes)
-    return []
+def运行（最终对象。。。args）{
+    def属性=args[0]
+    def记录器=args[1]
+    记录器。debug（"当前属性是{}，属性）
+    返回[]
 }
 ```
 
-The configuration of this component qualifies to use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax.
+此组件的配置有资格使用 [弹簧表达语言](../configuration/Configuration-Spring-Expressions.html) 语法。
 
-### Groovy Script
+### 格罗夫脚本
 
-Let an external Groovy script decide how principal attributes should be released. The configuration of this component qualifies to use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax.
+让外部 Groovy 脚本决定如何发布主要属性。 此 组件的配置有资格使用 [弹簧表达语言](../configuration/Configuration-Spring-Expressions.html) 语法。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.GroovyScriptAttributeReleasePolicy",
-    "groovyScript" : "classpath:/script.groovy"
-  }
-}
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："示例"，
+  "名称"："示例"，
+  "id"：300，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务"。Groovy脚本属性发布政策"，
+    "凹槽脚本"："类路径：/脚本。groovy"
+  =
+
 ```
 
-The script itself may be designed in Groovy as:
+脚本本身可在 Groovy 中设计为：
 
 ```groovy
-import java.util.*
+导入java.util.*
 
-def Map<String, List<Object>> run(final Object... args) {
-    def currentAttributes = args[0]
-    def logger = args[1]
-    def principal = args[2]
-    def service = args[3]
+d地图<String, List<Object>> 运行（最终对象。。。args）{
+    定义当前属性=args[0]
+    d记录器=args[1]
+    def本金=args[2]
+    def服务=args[3]
 
-    logger.debug("Current attributes received are {}", currentAttributes)
-    return [username:["something"], likes:["cheese", "food"], id:[1234,2,3,4,5], another:"attribute"]
-}
+    记录器。debug（"收到的当前属性是{}" 当前归因）
+    返回[用户名：["东西"]，喜欢：["奶酪"，"食物"]，id：[1234，2，3，4，5]，另一个："属性"]
+]
 ```
 
-The following parameters are passed to the script:
+以下参数传递到脚本：
 
-| Parameter           | Description                                                                   |
-| ------------------- | ----------------------------------------------------------------------------- |
-| `currentAttributes` | `Map` of attributes currently resolved and available for release.             |
-| `logger`            | The object responsible for issuing log messages such as `logger.info(...)`.   |
-| `principal`         | The object representing the authenticated principal.                          |
-| `service`           | The object representing the corresponding service definition in the registry. |
+| 参数     | 描述                                |
+| ------ | --------------------------------- |
+| `当前属性` | `地图` 当前已解决并可供发布的属性。               |
+| `记录`   | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
+| `主要`   | 表示经过验证的主体的对象。                     |
+| `服务`   | 表示注册表中相应服务定义的对象。                  |
 
-### Script Engines
+### 脚本引擎
 
-<div class="alert alert-warning"><strong>Usage</strong>
-<p><strong>This feature is deprecated and is scheduled to be removed in the future.</strong></p>
+<div class="alert alert-warning"><strong>用法</strong>
+<p><strong>此功能被弃用，并计划在将来删除。</strong></p>
 </div>
 
-Use alternative script engine implementations and other programming languages to configure attribute release policies. This approach takes advantage of scripting functionality built into the Java platform via additional libraries and drivers. While Groovy should be natively supported by CAS, the following module is required in the overlay to include support for additional languages such as Python, etc.
+使用替代脚本引擎实现和其他编程语言来配置属性发布策略。 此方法 利用通过其他库和驱动程序内置于 Java 平台中的脚本功能。 虽然 Groovy 应由 CAS 本地支持，但叠加中需要以下模块，以包括支持其他语言 如 Python 等。
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-script-engines</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>套机服务器支持脚本-脚本-发动机</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-The service definition then may be designed as:
+然后，服务定义可以设计为：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ScriptedRegisteredServiceAttributeReleasePolicy",
-    "scriptFile" : "classpath:/script.[py|js|groovy]"
-  }
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务ID"："样本"，
+  "名称"："样本"，
+  "id"：300，
+  "属性释放政策"：\
+    "@class"："org.apereo.cas.服务.服务.脚本注册服务发布政策"，
+    "脚本文件"："类路径"：。
+  ||葡萄干]=
 }
 ```
 
-The configuration of this component qualifies to use the [Spring Expression Language](../configuration/Configuration-Spring-Expressions.html) syntax. The scripts need to design a `run` function that receives a list of parameters. The collection of current attributes in process as well as a logger object are passed to this function. The result must produce a map whose `key`s are attributes names and whose `value`s are a list of attribute values.
+此组件的配置有资格 [春季表达语言](../configuration/Configuration-Spring-Expressions.html) 语法中使用。 脚本 需要设计一个 `运行` 函数，该函数接收参数列表。 过程中当前属性的集合 以及记录器对象传递到此函数。 结果必须生成一张地图，其 `个关键`是属性名称 ，其 `值`是属性值列表。
 
-As an example, the script itself may be designed in Groovy as:
+例如，脚本本身可在 Groovy 中设计为：
 
 ```groovy
-import java.util.*
+导入java.util.*
 
-def Map<String, List<Object>> run(final Object... args) {
-    def currentAttributes = args[0]
-    def logger = args[1]
+d地图<String, List<Object>> 运行（最终对象。。。args）{
+    定义当前属性=args[0]
+    d记录器=args[1]
 
-    logger.debug("Current attributes received are {}", currentAttributes)
-    return[username:["something"], likes:["cheese", "food"], id:[1234,2,3,4,5], another:"attribute"]
-}
+    记录器。debug（"收到的当前属性是{}" 当前属性）
+    返回[用户名：["某物"]，如：["奶酪"，"食物"]，id：[1234，2，3，4，5]，另一个："属性"]
+]
 ```
 
-Here's the same script written in Python:
+下面是用 Python 编写的相同脚本：
 
 ```python
-def run(*Params):
-  Attributes = Params[0]
-  Logger = Params[1]
-  # Calculate attributes and return a new dictionary of attributes...
-  return ...
+def运行（*参数）：
+  属性=参数[0]
+  记录器=参数[1]
+  #计算属性并返回新的属性词典。。。
+  返回。。。
 ```
 
-You are also allowed to stuff inlined groovy scripts into the `scriptFile` attribute. The script has access to the collection of resolved `attributes` as well as a `logger` object.
+还允许您将内衬凹槽脚本塞入 `脚本文件` 属性中。 脚本 有权访问已解决的 `属性` 以及 `记录器` 对象的集合。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "attributeReleasePolicy" : {
-    "@class" : "org.apereo.cas.services.ScriptedRegisteredServiceAttributeReleasePolicy",
-    "scriptFile" : "groovy { return attributes }"
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："示例"，
+  "名称"："示例"，
+  "id"：300，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务.脚本注册服务归因发布政策"，
+    "脚本文件"："凹凸不仁 { return attributes }"
+  }
+
+```
+
+### 链条策略
+
+属性释放策略可以链接在一起处理多个规则。 策略调用顺序与为服务本身定义的定义顺序相同。
+
+```json
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务"："样本"，
+  "名称"："样本"，
+  "id"：300，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。
+    "合并政策"："替换"，
+    "政策"："java.ul.Arraylist"，
+      [
+          {"@class"："......"，
+          {"@class"："。。。"
+      [
+    ]
   }
 }
 ```
 
-### Chaining Policies
+支持以下合并政策：
 
-Attribute release policies can be chained together to process multiple rules. The order of policy invocation is the same as the definition order defined for the service itself.
+| 政策    | 描述                     |
+| ----- | ---------------------- |
+| `取代`  | 属性被合并，因此源中的属性始终替换主要属性。 |
+| `加`   | 属性被合并，因此产生本金不存在的来源属性。  |
+| `多价值` | 同名属性合并为多值属性。           |
+
+#### 订购策略
+
+请注意，链中的每个策略都可以</code> 分配一个数字 `订单，在执行前确定其在链中的位置。 如果您的属性释放策略应先动态计算值，然后再将其传递到链中的下一个策略
+，则此
+订单可能很重要。 </p>
+
+<p spaces-before="0">例如，下面的政策链允许 CAS 首先使用"生成" <code>生成"发布政策` 策略 在该属性下一个传递到链中的下一个策略（即 `发布"发布政策`，以决定 是否应发布属性。 注意策略 `命令的配置` 决定执行顺序。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.services.ChainingAttributeReleasePolicy",
-    "mergingPolicy": "replace",
-    "policies": [ "java.util.ArrayList",
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："样本"，
+  "名称"："样本"，
+  "id"：300，
+  "属性释放政策"：{
+    "@class"："org.apereo.cas.服务。
+    "政策"： [java. util. Arraylist"，
       [
-          {"@class": "..."},
-          {"@class": "..."}
+          ]
+            "@class"： "org. apereo. cas. 发布婴儿归因释放政策"，
+            "订单"： 1
+
+          [，]
+            "@class"："org.apereo.cas.生成婴儿归因释放政策"， 
+            "顺序"：0
+          [
       ]
     ]
   }
 }
 ```
 
-The following merging policies are supported:
+## 属性值筛选器
 
-| Policy        | Description                                                                                                         |
-| ------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `replace`     | Attributes are merged such that attributes from the source always replace principal attributes.                     |
-| `add`         | Attributes are merged such that attributes from the source that don't already exist for the principal are produced. |
-| `multivalued` | Attributes with the same name are merged into multi-valued attributes.                                              |
+虽然每个策略都定义了给定服务可能允许哪些主要属性，但 每个策略都可以设置可选属性筛选器，以进一步清除基于其</strong>**值的属性。</p>
 
-#### Ordering Policies
-
-Note that each policy in the chain can be assigned a numeric `order` that would determine its position in the chain before execution. This order may be important if you have attribute release policies that should calculate a value dynamically first before passing it onto the next policy in the chain.
-
-For example, the policy chain below allows CAS to generate an attribute first using the `GeneratesFancyAttributeReleasePolicy` policy where the attribute is next passed onto the next policy in the chain, that is `ReleaseFancyAttributeReleasePolicy`, to decide whether or not the attribute should be released. Note the configuration of policy `order` determines the execution sequence.
-
-```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "sample",
-  "name" : "sample",
-  "id" : 300,
-  "attributeReleasePolicy": {
-    "@class": "org.apereo.cas.services.ChainingAttributeReleasePolicy",
-    "policies": [ "java.util.ArrayList",
-      [
-          {
-            "@class": "org.apereo.cas.ReleaseFancyAttributeReleasePolicy",
-            "order": 1
-          },
-          {
-            "@class": "org.apereo.cas.GeneratesFancyAttributeReleasePolicy", 
-            "order": 0
-          }
-      ]
-    ]
-  }
-}
-```
-
-## Attribute Value Filters
-
-While each policy defines what principal attributes may be allowed for a given service, there are optional attribute filters that can be set per policy to further weed out attributes based on their **values**.
-
-[See this guide](Attribute-Value-Release-Policies.html) to learn more.
+[本指南](Attribute-Value-Release-Policies.html) 了解更多。
