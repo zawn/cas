@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - Permissive Authentication
-category: Authentication
+layout: 默认
+title: CAS-许可认证
+category: 验证
 ---
 
-# Permissive Authentication
+# 允许身份验证
 
-Permissive authentication components fall into two categories: Those that accept a set of credentials stored directly in the configuration and those that accept a set of credentials from a file resource on the server.
+允许的身份验证组件分为两类：接受 的组件和接受来自服务器上文件资源的一组凭据的组件。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -20,35 +20,35 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#file-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#file-authentication)。
 
-## Example Password File
+## 密码文件示例
 
 ```bash
-scott::password
-bob::password2
+scott :: password
+bob :: password2
 ```
 
 
-## JSON File
+## JSON文件
 
-The password file may also be specified as a JSON resource instead which allows one to specify additional account details mostly useful for development and basic testing. The outline of the file may be defined as:
+密码文件也可以指定为JSON资源，从而允许以 到0指定其他帐户详细信息，这些详细信息对于开发和基本测试非常有用。 文件的轮廓可以定义为：
 
 ```json
 {
-  "@class" : "java.util.LinkedHashMap",
-  "casuser" : {
-    "@class" : "org.apereo.cas.adaptors.generic.CasUserAccount",
-    "password" : "Mellon",
-    "attributes" : {
-      "@class" : "java.util.LinkedHashMap",
-      "firstName" : [ "java.util.List", ["Apereo"]],
-      "lastName" : [ "java.util.List", ["CAS"]]
-    },
-    "status" : "OK",
-    "expirationDate" : "2050-01-01"
+  “ @class”：“ java.util.LinkedHashMap”，
+  “ casuser”：{
+    “ @class”：“ org.apereo.cas.adaptors.generic.CasUserAccount”，
+    “ password”：“ Mellon”，
+    “ attributes”：{
+      “ @class”：“ java.util.LinkedHashMap”，
+      “ firstName”：[“ java.util.List”，[“ Apereo”]]，
+      “ lastName”：[“ java。 util.List“，[” CAS“]]
+    }，
+    ” status“：” OK“，
+    ” expirationDate“：” 2050-01-01“
   }
 }
 ```
 
-The accepted statuses are `OK`, `LOCKED`, `DISABLED`, `EXPIRED` and `MUST_CHANGE_PASSWORD`. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#json-authentication).
+所接受的状态是 `行`， `LOCKED`， `DISABLED`， `EXPIRED` 和 `MUST_CHANGE_PASSWORD`。 要查看 相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#json-authentication)。
