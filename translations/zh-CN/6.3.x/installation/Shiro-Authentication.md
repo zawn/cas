@@ -1,49 +1,49 @@
 ---
-layout: default
-title: CAS - Shiro Authentication
-category: Authentication
+layout: 违约
+title: 中科院 - 希罗认证
+category: 认证
 ---
 
 
-# Shiro Authentication
-CAS support handling the authentication event via [Apache Shiro](http://shiro.apache.org/).
+# 希罗认证
+中科院支持处理认证事件通过 [阿帕奇希罗](http://shiro.apache.org/)。
 
 
-## Components
+## 组件
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-shiro-authentication</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>套服务器支持-希罗认证</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-## Shiro Configuration
+## 希罗配置
 
-Apache Shiro supports retrieving and checking roles and permissions for an authenticated subject. CAS exposes a modest configuration to enforce roles and permissions as part of the authentication, so that in their absence, the authentication may fail. While by default these settings are optional, you may configure roles and/or permissions for the given authentication handler to check their presence and report back.
+阿帕奇·希罗支持检索和检查经过验证的 对象的角色和权限。 CAS 暴露了作为身份验证 一部分执行角色和权限的适度配置，因此在它们缺席的情况下，身份验证可能会失败。 默认情况下，这些设置是可选的，但您可以配置角色和/或权限， 给定的身份验证处理程序检查其存在并报告。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#shiro-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#shiro-authentication)。
 
-Sample `shiro.ini` that needs be placed on the classpath based on the example above:
+样本 `shiro.ini` 需要根据上述示例放置在类路径上：
 
 ```ini
 [main]
-cacheManager = org.apache.shiro.cache.MemoryConstrainedCacheManager
-securityManager.cacheManager = $cacheManager
+缓存管理器 = org.apache.shiro.cache.记忆控制管理器
+安全管理器. 缓存管理器 = $cacheManager
 
 [users]
-casuser = Mellon, admin
+卡塞管理员 = 梅隆，管理员
 
 [roles]
-admin = system,admin,staff,superuser:*
+管理员 = 系统、管理员、工作人员、超级使用者：*
 ```
 
-## Logging
+## 伐木
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
 
 ```xml
 ...
