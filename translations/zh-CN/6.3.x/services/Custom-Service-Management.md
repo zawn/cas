@@ -1,34 +1,34 @@
 ---
-layout: default
-title: CAS - Custom Service Registry
-category: Services
+layout: 默认
+title: CAS-海关服务登记处
+category: 服务
 ---
 
-# Custom Service Registry
+# 海关服务登记处
 
-If you wish to design your own implementation of a service registry, you will need to inject your implementation into CAS as such:
+如果希望设计自己的服务注册中心实现，则需要将实现注入到CAS中，如下所示：
 
 ```java
-package org.apereo.cas.support;
+软件包org.apereo.cas.support;
 
-@Configuration("myConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyConfiguration implements ServiceRegistryExecutionPlanConfigurer {
+@Configuration（“ myConfiguration”）
+@EnableConfigurationProperties（CasConfigurationProperties.class）
+公共类MyConfiguration实现ServiceRegistryExecutionPlanConfigurer {
 
   @Bean
   @RefreshScope
-  public ServiceRegistryDao serviceRegistry() {
-      ...
+  public ServiceRegistryDao serviceRegistry（）{
+...
   }
 
   @Override
-  public void configureServiceRegistry(final ServiceRegistryExecutionPlan plan) {
-    plan.registerServiceRegistry(serviceRegistry());
+  public void configureServiceRegistry（final ServiceRegistryExecutionPlan plan）{
+    plan.registerServiceRegistry（serviceRegistry（））;
   }
 }
 ```
 
-At a minimum, your overlay will need to include the following modules:
+叠加层至少需要包括以下模块：
 
 ```xml
 <dependency>
@@ -38,4 +38,4 @@ At a minimum, your overlay will need to include the following modules:
 </dependency>
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[请参阅本指南](../configuration/Configuration-Management-Extensions.html) 以了解有关如何将配置注册到CAS运行时的更多信息。
