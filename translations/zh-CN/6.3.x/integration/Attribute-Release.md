@@ -1,39 +1,39 @@
 ---
-layout: default
-title: CAS - Attribute Release
-category: Attributes
+layout: 默认
+title: CAS-属性发布
+category: 属性
 ---
 
-# Attribute Release
+# 属性发布
 
-Attributes are returned to scoped services and pass through a two-step process:
+属性返回到范围服务，并通过两步过程：
 
-* [Attribute Resolution](Attribute-Resolution.html): Done at the time of establishing the principal, *usually* via `PrincipalResolver` components where attributes are resolved from various sources.
-* Attribute Release: Adopters must explicitly configure attribute release for services in order for the resolved attributes to be released to a service in the validation response.
+* [属性分辨率](Attribute-Resolution.html)：在建立所述主，的时间完成 *通常* 通过 `PrincipalResolver` ，其中属性是从各种来源的解析组件。
+* 属性发布：采用者必须为服务明确配置属性发布，以便在验证响应中将解析的属性发布到服务。
 
-<div class="alert alert-info"><strong>Service Management</strong><p>Attribute release may also be configured via the
-<a href="../services/Service-Management.html">Service Management tool</a>.</p></div>
+<div class="alert alert-info"><strong>服务管理</strong><p>属性发布也可以通过
+<a href="../services/Service-Management.html">服务管理工具</a>进行配置。</p></div>
 
-## Principal-Id Attribute
+## 主体ID属性
 
-Decide how CAS-protected applications should receive the authenticated userid. See [this guide](Attribute-Release-PrincipalId.html) for more info.
+确定受CAS保护的应用程序应如何接收经过身份验证的用户ID。 有关更多信息，请参见 [本指南](Attribute-Release-PrincipalId.html)
 
-## Attribute Release Policy
+## 属性发布政策
 
-Decide how CAS should release attributes to applications. See [this guide](Attribute-Release-Policies.html) for more info.
+确定CAS应该如何向应用程序释放属性。 有关更多信息，请参见 [本指南](Attribute-Release-Policies.html)
 
-## Attribute Consent
+## 属性同意
 
-Provide the ability to enforce user consent to attribute release. See [this guide](Attribute-Release-Consent.html) for more info.
+提供强制执行用户同意以释放属性的功能。 有关更多信息，请参见 [本指南](Attribute-Release-Consent.html)
 
-## Caching Attributes
+## 缓存属性
 
-Control how resolved attributes by CAS should be cached. See [this guide](Attribute-Release-Caching.html) for more info.
+控制应如何缓存CAS解析的属性。 有关更多信息，请参见 [本指南](Attribute-Release-Caching.html)
 
-## Encrypting Attributes
+## 加密属性
 
-CAS by default supports the ability to encrypt certain attributes, such as the proxy-granting ticket and the credential conditionally. The default implementation of the attribute encoder will use a per-service key-pair to encrypt sensitive attributes. See [this guide](../services/Service-Management.html) to learn more.
+默认情况下，CAS支持加密某些属性的功能，例如 票证和凭据。 属性编码器 的默认实现将使用每个服务密钥对加密敏感属性。 请参阅 [本指南](../services/Service-Management.html) 以了解更多信息。
 
-## Attribute Definitions
+## 属性定义
 
-CAS attributes may be decorated with additional metadata which can later be used depending on the requirements of the protocol and nature of the integration with a target application. To learn more, please [see this guide](Attribute-Definitions.html).
+CAS属性可以用其他元数据修饰，以后可以根据 要求和与目标应用程序集成的性质来使用这些元数据。 要了解 ，请 [请参阅本指南](Attribute-Definitions.html)。
