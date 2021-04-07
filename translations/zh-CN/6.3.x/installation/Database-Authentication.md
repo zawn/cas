@@ -1,27 +1,27 @@
 ---
-layout: default
-title: CAS - Database Authentication
-category: Authentication
+layout: 违约
+title: CAS - 数据库认证
+category: 认证
 ---
 
-# Database Authentication
+# 数据库认证
 
-Database authentication is enabled by including the following dependencies in the WAR overlay:
+通过在 WAR 叠加中包括以下依赖项，启用数据库身份验证：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-jdbc</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - jdbc</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To learn how to configure database drivers, [please see this guide](JDBC-Drivers.html).
+要了解如何配置数据库驱动程序， [请参阅本指南](JDBC-Drivers.html)。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#database-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#database-authentication)。
 
-## Password Policy Enforcement
+## 密码政策执行
 
-A certain number of database authentication schemes have limited support for detecting locked/disabled/etc accounts via column names that are defined in the CAS settings. To learn how to enforce a password policy, please [review this guide](Password-Policy-Enforcement.html).
+某些数量的数据库身份验证计划对于通过 CAS 设置中定义的列名检测锁定/禁用/等帐户 的支持有限。 要了解如何执行密码政策，请 [本指南](Password-Policy-Enforcement.html)。
