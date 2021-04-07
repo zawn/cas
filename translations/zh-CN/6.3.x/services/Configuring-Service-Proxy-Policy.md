@@ -1,46 +1,46 @@
 ---
-layout: default
-title: CAS - Configuring Service Proxy Policy
-category: Services
+layout: 违约
+title: CAS - 配置服务代理策略
+category: 服务业
 ---
 
-# Configure Proxy Authentication Policy
+# 配置代理身份验证策略
 
-Each registered application in the registry may be assigned a proxy policy to determine whether the service is allowed for proxy authentication. This means that a PGT will not be issued to a service unless the proxy policy is configured to allow it. Additionally, the policy could also define which endpoint urls are in fact allowed to receive the PGT.
+注册表中的每个注册应用程序都可能分配一个代理策略，以确定是否允许该服务进行代理身份验证。 这意味着，除非配置代理策略以允许，否则不会向服务发出 PGT。 此外，该策略还可以定义哪些端点网址实际上允许接收 PGT。
 
-Note that by default, the proxy authentication is disallowed for all applications.
+请注意，默认情况下，所有应用程序都不允许代理身份验证。
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>Think <strong>VERY CAREFULLY</strong> before allowing an application to exercise proxy authentication. Blindly authorizing an application to receive a proxy-granting ticket may produce an opportunity for security leaks and attacks. Make sure you actually need to enable those features and that you understand the why. Avoid where and when you can.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>在允许应用程序执行代理身份验证之前， <strong>非常仔细地</strong> 。 盲目授权申请接收代理授权票可能会产生安全泄漏和攻击的机会。 确保您确实需要启用这些功能，并且您了解原因。 避免在可能的地方和时间。</p></div>
 
-## Refuse
+## 拒绝
 
-Disallows proxy authentication for a service. This is default policy and need not be configured explicitly.
+不允许对服务进行代理身份验证。 这是默认策略，无需明确配置。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "proxyPolicy" : {
-    "@class" : "org.apereo.cas.services.RefuseRegisteredServiceProxyPolicy"
-  }
-}
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："测试"，
+  "名称"："测试"，
+  "id"：1，
+  "代理政策"：{
+    "@class"："org.apereo.cas.服务
+
+  。
 ```
 
-## Regex
+## 雷格克斯
 
-A proxy policy that only allows proxying to PGT urls that match the specified regex pattern.
+仅允许代理到与指定的 regex 模式匹配的 PGT 网址的代理策略。
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "testId",
-  "name" : "testId",
-  "id" : 1,
-  "proxyPolicy" : {
-    "@class" : "org.apereo.cas.services.RegexMatchingRegisteredServiceProxyPolicy",
-    "pattern" : "^https?://.*"
-  }
+•
+  "@class"："组织.apereo.cas.服务.注册服务"，
+  "服务id"："测试"，
+  "名称"："测试"，
+  "id"：1，
+  "代理政策"：{
+    "@class"："org.apereo.cas.服务.Regex注册服务"，
+    "模式"："^https？"："[。*"
+  =
 }
 ```
