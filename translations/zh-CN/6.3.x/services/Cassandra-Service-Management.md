@@ -1,30 +1,41 @@
 ---
-layout: default
-title: CAS - Cassandra Service Registry
-category: Services
+layout: 违约
+title: CAS - 卡桑德拉服务注册处
+category: 服务业
 ---
 
-# Cassandra Service Registry
+# 卡桑德拉服务注册处
 
-Stores registered service data in [Apache Cassandra](http://cassandra.apache.org/) instances. Services are expected to be found/stored in a `casservices` table with a default write consistency of `LOCAL_QUORUM` and read consistency of `ONE`.
+在阿帕奇·卡桑德拉</a> 实例中存储
 
-Support is enabled by adding the following module into the overlay:
+注册服务数据。 服务预计将被发现/存储在 `砂锅` 表与默认书写一致性 `LOCAL_QUORUM` 和读取一致性 `一`。</p> 
+
+支持通过在覆盖中添加以下模块来实现：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-cassandra-service-registry</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-卡桑德拉-服务-注册</artifactId>
      <version>${cas.version}</version>
 </dependency>                                                            
 ```
 
-## Configuration
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#cassandra-service-registry).
 
-## Troubleshooting
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+## 配置
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#cassandra-service-registry)。
+
+
+
+## 故障 排除
+
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
+
+
 
 ```xml
 ...
@@ -35,6 +46,9 @@ To enable additional logging, configure the log4j configuration file to add the 
 ...
 ```
 
-## Auto Initialization
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+
+
+## 自动初始化
+
+在启动和配置允许的情况下，注册表能够自动从 CAS 可用的默认 JSON 服务定义中初始化。 有关详细信息，请参阅本指南</a> 。</p>
