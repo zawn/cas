@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Password Management
-category: Password Management
+layout: 默认
+title: CAS-密码管理
+category: 密码管理
 ---
 
-# Password Management - LDAP
+# 密码管理-LDAP
 
-The account password and security questions may be stored inside an LDAP server.
+帐户密码和安全性问题可以存储在LDAP服务器中。
 
-LDAP support is enabled by including the following dependencies in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用LDAP支持：
 
 ```xml
 <dependency>
@@ -18,4 +18,4 @@ LDAP support is enabled by including the following dependencies in the WAR overl
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ldap-password-management).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ldap-password-management)。
