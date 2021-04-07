@@ -1,41 +1,41 @@
 ---
-layout: default
-title: CAS - X.509 Authentication
-category: Authentication
+layout: 默认
+title: CAS-X.509身份验证
+category: 验证
 ---
 
-# X.509 Authentication
+# X.509验证
 
-CAS X.509 authentication components provide a mechanism to authenticate users who present client certificates during the SSL/TLS handshake process. The X.509 components require configuration outside the CAS application since the SSL handshake happens outside the servlet layer where the CAS application resides. There is no particular requirement on deployment architecture (i.e. Apache reverse proxy, load balancer SSL termination) other than any client certificate presented in the SSL handshake be accessible to the servlet container as a request attribute named `javax.servlet.request.X509Certificate`. This happens naturally for configurations that terminate SSL connections directly at the servlet container and when using `Apache/mod_jk`; for other architectures it may be necessary to do additional work.
+CAS X.509身份验证组件提供了一种机制，用于在SSL / TLS握手过程为 X.509组件需要在CAS应用程序外部进行配置，因为 SSL握手发生在CAS应用程序所在的servlet层外部。 部署架构没有特别要求 证书之外，Apache反向代理，负载平衡器SSL终止） `javax.servlet.request.X509Certificate`的请求属性被servlet容器访问。 对于直接在servlet容器处 `Apache / mod_jk`时的配置，自然会发生这种情况。对于其他体系结构，可能需要做 附加工作。
 
-CAS can be configured to extract an X509 certificate from a header created by a proxy running in front of CAS.
+可以将CAS配置为从在CAS前面运行的代理创建的标头中提取X509证书。
 
-## Overview
+## 概述
 
-Certificates are exchanged as part of the SSL (also called TLS) initialization that occurs when any browser connects to an `https` website. A certain number of public CA certificates are preinstalled in each browser. It is assumed that:
+证书作为SSL（也称为TLS）初始化的一部分进行交换，当任何浏览器连接到 `https` 网站时，证书就会发生初始化。 每个浏览器中预先安装了一定数量的公共CA证书。 假定：
 
-- Your organization is already able to generate and distribute certificates that a user can install in their browser
-- Somewhere in that certificate there is a field that contains the Principal name or can be easily mapped to the Principal name that CAS can use.
+- 您的组织已经能够生成和分发用户可以在其浏览器中安装的证书
+- 该证书中的某个位置包含一个字段，该字段包含主体名称或可以轻松地映射为CAS可以使用的主体名称的
 
-The remaining problem is to make sure that the browsers, servers and Java are all prepared to support these institutional certificates and, ideally, that these institutional certificates will be the only ones exchanged when a browser connects to CAS.
+剩下的问题是确保浏览器，服务器和Java都准备好支持 这些机构证书，理想情况下，应 这些机构证书将是在浏览器连接到CAS时唯一交换的证书。
 
-## Flow
+## 流动
 
-When a browser connects to CAS over an https: URL, the server identifies itself by sending its own certificate. The browser must already have installed a certificate identifying and trusting the CA that issued the CAS Server certificate. If the browser is not already prepared to trust the CAS server, then an error message pops up saying the server is not trusted.
+当浏览器通过https：URL连接到CAS时，服务器通过发送自己的证书来标识自己。 浏览器必须已经安装了一个证书，该证书标识并信任颁发CAS Server证书的CA。 如果浏览器尚未准备好信任CAS服务器，则会弹出一条错误消息，指出该服务器不受信任。
 
-After the Server sends the certificate that identifies itself, it then can then send a list of names of Certificate Authorities from which it is willing to accept certificates. Ideally, this list will include only one name; the name of the internal institutional CA that issues internal intranet-only certificates that internally contain a field with the CAS Principal name.
+服务器发送可标识其自身的证书后，然后可以发送愿意接受证书 理想情况下，此列表将仅包含一个名称。内部机构CA的名称 ，该机构颁发内部专用内部证书的证书，该证书内部包含具有CAS主体名称的字段。
 
-A user may install any number of certificates into the browser from any number of CA's. If only one of these certificates comes from a CA named in the list of acceptable CA's sent by the server, then most browsers will automatically send that one certificate without asking, and some can be configured in to not ask when there is only one possible choice. This presents a user experience where CAS becomes transparent to the user after some initial setup and the login happens automatically. However, if the server hosting CAS sends more than one CA name in the list and that matches more than one certificate on the browser, then the user will get prompted to choose a Certificate from the list. A user interaction defeats much of the purpose of certificates in CAS.
+用户可以从任意数量的CA将任意数量的证书安装到浏览器中。 如果这些证书中只有一个证书 来自服务器发送的可接受CA列表中命名的CA，则大多数浏览器将自动发送该 个证书而不询问，并且可以将其中一些证书配置为不询问何时只有一个证书可能的选择。 此 表示用户体验，其中在进行一些初始设置后CAS对用户透明，并且登录自动 然而，如果托管CAS服务器的列表，并符合多个发送多个CA名 浏览器上的一个证书，那么用户将得到提示，从列表中选择一个证书。 用户交互 破坏了CAS中证书的许多目的。
 
-Note that CAS does not control this exchange. It is handled by the underlying server. You may not have the control to require the server to vend only one CA name when a browser visits CAS. So if you want to use X.509 certificates in CAS, you should consider this requirement when choosing the hosting environment. The ideal situation is to select a server that can identify itself with a public certificate issued by something like VeriSign or InCommon but then require the client certificate only be issued by the internal corporate/campus authority.
+请注意，CAS不控制此交换。 它由基础服务器处理。 您可能无法将控件设置为 要求浏览器访问CAS时服务器仅出售一个CA名称。 因此，如果要在CAS中使用X.509证书（ ，则在选择托管环境时应考虑此要求。 理想的情况是选择一个服务器 ，该服务器可以使用VeriSign或InCommon之类的公用证书来标识自己，但要求 客户端证书仅由内部公司/校园机构颁发。
 
-When CAS gets control, a user certificate may have been presented by the browser and be stored in the request. The CAS X.509 authentication machinery examines that certificate and verifies that it was issued by the trusted institutional authority. Then CAS searches through the fields of the certificate to identify one or more fields that can be turned into the principal identifier that the applications expect.
+当CAS获得控制权时，浏览器可能已经提供了用户证书，并且用户证书中存储 CAS X.509身份验证机制检查该证书 并验证该证书是由受信任的机构颁发的。 然后，CAS ，以标识一个或多个可以将 转换为应用程序期望的主体标识符的字段。
 
-While an institution can have one certificate authority that issues certificates to employees, clients, machines, services, and devices, it is more common for the institution to have a single "root" certificate authority that in its entire existence only issues a handful of certificates. Each of these certificates identifies a secondary Certificate Authority that issues a particular category of certificates (to students, staff, servers, etc.). It is possible to configure CAS to trust the root Authority and, implicitly, all the secondary authorities that it creates. This, however, makes CAS only as secure as the least reliable secondary Certificate Authority created by the institution. At some point in the future, some manager will buy a product that requires a new class of certificates. He will ask to create a Certificate Authority that vends these certificates to the machines running this new product. He will then turn administration of this mess over to a junior programmer or consultant. If CAS trusts any certificate issued by any Authority created by the root, it will trust a fraudulent certificate forged by someone who has acquired control of what was intended to be a special purpose, isolated CA. Therefore, it is better to configure CAS to only accept certificates from the one secondary CA specifically expected to issue credentials to individuals, instead of trusting the institutional root CA.
+虽然一个机构可以具有一个向员工，客户， 台机器，服务和设备颁发证书的证书颁发机构，但更常见的是，该机构只有一个“根”证书 颁发机构，而在整个机构中它仅颁发了少数几个证书证书。 这些证书中的每个 标识一个辅助证书颁发机构 ，该证书颁发机构1向（学生，职员，服务器等）颁发特定类别的证书。 可以将 以信任根颁发机构，也可以隐式信任它创建的 但是，这使CAS仅与该 最不可靠的辅助证书颁发机构一样安全。 在将来的某个时刻， 要求新级别证书的产品。 他将要求创建一个 证书颁发机构，将这些证书出售给运行此新产品的计算机。 然后，他 将把这个混乱的管理交给初级 程序员或顾问。 如果CAS信任由根创建的任何颁发机构颁发的任何证书，则 将信任由已获得控制意图的人伪造的欺诈性证书 旨在作为特殊目的的独立CA。 因此，最好将CAS配置为仅从 个人颁发凭据的二级CA 证书，而不是信任机构根CA。
 
-## Configuration
+## 配置
 
-X.509 support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖关系来启用X.509支持：
 
 ```xml
 <dependency>
@@ -45,53 +45,55 @@ X.509 support is enabled by including the following dependency in the WAR overla
 </dependency>
 ```
 
-The X.509 handler technically performs additional checks _after_ the real SSL client authentication process performed by the Web server terminating the SSL connection. Since an SSL peer may be configured to accept a wide range of certificates, the CAS X.509 handler provides a number of properties that place additional restrictions on acceptable client certificates.
+X.509处理程序从技术上讲在Web服务器终止SSL连接 的实际SSL客户端身份验证过程之后</em> _ 由于SSL对等方可以配置为接受范围广泛的 证书，因此CAS X.509处理程序提供了许多属性，这些属性对 可接受的客户端证书设置了附加限制。</p>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#x509-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#x509-authentication)。
 
-## Web Server Configuration
+## Web服务器配置
 
-X.509 configuration requires substantial configuration outside the CAS Web application. The configuration of Web server SSL components varies dramatically with software and is outside the scope of this document. We offer some general advice for SSL configuration:
+X.509配置需要在CAS Web应用程序之外进行大量配置。 服务器SSL组件的配置因软件而异，不在本文档讨论范围之内。 对于SSL配置，我们提供了
 
-* Configuring SSL components for optional client certificate behavior generally provides better user experience. Requiring client certificates prevents SSL negotiation in cases where the certificate is not present, which prevents user-friendly server-side error messages.
-* Accept certificates only from trusted issuers, generally those within your PKI.
-* Specify all certificates in the certificate chain(s) of allowed issuers.
+* 为可选的客户端证书行为配置SSL组件通常可以提供更好的用户体验。 如果不存在证书，则要求客户端证书可防止SSL协商，从而避免了 用户友好的服务器端错误消息。
+* 仅接受来自受信任的颁发者（通常是您的PKI内的颁发者）的证书。
+* 在允许的发行者的证书链中指定所有证书。
 
-### Embedded Web Server
+### 嵌入式Web服务器
 
-While instructions here generally apply to an external server deployment such as Apache Tomcat, that is not a hard requirement. X.509 authentication can be achieved with an embedded Apache Tomcat container that ships with CAS and can be potentially simplify the configuration and automation steps quite a bit, depending on use case and behavior. The configuration of certificate and trust stores as well as behavior and enforcement of client authentication can also be managed directly by CAS.
+尽管此处的说明通常适用于外部服务器部署（例如Apache Tomcat），但 不是硬性要求。 X.509身份验证可以使用随CAS一起提供的嵌入式Apache Tomcat 容器来实现，并且可以根据使用情况和行为来极大地简化配置和自动化步骤 证书和信任存储 的配置以及客户端身份验证的行为和实施也可以直接由CAS管理。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#embedded-container).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#embedded-container)。
 
-#### Optional (Mixed) Authentication
+#### 可选（混合）身份验证
 
-When using an [embedded Apache Tomcat container](Configuring-Servlet-Container.html), it may be required to allow the user to select either X.509 authentication or the usual CAS login flow without first being prompted. In this scenario, the user is allowed the option to select a login flow via X.509 at which time the browser would present a dialog prompt asking for a certificate selection and then passing it onto CAS to proceed.
+当使用 [嵌入式Apache Tomcat容器](Configuring-Servlet-Container.html)，可能需要 才能允许用户选择X.509身份验证或通常的CAS登录流程而无需首先提示。 在这种情况下，允许用户选择通过X.509选择登录流，这时浏览器将向 提示对话框提示您选择证书，然后将其传递到CAS进行操作。
 
-This behavior is achieved by exposing a dedicated port for the embedded Apache Tomcat container that may forcefully require X.509 authentication for login and access. Doing so should automatically allow for an extra login option in the user interface to trigger the browser for X.509.
+通过公开嵌入式Apache Tomcat容器的专用端口（ 可能会强制要求X.509身份验证进行登录和访问）来实现此行为。 这样做应自动 登录选项，以触发X.509的浏览器。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#x509-authentication).
+要查看CAS属性的相关列表，请 [本指南](../configuration/Configuration-Properties.html#x509-authentication)。
 
-### External Apache Tomcat
+### 外部Apache Tomcat
 
-Anything said here extends the [Apache Tomcat reference for SSL](https://tomcat.apache.org/tomcat-9.0-doc/ssl-howto.html).
+这里所说的一切扩展了</a>Apache Tomcat参考。</p> 
 
-The Tomcat server is configured in `$CATALINA_HOME/conf/server.xml` with one or more `<Connector>` elements. Each of these elements defines one port number on which Tomcat will listen for requests. Connectors that support SSL are configured with one or two files that represent a collection of X.509 certificates.
+`$CATALINA_HOME/conf/server.xml` 使用一个或多个 `<Connector>` 元素配置Tomcat服务器。 这些元素中的每个 定义了一个端口号，Tomcat将在该端口号上侦听请求。 支持SSL的连接器配置有一个或两个文件 ，这些文件表示X.509证书的集合。
 
-- The `keystoreFile` is a collection of X.509 certificates one of which Tomcat will use to identify itself to browsers. This certificate contains the DNS name of the server on which Tomcat is running which the HTTP client will have used as the server name part of the URL. It is possible to use a file that contains multiple certificates (in which case Tomcat will use the certificate stored under the alias "Tomcat" or, if that is not found, will use the first certificate it finds that also has an associated private key). However, to assure that no mistakes are made it is sensible practice to use a file that has only the one host certificate, plus of course its private key and chain of parent Certificate Authorities.
+- `keystoreFile` 是X.509证书的集合，Tomcat将使用其中的一个将其自身标识给 浏览器。 该证书包含运行Tomcat的服务器的DNS名称，HTTP客户端 将用作URL的服务器名称部分。 它可以使用包含多个文件 证书（在这种情况下Tomcat将使用别名“Tomcat的”或下存储的证书，如果 没有找到，将使用它发现也具有相关联的私人所述第一证书钥匙）。 但是， 是明智的做法，即使用仅包含一个主机 证书的文件，当然还要使用其私钥和父证书颁发机构的链。
 
-- The `truststoreFile` is a collection of X.509 certificates representing Certificate Authorities from which Tomcat is willing to accept user certificates. Since the `keystoreFile` contains the CA that issued the certificate identifying the server, the `truststoreFile` and `keystoreFile` could be the same in a CAS configuration where the URL (actually the port) that uses X.509 authentication is not the well know widely recognized URL for interactive (userid/password form) login, and therefore the only CA that it trusts is the institutional internal CA.
+- `truststoreFile` 是代表证书颁发机构的X.509证书的集合， 愿意从中接受用户证书。 由于 `keystoreFile` 包含颁发证书标识服务器的CA， 的 `truststoreFile` 和 `keystoreFile` 可以在一个CAS的配置相同的其中的URL（实际的端口），其使用X.509认证 不众所周知的交互式（用户名/密码形式）登录URL已广为人知，因此 是机构内部的CA。
 
-One strategy if you are planning to support both X.509 and userid/password validation through the same port is to put a public (VeriSign, Thawte) certificate for this server in the `keystoreFile`, but then put only the institutional internal CA certificate in the `truststoreFile`. Logically and in all the documentation, the Certificate Authority that issues the certificate to the server which the browser trusts is completely and logically independent of the Certificate Authority that issues the certificate to the user which the server then trusts. Java keeps them separate, Tomcat keeps them separate, and browsers should not be confused if, during SSL negotiation, the server requests a user certificate from a CA other than the one that issued the server's own identifying certificate. In this configuration, the Server issues a public certificate every browser will accept and the browser is strongly urged to send only a private institutional certificate that can be mapped to a Principal name.
+如果您计划通过同一端口同时支持X.509和用户ID /密码验证，则一种策略是 公用（VeriSign，Thawte）证书放入 `keystoreFile`，然后仅将机构 内部 `truststoreFile中的CA证书`。 从逻辑上讲，所有的文档中， 证书颁发机构颁发证书到 服务器，浏览器信任是完全和逻辑上独立的证书颁发机构是问题的 证书给用户，然后在服务器信任。 Java将它们分开，Tomcat将它们分开，并且如果在SSL协商期间服务器请求来自CA的用户证书而不是颁发服务器自己的标识证书 在此配置中，服务器 并且强烈建议该浏览器仅发送可映射到主体名称 
 
-<div class="alert alert-info"><strong>Almost There</strong><p>If you previously configured CAS without 
-X.509 authentication, then you probably have the <code>keystoreFile</code> already configured and
-loaded with a certificate identifying this server. All you need to add is the <code>truststoreFile</code> part.</p></div>
+<div class="alert alert-info"><strong>差不多好了</strong><p>如果以前配置的CAS没有 
+X.509身份验证，则可能已经配置 <code>keystoreFile</code>
+加载了标识此服务器的证书。 您需要添加的只是 <code>truststoreFile</code> 部分。</p></div>
 
-The configured connector will look something like:
+配置的连接器将如下所示：
+
+
 
 ```xml
-<!-- Define a SSL HTTP/1.1 Connector on port 443 -->
-<!-- if you do not specify a truststoreFile, then the default java "cacerts" truststore will be used-->
+<！-在端口443上定义SSL HTTP / 1.1连接器>
+<！-如果未指定truststoreFile，则将使用默认的java“ cacerts”信任库–>
 <Connector port="443"
     maxHttpHeaderSize="8192"
     maxThreads="150"
@@ -110,17 +112,20 @@ The configured connector will look something like:
     truststorePass="secret" />
 ```
 
-The `clientAuth="want"` tells Tomcat to request that the browser provide a user certificate if one is available. If you want to force the use of user certificates, replace `"want"` with `"true"`. If you specify `"want"` and the browser does not have a certificate, then CAS may forward the request to the login form.
 
-The keystore can be in `JKS` or `PKCS12` format when using Tomcat. When using both `PKCS12` and JKS keystore types then you should specify the type of each keystore by using the `keystoreType` and `truststoreType` attributes.
+`clientAuth =“ want”` 告诉Tomcat请求浏览器提供用户证书（如果有）。 如果要强制使用用户证书为 `“ want”` 替换为 `“ true”`。 如果您指定 `“ want”` 并且浏览器没有证书，则CAS可能会将请求转发到登录表单。
 
-You may import the certificate of the institutional Certificate Authority (the one that issues User certificates) using the command:
+使用Tomcat时，密钥库的 `JKS` 或 `PKCS12` 当同时使用 `PKCS12` 和JKS密钥库类型 `keystoreType` 和 `truststoreType` 属性指定每个密钥库的类型。
+
+您可以使用以下命令导入机构证书颁发机构（颁发用户证书的证书）的证书：
+
+
 
 ```bash
-# Create a blank keystore to start from scratch if needed
-# keytool -genkey -keyalg RSA -alias "selfsigned" -keystore myTrustStore.jks -storepass "secret" -validity 360
-# keytool -delete -alias "selfsigned" -keystore myTrustStore.jks
+＃创建一个空白的密钥库（如果需要从头开始）
+＃keytool -genkey -keyalg RSA -alias“ selfsigned” -keystore myTrustStore.jks -storepass“ secret” -validity 360
+＃keytool -delete -alias“ selfsigned” -keystore myTrustStore .jks
 
-keytool -import -alias myAlias -keystore /path/to/myTrustStore.jks -file certificateForInstitutionalCA.crt
+keytool-导入-alias myAlias -keystore /path/to/myTrustStore.jks -file certificateForInstitutionalCA.crt
 ```
 
