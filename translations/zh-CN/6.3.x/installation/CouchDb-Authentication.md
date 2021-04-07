@@ -1,18 +1,18 @@
 ---
-layout: default
-title: CAS - CouchDb Authentication
+layout: 违约
+title: 中科院 - 沙发数据库认证
 ---
 
-# CouchDb Authentication
+# 沙发数据库身份验证
 
-Verify and authenticate credentials against a [CouchDb](http://couchdb.apache.org/) instance via pac4j. CAS will automatically create the design documents required by pac4j. Support is enabled by including the following dependency in the WAR overlay:
+通过pac4j对 [CouchDb](http://couchdb.apache.org/) 实例进行验证和验证凭据。 CAS 将自动创建 pac4j 所需的设计文档。 支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-couchdb-authentication</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - 沙发 - 认证</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchdb-authentication).
+要查看 CAS 物业的相关列表，请 [](../configuration/Configuration-Properties.html#couchdb-authentication)查看本指南。
