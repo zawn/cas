@@ -1,69 +1,69 @@
 ---
-layout: default
-title: CAS - Delegate Authentication w/ SAML2 Identity Providers
-category: Authentication
+layout: 违约
+title: CAS - 授权身份认证/SAML2 身份提供商
+category: 认证
 ---
 
-# Delegated Authentication w/ SAML2
+# 授权身份验证/SAML2
 
-In the event that CAS is configured to delegate authentication to an external identity provider, the service provider (CAS) metadata as well as the identity provider metadata automatically become available at the following endpoints:
+如果 CAS 配置为将身份验证委托给外部身份提供商，服务提供商 （CAS） 元数据以及身份提供商元数据在以下端点自动可用：
 
-| Endpoint                        | Description                                                                                         |
-| ------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `/sp/metadata`                  | Displays the service provider (CAS) metadata. Works well if there is only one SAML2 IdP is defined. |
-| `/sp/idp/metadata`              | Displays the identity provider metadata. Works well if there is only one SAML2 IdP is defined.      |
-| `/sp/{clientName}/metadata`     | Displays the service provider metadata for the requested client name.                               |
-| `/sp/{clientName}/idp/metadata` | Displays the identity provider metadata for the requested client name.                              |
+| 端点                         | 描述                                          |
+| -------------------------- | ------------------------------------------- |
+| `/sp/元数据`                  | 显示服务提供商 （CAS） 元数据。 如果定义只有一个SAML2 IDP，则效果良好。 |
+| `/sp/idp/元数据`              | 显示身份提供商元数据。 如果定义只有一个SAML2 IDP，则效果良好。        |
+| `/{clientName}/元数据`        | 显示所请求的客户名的服务提供商元数据。                         |
+| `/sp/{clientName}/idp/元数据` | 显示所请求的客户名的身份提供商元数据。                         |
 
-Note that you can use more than one external identity provider with CAS, where each integration may be done with a different set of metadata and keys for CAS acting as the service provider. Each integration (referred to as a client, since CAS itself becomes a client of the identity provider) may be given a name optionally.
+请注意，您可以使用 CAS 的多个外部身份提供商，其中每个集成都可以 使用一组不同的元数据和作为服务提供商的 CAS 密钥完成。 每个集成（称为客户端， ，因为 CAS 本身成为身份提供商的客户端）可以任选地命名。
 
-Remember that the service provider (CAS) metadata is automatically generated once you access the above endpoints or view the CAS login screen. This is required because today, generating the metadata requires access to the HTTP request/response. In the event that metadata cannot be resolved, a status code of `406 - Not Acceptable` is returned.
+请记住，当您访问上述端点或查看 CAS 登录屏幕时 ，会自动生成服务提供商 （CAS） 元数据。 这是必要的，因为今天，生成元数据需要 访问HTTP请求/响应。 如果元数据无法 解决，则返回 `406 - 不能接受` 的状态代码。
 
-## Identity Provider Discovery Service
+## 身份提供商发现服务
 
-<div class="alert alert-info"><strong>Note</strong><p>Using identity provider discovery requires 
-delegated authentication to be available as the feature cannot be used on its own
-as a standalone discovery service.</p></div>
+<div class="alert alert-info"><strong>注意</strong><p>使用身份提供商发现需要 
+委托身份验证可用，因为该功能不能
+作为独立发现服务使用。</p></div>
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-saml-idp-discovery</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 萨姆尔 - 伊德普发现</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-Identity provider discovery allows CAS to [embed and present a discovery service](https://wiki.shibboleth.net/confluence/display/EDS10/Embedded+Discovery+Service) as part of delegated authentication. Configured SAML2 identity providers in the CAS configuration used for delegated authentication are presented as options for discovery.
+身份提供商发现允许 CAS [嵌入并提供发现服务](https://wiki.shibboleth.net/confluence/display/EDS10/Embedded+Discovery+Service) 作为委托身份验证的一部分。 用于委托身份验证的 CAS 配置 中的 SAML2 身份提供商作为发现选项呈现。
 
-CAS is also able to directly consume multiple JSON feeds that contain discovery metadata about available identity providers. The discovery JSON feed may be fetched from a URL (i.e. exposed by a Shibboleth Service Provider) or it may directly be consumed as a JSON file with the following structure:
+CAS 还能够直接消耗多个 JSON 源 ，其中包含有关可用身份提供商的发现元数据。 发现 JSON 源 可能从 URL（即由 Shibboleth 服务提供商曝光）获取，也可以 直接用作具有以下结构的 JSON 文件：
 
 ```json
 [{
- "entityID": "https://idp.example.net/idp/saml",
- "DisplayNames": [{
-  "value": "Example.net",
-  "lang": "en"
-  }],
- "Descriptions": [{
-  "value": "An identity provider for the people, by the people.",
-  "lang": "en"
-  }],
- "Logos": [{
-  "value": "https://example.net/images/logo.png",
-  "height": "90",
-  "width": "62"
-  }]
-}]
+ "实体ID"："https://idp.example.net/idp/saml"，
+ "显示名称"：[
+  "价值"："Example.net"，
+  "lang"："en"
+  }]，
+ "描述"：[{
+  "价值"："人民的身份提供者，
+  "lang"："en"
+  []，
+ "Logos"：[
+  "价值"："https://example.net/images/logo.png"，
+  "高度"："90"，
+  "宽度"："62"
+  []
+[]
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#saml2-identity-provider-discovery).
+要查看 CAS 物业的相关列表，请 [](../configuration/Configuration-Properties.html#saml2-identity-provider-discovery)查看本指南。
 
-The following endpoints are available:
+提供以下端点：
 
-| Endpoint                  | Description                                                              |
-| ------------------------- | ------------------------------------------------------------------------ |
-| `/idp/discovery`          | Identity provider discovery landing page.                                |
-| `/idp/discovery/feed`     | Identity provider discovery JSON feed.                                   |
-| `/idp/discovery/redirect` | Return endpoint to let CAS invoke the identity provider after selection. |
+| 端点            | 描述                      |
+| ------------- | ----------------------- |
+| `/idp/发现`     | 身份提供商发现着陆页。             |
+| `/idp/发现/馈送`  | 身份提供商发现 JSON 源。         |
+| `/idp/发现/重定向` | 返回终点，让 CAS 在选择后调用身份提供商。 |
 
-Applications may directly invoke the discovery service via `[cas-server-prefix]/idp/discovery`. The discovery service may also be invoked using the discovery protocol via `[cas-server-prefix]/idp/discovery?entityID=[service-provider-entity-id]&return=[cas-server-prefix]/idp/discovery/redirect`. Additional parameters may be included as part of the `return` url and they all must be encoded.
+申请可直接通过 `[cas-server-prefix]/idp/发现`调用发现服务。 发现服务也可能 使用发现协议通过 `[cas-server-prefix]/idp/发现？实体ID=[service-provider-entity-id]&返回=[cas-server-prefix]/idp/发现/重定向`。 其他参数可以作为 `返回` 网址的一部分，并且必须对它们进行编码。
