@@ -1,23 +1,30 @@
 ---
-layout: default
-title: CAS - Okta Authentication
-category: Authentication
+layout: 违约
+title: CAS - 冈田认证
+category: 认证
 ---
 
-# Okta Authentication
+# 冈田认证
 
-The integration with Okta is a convenience wrapper around [Okta's Authentication API](https://developer.okta.com/docs/api/resources/authn.html) and is useful if you need to accept and validate credentials managed by Okta.
+与 Okta 的集成是围绕 okta 身份验证 API</a>
 
-## Configuration
+的便于包装，如果您需要接受和验证 Okta 管理的凭据， 是有用的。</p> 
 
-Support is enabled by including the following dependency in the WAR overlay:
+
+
+## 配置
+
+支持通过在 WAR 叠加中包括以下依赖性来启用：
+
+
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-okta-authentication</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - okta - 认证</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#okta-authentication).
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#okta-authentication)。
