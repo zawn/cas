@@ -1,28 +1,28 @@
 ---
-layout: default
-title: CAS - Git Service Registry
-category: Services
+layout: 违约
+title: CAS - Git 服务注册处
+category: 服务业
 ---
 
-# Git Service Registry
+# 吉特服务注册处
 
-This registry reads services definitions from remote or local git repositories. Service definition files are expected to be either [JSON](JSON-Service-Management.html) or [YAML](YAML-Service-Management.html) files. The contents of the repository is pulled at defined intervals and changes to service definitions are committed and pushed to the defined remotes.
+此注册表读取远程或本地 git 存储库的服务定义。 服务定义文件预计将 [JSON](JSON-Service-Management.html) 或 [YAML](YAML-Service-Management.html) 文件。 存储库的内容按定义的间隔拉取，并致力于对服务定义进行更改，并 推至定义的遥控器。
 
-Support is enabled by adding the following module into the overlay:
+支持通过在覆盖中添加以下模块来实现：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-git-service-registry</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>卡-服务器-支持-git-服务-注册</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#git-service-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#git-service-registry)。
 
-<div class="alert alert-warning"><strong>No Interference!</strong><p>
-Be careful to not manually modify the state of the git repository directory that is cloned on the local server. By doing so, you risk 
-interfering with CAS' own service management processes and ultimately may end up corrupting the state of the git repository.
+<div class="alert alert-warning"><strong>无干扰！</strong><p>
+小心不要手动修改本地服务器上克隆的 git 存储库目录的状态。 这样做，您可能会 
+干扰 CAS 自身的服务管理流程，最终可能会损坏 git 存储库的状态。
 </p></div>
 
-The service registry is also able to auto detect changes as it will pull changes from defined remotes periodically. It will monitor changes to recognize file additions, removals and updates and will auto-refresh CAS so changes may happen instantly.
+服务注册表还能够自动检测更改，因为它会定期从定义的遥控器中提取更改。 它将监控更改以识别 文件添加、删除和更新，并将自动刷新 CAS，以便更改可能立即发生。
