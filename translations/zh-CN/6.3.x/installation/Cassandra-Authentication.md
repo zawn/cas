@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Apache Cassandra Authentication
-category: Authentication
+layout: 默认
+title: CAS-Apache Cassandra身份验证
+category: 验证
 ---
 
-# Apache Cassandra Authentication
+# Apache Cassandra身份验证
 
-Verify and authenticate credentials using [Apache Cassandra](http://cassandra.apache.org/).
+[Apache Cassandra](http://cassandra.apache.org/)验证和认证凭据。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,4 +18,4 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#cassandra-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#cassandra-authentication)。
