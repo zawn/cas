@@ -1,166 +1,166 @@
 ---
-layout: default
-title: CAS - High Availability Guide
-category: High Availability
+layout: 默认
+title: CAS-高可用性指南
+category: 高可用性
 ---
 
-# High Availability Guide (HA/Clustering)
+# 高可用性指南（HA /群集）
 
-A highly available CAS deployment is one that offers resilience in response to various failure modes such that CAS continues to offer SSO services despite failures. We offer a recommended architecture that provides a starting point for planning and executing a CAS deployment that meets institutional performance and availability requirements. It also provides a framework for understanding CAS software component requirements imposed by HA considerations.
+高可用性的CAS部署是一种对各种故障模式做出响应的弹性，因此， 仍可继续提供SSO服务。 我们提供了一种推荐的体系结构，该体系结构为 计划和执行满足机构性能和可用性要求的CAS部署提供了起点。 它还提供了一个框架，用于理解由HA考虑所强加的CAS软件组件要求。
 
-A high availability (HA) configuration of CAS is achieved by ensuring there is adequate redundancy so that the service is robust in the face of component failures and that routine maintenance can be done without service downtime. This can be achieved with multi-node and to a lesser degree with single-node CAS with advanced virtual machine capabilities. This document will focus on the CAS Server components required to achieve HA. A more quantitative analysis of HA configuration depends on supporting infrastructure and services and is beyond the scope of this document.
+CAS的高可用性（HA）配置是通过确保有足够的冗余来实现的，以便 ，并且可以在不停机的情况下进行例行维护。 这可以使用多节点来实现，而使用具有高级虚拟机功能的单节点CAS则可以在较小程度上实现。 本文档将重点介绍实现HA所需的CAS Server组件。 对HA配置 更定量分析取决于所支持的基础结构和服务，这超出了本文档的范围。
 
-The CAS Server software has had a great track record of being extremely reliable. However, the CAS Server is only a small part of software and hardware that authentication has to traverse to work smoothly. Clustering has typically been used by deployers not only for load handling but also for fail-over. Even if a failure does not occur, it is sometimes desirable to restart a server. For example, if a serious security fix at the operating system level was installed, the server should be restarted immediately. In a cluster of CAS servers, this could be easily accomplished with a rolling restart even during the busiest time.
+CAS Server软件具有非常可靠的良好记录。 然而，CAS服务器仅仅是一个 的软件和硬件的小部分认证已遍历工作的顺利开展。 部署程序通常将群集 ，不仅用于负载处理，还用于故障转移。 即使未发生故障，有时也希望重新启动服务器 例如，如果在操作系统级别严重的安全修补程序 安装，服务器应立即重新启动。 在CAS服务器集群中，即使在最繁忙的时间内
 
-Operating a single server traditionally would delay such a restart until a less busy time, while running with a known vulnerability. However, more recently with the growing acceptance of virtual machine technology and its inherent redundancy and fault tolerance, single node CAS has been able to achieve similar qualities.
+漏洞时，操作单个服务器会将这样的重新启动延迟到不太繁忙的时间。 但是，最近随着虚拟机技术及其固有的 冗余和容错能力的日益普及，单节点CAS已经能够达到类似的质量。
 
 
-## Recommended Architecture
-The following diagram highlights the vital aspects of a highly available CAS deployment.
+## 推荐架构
+下图突出显示了高可用性CAS部署的关键方面。
 
-![Recommended HA Architecture](../images/recommended_ha_architecture.png "Recommended HA Architecture")
+![推荐的HA架构](../images/recommended_ha_architecture.png "推荐的HA架构")
 
-It's worth pointing out some important characteristics of this architecture:
+值得指出此体系结构的一些重要特征：
 
-* Dependent systems can tolerate up to N-1 node failures. (Where N is the total number of nodes.)
-* CAS itself can tolerate up to N-1 node failures.
-* Loss of a cache node DOES NOT cause loss of SSO state data (i.e. tickets) in replicating caches.
-* Loss of a cache node MAY cause loss of SSO state data in non-replicating caches (e.g. memcached).
-* Loss of SSO state data is always graceful: users simply re-authenticate.
+* 相关系统最多可以承受N-1个节点故障。 （其中N是节点总数。）
+* CAS本身最多可以承受N-1个节点故障。
+* 缓存节点的丢失不会导致复制缓存中SSO状态数据（即票证）丢失。
+* 缓存节点的丢失可能会导致非复制缓存（例如memcached）中SSO状态数据的丢失。
+* SSO状态数据的丢失总是很正常的：用户只需重新进行身份验证即可。
 
-Before proceeding into a detailed discussion of various aspects of the recommended architecture, we offer a guiding principle for planning a highly available deployment:
+在继续详细讨论建议的体系结构的各个方面之前，我们为规划高可用性部署
 
-<div class="alert alert-info"><strong>Aim for Simplicity</strong><p>Design the simplest solution that meets performance and availability requirements.</p></div>
+<div class="alert alert-info"><strong>追求简单</strong><p>设计满足性能和可用性要求的最简单的解决方案。</p></div>
 
-Experience has shown that simplicity is a vital system characteristic of successful and robust HA deployments. Strive for simplicity and you will be well served.
+经验表明，简单性是成功且强大的HA部署的重要系统特征。 力求简单，您将得到很好的服务。
 
 
-## Deployment Scenarios
+## 部署方案
 
-### Single-node CAS, HA VM Infrastructure
-High availability can be achieved by implementing a single-node CAS running in a sophisticated virtualized environment. This approach to high availability is attractive in the sense that it simplifies the CAS server configuration but requires hardware virtualization technology that may not be present and available.
+### 单节点CAS，HA VM基础结构
+通过实现在复杂的虚拟化环境中运行的单节点CAS可以实现高可用性。 从某种意义上说，这种简化方法可以简化CAS服务器配置，但 需要硬件虚拟化技术，而这种技术可能不存在且不可用，因此具有吸引力。
 
-#### Physical Architecture
-In a single-node VM architecture, the CAS server, along with the necessary prerequisites and software dependencies is deployed in a single host VM. Under this deployment scenario the default in-memory Ticket Registry is sufficient and no Servlet Session replication is required. This simplifies the deployment configuration and is the recommended approach if the VM infrastructure is sufficient to meet HA and scalability needs.
+#### 物理架构
+在单节点VM体系结构中，CAS服务器以及必要的先决条件和软件依赖项都部署在单个主机VM中。 在此部署方案下，默认的内存中票证注册表已足够，并且不需要Servlet会话复制为 。 足以满足HA和可伸缩性需求，那么这将简化部署配置，并且是推荐的方法。
 
-#### Robustness
+#### 坚固性
 
-Hardware component failure/recovery is a feature of the virtualized environment such that the loss of a CPU, memory or power does not cause a failure of the CAS server.
+硬件组件故障/恢复是虚拟化环境的功能，因此，CPU， 内存或电源的丢失不会导致CAS服务器故障。
 
-#### Zero downtime maintenance approach
+#### 零停机维护方法
 
-True zero downtime maintenance (i.e. no observable impact to end users) is not achievable with this configuration. However, staging of maintenance and upgrades can be done without downtime by leveraging the cloning ability of most VM infrastructures. Once the new CAS Server node is ready, a brief cutover can be implemented which will effectively end all current SSO sessions. This could be done by scheduling restart of Tomcat during low traffic times, after the new `cas.war` has been deployed.
+使用此配置无法实现真正的零停机维护（即对最终用户没有明显的影响）。 VM基础架构的克隆功能，可以在不停机的情况下进行维护和升级。 一旦新的CAS Server节点准备就绪，便可以实施简短的切换，这将有效地 结束所有当前的SSO会话。 这可以通过在部署 `cas.war` 之后在低流量时间安排Tomcat的重新启动来完成。
 
-#### Scalability
+#### 可扩展性
 
-CAS itself has modest computing requirements such that any modern enterprise class server hardware is going to be sufficient to handle 10,000s of users in typical deployment scenarios. In a recent client engagement load testing a single node deployment yielded good results with CAS handling 200 concurrent users at 61 requests per second which roughly translates into 108,000 authentication transactions per hour. These number are of course representative and any benchmark will be highly dependent on local infrastructure. VM environments should be able to scale the available CPU and memory to meet a wide range of needs.
+CAS本身具有适度的计算要求，因此在典型的部署方案中，任何现代企业级服务器硬件都将变为 在最近的客户参与负载测试 ，单节点部署产生了良好的结果，CAS以每秒61个请求的速度处理200个并发用户，其中 大致每小时转换为108,000个身份验证事务。 这些数字当然是代表 并且任何基准都将高度依赖于本地基础结构。 VM环境应该能够扩展可用的CPU和内存，以满足广泛的需求。
 
 
-### Multiple CAS Server Nodes
+### 多个CAS服务器节点
 
-A highly available CAS deployment is composed of two or more nodes behind a hardware load balancer in either active/passive or active/active mode. In general the former offers simplicity with adequate failover; the latter, improved resource usage and reduced service interruptions at the cost of additional complexity. Active-passive configuration can be done with manual or automatic failover in the case where the primary CAS node fails. Active-active configuration is possible with a clustered ticket registry state such that any available CAS node can service any request for the CAS server. [A number of options are available](../ticketing/Configuring-Ticketing-Components.html) for implementing an active-active configuration with shared ticket state.
+高可用的CAS部署由位于硬件负载均衡器后面的两个或更多节点组成，处于主动/被动或主动/主动模式的状态 总的来说，前者提供了 故障转移的简便性。后者，以增加复杂性为代价，提高了资源使用率并减少了服务中断。 在主CAS节点发生故障的情况下，可以通过手动或自动故障转移完成主动-被动配置。 可以使用群集票证注册表状态进行主动-主动配置，这样任何可用的CAS节点 都可以为CAS服务器的任何请求提供服务。 [有许多选项](../ticketing/Configuring-Ticketing-Components.html) 用于实现具有共享票证状态的双活配置。
 
-HA can be achieved by implementing a multi-node CAS deployment running on multiple VMs or physical hosts. This approach is attractive since it allows true zero down-time maintenance of the service at the cost of a marginal increase in deployment complexity.
+通过实施在多个VM或物理主机上运行的多节点CAS部署，可以实现HA。 这种方法之所以具有吸引力，是因为它允许以零散增加部署复杂性为代价，对服务进行真正的零停机维护。
 
-Multi-node CAS generally involves the following:
+多节点CAS通常涉及以下内容：
 
-* Installing multiple instances of the CAS server (so that one or more of the servers can be destroyed without the CAS service becoming unavailable)
-* Configuring the multiple instances of the CAS server to share ticket state (so that regardless of which CAS server a user or service interacts with, the response from each CAS server is the same.)
-* Configuring a solution for directing traffic among the clustered CAS servers, for detecting component failure and removing failed components from service
-* Optionally, configuring a solution for sharing session state and session failover across the CAS instances (this isn't typically appropriate, since end-user CAS sessions tend to be short lived and the experience is more request-response style than it is session oriented) - favor short-lived sticky (aka persistent sessions) load-balancing instead (could be a problem with large NAT deployments)
-* Having appropriate contingency plans such that the desired margin of headroom against failure is restored when it is exercised. (For example, having three CAS server instances, clustered, serving a load that can be serviced with just two instances.)
+* 安装CAS服务器的多个实例（以便可以在CAS服务不可用的情况下销毁一台或多台服务器）
+* 配置CAS服务器的多个实例以共享票证状态（以便无论用户或服务与哪个CAS服务器进行交互，每个CAS服务器的响应都是相同的。）
+* 配置解决方案以在群集的CAS服务器之间定向流量，以检测组件故障并从服务中删除出现故障的组件
+* （可选）配置一种解决方案，以在整个CAS实例之间共享会话状态和会话故障转移（这通常是不合适的，因为最终用户CAS会话的寿命较短，并且体验比面向会话的请求响应风格更多） -改用短暂的粘性（又称持久会话）负载平衡（大型NAT部署可能会出现此问题）
+* 制定适当的应变计划，以便在行使时恢复到所需的裕量，以防出现故障。 （例如，将三个CAS服务器实例群集在一起，以仅由两个实例提供服务的负载。）
 
 
-#### Physical Architecture
+#### 物理架构
 
-The physical architecture may be realized through VMs or physical hardware. It is important to note that in a shared ticket state model (Active/Active mode), CAS server nodes need to be able to communicate tickets state across all nodes and as such, firewall restrictions between such nodes needs to be relaxed enough to allow for ticket state replication.
+可以通过VM或物理硬件来实现物理架构。 这是需要注意的重要 在一个共享的票状态模型（主动/主动模式），CAS服务器节点必须能够沟通门票 状态的所有节点，因此节点的需求之间的这种，防火墙的限制要宽松足以允许票证状态复制。
 
-The service endpoint is a virtual IP address configured at the load balancer. Thus all requests are handled by the load balancer and then routed to available CAS nodes.
+服务端点是在负载均衡器上配置的虚拟IP地址。 因此，负载均衡器将所有请求处理为 ，然后路由到可用的CAS节点。
 
 
-#### Robustness
+#### 坚固性
 
-In the event of a CAS node failure, the work load and authentication requests can properly be rerouted to another CAS node. It is possible that through the failover scenario, some state may be lost depending on where the user is in the login flow and as such, once the rerouting of the request has landed from the failed node to the clone, users may need be presented with the CAS login screen again. This failure mode can be eliminated with Servlet session state replication.
+如果CAS节点发生故障，则可以将 的工作负载和身份验证请求正确地重新路由到另一个CAS节点。 在故障转移场景中， 具体取决于用户在登录流中的位置，因此，一旦 ，请求已从故障节点登陆到克隆，用户可能需要 CAS登录屏幕。 可以通过Servlet会话状态复制消除这种故障模式。
 
-#### Zero downtime maintenance approach
+#### 零停机维护方法
 
-Maintenance work, such that it would include upgrades and application of patches to the software may be carried out via two general approaches:
+可以通过两种通用方法来进行维护工作，以使其包括将
 
-- In active-passive models, work may be carried out offline on the passive CAS node. The load balancer is then tweaked to switch over the prepared node once ready thereby switching the active-passive nodes around. This results in all CAS SSO sessions being reset and possibly some Ticket validation failures if done during times with high utilization. See below for more details on this approach.
+- 在主动-被动模型中，可以在被动CAS节点上离线进行工作。 然后，对负载均衡器进行调整，以在准备好后 切换主动-被动节点。 这导致所有CAS SSO会话被重置，并且如果在高利用率的时间段内完成票证验证失败，则可能 有关此方法的更多详细信息，请参见下文。
 
-- In active-active models, one node can be taken offline while at least one other CAS server node remains alive to respond to requests. Once the upgrade procedure is done, the server can return to the pool while obtaining the ticket state from other active nodes. Certain distributed ticket registry models have the ability to bootstrap themselves by receiving ticket data from other nodes without any manual configuration or adjustment. See below for more details on this approach.
+- 在双活模型中，可以使一个节点脱机，同时至少一个其他 CAS服务器节点保持活动状态以响应请求。 一旦升级过程完成后， 服务器可以返回到池中，而从其他活动节点获得票状态。 某些 分布式票证注册表模型具有通过 数据来进行自我引导的能力，而无需进行任何手动配置或调整。 有关此方法的更多详细信息，请参见下文。
 
 
-#### Scalability
+#### 可扩展性
 
-Scalability is simply achieved by adding new CAS nodes to the cluster.
+通过将新的CAS节点添加到群集中，即可轻松实现可伸缩性。
 
-#### Active/Passive Mode
+#### 主动/被动模式
 
-In an active/passive load balanced configuration, 1 of N nodes serves all requests at any given time. This simplifies ticket storage requirements since it is not necessary to share ticket state among several application nodes.
+在主动/被动负载平衡配置中，N个节点中的1个在任何给定时间服务于所有请求。 由于无需在多个应用程序节点之间共享票证状态，因此简化了
 
-In particular, the default ticket registry component that stores tickets in memory is suitable for active/failover setups with the understanding that a node failure would result in ticket loss. It's worth repeating that ticket loss results in graceful application failure where users simply re-authenticate to CAS to create new SSO sessions; CAS client sessions created under previous SSO sessions would suffer no interruption or loss of data.
+特别是，将故障单存储在内存中的默认故障单注册表组件适合于活动/故障转移 设置，前提是节点故障会导致故障单丢失。 值得重复的是，票证丢失 导致应用程序正常运行失败，用户只需对CAS重新进行身份验证以创建新的SSO会话即可； 在先前的SSO会话下创建的CAS客户会话不会遭受数据中断或丢失。
 
 
-#### Active/Active Mode
+#### 主动/主动模式
 
-A load balancer in active/active mode serves requests to all N nodes simultaneously. The load balancer chooses a node to serve a request based on a configured algorithm; typically least active or round robin. In this system architecture, it is vitally important to use a ticket store where a ticket can be located regardless of which CAS node requests it.
+主动/主动模式下的负载均衡器同时向所有N个节点提供请求。 负载均衡器根据配置的算法 通常最不活跃或轮循。 在此系统架构中， 非常重要，使用票证存储区可以在其中放置票证，而无论哪个CAS节点请求它。
 
-It's instructive to discuss the origin of this requirement. There are two interactions for tickets that occur from fundamentally different network sources:
+讨论此要求的起源很有启发性。 票证有两种交互，它们是从 根本不同的网络源发生的：
 
-1. User's Web browser contacts CAS to generate a ticket.
-2. Target service contacts CAS with a ticket to validate it.
+1. 用户的Web浏览器与CAS联系以生成票证。
+2. 目标服务与票证联系CAS以对其进行验证。
 
-Since both requests flow through the load balancer from different source addresses, it is not possible to guarantee that both requests are serviced by the same CAS node. Thus the requirement that a ticket be locatable regardless of the CAS node that requests it. It should be clear why in-memory storage is not suitable for active/active deployments.
+由于两个请求都从不同的源地址流经负载平衡器，因此不可能保证两个请求都由同一CAS节点进行服务为 因此，无论票证请求的CAS节点 ，票证都必须是可定位的。 应该清楚为什么内存中存储不适用于主动/主动部署。
 
-The active-active architecture allows for a zero down-time transitions between CAS server versions at the time of upgrades. One CAS node instance can be taken offline, undergo maintenance, and then be put back into the production. The same strategy is then repeated for all other CAS nodes.
+升级时在CAS服务器版本之间实现零停机时间转换。 可以使一个CAS节点实例脱机，进行维护，然后重新投入生产。 然后，对所有其他CAS节点重复相同的策略。
 
-There is a further consideration for active/active deployments: session affinity. Session affinity is a feature of most load balancer equipment where the device performs state management for incoming requests and routes a client to the same node for subsequent requests for a period of time. This feature is no longer required by default as CAS is able to maintain state for the CAS login/logout webflows directly on the client-side. Additional options are however provided to allow for servlet container session storage to be used with replication options if necessary. See [this guide](../webflow/Webflow-Customization-Sessions.html) to learn more.
+主动/主动部署还需要考虑以下事项：会话亲和力。 会话亲缘关系是 的功能，其中该设备对传入的请求执行状态管理，并 相同节点以进行后续请求。 默认情况下，不再需要此功能 因为CAS能够直接在客户端维护CAS登录/注销Web流的状态。 但是，如果需要，还提供了其他 选项，以允许servlet容器会话存储与复制选项 请参阅 [本指南](../webflow/Webflow-Customization-Sessions.html) 以了解更多信息。
 
 
-#### Avoid Round Robin DNS
+#### 避免循环DNS
 
-We _strongly_ recommend avoiding round robin DNS as a cost-effective alternative to a hardware load balancer. Client cache expiration policy is entirely uncontrollable, and typical cache expiration times are much longer than desirable periods for node failover. A [reverse proxy](http://httpd.apache.org/docs/current/mod/mod_proxy.html) or [software load balancer](http://www.linuxvirtualserver.org/software/ipvs.html) are recommended alternatives to hardware.
+我们 _极力_ 建议避免循环DNS作为一个具有成本效益的替代硬件负载平衡器。 客户端高速缓存到期策略是完全不可控制的，并且典型的高速缓存到期时间比节点故障转移的 建议使用 [反向代理](http://httpd.apache.org/docs/current/mod/mod_proxy.html) 或 [软件负载平衡器](http://www.linuxvirtualserver.org/software/ipvs.html) 替代硬件。
 
 
-### HA Ticket Registry
+### 房委会售票处
 
-The following [ticket storage components](../ticketing/Configuring-Ticketing-Components.html) provide the best tradeoff among ease of use, scalability, and fault tolerance and are suitable for both active/passive and active/active setups.
+以下 [票证存储组件](../ticketing/Configuring-Ticketing-Components.html) 在易用性，可伸缩性和 容错能力之间提供了最佳折衷，并且适用于主动/被动和主动/主动设置。
 
-The particular choice of storage technology should be driven by infrastructure and expertise as much as performance and availability considerations. It's hardly valuable to have a high-performance storage for which you lack the expertise to troubleshoot when problems invariably arise.
+存储技术的特定选择应由基础架构和专业知识以及性能 和可用性考虑决定。 拥有一个高性能存储，而您却缺乏 专业知识来在总是出现问题时进行故障排除，这几乎没有什么价值。
 
-The technology considerations of the various storage components merit some discussion since there are notable differences that impact availability and performance characteristics. Cache systems like Ehcache and Hazelcast offer a distributed cache that presents a single, consistent view of entries regardless of the node contacted. Distributed caches rely on replication to provide for consistency. Cache systems like memcached store the ticket on exactly 1 node and use a deterministic algorithm to locate the node containing the ticket:
+各种存储组件的技术考虑值得讨论，因为存在明显的 差异会影响可用性和性能特征。 像Ehcache和Hazelcast 这样的缓存系统提供了分布式缓存，该缓存提供了一个一致的条目视图，而与所联系的节点中的 分布式缓存依靠复制来提供一致性。 这样的缓存系统将票证存储在正好1个节点上，并使用确定性算法来查找包含票证的节点：
 
-    N' = f(h(T), N1, N2, N3, ... Nm)
+    N'= f（h（T），N1，N2，N3，... Nm）
 
-where _h(T)_ is the hash of the ticket ID, _N1 ... Nm_ is the set of cache nodes, and _N'_ is member of _N ... Nm_.
+其中 _h（T）_ 是票证ID的哈希， _N1 ... 纳米_ 是一组高速缓存节点，并且 _N”_ 是的部件 _Ñ... Nm_。
 
-These sorts of cache systems do not require replication and generally provide for simplicity at the expense of some durability.
+这些类型的缓存系统不需要复制，并且通常以降低一些 持久性为代价来提供简单性。
 
-##### Secure Cache Replication
+##### 安全缓存复制
 
-A number of cache-based ticket registries support secure replication of ticket data across the wire, so that tickets are encrypted and signed on replication attempts to prevent sniffing and eavesdrops. [See this guide](../installation/Ticket-Registry-Replication-Encryption.html) for more info.
+许多基于缓存的票证注册表都支持通过网络安全地复制票证数据（ 以便在复制尝试时对票证进行加密和签名，以防止嗅探和窃听。 [有关更多信息，请参见本指南](../installation/Ticket-Registry-Replication-Encryption.html)
 
 
-### Distributing Service Definitions
+### 分发服务定义
 
-In an HA environment, service definitions must be replicated and accessible by all nodes in the CAS cluster. Typically, this may be achieved by leveraging centralized [registry implementations](../services/Service-Management.html) that are backed by JPA, LDAP, MongoDb, etc. Registries that are backed by the file system need to devise a process of ensuring proper file replication, either manually or via a background daemon.
+在高可用性环境中，服务定义必须被CAS群集中 典型地，这可以通过利用集中式实现 [注册表实现](../services/Service-Management.html) 已备份 由JPA，LDAP，MongoDB的等 由文件系统支持的注册表需要设计一种确保手动或通过后台守护程序
 
-### Connection Pooling
+### 连接池
 
-We _strongly_ recommend that all IO connections to a back-end data stores, such as LDAP directories and databases, leverage connection pooling where possible. It makes the best use of computational (especially for SSL/TLS connections) and IO resources while providing the best performance characteristics.
+我们 _极力_ 建议所有IO连接到后端数据存储，如LDAP目录和数据库， 杠杆连接池在可能的情况。 它充分利用了计算 （尤其是SSL / TLS连接）和IO资源的使用，同时提供了最佳的性能特征。
 
 
-### Monitoring
+### 监控方式
 
-CAS adopters typically implement monitoring of the availability of the CAS service using the tools already in use in operational practice for monitoring other enterprise web applications. CAS introduces a new modest monitoring page with authentication by default by the remote_address of the requestor.
+中科院使用者通常实现监控使用的工具已经CAS服务的可用性 在监控其他企业Web应用程序的操作实践中使用。 默认情况下，CAS通过请求者的remote_address引入一个新的 适度监视页面，该页面带有身份验证。
 
 
-### Channel Confidentiality
+### 频道机密性
 
-Channel Confidentiality (via SSL/TLS) is assumed and critical to the security posture of the CAS system. This includes both front-channel (between user browser-agent and CAS server) and back-channel (between web application and CAS server) https traffic, any intermediate proxy traffic between load balancers or content filters and CAS nodes, as well as primary authentication (e.g. LDAPS) and attribute resolution (JDBC over SSL). Any break in the privacy controls at any stage comprises the overall security of the system.
+假定通道机密性（通过SSL / TLS）对于CAS系统的安全状况至关重要。 这包括前通道（用户浏览器代理与CAS服务器之间）和后通道 （Web应用程序与CAS服务器之间）https流量，负载均衡器或 内容过滤器与CAS节点之间的任何中间代理流量，以及主要身份验证（例如LDAPS）和属性解析（基于SSL的JDBC）。 在任何阶段，隐私控制的任何破坏都将构成系统的整体安全性。
 
 
-### Upgrades
+### 升级版
 
-CAS server upgrades should be carried out through the recommended [WAR overlay approach](../installation/WAR-Overlay-Installation.html). Established as a best practice, the overlay approach allows one to seamlessly obtain the intended CAS server version from well known and public repositories while laying custom changes specific on top of the downloaded binary artifact. In the specifics of the overlay approach, it may also be desirable to externalize the configuration outside of the `cas.war` so that the properties and logging configuration can vary across tiers for the same `cas.war` file. That is, externalizing the environment-specific configuration allows the same `cas.war` to be promoted from server to server and tier to tier, which increases the confidence that the web application that was tested and verified out of production will behave as tested in production.
+应通过建议的 [WAR覆盖方法](../installation/WAR-Overlay-Installation.html)进行CAS服务器升级。 建立为最佳 做法，覆盖方法使人们可以从众所周知的 公共存储库中无缝获取预期的CAS服务器版本，同时在下载的二进制工件上放置特定的自定义更改。 在覆盖方法的细节中，也可能需要将配置 外部化到 `cas.war` `cas.war` 文件的属性和日志记录配置可以在各个层上变化。 也就是说，外部化特定于环境的配置允许将相同的 `cas.war` 从服务器升级到服务器 并逐层升级，这增加了经过测试和验证生产之外的Web应用程序将按测试的方式运行的信心。在生产中。
