@@ -1,181 +1,181 @@
 ---
-layout: default
-title: CAS - Authentication Interrupt
-category: Webflow Management
+layout: 违约
+title: CAS - 身份验证中断
+category: 网络流管理
 ---
 
-# Authentication Interrupt
+# 身份验证中断
 
-CAS has the ability to pause and interrupt the authentication flow to reach out to external services and resources, querying for status and settings that would then dictate how CAS should manage and control the SSO session. Interrupt services are able to present notification messages to the user, provide options for redirects to external services, etc. A common use case deals with presenting a *bulletin board* during the authentication flow to present messages and announcements to select users and then optionally require the audience to complete a certain task before CAS is able to honor the authentication request and establish a session.
+CAS 能够暂停和中断身份验证流程，以接触外部服务和资源，查询 的状态和设置，然后决定 CAS 应如何管理和控制 SSO 会话。 中断服务能够向用户发送通知消息、提供重定向到外部服务的选项等。 常用案例涉及在认证流程中显示 *公告板* ，以显示消息和公告以选择用户，然后可选地要求受众在 CAS 能够履行身份验证请求并建立会话之前完成某个任务。
 
-<div class="alert alert-info"><strong>Interrupt Sequence</strong><p>
-Note that the interrupt operations typically execute after the primary authentication event, meaning an authenticated user has been identified by CAS and by extension is made available to the interrupt.
+<div class="alert alert-info"><strong>中断序列</strong><p>
+请注意，中断操作通常在主身份验证事件后执行，这意味着经认证的用户已被 CAS 识别，并可扩展为中断。
 </p></div>
 
-In the interrupt flow, CAS is not at the moment reaching back to an external resource acting as an interrupt service to store, track or remember a user's decision. In other words, we are only dealing with the `R` (ie. Read) in `CRUD`. Today's functionality only deals with inquiring status and reading results solely in read-only mode. Interrupt services are themselves required and encouraged to redirect the audience to external resources where execution of an action resets the interrupt status thereby freeing CAS to proceed forward later on without having to interrupt the authentication flow again.
+在中断流中，CAS 目前无法回到外部资源，作为存储、跟踪或记住用户决策的中断服务。 换句话说，我们只处理 `研发` （即。阅读）在 `CRUD`。 今天的功能仅涉及查询状态和阅读结果，仅限读取模式。 中断服务本身是必需的，并鼓励将受众重定向到外部资源，其中执行操作可重置中断状态，从而使 CAS 在以后无需再次中断身份验证流的情况下向前推进。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-interrupt-webflow</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-中断-网络流</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-interrupt).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-interrupt)。
 
-## Interrupt Payload
+## 中断有效载荷
 
-Each interrupt strategy is ultimately tasked to produce a response that contains the following settings:
+每个中断策略最终的任务是生成包含以下设置的响应：
 
-| Field                      | Description                                                                                                                                                           |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `message`                  | Announcement message to display on the screen.                                                                                                                        |
-| `links`                    | A map of links to display on the screen where key is the link text and value is the destination.                                                                      |
-| `interrupt`                | `true/false` to indicate whether CAS should interrupt the authentication flow.                                                                                        |
-| `block`                    | `true/false` to indicate whether CAS should block the authentication flow altogether.                                                                                 |
-| `ssoEnabled`               | `true/false` to indicate whether CAS should permit the authentication but not establish SSO.                                                                          |
-| `autoRedirect`             | `true/false` to indicate whether CAS should auto-redirect to the first provided link.                                                                                 |
-| `autoRedirectAfterSeconds` | Indicate whether CAS should auto-redirect after the configured number of seconds. The default is `-1`, meaning delayed redirect functionality should not be executed. |
+| 田          | 描述                                                  |
+| ---------- | --------------------------------------------------- |
+| `消息`       | 要显示在屏幕上的公告消息。                                       |
+| `链接`       | 要显示在屏幕上的链接地图，其中关键是链接文本和值是目的地。                       |
+| `中断`       | `真假` ，以表明中科院是否应该中断认证流程。                             |
+| `块`        | `真假` ，以表明中科院是否应该完全阻止认证流程。                           |
+| `苏可`       | `真实/虚假` ，以表明中科院是否应该允许认证，而不是建立SSO。                   |
+| `自动直接`     | `真假` ，以表明中科院是否应该自动重定向到第一个提供的链接。                     |
+| `自动重新定向后秒` | 指示 CAS 是否应该在配置的秒数后自动重定向。 默认值为 `-1`，这意味着不应执行延迟重定向功能。 |
 
-<div class="alert alert-info"><strong>Can We SSO Into Links?</strong><p>
-The collection of <code>links</code> are just links and are not tied in any way to the CAS authentication sequence, meaning they do not activate a state, transition or view in that sequence to trigger CAS into generating tickets, executing certain actions, etc. Any link in this collection is exactly that; just a link. If a link points to applications that are integrated with CAS, accessing those applications via the link will prompt the user for credentials again specially if single sign-on isn't already established. Remember that interrupt notifications typically execute after the authentication step and before any single sign-on session is created.</p></div>
+<div class="alert alert-info"><strong>我们可以进入链接吗？</strong><p>
+</code> <code>链接的集合只是链接，与 CAS 身份验证序列没有任何关联，这意味着它们不会激活该序列中的状态、过渡或视图，以触发 CAS 生成票证、执行某些操作等。 此集合中的任何链接都正是此：只是一个链接。 如果链接指向与 CAS 集成的应用程序，则通过链接访问这些应用程序将再次提示用户获取凭据，特别是如果尚未建立单个登录。 请记住，中断通知通常在身份验证步骤之后和创建任何单个登录会话之前执行。</p></div>
 
-## Interrupt Strategies
+## 中断策略
 
-Interrupt queries can be executed via the following ways:
+中断查询可以通过以下方式执行：
 
-### JSON
+### 杰森
 
-This strategy reaches out to a static JSON resource that contains a map of usernames linked to various interrupt policies. This option is most useful during development, testing and demos.
+此策略可接触静态 JSON 资源，该资源包含链接到各种中断策略的用户名地图。 此选项在开发、测试和演示过程中最有用。
 
 ```json
-{
-  "casuser" : {
-    "message" : "Announcement message <strong>goes here</strong>.",
-    "links" : {
-      "Go to Location1" : "https://www.location1.com",
-      "Go to Location2" : "https://www.location2.com"
-    },
-    "block" : false,
-    "ssoEnabled" : false,
-    "interrupt" : true,
-    "autoRedirect" : false,
-    "autoRedirectAfterSeconds" : -1,
-    "data" : {
-      "field1" : [ "value1", "value2" ],
-      "field2" : [ "value3", "value4" ]
-    }
-  }
-}
+\
+  "casuser"：{
+    "消息"："公告消息 <strong></strong>"，
+    "链接"：{
+      "转到位置1"："https://www.location1.com"，
+      "转到位置2"："https://www.location2.com"
+    }，
+    "块"：虚假，
+    "可疑"：虚假，
+    "中断"：真实、
+    "自动重定向"：虚假、
+    "自动重定向后秒"：-1、
+    "数据"：{
+      "field1"："值1"、"价值2"，
+      "field2"："值3"、"价值4"=
+    [
+  ]
+
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-interrupt-json).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-interrupt-json)。
 
-### Regex Attribute
+### 雷格克斯属性
 
-This strategy allows one to define regular expression patterns in CAS settings that would be matched against attributes names and values. If a successful match is produced while CAS examines the collection of both authentication and principal attributes, the authentication flow would be interrupted.
+此策略允许在 CAS 设置中定义与属性名称和值匹配的常规表达模式。 如果在 CAS 检查身份验证和主要属性的集合时成功匹配，则 的身份验证流程将被中断。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-interrupt-regex-attributes).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-interrupt-regex-attributes)。
 
-### Groovy
+### 槽的
 
-This strategy reaches out to a Groovy resource whose job is to dynamically calculate whether the authentication flow should be interrupted given the provided username and certain number of other parameters.
+此策略可联系 Groovy 资源，该资源的工作是根据所提供的用户名和一定数量的其他参数动态计算是否应中断身份验证流。
 
-The script may be defined as:
+脚本可定义为：
 
 ```groovy
-import org.apereo.cas.interrupt.InterruptResponse
+导入组织.apereo.cas.中断。中断响应
 
-def run(final Object... args) {
-    def principal = args[0]
-    def attributes = args[1]
-    def service = args[2]
-    def registeredService = args[3]
-    def requestContext = args[4]
-    def logger = args[5]
+def运行（最终对象。。。args）{
+    def本金=args[0]
+    def属性=args[1]
+    def服务=args[2]
+    def注册服务=args[3]
+    def请求context=args[4]
+    去记录器=args[5]
 
-    ...
-    def block = false
-    def ssoEnabled = true
+    。。。
+    def块=假
+    def可接受=真实
 
-    return new InterruptResponse("Message", [link1:"google.com", link2:"yahoo.com"], block, ssoEnabled)
+    返回新的中断响应（"消息"，[链接1："google.com"，链接2："yahoo.com"]，块，可以）
 }
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-interrupt-groovy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-interrupt-groovy)。
 
-The following parameters are passed to the script:
+以下参数传递到脚本：
 
-| Parameter           | Description                                                                                           |
-| ------------------- | ----------------------------------------------------------------------------------------------------- |
-| `principal`         | Authenticated principal.                                                                              |
-| `attributes`        | A map of type `Map<String, Object>` that contains both principal and authentication attributes. |
-| `service`           | The `Service` object representing the requesting application.                                         |
-| `registeredService` | The `RegisteredService` object representing the service definition in the registry.                   |
-| `requestContext`    | The object representing the Spring Webflow `RequestContext`.                                          |
-| `logger`            | The object responsible for issuing log messages such as `logger.info(...)`.                           |
+| 参数      | 描述                                           |
+| ------- | -------------------------------------------- |
+| `主要`    | 已验证的委托人。                                     |
+| `属性`    | 包含主属性和身份验证属性的类型 `地图<String, Object>` 。 |
+| `服务`    | `服务` 代表请求申请的对象。                              |
+| `注册服务`  | 注册服务 `` 代表注册表中服务定义的对象。                       |
+| `请求康德信` | 代表春季网络流的对象 `请求信`。                            |
+| `记录`    | 负责发布日志消息的对象，如 `logger.info（。。。）`。            |
 
-### REST
+### 休息
 
-This strategy reaches out to a REST endpoint resource whose job is to dynamically calculate whether the authentication flow should be interrupted given the following parameters:
+此策略可联系 REST 端点资源，该资源的工作是动态计算应否在以下参数下中断身份验证流：
 
-| Parameter           | Description                                                                 |
-| ------------------- | --------------------------------------------------------------------------- |
-| `username`          | Authenticated principal id.                                                 |
-| `service`           | The identifier (URL) for the requesting application.                        |
-| `registeredService` | The identifier of the registered service matched and found in the registry. |
+| 参数     | 描述                  |
+| ------ | ------------------- |
+| `用户名`  | 已验证的主ID。            |
+| `服务`   | 请求应用程序的标识符 （URL）。   |
+| `注册服务` | 注册服务的标识符匹配并在注册表中找到。 |
 
-On a successful operation with a status code of `200`, the response body is expected to contain the JSON payload whose syntax and structure is identical to what is described above.
+在具有 `200`状态代码的成功操作中，响应主体预计将包含 JSON 有效载荷，其语法和结构与上述内容相同。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authentication-interrupt-rest).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authentication-interrupt-rest)。
 
-### Custom
+### 习惯
 
-If you wish to design your own interrupt strategy to make inquiries, you can design your component to make determinations:
+如果您希望设计自己的中断策略进行查询，您可以设计您的组件以做出决定：
 
 ```java
-package org.apereo.cas.support.interrupt;
+包组织. 阿佩雷奥. 卡斯. 支持. 中断;
 
-@Configuration("myInterruptConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyInterruptConfiguration {
+@Configuration（"我的中断配置"）
+@EnableConfigurationProperties（cas配置.class）
+公共类我的中断配置{
     @Bean
-    public InterruptInquirer interruptInquirer() {
-      ...
+    公共中断询问者中断询问者（）{
+      。。。
     }
 
     @Bean
-    public InterruptInquiryExecutionPlanConfigurer myInterruptInquiryExecutionPlanConfigurer() {
-        return plan -> {
-            plan.registerInterruptInquirer(interruptInquirer());
-        };
+    公共中断询问执行计划配置我的中断查询计划配置器（）{
+        返回计划-> {
+            计划。注册中间询问者（中断询问者）：
+        }：
     }
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[本指南](../configuration/Configuration-Management-Extensions.html) 了解有关如何将配置注册到 CAS 运行时间的更多信息。
 
-## Skipping Interrupts
+## 跳过中断
 
-Interrupt notifications may be disabled on a per-service basis. A sample JSON file follows:
+中断通知可按服务禁用。 示例 JSON 文件如下：
 
 ```json
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "sample service",
-  "id" : 100,
-  "properties" : {
-    "@class" : "java.util.HashMap",
-    "skipInterrupt" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "true" ] ]
-    }
-  }
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："^https://.+"，
+  "名称"："示例服务"，
+  "id"：100，
+  "属性"：{
+    "@class"："java.利用。哈希马普"，
+    "跳过中断"：{
+      "@class"："org.aper"
+      "价值"："java.利用"，"哈希塞特"，"真实"，
+    =
+  =
 }
 ```
