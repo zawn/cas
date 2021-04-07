@@ -1,29 +1,29 @@
 ---
-layout: default
-title: CAS - Configuring Service Response Type
-category: Services
+layout: 默认
+title: CAS-配置服务响应类型
+category: 服务
 ---
 
-# Configuring Service Response Type
+# 配置服务响应类型
 
-By default, authentication requests are handled with a browser redirect (i.e. `302`) back to the calling application with the relevant parameters built into the url. This behavior can be optionally adjusted on a per-service basis to dictate other options when responding to services.
+默认情况下，身份验证请求是通过浏览器重定向（即 `302`）返回到调用应用程序 ，URL中内置有相关参数。 可以根据每个服务选择将此行为调整为 以在响应服务时指定其他选项。
 
-A sample JSON file follows:
+以下是一个示例JSON文件：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "^https://.+",
-  "name" : "sample service",
-  "id" : 100,
-  "responseType": "HEADER"
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ ^ https：//.+”，
+  “ name”：“示例服务”，
+  “ id”：100 ，
+  “ responseType”：“ HEADER”
 }
 ```
 
-Accepted response types are as follows:
+接受的响应类型如下：
 
-| Parameter  | Description                                                                                                    |
-| ---------- | -------------------------------------------------------------------------------------------------------------- |
-| `REDIRECT` | This is the default option, where a browser `302` redirect navigates the user back to the calling application. |
-| `POST`     | Same as above, except that parameters are `POST`ed back to the calling application.                            |
-| `HEADER`   | Parameters constructed for this authentication request are inserted into the HTTP response as headers          |
+| 范围     | 描述                                   |
+| ------ | ------------------------------------ |
+| `重新定向` | 这是默认选项，其中浏览器 `302` 重定向将用户导航回到调用应用程序。 |
+| `邮政`   | `POST`送回到调用应用程序外，其余与上述相同。            |
+| `标题`   | 为此身份验证请求构造的参数作为标头插入到HTTP响应中          |
