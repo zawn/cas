@@ -1,35 +1,35 @@
 ---
-layout: default
-title: CAS - CAS SAML Protocol
-category: Protocols
+layout: 默认
+title: CAS-CAS SAML协议
+category: 通讯协定
 ---
 
-# SAML Protocol
+# SAML协议
 
-CAS has support for versions 1.1 and 2 of the SAML protocol to a specific extent. This document deals with CAS-specific concerns.
+CAS在特定程度上支持SAML协议的版本1.1和2。 本文档涉及CAS特定的问题。
 
 ## SAML2
 
-CAS provides support for [SAML2 Authentication](../installation/Configuring-SAML2-Authentication.html), allowing CAS to act as a SAML2 identity provider.
+CAS提供对 [SAML2身份验证](../installation/Configuring-SAML2-Authentication.html)支持，从而允许CAS充当 SAML2身份提供者。
 
 ## Google Apps
 
-<div class="alert alert-warning"><strong>Usage</strong>
-<p><strong>This feature is deprecated and is scheduled to be removed in the future.</strong></p>
+<div class="alert alert-warning"><strong>用法</strong>
+<p><strong>此功能已弃用，并计划在将来删除。</strong></p>
 </div>
 
-CAS provides support for [Google Apps Integration](../integration/Google-Apps-Integration.html).
+CAS提供了对 [Google Apps Integration](../integration/Google-Apps-Integration.html)。
 
 ## SAML 1.1
 
-CAS supports the [standardized SAML 1.1 protocol](http://en.wikipedia.org/wiki/SAML_1.1) primarily to:
+CAS支持 [标准化SAML 1.1协议](http://en.wikipedia.org/wiki/SAML_1.1) 主要用于：
 
-- Support a method of [attribute release](../integration/Attribute-Release.html)
-- [Single Logout](../installation/Logout-Single-Signout.html)
+- 支持 [属性释放](../integration/Attribute-Release.html)
+- [单次登出](../installation/Logout-Single-Signout.html)
 
-A SAML 1.1 ticket validation response is obtained by validating a ticket via POST at the `/samlValidate URI`.
+`/ samlValidate URI`处通过POST验证票证，可以获得SAML 1.1票证验证响应。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -39,21 +39,21 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-### Administrative Endpoints
+### 行政端点
 
-The following endpoints are provided by CAS:
+CAS提供了以下端点：
 
-| Endpoint       | Description                                                                                             |
-| -------------- | ------------------------------------------------------------------------------------------------------- |
-| `samlValidate` | Obtain a SAML 1.1 validation payload by supplying a `username`, `password` and `service` as parameters. |
+| 终点             | 描述                                             |
+| -------------- | ---------------------------------------------- |
+| `samlValidate` | 通过提供获得SAML 1.1验证有效载荷 `的用户名`， `密码` 和 `服务` 作为参数。 |
 
-### Sample Request
+### 样品申请
 
 ```xml
-POST /cas/samlValidate?ticket=
-Host: cas.example.com
-Content-Length: 491
-Content-Type: text/xml
+POST / cas / samlValidate？ticket =
+主机：cas.example.com
+内容长度：491
+内容类型：text / xml
 
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
   <SOAP-ENV:Header/>
@@ -69,13 +69,13 @@ Content-Type: text/xml
 </SOAP-ENV:Envelope>
 ```
 
-### Sample Response
+### 样品响应
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
+<吗？xml版本=“ 1.0”编码=“ UTF-8”？>
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
   <SOAP-ENV:Body>
-    <saml1p:Response xmlns:saml1p="urn:oasis:names:tc:SAML:1.0:protocol" InResponseTo="...." IssueInstant="2017-08-15T06:30:04.622Z" MajorVersion="1" MinorVersion="1" ResponseID="_bf6957bad275fc74a1c079a445581441">
+    <saml1p：响应xmlns：saml1p =“ urn：oasis：names：tc：SAML：1.0：protocol” InResponseTo =“ ...”。 IssueInstant="2017-08-15T06:30:04.622Z" MajorVersion="1" MinorVersion="1" ResponseID="_bf6957bad275fc74a1c079a445581441">
       <saml1p:Status>
         <saml1p:StatusCode Value="saml1p:Success" />
       </saml1p:Status>
@@ -121,17 +121,17 @@ Content-Type: text/xml
 ```
 
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#saml-core).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#saml-core)。
 
-You may also need to declare the following repository in your CAS Overlay to be able to resolve dependencies:
+您可能还需要在 声明以下存储库，以便能够解决依赖关系：
 
 ```groovy
-repositories {
+存储库{
     maven { 
-        mavenContent { releasesOnly() }
-        url "https://build.shibboleth.net/nexus/content/repositories/releases" 
+        mavenContent {releasesOnly（）}
+        url“ https://build.shibboleth.net/nexus/content/repositories/releases” 
     }
 }
 ```
