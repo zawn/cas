@@ -1,25 +1,25 @@
 ---
-layout: default
-title: CAS - Mongo Service Registry
-category: Services
+layout: 违约
+title: 中科院 - 蒙古服务注册处
+category: 服务业
 ---
 
-# Mongo Service Registry
+# 蒙古服务注册处
 
-This registry uses a [MongoDb](https://www.mongodb.org/) instance to load and persist service definitions. Support is enabled by adding the following module into the overlay:
+此注册表使用 [MongoDb](https://www.mongodb.org/) 实例加载并保留服务定义。 支持通过在覆盖中添加以下模块来实现：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-mongo-service-registry</artifactId>
+    <groupId>组织.apereo.cas</groupId>
+    <artifactId>卡-服务器-支持-蒙古-服务-注册</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-This implementation auto-configures most of the internal details. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#mongodb-service-registry).
+此实现自动配置大部分内部详细信息。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#mongodb-service-registry)。
 
-## Auto Initialization
+## 自动初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+在启动和配置允许的情况下，注册表能够自动从 CAS 可用的默认 JSON 服务定义中初始化。 有关详细信息，请参阅本指南</a> 。</p>
