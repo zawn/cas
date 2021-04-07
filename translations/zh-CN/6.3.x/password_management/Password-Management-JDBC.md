@@ -1,37 +1,37 @@
 ---
-layout: default
-title: CAS - Password Management
-category: Password Management
+layout: 违约
+title: CAS - 密码管理
+category: 密码管理
 ---
 
-# Password Management - JDBC
+# 密码管理 - 京建联
 
-The account password and security questions may be stored inside a database.
+帐户密码和安全问题可能存储在数据库中。
 
-JDBC support is enabled by including the following dependencies in the WAR overlay:
+JDBC 支持通过在战争覆盖中包括以下依赖项来实现：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-pm-jdbc</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - pm - jdbc</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jdbc-password-management).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#jdbc-password-management)。
 
-The expected database schema for the user accounts is:
-
-```sql
-create table pm_table_accounts (id int, userid varchar(255), password varchar(255), email varchar(255), phone varchar(255));
-```
-
-The expected database schema for account security questions is:
+用户帐户的预期数据库模式是：
 
 ```sql
-create table pm_table_questions (id int, userid varchar(255), question varchar(255), answer varchar(255));
+创建表pm_table_accounts（id int、使用性varchar（255）、密码瓦尔查尔（255）、电子邮件瓦尔查尔（255）、电话瓦查尔（255））：
 ```
 
-## Password History
+帐户安全问题的预期数据库模式是：
 
-This feature is does also enable password history tracking and storage. Managing passwords via JDBC will switch CAS to use the same JDBC configuration for password history.
+```sql
+创建表pm_table_questions（id int、使用性瓦尔查尔（255）、问题瓦尔查尔（255）、答案瓦尔查尔（255））：
+```
+
+## 密码历史记录
+
+此功能还启用密码历史记录跟踪和存储。 通过 JDBC 管理密码将切换 CAS 以使用相同的 JDBC 配置进行密码历史记录。
