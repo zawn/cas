@@ -1,34 +1,34 @@
 ---
-layout: default
-title: CAS - Swivel Secure Authentication
-category: Multifactor Authentication
+layout: 违约
+title: CAS - 旋转安全认证
+category: 多因素认证
 ---
 
-# Swivel Secure Authentication
+# 旋转安全身份验证
 
-Swivel Secure offers a wide range of authentication factors, allowing the use of 2FA and image based authentication. To learn more, please refer to [the official website](https://swivelsecure.com/).
+旋转安全提供广泛的身份验证因子，允许使用 2FA 和基于图像的身份验证。 欲了解更多，请参阅 [官方网站](https://swivelsecure.com/)。
 
-CAS supports Swivel Secure's TURing-image based authentication. TURing uses the PINsafe protocol to provide a One Time Code for authentication. Each image is unique for that session.
+CAS 支持旋转安全基于 TURing 图像的身份验证。 TURing 使用 PIN 安全协议提供一次性身份验证代码。 每个图像都是该会话的独一无二的。
 
-![image](https://user-images.githubusercontent.com/1205228/27012173-e8e32020-4e98-11e7-935f-c5166f228bd5.png)
+![图像](https://user-images.githubusercontent.com/1205228/27012173-e8e32020-4e98-11e7-935f-c5166f228bd5.png)
 
-## Configuration
+## 配置
 
-Support is enabled by including the following module in the overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-swivel</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-旋转</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#swivel-secure).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#swivel-secure)。
 
-## Logging
+## 伐木
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
 
 ```xml
 ...
@@ -39,10 +39,12 @@ To enable additional logging, configure the log4j configuration file to add the 
 ...
 ```
 
-## Swivel SDK
+## 旋转SDK
 
-Note that Swivel SDK artifacts are not published to a Maven repository. This means that you will need to download the necessary JAR files and include the in your build configuration. The SDK may be downloaded from [the CAS codebase](https://github.com/apereo/cas/blob/master/support/cas-server-support-swivel/lib/pinsafe.client.jar). Then, assuming the SDK is placed inside a `lib` directory of the [WAR overlay](../installation/WAR-Overlay-Installation.html) directory, it can be referenced in the build configuration as such:
+请注意，旋转 SDK 工件不会发布到 Maven 存储库。 这意味着您需要下载必要的 JAR 文件，并将内聚于您的构建配置中。 SDK 可以从 CAS 代码库</a>下载。 然后，假设 SDK 放在 [WAR 覆盖](../installation/WAR-Overlay-Installation.html) 目录的 `lib` 目录内，则可以在构建配置中引用：</p> 
+
+
 
 ```gradle
-compile files("${projectDir}/lib/pinsafe.client.jar")
+编译文件（"${projectDir}/lib/针安全.客户端.jar"）
 ```
