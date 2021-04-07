@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - Deny Authentication
-category: Authentication
+layout: 默认
+title: CAS-拒绝身份验证
+category: 验证
 ---
 
-# Deny Authentication
+# 拒绝认证
 
-Denying authentication allows CAS to reject access to a set of credentials. Those that fail to match against the predefined set will blindly be accepted.
+拒绝身份验证允许CAS拒绝访问一组凭据。 那些与预定义集合不匹配的将被盲目接受。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -20,4 +20,4 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#reject-users-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#reject-users-authentication)。
