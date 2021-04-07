@@ -1,54 +1,54 @@
 ---
-layout: default
-title: CAS - Eureka Service Discovery
-category: High Availability
+layout: 违约
+title: CAS - 尤里卡服务发现
+category: 高可用性
 ---
 
-# Eureka Server Discovery Service
+# 尤里卡服务器发现服务
 
-[Eureka](https://github.com/Netflix/eureka) is a REST-based service that is primarily used for locating services for the purpose of load balancing and failover of middle-tier servers. Eureka provides both a discovery server and also support for clients which would be the individual CAS servers themselves in the pool. The server can be configured and deployed to be highly available, with each server replicating state about the registered services to the others.
+[尤里卡](https://github.com/Netflix/eureka) 是一种基于RESE的服务，主要 用于定位服务，用于中端服务器的负载平衡和故障转移。 Eureka 既提供发现服务器，也为客户端提供支持，这些客户端将是池中的单个 CAS 服务器本身。 服务器可以进行配置和部署，以便高度可用，每个服务器都会向其他服务器复制有关已注册服务的状态。
 
-CAS provides a Eureka-enabled service discovery server that is based on [Spring Cloud Netflix](http://cloud.spring.io/spring-cloud-netflix) and bootstrapped via [Spring Cloud](http://cloud.spring.io/spring-cloud-static/spring-cloud.html).
+CAS 提供支持尤里卡的服务发现服务器，该服务器基于 [春云 Netflix](http://cloud.spring.io/spring-cloud-netflix) ，并通过 [春云](http://cloud.spring.io/spring-cloud-static/spring-cloud.html)启动。
 
-### Installation
+### 安装
 
-- To run the Eureka discovery server, please [use this WAR overlay](https://github.com/apereo/cas-discoveryserver-overlay).
-- Look for a suitable and relevant ready-made Docker image via `docker search eureka`.
+- 要运行尤里卡发现服务器，请 [使用此WAR覆盖](https://github.com/apereo/cas-discoveryserver-overlay)。
+- 寻找一个合适的和相关的现成的多克图像通过 `码头工人搜索尤里卡`。
 
-When deployed the following URLs become available:
+部署后，可用以下网址：
 
-| URL            | Description                              |
-| -------------- | ---------------------------------------- |
-| `/`            | Home page listing service registrations. |
-| `/eureka/apps` | Raw registration metadata.               |
+| 网址          | 描述        |
+| ----------- | --------- |
+| `/`         | 主页列表服务注册。 |
+| `/尤里卡/应用程序` | 原始注册元数据。  |
 
-### High Availability Mode
+### 高可用性模式
 
-You always want to make sure the discovery server is run in high-availability mode. One option is to ensure each individual Eureka server is peer aware. See [this guide](http://cloud.spring.io/spring-cloud-static/spring-cloud.html#_peer_awareness) to learn how to manage that.
+您始终希望确保发现服务器在高可用性模式下运行。 一种选择是确保每个尤里卡服务器都处于同行意识。 请参阅本指南 [](http://cloud.spring.io/spring-cloud-static/spring-cloud.html#_peer_awareness) ，了解如何管理该指南。
 
-## CAS Discovery Service Clients
+## CAS 发现服务客户端
 
-Each individual CAS server is given the ability to auto-register itself with the discovery server, provided configuration is made available to instruct the CAS server how to locate and connect to the discover server service.
+每个 CAS 服务器都能够在发现服务器上自动注册，前提是提供配置来指导 CAS 服务器如何定位并连接到发现服务器服务。
 
-Support is added by including the following dependency in the WAR overlay:
+通过在 WAR 叠加中包括以下依赖项来增加支持：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-eureka-client</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡斯服务器支持-尤里卡-客户端</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#eureka-service-discovery).
+要查看 CAS 物业的相关列表，请 [](../configuration/Configuration-Properties.html#eureka-service-discovery)查看本指南。
 
-### Authentication
+### 认证
 
-Support for HTTP basic authentication will be automatically added if one of Eureka server URLs in the configuration has credentials embedded in it (curl style, like `http://user:password@localhost:8761/eureka`).
+如果配置中的尤里卡服务器网址中嵌入了凭据（卷曲样式，如 `http://user:password@localhost:8761/eureka`），则将自动添加对 HTTP 基本身份验证的支持。
 
-### Troubleshooting
+### 故障 排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
 
 ```xml
 <Logger name="org.springframework.cloud" level="debug" additivity="false">
