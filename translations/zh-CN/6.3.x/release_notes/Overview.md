@@ -1,10 +1,10 @@
 ---
-layout: default
-title: CAS - Release Notes
-category: Planning
+layout: 默认
+title: CAS-发行说明
+category: 规划
 ---
 
-# Release Notes
+# 发行说明
 
 - [RC1](RC1.html)
 - [RC2](RC2.html)
