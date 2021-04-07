@@ -1,18 +1,18 @@
 ---
-layout: default
-title: CAS - GUA Authentication
-category: Authentication
+layout: 默认
+title: CAS-GUA认证
+category: 验证
 ---
 
-# Graphical User Authentication
+# 图形用户认证
 
-Graphical user authentication, sometimes also known as 'login images' are a form of login verification (i.e. second factor) where a site presents the user with an image previously selected by the user at the time the account is created. It is an "account secret" tied to the username that should not be easily reproduced by a phishing campaign attempting to impersonate a legitimate website.
+图形用户身份验证（有时也称为“登录图像”）是登录验证（即第二因素）的一种形式，其中站点向用户提供用户在创建帐户时预先选择的图像。 这是与用户名相关联的“帐户秘密”，网络钓鱼活动试图假冒合法网站不应该轻易复制该用户名。
 
-In practice, CAS prompts the user for only their username and responds with a page displaying what should be the user's pre-selected image along with a password field to complete their authentication. The user in turn is to be trained to refuse submitting the rest of their login credentials to a site posing to be legitimate if CAS fails to present the correct image.
+实际上，CAS仅提示用户输入用户名，然后显示一个页面，显示应该是用户的预选图像以及密码字段以完成身份验证。 如果CAS无法提供正确的图像，则应训练用户，使其拒绝将其余的登录凭据提交到冒充合法身份的站点。
 
-## Overview
+## 概述
 
-Support is enabled by including the following module in the overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -22,12 +22,12 @@ Support is enabled by including the following module in the overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#gua-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#gua-authentication)。
 
-### Resource
+### 资源资源
 
-Primarily useful for demo and testing purposes, this option allows CAS to load a global and static image resource as the user identifier onto the login flow.
+主要用于演示和测试目的，此选项允许CAS将全局和静态图像资源 作为用户标识符加载到登录流上。
 
 ### LDAP
 
-CAS may also be allowed to locate a binary image attribute for the user from LDAP. The binary attribute value is then loaded as the user identifier onto the login flow.
+也可以允许CAS从LDAP中为用户找到二进制图像属性。 然后将二进制属性值 作为用户标识符加载到登录流程中。
