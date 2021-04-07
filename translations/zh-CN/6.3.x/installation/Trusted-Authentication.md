@@ -1,27 +1,27 @@
 ---
-layout: default
-title: CAS - Trusted Authentication
-category: Authentication
+layout: 违约
+title: CAS - 可信认证
+category: 认证
 ---
 
-# Trusted Authentication
+# 可信身份验证
 
-The trusted authentication handler provides support for trusting authentication performed by some other component in the HTTP request handling chain. Proxies (including Apache in a reverse proxy scenario) are the most common components that perform authentication in front of CAS.
+受信任的身份验证处理程序支持 HTTP 请求处理链中其他组件 执行的信任身份验证。 代理（包括反向代理场景中的 Apache）是最常见的在 CAS 前执行身份验证的 组件。
 
-Trusted authentication handler support is enabled by including the following dependency in the WAR overlay:
+通过在 WAR 叠加中包括以下依赖关系，支持可信身份验证处理器支持：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-trusted-webflow</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-信任-网络流</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-Trusted authentication is able to extract the remote authenticated user via the following ways:
+可信身份验证能够通过以下方式提取远程身份验证用户：
 
-1. Username may be extracted from `HttpServletRequest#getRemoteUser()`
-2. Username may be extracted from `HttpServletRequest#getUserPrincipal()`
-3. Username may be extracted from a request header whose name is defined in CAS settings.
+1. 用户名可以从 `中提取，`
+2. 用户名可以从 `赫特普服务要求#获取用户名（）`
+3. 用户名可以从在 CAS 设置中定义名称的请求标题中提取。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#trusted-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#trusted-authentication)。
