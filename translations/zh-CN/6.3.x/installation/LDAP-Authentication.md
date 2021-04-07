@@ -1,32 +1,32 @@
 ---
-layout: default
-title: CAS - LDAP Authentication
-category: Authentication
+layout: 违约
+title: 中科院 - LDAP 认证
+category: 认证
 ---
 
-# LDAP Authentication
+# LDAP 身份验证
 
-LDAP integration is enabled by including the following dependency in the overlay:
+LDAP 集成通过在叠加中包括以下依赖关系而实现：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-ldap</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - ldap</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ldap-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ldap-authentication)。
 
-## Password Policy Enforcement
+## 密码政策执行
 
-To learn how to enforce a password policy for LDAP, please [review this guide](Password-Policy-Enforcement.html).
+要了解如何执行 LDAP 的密码策略，请 [查看本指南](Password-Policy-Enforcement.html)。
 
-## Troubleshooting
+## 故障 排除
 
-To enable additional logging, modify the logging configuration file to add the following:
+要启用其他日志，请修改记录配置文件以添加以下：
 
 ```xml
 <Logger name="org.ldaptive" level="debug" additivity="false">
