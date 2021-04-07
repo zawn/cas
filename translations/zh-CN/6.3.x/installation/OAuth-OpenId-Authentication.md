@@ -1,392 +1,489 @@
 ---
-layout: default
-title: CAS - OAuth Authentication
-category: Authentication
+layout: 违约
+title: CAS - 非授权认证
+category: 认证
 ---
 
-# OAuth/OpenID Authentication
+# 非授权/开放身份验证
 
-Allow CAS to act as an OAuth/OpenID authentication provider. Please [review the specification](https://oauth.net/2/) to learn more.
+允许 CAS 充当非授权/开放式身份验证提供商。 请 [查看规范](https://oauth.net/2/) 以了解更多内容。
 
-<div class="alert alert-info"><strong>CAS as OAuth Server</strong><p>This page specifically describes how to enable
-OAuth/OpenID server support for CAS. If you would like to have CAS act as an OAuth/OpenID client communicating with
-other providers (such as Google, Facebook, etc), <a href="../integration/Delegate-Authentication.html">see this page</a>.</p></div>
+<div class="alert alert-info"><strong>中科院作为非授权服务器</strong><p>本页特别描述了如何启用
+非授权/开放ID服务器支持CAS。 如果你想让CAS作为一个非授权/开放ID客户端
+与其他供应商（如谷歌，Facebook等）沟通， <a href="../integration/Delegate-Authentication.html">看到这个页面</a>。</p></div>
 
-## Administrative Endpoints
+## 行政终点
 
-The following endpoints are provided by CAS:
+CAS 提供以下端点：
 
-| Endpoint      | Description                                                                                                                                                                                                                                                                                                                                                                                                |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `oauthTokens` | Manage and control [OAuth2 access tokens](OAuth-OpenId-Authentication.html). A `GET` operation produces a list of all access/refresh tokens. A `DELETE` operation will delete the provided access/refresh token provided in form of a parameter selector. (i.e. `/{token}`). A `GET` operation produces with a parameter selector of `/{token}` will list the details of the fetched access/refresh token. |
+| 端点      | 描述                                                                                                                                                                              |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `奥特托肯斯` | 管理和控制 [OAuth2访问令牌](OAuth-OpenId-Authentication.html)。 `GET` 操作会生成所有访问/刷新令牌的列表。 `删除` 操作将删除以参数选择器形式提供的访问/刷新令牌。 （即 `/{token}`）。 `GET` 操作使用 `/{token}` 的参数选择器生成，将列出提取的访问/刷新令牌的详细信息。 |
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-oauth-webflow</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-授权-网络流</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#oauth2).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#oauth2)。
 
-## Endpoints
+## 端点
 
-After enabling OAuth support, the following endpoints will be available:
+启用非授权支持后，将提供以下端点：
 
-| Endpoint                                  | Description                                                                                                                                                                                                                                               | Method |
-| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| `/oauth2.0/authorize`                     | Authorize the user and start the CAS authentication flow.                                                                                                                                                                                                 | `GET`  |
-| `/oauth2.0/accessToken`,`/oauth2.0/token` | Get an access token in plain-text or JSON                                                                                                                                                                                                                 | `POST` |
-| `/oauth2.0/profile`                       | Get the authenticated user profile in JSON via `access_token` parameter.                                                                                                                                                                                  | `GET`  |
-| `/oauth2.0/introspect`                    | Query CAS to detect the status of a given access token via [introspection](https://tools.ietf.org/html/rfc7662). This endpoint expects HTTP basic authentication with OAuth2 service `client_id` and `client_secret` associated as username and password. | `POST` |
-| `/oauth2.0/device`                        | Approve device user codes via the [device flow protocol](https://tools.ietf.org/html/draft-denniss-oauth-device-flow).                                                                                                                                    | `POST` |
-| `/oauth2.0/revoke`                        | [Revoke](https://tools.ietf.org/html/rfc7009) access or refresh tokens. This endpoint expects HTTP basic authentication with OAuth2 service `client_id` and `client_secret` associated as username and password.                                          |        |
+| 端点                        | 描述                                                                                                                                         | 方法   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---- |
+| `/授权2.0/授权`               | 授权用户并启动 CAS 认证流程。                                                                                                                          | `获取` |
+| `/非授权2.0/访问`，`/非授权2.0/令牌` | 以纯文本或 JSON 获取访问令牌                                                                                                                          | `发布` |
+| `/非授权2.0/配置文件`            | 通过 `access_token` 参数获取 JSON 中经过验证的用户配置文件。                                                                                                  | `获取` |
+| `/授权2.0/反省`               | 查询 CAS，通过 [反省](https://tools.ietf.org/html/rfc7662)检测给定访问令牌的状态。 此端点期望 HTTP 使用 OAuth2 服务进行基本身份验证， `client_id` 并将 `client_secret` 关联为用户名和密码。 | `发布` |
+| `/授权2.0/设备`               | 通过 [设备流协议](https://tools.ietf.org/html/draft-denniss-oauth-device-flow)批准设备用户代码。                                                           | `发布` |
+| `/授权2.0/撤销`               | [撤销](https://tools.ietf.org/html/rfc7009) 访问或刷新令牌。 此端点期望 HTTP 使用 OAuth2 服务进行基本身份验证， `client_id` 并将 `client_secret` 关联为用户名和密码。              |      |
 
-## Response/Grant Types
+## 响应/授予类型
 
-The following types are supported; they allow you to get an access token representing the current user and OAuth client application. With the access token, you'll be able to query the `/profile` endpoint and get the user profile.
+支持以下类型：它们允许您获得代表当前用户和OAuth 客户端应用程序的访问令牌。 使用访问令牌，您可以查询端点</code> `/配置文件，并获取用户配置文件。</p>
 
-### Authorization Code
+<h3 spaces-before="0">授权代码</h3>
 
-The authorization code type is made for UI interactions: the user will enter credentials, shall receive a code and will exchange that code for an access token.
+<p spaces-before="0">授权代码类型为 UI 交互：用户将输入凭据，应接收代码，并将该代码交换为访问令牌。</p>
 
-| Endpoint                | Parameters                                                                                                                     | Response                                         |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
-| `/oauth2.0/authorize`   | `response_type=code&client_id=<ID>&redirect_uri=<CALLBACK>`                                                | OAuth code as a parameter of the `CALLBACK` url. |
-| `/oauth2.0/accessToken` | `grant_type=authorization_code&client_id=ID`<br/>`&client_secret=SECRET&code=CODE&redirect_uri=CALLBACK` | The access token.                                |
+<table spaces-before="0">
+<thead>
+<tr>
+  <th>端点</th>
+  <th>参数</th>
+  <th>响应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>/授权2.0/授权`</td> 
 
-#### Proof Key Code Exchange (PKCE)
+</tr> 
 
-The [Proof Key for Code Exchange](https://tools.ietf.org/html/rfc7636) (PKCE, pronounced pixie) extension describes a technique for public clients to mitigate the threat of having the authorization code intercepted. The technique involves the client first creating a secret, and then using that secret again when exchanging the authorization code for an access token. This way if the code is intercepted, it will not be useful since the token request relies on the initial secret.
+</tbody> </table>
 
-The authorization code type at the authorization endpoint `/oauth2.0/authorize` is able to accept the following parameters to activate PKCE:
+#### 证明密钥代码交换 （PKCE）
 
-| Parameter               | Description                                                                       |
-| ----------------------- | --------------------------------------------------------------------------------- |
-| `code_challenge`        | The code challenge generated using the method below.                              |
-| `code_challenge_method` | `plain`, `S256`. This parameter is optional, where `plain` is assumed by default. |
+代码交换</a> 的
 
-The `/oauth2.0/accessToken`  endpoint is able to accept the following parameters to activate PKCE:
+证明密钥 （PKCE， 发音为 pixie） 扩展描述了一种面向公共客户端的技术，以减轻被截获授权代码的威胁。 该技术涉及客户端首先创建一个秘密，然后在将授权代码交换为访问令牌时再次使用该秘密。 这样，如果代码被截获，它将没有用处，因为令牌请求依赖于初始机密。</p> 
 
-| Parameter       | Description                                                                                                          |
-| --------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `code_verifier` | The original code verifier for the PKCE request, that the app originally generated before the authorization request. |
+授权端点的授权代码类型 `/非授权 2.0/授权` 能够接受以下参数以激活 PKCE：
 
-If the method is `plain`, then the CAS needs only to check that the provided `code_verifier` matches the expected `code_challenge` string. If the method is `S256`, then the CAS should take the provided `code_verifier` and transform it using the same method the client will have used initially. This means calculating the SHA256 hash of the verifier and base64-url-encoding it, then comparing it to the stored `code_challenge`.
+| 参数                      | 描述                                    |
+| ----------------------- | ------------------------------------- |
+| `code_challenge`        | 使用下面的方法生成的代码挑战。                       |
+| `code_challenge_method` | `普通的`， `S256`。 此参数是可选的，默认情况下假设 `普通` 。 |
 
-If the verifier matches the expected value, then the CAS can continue on as normal, issuing an access token and responding appropriately.
 
-### Token/Implicit
+`/非授权2.0/访问端口`  能够接受以下参数以激活PKCE：
 
-The `token` type is also made for UI interactions as well as indirect non-interactive (i.e. Javascript) applications.
+| 参数              | 描述                                      |
+| --------------- | --------------------------------------- |
+| `code_verifier` | PKCE 请求的原始代码验证器，即应用程序最初在授权请求之前生成的代码验证器。 |
 
-| Endpoint              | Parameters                                                       | Response                                                       |
-| --------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------- |
-| `/oauth2.0/authorize` | `response_type=token&client_id=ID&redirect_uri=CALLBACK` | The access token as an anchor parameter of the `CALLBACK` url. |
 
-### Resource Owner Credentials
+如果方法 `简单的`，那么中科院只需要检查所提供的 `code_verifier` 是否与预期的 `code_challenge` 字符串相匹配。 如果该方法 `S256`，那么中科院应采用所提供的 `code_verifier` ，并采用与客户最初相同的方法进行改造。 这意味着计算验证器的SHA256哈希和碱基64-url编码，然后将其与存储的 `code_challenge`进行比较。
 
-The `password` grant type allows the OAuth client to directly send the user's credentials to the OAuth server. This grant is a great user experience for trusted first party clients both on the web and in native device applications.
+如果验证器符合预期值，则 CAS 可以继续正常工作，发出访问令牌并做出适当响应。
 
-| Endpoint                | Parameters                                                                                                                                    | Response          |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `/oauth2.0/accessToken` | `grant_type=password&client_id=ID`<br/>`&client_secret=<SECRET>`<br/>`&username=USERNAME&password=PASSWORD` | The access token. |
 
-Because there is no `redirect_uri` specified by this grant type, the service identifier recognized by CAS and matched in the service registry is taken as the `client_id` instead. You may optionally also pass along a `service` or `X-service` header value that identifies the target application url. The header value must match the OAuth service definition in the registry that is linked to the client id.
 
-### Client Credentials
+### 令牌/隐式
 
-The simplest of all of the OAuth grants, this grant is suitable for machine-to-machine authentication where a specific user’s permission to access data is not required.
+`令牌` 类型也用于 UI 交互以及间接非交互式（即 爪哇脚本）应用程序。
 
-| Endpoint                | Parameters                                                                    | Response          |
-| ----------------------- | ----------------------------------------------------------------------------- | ----------------- |
-| `/oauth2.0/accessToken` | `grant_type=client_credentials&client_id=client&client_secret=secret` | The access token. |
+| 端点          | 参数                                                   | 响应                   |
+| ----------- | ---------------------------------------------------- | -------------------- |
+| `/授权2.0/授权` | `response_type=令牌&client_id=ID&redirect_uri` | 访问令牌作为 `回调` 网址的锚定参数。 |
 
-Because there is no `redirect_uri` specified by this grant type, the service identifier recognized by CAS and matched in the service registry is taken as the `client_id` instead. You may optionally also pass along a `service` or `X-service` header value that identifies the target application url. The header value must match the OAuth service definition in the registry that is linked to the client id.
 
-### Refresh Token
 
-The refresh token grant type retrieves a new access token from a refresh token (emitted for a previous access token), when this previous access token is expired.
 
-| Endpoint                | Parameters                                                                                                                | Response              |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| `/oauth2.0/accessToken` | `grant_type=refresh_token&client_id=<ID>`<br/>`&client_secret=SECRET&refresh_token=REFRESH_TOKEN` | The new access token. |
+### 资源所有者凭据
 
-### Device Flow
+`密码` 授予类型允许非授权客户端直接将用户的凭据发送到OAuth服务器。 对于网络和本地设备应用程序中值得信赖的第一方客户端来说，此授予是一次出色的用户体验。
 
-| Endpoint                | Parameters                                                                        | Response                                             |
-| ----------------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| `/oauth2.0/accessToken` | `response_type=device_code&client_id=<ID>`                              | Device authorization url, device code and user code. |
-| `/oauth2.0/accessToken` | `response_type=device_code&client_id=<ID>&code=<DEVICE_CODE>` | New access token once the user code is approved.     |
+| 端点            | 参数                                                                                                                | 响应    |
+| ------------- | ----------------------------------------------------------------------------------------------------------------- | ----- |
+| `/授权2.0/访问权限` | `grant_type=密码&client_id=ID`<br/>`&client_secret=<SECRET>`<br/>`&用户名=用户名&密码=密码` | 访问令牌。 |
 
-## Grant Type Selection
 
-A grant is a method of acquiring an access token. Deciding which grants to implement depends on the type of client the end user will be using, and the experience you want for your users.
+由于此授予类型没有指定 `redirect_uri` ，因此将 CAS 认可并在服务注册表中匹配的服务标识符视为 `client_id` 。 您也可以选择性地传递 `服务` 或 `识别目标应用程序网址的 X 服务` 标题值。 标题值必须与链接到客户ID的注册表中的OAuth服务定义相匹配。
+
+
+
+### 客户凭据
+
+在 OAuth 授予的所有赠款中，最简单的是，此赠款适用于不需要特定用户访问数据的机器对机器身份验证 。
+
+| 端点            | 参数                                                                     | 响应    |
+| ------------- | ---------------------------------------------------------------------- | ----- |
+| `/授权2.0/访问权限` | `grant_type=client_credentials&client_id=客户端&client_secret/秘密` | 访问令牌。 |
+
+
+由于此授予类型没有指定 `redirect_uri` ，因此将 CAS 认可并在服务注册表中匹配的服务标识符视为 `client_id` 。 您也可以选择性地传递 `服务` 或 `识别目标应用程序网址的 X 服务` 标题值。 标题值必须与链接到客户ID的注册表中的OAuth服务定义相匹配。
+
+
+
+### 刷新令牌
+
+刷新令牌授予类型从刷新令牌（为以前的访问令牌发出）检索新访问令牌， 此之前的访问令牌过期时。
+
+| 端点            | 参数                                                                                                                    | 响应      |
+| ------------- | --------------------------------------------------------------------------------------------------------------------- | ------- |
+| `/授权2.0/访问权限` | `grant_type=refresh_token&client_id]<ID>`<br/>`&client_secret=秘密&refresh_token REFRESH_TOKEN` | 新的访问令牌。 |
+
+
+
+
+### 设备流
+
+| 端点            | 参数                                                                              | 响应                    |
+| ------------- | ------------------------------------------------------------------------------- | --------------------- |
+| `/授权2.0/访问权限` | `response_type device_code&client_id=<ID>`                            | 设备授权网址、设备代码和用户代码。     |
+| `/授权2.0/访问权限` | `response_type=device_code&client_id=<ID>&代码=<DEVICE_CODE>` | 一旦用户代码获得批准，就会有新的访问令牌。 |
+
+
+
+
+## 授予类型选择
+
+赠款是获取访问令牌的一种方法。 决定实施哪些授予取决于最终用户将使用的客户端类型，以及您希望为用户提供的体验。
 
 ![](https://alexbilbie.com/images/oauth-grants.svg)
 
-To learn more about profiles and grant types, please [review this guide](https://alexbilbie.com/guide-to-oauth-2-grants/).
+要了解有关个人资料和赠款类型的更多资料，请 [](https://alexbilbie.com/guide-to-oauth-2-grants/)查看本指南。
 
-## Register Clients
 
-Every OAuth client must be defined as a CAS service (notice the new *clientId* and *clientSecret* properties, specific to OAuth):
+
+## 注册客户端
+
+每个非授权客户端必须定义为 CAS 服务（请注意新的 *客户端id* 和 *客户* 属性，具体到非授权）：
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-  "clientId": "clientid",
-  "clientSecret": "clientSecret",
-  "serviceId" : "^(https|imaps)://<redirect-uri>.*",
-  "name" : "OAuthService",
-  "id" : 100,
-  "supportedGrantTypes": [ "java.util.HashSet", [ "...", "..." ] ],
-  "supportedResponseTypes": [ "java.util.HashSet", [ "...", "..." ] ]
+•
+  "@class"： "org. apereo. cas. 支持. aauth. 服务. oauth 注册服务"，
+  "客户 ID"： "客户"，
+  "客户秘密"： "客户秘密"，
+  "服务id"："^（https|图片）：//<redirect-uri>.*"，
+  "名称"："非授权服务"，
+  "id"：100，
+  "支持格兰特类型"："java.util.哈希集"，["。。。"，"。。。" []，
+  "支持响应类型"："java.利用。哈希集"，[。。。"，"。。。" ]]
 }
 ```
 
-The following fields are supported:
 
-| Field                    | Description                                                                                                                                                                                                                                                 |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`               | The client identifier for the application/service.                                                                                                                                                                                                          |
-| `clientSecret`           | The client secret for the application/service.                                                                                                                                                                                                              |
-| `supportedGrantTypes`    | Collection of supported grant types for this service.                                                                                                                                                                                                       |
-| `supportedResponseTypes` | Collection of supported response types for this service.                                                                                                                                                                                                    |
-| `bypassApprovalPrompt`   | Whether approval prompt/consent screen should be bypassed. Default is `false`.                                                                                                                                                                              |
-| `generateRefreshToken`   | Whether a refresh token should be generated along with the access token. Default is `false`.                                                                                                                                                                |
-| `renewRefreshToken`      | Whether the existing refresh token should be expired and a new one generated (and sent along) whenever a new access token is requested (with `grant_type` = `refresh_token`). Only possible if `generateRefreshToken` is set to `true`. Default is `false`. |
-| `jwtAccessToken`         | Whether access tokens should be created as JWTs. Default is `false`.                                                                                                                                                                                        |
-| `serviceId`              | The pattern that authorizes the redirect URI(s), or same as `clientId` in case `redirect_uri` is not required by the grant type (i.e `client_credentials`, etc).                                                                                            |
+支持以下字段：
 
-<div class="alert alert-info"><strong>Keep What You Need!</strong><p>You are encouraged to only keep and maintain properties and settings needed for a particular integration. It is <strong>UNNECESSARY</strong> to grab a copy of all service fields and try to configure them yet again based on their default. While you may wish to keep a copy as a reference, this strategy would ultimately lead to poor upgrades increasing chances of breaking changes and a messy deployment at that.</p></div>
+| 田         | 描述                                                                                                       |
+| --------- | -------------------------------------------------------------------------------------------------------- |
+| `客户ID`    | 申请/服务的客户标识符。                                                                                             |
+| `客户安全`    | 申请/服务的客户秘密。                                                                                              |
+| `支持格兰特类型` | 为这项服务收集支持的赠款类型。                                                                                          |
+| `支持响应类型`  | 收集此服务的支持响应类型。                                                                                            |
+| `旁路批准提示`  | 是否应绕过批准提示/同意屏幕。 违约 `虚假`。                                                                                 |
+| `生成雷什托肯`  | 是否应与访问令牌一起生成刷新令牌。 违约 `虚假`。                                                                               |
+| `续订刷新`    | 当前刷新令牌是否应过期，并在请求新访问令牌时生成（并沿发送）新令牌（ `grant_type` = `refresh_token`）。 只有当 `生成雷什托肯` 设置为 `真正的`时才可能。 违约 `虚假`。 |
+| `j瓦特访问权`  | 是否应将访问令牌创建为 JWT。 违约 `虚假`。                                                                                |
+| `服务ID`    | 授权重定向 URI（s）的模式，或与 `客户id` 相同，以防赠款类型（即 `client_credentials`等）不需要 `redirect_uri` 。                         |
 
-Service definitions are typically managed by the [service management](../services/Service-Management.html) facility.
+<div class="alert alert-info"><strong>保留您需要的！</strong><p>我们鼓励您只保留和维护特定集成所需的属性和设置。 <strong>没有必要</strong> 获取所有服务字段的副本，并尝试根据它们的默认值再次配置它们。 虽然您可能希望保留副本作为参考，但此策略最终会导致升级不力，从而增加打破更改和混乱部署的机会。</p></div>
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>CAS today does not strictly enforce the collection of authorized supported response/grant types for backward compatibility reasons. This means that if left undefined, all grant and response types may be allowed by the service definition and related policies. Do please note that this behavior is <strong>subject to change</strong> in future releases and thus, it is strongly recommended that all authorized grant/response types for each profile be declared in the service definition immediately to avoid surprises in the future.</p></div>
+服务定义通常由 [服务管理](../services/Service-Management.html) 设施管理。
 
-### Encryptable Client Secrets
+<div class="alert alert-warning"><strong>使用警告！</strong><p>CAS 目前没有严格执行出于向后兼容性原因的授权支持响应/授予类型的收集。 这意味着，如果未定义，服务定义和相关政策可能允许所有授予和响应类型。 请注意，此行为 <strong>在未来版本中</strong> 更改，因此，强烈建议立即在服务定义中声明每个配置文件的所有授权授予/响应类型，以避免将来出现意外。</p></div>
 
-Client secrets for OAuth relying parties may be defined as encrypted values prefixed with `{cas-cipher}`:
+### 可加密客户端机密
+
+OAuth 依赖方的客户端机密可定义为以 `{cas-cipher}`为前缀的加密值：
+
+
 
 ```json
-{
-  "@class": "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-  "clientId": "clientid",
-  "clientSecret": "{cas-cipher}eyJhbGciOiJIUzUxMiIs...",
-  "serviceId" : "^(https|imaps)://<redirect-uri>.*",
-  "name": "Sample",
-  "id": 100
+•
+  "@class"："组织.apereo.cas.支持.服务.未注册服务"，
+  "客户id"："客户"，
+  "客户秘密"："{cas-cipher}eyJhbGcijiuzMiIs.。。"，
+  "服务id"："^（https|图片）：//<redirect-uri>。*"，
+  "名称"："样本"，
+  "id"：100
+
+```
+
+
+客户端机密可以使用 CAS 提供的密码操作手动或通过 [CAS 指挥线壳](Configuring-Commandline-Shell.html)进行加密。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#oauth2)。
+
+
+
+### 属性释放
+
+属性/索赔过滤和发布策略是根据非授权服务定义的。 有关详细信息，请参阅本指南</a> 。</p> 
+
+
+
+## 非授权令牌到期政策
+
+非授权令牌的到期政策由 CAS 设置和属性控制。 请注意，虽然访问和刷新令牌可能有其自己的使用寿命和到期政策，但它们通常与 CAS 单个登录会话的长度上限。
+
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#oauth2)。
+
+
+
+### 每种服务
+
+某些非授权令牌的到期政策可按每份申请有条件地决定。 应聘服务 其令牌到期策略是偏离默认配置，必须按照以下片段进行设计。
+
+
+
+#### 非航空法典
+
+
+
+```json
+•
+  "@class"： "组织. apereo. cas. 支持. aauth. 服务. 非授权注册服务"，
+  "客户id"："客户"，
+  "客户秘密"："客户秘密"，
+  "服务ID"："^（https|图片）：//<redirect-uri>。*"，
+  "名称"："非授权服务"，
+  "id"： 100，
+  "代码探索政策"： [
+    "@class"： "org. apereo. cas. 支持. aauth. 服务. 默认" 注册服务授权代码探索政策"，
+    "使用次数"：1、
+    "时间到生活"："10"
+  =
 }
 ```
 
-Client secrets may be encrypted using CAS-provided cipher operations either manually or via the [CAS Command-line shell](Configuring-Commandline-Shell.html). To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#oauth2).
 
-### Attribute Release
 
-Attribute/claim filtering and release policies are defined per OAuth service. See [this guide](../integration/Attribute-Release-Policies.html) for more info.
 
-## OAuth Token Expiration Policy
+#### 非授权访问令牌
 
-The expiration policy for OAuth tokens is controlled by CAS settings and properties. Note that while access and refresh tokens may have their own lifetime and expiration policy, they are typically upper-bound to the length of the CAS single sign-on session.
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#oauth2).
-
-### Per Service
-
-The expiration policy of certain OAuth tokens can be conditionally decided on a per-application basis. The candidate service whose token expiration policy is to deviate from the default configuration must be designed as the following snippets demonstrate.
-
-#### OAuth Code
 
 ```json
-{
-  "@class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-  "clientId": "clientid",
-  "clientSecret": "clientSecret",
-  "serviceId" : "^(https|imaps)://<redirect-uri>.*",
-  "name" : "OAuthService",
-  "id" : 100,
-  "codeExpirationPolicy": {
-    "@class": "org.apereo.cas.support.oauth.services.DefaultRegisteredServiceOAuthCodeExpirationPolicy",
-    "numberOfUses": 1,
-    "timeToLive": "10"
-  }
+•
+  "@class"： "组织. apereo. cas. 支持. aauth. 服务. 非授权注册服务"，
+  "客户id"："客户id"，
+  "客户秘密"："客户秘密"，
+  "服务ID"："^（https|图片）：//<redirect-uri>。*"，
+  "名称"："非授权服务"，
+  "id"： 100，
+  "访问探视探索政策"： [
+    "@class"： "org. apereo. cas. 支持. aauth. 服务. 默认注册服务"
+    "最大时间生活"："1000"，
+    "时间到生活"："100"
+  =
 }
 ```
 
-#### OAuth Access Token
+
+
+
+#### 非授权设备令牌
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-  "clientId": "clientid",
-  "clientSecret": "clientSecret",
-  "serviceId" : "^(https|imaps)://<redirect-uri>.*",
-  "name" : "OAuthService",
-  "id" : 100,
-  "accessTokenExpirationPolicy": {
-    "@class": "org.apereo.cas.support.oauth.services.DefaultRegisteredServiceOAuthAccessTokenExpirationPolicy",
-    "maxTimeToLive": "1000",
-    "timeToLive": "100"
-  }
+•
+  "@class"："org.apereo.cas.支持.服务.未注册服务"，
+  "客户ID"："客户"，
+  "客户秘密"："客户秘密"，
+  "服务id"："^（https|图片）：//<redirect-uri>。*"
+  "名称"："非授权服务"，
+  "id"：100，
+  "访问探视体验政策"：{
+    "@class"："org.aper"
+    "时间到生活"："100"
+  =
 }
 ```
 
-#### OAuth Device Token
+
+
+
+#### 非授权刷新令牌
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-  "clientId": "clientid",
-  "clientSecret": "clientSecret",
-  "serviceId" : "^(https|imaps)://<redirect-uri>.*",
-  "name" : "OAuthService",
-  "id" : 100,
-  "accessTokenExpirationPolicy": {
-    "@class": "org.apereo.cas.support.oauth.services.DefaultRegisteredServiceOAuthDeviceTokenExpirationPolicy",
-    "timeToLive": "100"
-  }
+•
+  "@class"："org.apereo.cas.支持.aauth.服务.Oauth.服务"，
+  "客户ID"："客户"，
+  "客户秘密"："客户秘密"，
+  "服务id"："^（https|图片）："/<redirect-uri>。*"
+  "名称"："非授权服务"，
+  "id"：100，
+  "访问到的探索政策"：{
+    "@class"："org.aper"
+    "时间到生活"："100"
+  =
 }
 ```
 
-#### OAuth Refresh Token
+
+
+
+## JWT 访问令牌
+
+默认情况下，非身份存取令牌创建为不透明标识符。 还可以选择在每个服务的基础上将 JWT 生成为访问令牌：
+
+
 
 ```json
-{
-  "@class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-  "clientId": "clientid",
-  "clientSecret": "clientSecret",
-  "serviceId" : "^(https|imaps)://<redirect-uri>.*",
-  "name" : "OAuthService",
-  "id" : 100,
-  "accessTokenExpirationPolicy": {
-    "@class": "org.apereo.cas.support.oauth.services.DefaultRegisteredServiceOAuthRefreshTokenExpirationPolicy",
-    "timeToLive": "100"
-  }
+•
+    "@class"： "组织. apereo. cas. 支持. aauth. 服务. 非授权注册服务"，
+    "客户id"："客户id"，
+    "客户秘密"："客户秘密"，
+    "服务ID"："^（https|图片）：//<redirect-uri>。*"，
+    "名称"："非授权服务"，
+    "id"：100，
+    "jwtAccessToken"：真实的，
+    的"属性"：{
+      "@class"："java.util.哈希马普"，
+      "访问托肯AsJwt签名键" "：" [
+         "@class"： "org. apereo. cas. 服务. 默认注册服务" ，
+         "价值"： [ "java. util. 哈希塞特"， [ "。。。" ]]
+      }，
+      "访问托肯阿斯尤特加密钥匙"：{
+           "@class"："org.apereo.cas.服务.默认注册服务"，
+           "价值"："java.util.哈希塞特"，["。。。" ]]
+      }，
+      "访问托肯纳斯Jwt签名"：{
+         "@class"："org.apereo.cas.服务.默认注册服务"
+         "价值"："java.ul.il.哈希塞特"，"真实"[]]
+      "，
+      "访问托肯纳斯Jwt加密"：{
+         "@class"："org.apereo.cas.服务。默认注册服务"
+         "价值"："java.il.利用"，"哈希塞特"，"真实"]]
+      "，
+      "访问托肯Asjwt密码类型"：{
+         "@class"："或
+         "价值"："java.util.哈希塞特"，"ENCRYPT_AND_SIGN"]
+      [
+    ]
 }
 ```
 
-## JWT Access Tokens
 
-By default, OAuth access tokens are created as opaque identifiers. There is also the option to generate JWTs as access tokens on a per-service basis:
+提供以下密码策略类型：
 
-```json
-{
-    "@class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
-    "clientId": "clientid",
-    "clientSecret": "clientSecret",
-    "serviceId" : "^(https|imaps)://<redirect-uri>.*",
-    "name" : "OAuthService",
-    "id" : 100,
-    "jwtAccessToken": true,
-    "properties" : {
-      "@class" : "java.util.HashMap",
-      "accessTokenAsJwtSigningKey" : {
-         "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-         "values" : [ "java.util.HashSet", [ "..." ] ]
-      },
-      "accessTokenAsJwtEncryptionKey" : {
-           "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-           "values" : [ "java.util.HashSet", [ "..." ] ]
-      },
-      "accessTokenAsJwtSigningEnabled" : {
-         "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-         "values" : [ "java.util.HashSet", [ "true" ] ]
-      },
-      "accessTokenAsJwtEncryptionEnabled" : {
-         "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-         "values" : [ "java.util.HashSet", [ "true" ] ]
-      },
-      "accessTokenAsJwtCipherStrategyType" : {
-         "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-         "values" : [ "java.util.HashSet", [ "ENCRYPT_AND_SIGN" ] ]
-      }
-    }
-}
-```
+| 类型                 | 描述             |
+| ------------------ | -------------- |
+| `ENCRYPT_AND_SIGN` | 默认策略;加密值，然后签名。 |
+| `SIGN_AND_ENCRYPT` | 签署值，然后加密。      |
 
-The following cipher strategy types are available:
 
-| Type               | Description                                      |
-| ------------------ | ------------------------------------------------ |
-| `ENCRYPT_AND_SIGN` | Default strategy; encrypt values, and then sign. |
-| `SIGN_AND_ENCRYPT` | Sign values, and then encrypt.                   |
+签名和加密密钥也可以在每个服务的基础上定义，也可以通过 CAS 设置在全球范围内定义。 要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#oauth2)。
 
-Signing and encryption keys may also be defined on a per-service basis, or globally via CAS settings. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#oauth2).
 
-## OAuth User Profile Structure
 
-The requested user profile may be rendered and consumed by the application using the following options.
+## 非授权用户配置文件结构
 
-### Nested
+所请求的用户配置文件可通过应用程序使用以下选项进行渲染和消费。
 
-By default, the requested user profile is rendered using a `NESTED` format where the authenticated principal and attributes are placed inside `id` and `attributes` tags respectively in the final structure.
+
+
+### 嵌 套
+
+默认情况下，请求的用户配置文件使用 `NESTED` 格式呈现，其中经过验证的委托人和属性分别放置在 `id` 和 `属性` 标记中。
+
+
 
 ```json
 {
-  "id": "casuser",
-  "attributes": {
-    "email": "casuser@example.org",
-    "name": "CAS"
-  },
-  "something": "else"
+  "id"："casuser"，
+  "属性"：{
+    "电子邮件"："casuser@example.org"，
+    "名称"："CAS"
+  }，
+  "东西"："其他"
 }
 ```
 
-### Flat
 
-This option flattens principal attributes by one degree, putting them at the same level as `id`. Other nested elements in the final payload are left untouched.
+
+
+### 平
+
+此选项将主要属性平化一度，使其与 `id`处于同一水平。 最终有效载荷中的其他嵌套元件保持不变。
+
+
 
 ```json
 {
-  "id": "casuser",
-  "email": "casuser@example.org",
-  "name": "CAS",
-  "something": "else"
+  "id"："casuser"，
+  "电子邮件"："casuser@example.org"，
+  "名称"："CAS"，
+  "东西"："其他"
 }
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#oauth2).
 
-### Custom
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#oauth2)。
 
-If you wish to create your own profile structure, you will need to design a component and register it with CAS to handle the rendering of the user profile:
+
+
+### 习惯
+
+如果您想要创建自己的配置文件结构，则需要设计一个组件并将其注册到 CAS 以处理用户配置文件的渲染：
+
+
 
 ```java
-package org.apereo.cas.support.oauth;
+包组织. 阿佩雷奥. 卡斯. 支持. aauth;
 
-@Configuration("MyOAuthConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyOAuthConfiguration {
+@Configuration（"MyO授权配置"）
+@EnableConfigurationProperties（cas配置.class）
+公共类MyOAus配置=
 
     @Bean
     @RefreshScope
-    public OAuth20UserProfileViewRenderer oauthUserProfileViewRenderer() {
-        ...
-    }
+    公共OAuth20User专业查看器非授权使用者专业查看器（）{
+        。。。
+    •
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
 
-## Throttling
+[本指南](../configuration/Configuration-Management-Extensions.html) 了解有关如何将配置注册到 CAS 运行时间的更多信息。
 
-Authentication throttling may be enabled for the `/oauth2.0/accessToken` provided support is included in the overlay to [turn on authentication throttling](Configuring-Authentication-Throttling.html) support. The throttling mechanism that handles the usual CAS server endpoints for authentication and ticket validation, etc is then activated for the OAuth endpoints that are supported for throttling.
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#oauth2).
 
-## Server Configuration
+## 节流
 
-Remember that OAuth features of CAS require session affinity (and optionally session replication), as the authorization responses throughout the login flow are stored via server-backed session storage mechanisms. You will need to configure your deployment environment and load balancers accordingly.
+`/非授权 2.0/access Token` 支持可以启用身份验证限制，前提是覆盖 [打开身份验证 限制](Configuring-Authentication-Throttling.html) 支持。 然后，为支持限制的 OAuth 端点激活处理通常的 CAS 服务器端点以进行身份验证 和票证验证等的节流机制。
 
-## Sample Client Applications
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#oauth2)。
 
-- [OAuth2 Sample Webapp](https://github.com/cas-projects/oauth2-sample-java-webapp)
 
-# OpenID Authentication
 
-To configure CAS to act as an OpenID provider, please [see this page](../protocol/OpenID-Protocol.html).
+## 服务器配置
+
+请记住，CAS 的 OAuth 功能需要会话亲和力（和可选会话复制）， ，因为整个登录流中的授权响应都通过服务器支持的会话存储机制存储。 您将需要相应地配置部署 环境和负载平衡器。
+
+
+
+## 示例客户端应用程序
+
+- [OAuth2 样本网络应用程序](https://github.com/cas-projects/oauth2-sample-java-webapp)
+
+
+
+# 开放式身份验证
+
+要将 CAS 配置为 OpenID 提供商，请 [](../protocol/OpenID-Protocol.html)查看此页面。
