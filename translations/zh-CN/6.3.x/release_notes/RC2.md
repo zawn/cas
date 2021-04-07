@@ -1,190 +1,224 @@
 ---
-layout: default
-title: CAS - Release Notes
-category: Planning
+layout: 违约
+title: CAS - 发布说明
+category: 规划
 ---
 
-# RC2 Release Notes
+# RC2 发布说明
 
-We strongly recommend that you take advantage of the release candidates as they come out. Waiting for a `GA` release is only going to set you up for unpleasant surprises. A `GA` is [a tag and nothing more](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/). Note that CAS releases are *strictly* time-based releases; they are not scheduled or based on specific benchmarks, statistics or completion of features. To gain confidence in a particular release, it is strongly recommended that you start early by experimenting with release candidates and/or follow-up snapshots.
+我们强烈建议您利用释放候选人，因为他们出来。 等待一个 `GA` 发布只会设置 你不愉快的惊喜。 一个 `的大会` [一个标签，没有更多的](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/)。 请注意，CAS 版本 *严格* 基于时间的版本：它们不是根据特定的基准、统计或功能完成来安排的。 为了获得 对特定版本的信心，强烈建议您尽早开始尝试发布候选和/或后续快照。
 
-## Apereo Membership
+## 阿佩雷奥会员
 
-If you benefit from Apereo CAS as free and open-source software, we invite you to [join the Apereo Foundation](https://www.apereo.org/content/apereo-membership) and financially support the project at a capacity that best suits your deployment. Note that all development activity is performed *almost exclusively* on a voluntary basis with no expectations, commitments or strings attached. Having the financial means to better sustain engineering activities will allow the developer community to allocate *dedicated and committed* time for long-term support, maintenance and release planning, especially when it comes to addressing critical and security issues in a timely manner. Funding will ensure support for the software you rely on and you gain an advantage and say in the way Apereo, and the CAS project at that, runs and operates. If you consider your CAS deployment to be a critical part of the identity and access management ecosystem, this is a viable option to consider.
+如果您作为免费和开源软件受益于 Apereo CAS，我们邀请您 [加入 Apereo 基金会](https://www.apereo.org/content/apereo-membership) ，并以最适合您部署的容量为项目提供财政支持。 请注意， 的所有发展活动几乎完全 *自愿* 进行，不附加任何期望、承诺或条件。 拥有更好的财务手段 维持工程活动，将使开发人员社区能够分配 *专门和投入的* 时间进行长期支持、 维护和发布规划，特别是在及时解决关键和安全问题方面。 资金将 确保对您所依赖的软件的支持，并且您获得优势，并在 Apereo 和 CAS 项目运行 和运营的方式中表示。 如果您认为 CAS 部署是身份和访问管理生态系统的关键部分，则这是一个可行的选择。
 
-## Get Involved
+## 参与
 
-- Start your CAS deployment today. Try out features and [share feedback](/cas/Mailing-Lists.html).
-- Better yet, [contribute patches](/cas/developer/Contributor-Guidelines.html).
-- Suggest and apply documentation improvements.
+- 今天开始您的CAS部署。 尝试功能， [分享反馈](/cas/Mailing-Lists.html)。
+- 更妙的是， [](/cas/developer/Contributor-Guidelines.html)提供补丁。
+- 建议并应用文档改进。
 
-## Resources
+## 资源
 
-- [Release Schedule](https://github.com/apereo/cas/milestones)
-- [Release Policy](/cas/developer/Release-Policy.html)
+- [发布时间表](https://github.com/apereo/cas/milestones)
+- [发布策略](/cas/developer/Release-Policy.html)
 
-## Overlay
+## 覆盖
 
-In the `gradle.properties` of the [CAS WAR Overlay](../installation/WAR-Overlay-Installation.html), adjust the following setting:
+在 [CAS战争覆盖](../installation/WAR-Overlay-Installation.html)`` ，调整下列设置：
 
 ```properties
-cas.version=6.3.0-RC2
+卡斯.版本=6.3.0-RC2
 ```
 
 <div class="alert alert-info">
-  <strong>System Requirements</strong><br/>There are no changes to the minimum system/platform requirements for this release.
+  <strong>系统要求</strong><br/>本版本的最低系统/平台要求没有更改。
 </div>
 
-## New & Noteworthy
+## 值得注意的新 &
 
-The following items are new improvements and enhancements presented in this release.
+以下项目是本版本中提出的新改进和增强功能。
 
-### Amazon SDK v2
+### 亚马逊 SDK v2
 
-CAS is now using the Amazon SDK v2, which effectively upgrades and impacts the functionality for DynamoDb, SNS, SSM, S3 and all other features based on Amazon Web Services.
+CAS 目前正在使用亚马逊 SDK v2，它有效地升级和影响 DynamoDb、SNS、SSM、 S3 以及基于亚马逊 Web 服务的所有其他功能的功能。
 
-### YubiKey Device Management via REST
+### 尤比基设备管理通过 REST
 
-YubiKey devices used for [multifactor authentication](../mfa/YubiKey-Authentication.html) can now be externally managed via a REST API.
+用于 [多因素认证](../mfa/YubiKey-Authentication.html) 的 YubiKey 设备现在可以通过 REST API 进行外部管理。
 
-### Test Coverage via CodeCov
+### 通过代码库进行测试覆盖
 
-CAS test coverage across all modules in the codebase has now reached `84%` and continues to climb. Additional validation rules are also applied to fail all pull requests that fall below this threshold. This area will be closely monitored and improved as progress is made with the goal of hopefully reaching at least `85%` before the final GA release. Of course, this will not be a blocker for the final release.
+目前，在代码库中，CAS 所有模块的测试覆盖率已达到 84%</code> `，并且还在继续攀升。 
+，还应用了其他验证规则，以失败所有低于此阈值的拉取请求。 随着取得进展，这一领域将得到密切监测和改进，
+有望在最终大会发布前达到至少85%` `。 当然，这不会是最终版本的拦截器。</p>
 
-### YubiKey Multiple Devices
+<h3 spaces-before="0">尤比基多设备</h3>
 
-Multiple YubiKey devices can now be registered with CAS for [multifactor authentication](../mfa/YubiKey-Authentication.html). This ability can be controlled via CAS settings.
+<p spaces-before="0">多个YubiKey设备现在可以在中科院注册 <a href="../mfa/YubiKey-Authentication.html">多因素认证</a>。 此能力可以通过 CAS 设置进行控制。</p>
 
-![image](https://user-images.githubusercontent.com/1205228/88883051-8b9caa80-d248-11ea-9ad5-487c6071fbc5.png)
+<p spaces-before="0"><img src="https://user-images.githubusercontent.com/1205228/88883051-8b9caa80-d248-11ea-9ad5-487c6071fbc5.png" alt="图像" /></p>
 
-![image](https://user-images.githubusercontent.com/1205228/88883117-bf77d000-d248-11ea-98c9-e88088fdd975.png)
+<p spaces-before="0"><img src="https://user-images.githubusercontent.com/1205228/88883117-bf77d000-d248-11ea-98c9-e88088fdd975.png" alt="图像" /></p>
 
 <div class="alert alert-warning">
-  <strong>WATCH OUT!</strong><br />This may be a breaking change. The underlying data models and repository implementations that manage device records for users are modified to handle a collection of devices per user. This does affect database or filesystem schemas and API calls where a collection is expected instead of a single result.
+  <strong>小心！</strong><br />这可能是一个突破性的变化。 对管理用户设备记录的基础数据模型和存储库实现进行了修改，以处理每个用户的设备集合。 这确实会影响数据库或文件系统计划和 API 调用，其中需要收集而不是单个结果。
 </div>
 
-### Amazon S3 Service Registry
+<h3 spaces-before="0">亚马逊 S3 服务注册表</h3>
 
-CAS registered service definitions can now be natively stored in [Amazon S3 buckets](../services/AmazonS3-Service-Management.html).
+<p spaces-before="0">CAS 注册的服务定义现在可以本地存储在亚马逊 S3 存储桶</a><a href="../services/AmazonS3-Service-Management.html">中。</p>
 
-### Dynamic JPA Service Management
+<h3 spaces-before="0">动态 JPA 服务管理</h3>
 
-CAS registered service definitions that are managed by the [JPA Service Registry](../services/JPA-Service-Management.html) are now put through a more fine-tuned dynamic registration process at runtime. Previously, database schemas were created automatically if appropriate entity classes, representing each client application type, were found on the classpath. In this release, entity classes are required to be explicitly registered with the CAS service management facility and each appropriate auto-configuration module should correctly nominate the relevant entities when declared in the [WAR Overlay](../installation/WAR-Overlay-Installation.html).
+<p spaces-before="0">由 <a href="../services/JPA-Service-Management.html">JPA服务注册处</a>
+管理的CAS注册服务定义，现在在运行时通过更微调的动态注册流程。 以前，如果在类路径上找到代表每个客户端应用程序类型的适当实体类别，则会自动创建数据库
+。 在此版本中，实体类 
+必须明确注册在 CAS 服务管理设施，每个适当的自动配置模块应
+正确指定相关实体时，宣布在 <a href="../installation/WAR-Overlay-Installation.html">WAR 覆盖</a>。 </p>
 
 <div class="alert alert-info">
-  <strong>Remember</strong><br />If you are not using a relational database to manage application definitions,
-  there is nothing for you to do here. Carry on!
+  <strong>请记住</strong><br />如果您没有使用关系数据库来管理应用程序定义，
+  这里没有什么可做的。 继续！
 </div>
 
-The main motivation for this change is to avoid conflicts between the CAS web application server and the CAS management application, specially when both are configured to use JPA to manage service definitions. The management application requires compile-time access to the CAS service definition APIs to handle data mappings, yet doing so interferes with the JPA Service Registry expectations of database schemas and tables that should be there, given the classpath automatic discovery process. For example, a CAS server deployment could declare support for CAS and SAML application types allowing it to create appropriate schemas automatically based on those two definition types. When the CAS management application is next deployed, it might complain about missing schemas for OAUTH and OIDC applications since the type is found on the classpath but the definition is not actually used/supported by the deployment.
+<p spaces-before="0">这一变化的主要动机是避免 CAS 网络应用服务器和 
+CAS 管理应用程序之间的冲突，特别是当两者都配置为使用 JPA 来管理服务定义时。 管理
+应用程序需要编译时间访问 CAS 服务定义 ABI 来处理数据映射，但这样做会干扰
+JPA 服务注册处对数据库计划和表的期望，因为分类路径
+自动发现过程。 例如，CAS 服务器部署可以声明对 CAS 和 SAML 应用程序类型的支持
+允许它根据这两种定义类型自动创建适当的计划。 当 CAS 管理应用程序 
+下一次部署时，它可能会抱怨非统组织和 OIDC 应用程序缺少计划，因为类型 
+位于类路径上，但该定义实际上并未被部署使用/支持。</p>
 
-Using this new strategy, database tables and schemas are not automatically expected or created by the CAS management application, allowing the codebase to use entity classes on the classpath for data mapping operations. To handle the registration, the management application is given the ability to register entity classes for each application type with the CAS JPA Service Registry using a simple property, allowing the operator to explicitly declare the set of services supported by the deployment.
+<p spaces-before="0">使用此新策略，CAS 管理
+ 应用程序不会自动预期或创建数据库表和计划，允许代码库使用分类路径上的实体类进行数据映射操作。 
+ 为了处理注册，管理应用程序有权使用简单的属性向 CAS JPA 服务注册处注册每个 
+ 申请类型的实体类，允许操作员明确 
+ 申报部署支持的服务集。</p>
 
-### SAML2 Logout Requests & Responses
+<h3 spaces-before="0">SAML2 注销请求 & 响应</h3>
 
-SAML2 single logout handling handling, when CAS is running as a [SAML2 identity provider](../installation/Configuring-SAML2-Authentication.html), is now able to produce a logout response for the service provider once the single logout sequence has completed. Additionally, logout requests are no longer sent to the original service provider which initiated the single logout flow.
+<p spaces-before="0">SAML2 单一注销处理处理，当 CAS 作为 <a href="../installation/Configuring-SAML2-Authentication.html">SAML2 身份提供商</a>运行时，现在 
+能够在单个注销序列完成后为服务提供商生成注销响应。 此外，
+的注销请求不再发送到启动单一注销流的原始服务提供商。 </p>
 
-### OpenID Connect Logout
+<h3 spaces-before="0">打开ID连接注销</h3>
 
-Logout requests handled by OpenID Connect authentication flows can now properly redirect to a requested URL via `post_logout_redirect_uri` provided `id_token_hint` is specified, and the logout URL is authorized for the relying party.
+<p spaces-before="0">由 OpenID 连接身份验证流处理的注销请求现在可以通过指定 <code>id_token_hint` `post_logout_redirect_uri` 正确地重定向到请求的 URL，并且登录 URL 已授权给依赖方。
 
-### Okta SDK v2
+### 冈田SDK v2
 
-CAS is now using the Okta SDK v2 mainly used to handle the integration between CAS and Okta for authentication and attribute resolution.
+CAS现在使用冈田SDK v2主要用于处理CAS和大田之间的集成进行身份验证和属性解析。
 
-### Attribute Consent Activation
+### 属性同意激活
 
-Activation rules for [Attribute Consent](../integration/Attribute-Release-Consent.html) are re-designed to allow per-application overrides of the global policy activation rules. Additional documentation updates are now present to demonstrate how multiple attribute consent policies may be chained together.
+重新设计了 [属性同意](../integration/Attribute-Release-Consent.html) 的激活规则，以允许每个应用程序 覆盖全球政策激活规则。 现在还提供了其他文档更新，以演示如何将多个 属性同意策略链接在一起。
 
-Furthermore, activation rules can also be outsourced to external Groovy scripts.
+此外，激活规则也可以外包给外部 Groovy 脚本。
 
 <div class="alert alert-warning">
-  <strong>WATCH OUT!</strong><br />This may be a breaking change since the data model for the <code>DefaultRegisteredServiceConsentPolicy</code> 
-  has remove the <code>enabled</code> field, replacing it with <code>status</code>. Review the documentation to adjust for proper syntax.
+  <strong>小心！</strong><br />这可能是一个突破性的变化，因为 <code>默认注册服务政策</code> 
+  的数据模型已经删除了启用</code> 字段 <code>，代之以 <code>状态</code>。 查看文档以调整以获得适当的语法。
 </div>
 
-### Ticket-Granting Ticket Expiration Policy Per Service
+### 每项服务的出票票到期政策
 
-The ticket-granting ticket expiration policy can be overridden on a per-service using the expiration policy [assigned to the service definition](../ticketing/Configuring-Ticket-Expiration-Policy.html).
+分配给服务定义</a>的过期保单
+，每份服务可覆盖出票期政策。</p> 
 
-### Service Matching Strategy
 
-Service identifiers defined for applications in the CAS service registry have always been defined as patterns. This release exposes a few [additional options](../services/Configuring-Service-Matching-Strategy.html) while also allowing the matching strategy to be externalized to custom components.
 
-### SSO Participation Policy
+### 服务匹配策略
 
-Adjustments are put in place to correctly locate and reconstruct the authentication transaction, in the event that [single sign-on participation](../services/Configuring-Service-SSO-Policy.html) is disabled for a particular service, specially in Open ID Connect authentication flows. Furthermore, the authentication policy criteria for a service definition is now defaulted to match the global and default authentication policies for the CAS.
+CAS 服务注册表中为应用程序定义的服务标识符始终定义为模式。 此版本 暴露了</a> 的一些 其他选项，同时允许将匹配策略外部化为自定义组件。 </p> 
 
-### Wildcarded Service Definitions
 
-Consider a SAML service provider definition registered with CAS that authorizes all service providers found in an XML metadata aggregate file:
+
+### SSO 参与政策
+
+为正确定位和重建身份验证交易，在 情况下， 特定服务（特别是在开放 ID Connect 身份验证流中）禁用 [单个登录参与](../services/Configuring-Service-SSO-Policy.html) 时，将进行调整。 此外，服务定义 的身份验证策略标准现在已默认，以匹配 CAS 的全球和默认身份验证策略。  
+
+
+
+### 通配符服务定义
+
+考虑在 CAS 注册的 SAML 服务提供商定义，该定义授权 XML 元数据聚合文件中发现的所有服务提供商：
+
+
 
 ```json
-{
-  "@class": "org.apereo.cas.support.saml.services.SamlRegisteredService",
-  "serviceId": ".+",
-  "name": "SAML",
-  "id": 2,
-  "evaluationOrder": 10,
-  "metadataLocation": "https://example.org/md-aggregate.xml"
+•
+  "@class"："组织.apereo.cas.支持.萨姆尔.服务。萨姆注册服务"，
+  "服务Id"："。+"，
+  "名称"："SAML"，
+  "id"：2，
+  "评估序"：10，
+  "元数据定位"："https://example.org/md-aggregate.xml"
 }
 ```
 
-Then, suppose the same CAS deployment wishes to authorize all CAS-enabled web applications:
+
+然后，假设相同的 CAS 部署希望授权所有支持 CAS 的 Web 应用程序：
+
+
 
 ```json
-{
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId": ".+",
-  "name": "ALL",
-  "id": 1,
-  "evaluationOrder": 9
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务id"："。+"，
+  "名称"："ALL"，
+  "id"：1、
+  "评估订购"：9
 }
 ```
 
-The issue here is that depending on how the `evaluationOrder` is set up, the wrong service definition might get matched and processed for SAML or CAS protocol authentication requests. The root cause is that the CAS matching engine attempts to locate service definitions by their `serviceId` (which might correlate to an entity id or a redirect URI, etc) without taking into account the authentication protocol itself. In this release, a few additional improvements are put in place to allow grouping of application definitions by both type and evaluation order, and the matching engine is enhanced to process such groups while considering both the group's evaluation priority as well as each individual service's evaluation order.
+
+这里的问题是，根据 `评估单` 的设置方式，错误的服务定义可能会在 SAML 或 CAS 协议认证请求 进行匹配和处理。 其根本原因是，CAS 匹配引擎试图在不考虑 认证协议本身的情况下，通过其 `服务 Id` （可能与实体 ID 或重定向 URI 等相关）来查找 的服务定义。 在此版本中，还进行了一些额外的改进，以便按类型和评估顺序对 应用定义进行分组，并增强匹配引擎来处理此类组，同时考虑 组的评估优先级以及每个服务的评估顺序。
 
 <div class="alert alert-info">
-  <strong>Note</strong><br />The fixes presented in this release continue to be in progress to refine additional use cases. This area will likely be
-  revisited in follow-up releases to make sure wildcarded service definitions across all protocols can work together correctly.
+  <strong>注意</strong><br />本新闻稿中提出的修复程序仍在改进其他使用案例。 此区域可能会在后续版本中
+  重新审视，以确保所有协议中的通配符服务定义能够正确协同工作。
 </div>
 
-## Other Stuff
+## 其他内容
 
-- Adjustments to SAML2 metadata resolution cache to ensure enough capacity for resolved metadata providers.
-- Minor fixes to SQL query execution when pushing CAS audit logs to Oracle databases.
-- The expiration of access tokens is now correctly communicated back to OAuth relying parties, specially if the access token expiration policy is defined per application.
-- The handling of authentication requests, set to force CAS to challenge the user credentials, is reviewed and adjusted to ensure such requests can properly honor multifactor authentication flows for qualifying requests per configured triggers.
-- The logout handling strategy is slightly broken apart to introduce a `LogoutRedirectionStrategy`, mainly responsible for handling follow-up redirects to authorized applications/endpoints as appropriate for each authentication protocol.
-- Component registration with the Memcached serialization engine is now broken apart and delegated to appropriate modules owning said components.
-- Signed SAML authentication requests that embed the signature in URLs are reviewed and adjusted to avoid creating long URLs exceeding browser limits.
-- The naming strategy for JSON/YAML service definition files is relaxed to allow multiple words in the file name.
-- Transformation of service definitions to JSON or YAML is adjusted to exclude fields with default values to produce leaner payloads.
+- 对 SAML2 元数据分辨率缓存的调整，以确保为已解决的元数据提供商提供足够的容量。
+- 将 CAS 审计日志推至甲骨文数据库时，对 SQL 查询执行的次要修复。
+- 访问令牌的到期现在被正确地传达回OAuth依赖方，特别是如果访问令牌到期政策是每个应用程序定义的。
+- 认证请求的处理，旨在迫使 CAS 挑战用户凭据，经过审查和调整，以确保此类请求能够适当遵守每个配置触发器的合格请求的多因素身份验证流程。
+- 登录处理策略稍有不同，引入 `的注销重定向策略`，主要负责根据每个身份验证协议酌情处理后续重定向到授权应用/端点。
+- Memcach 系列化发动机的组件注册现已拆分，并委托给拥有该组件的相应模块。
+- 已签署在网址中嵌入签名的 SAML 身份验证请求经过审查和调整，以避免创建超过浏览器限制的长网址。
+- 放宽了 JSON/YAML 服务定义文件的命名策略，允许在文件名称中使用多个单词。
+- 将服务定义转换为 JSON 或 YAML，以排除具有默认值的字段以生成更精简的有效载荷。
 
-## Library Upgrades
 
-- Commons Lang
-- Mockito
-- DropWizard
-- Spring
-- Spring Boot
-- Amazon SDK
-- Spotbugs
-- Gradle
-- Okta
-- Shiro
-- Hazelcast AWS
-- Hazelcast Kubernetes
-- Hazelcast Azure
-- EhCache
-- Spring Boot Admin
-- Ldaptive
-- Inspektr
-- Nexmo
-- Twilio
-- Bootstrap
-- Spring Data
-- Person Directory
-- Azure DocumentDb
-- Grouper Client
-- InfluxDb
+
+## 库升级
+
+- 公地郎
+- 莫基托
+- 滴维扎德
+- 春天
+- 弹簧启动
+- 亚马逊 SDK
+- 斑点虫
+- 格拉德尔
+- 奥克塔
+- 希罗
+- 黑兹尔卡斯特·沃斯
+- 黑兹尔卡斯特·库贝内茨
+- 黑兹尔卡斯特·阿祖尔
+- 埃卡奇
+- 弹簧启动管理
+- 焊接
+- 因斯佩克特
+- 内克斯莫
+- 特维利奥
+- 启动
+- 春季数据
+- 人员目录
+- 蔚蓝文档数据库
+- 分组客户端
+- 拉布斯德布
