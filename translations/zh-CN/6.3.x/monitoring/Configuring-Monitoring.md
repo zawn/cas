@@ -1,18 +1,18 @@
 ---
-layout: default
-title: CAS - Monitoring
-category: Monitoring & Statistics
+layout: 默认
+title: CAS-监控
+category: 监控 & 统计
 ---
 
-# CAS Monitoring
+# CAS监控
 
-CAS monitors may be defined to report back the health status of the ticket registry and other underlying connections to systems that are in use by CAS. Spring Boot offers a number of monitors known as `HealthIndicator`s that are activated given the presence of specific settings (i.e. `spring.mail.*`). CAS itself providers a number of other monitors based on the same component that are listed below, whose action may require a combination of a particular dependency module and its relevant settings.
+可以定义CAS监视器，以报告票证注册表的健康状况以及与CAS使用的系统的其他基础连接。 Spring Boot提供了许多称为 `HealthIndicator`的监视器，这些监视器在存在特定设置（即 `spring.mail。*`）的情况下被激活。 CAS本身基于下面列出的相同组件提供了许多其他监视器，它们的操作可能需要特定依赖模块及其相关设置的组合。
 
-## Default
+## 默认
 
-The default monitors report back brief memory and ticket stats.
+默认监视器将向后报告简短的内存和票证统计信息。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -22,11 +22,11 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#monitoring) and [this guide](../configuration/Configuration-Properties.html#memory).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#monitoring) 和 [本指南](../configuration/Configuration-Properties.html#memory)。
 
-<div class="alert alert-warning"><strong>YMMV</strong><p>In order to accurately and reliably report on ticket statistics, you are at the mercy of the underlying ticket registry to support the behavior in a performant manner which means that the infrastructure and network capabilities and latencies must be considered and carefully tuned. This might have become specially relevant in clustered deployments as depending on the ticket registry of choice, CAS may need to <i>interrogate</i> the entire cluster by running distributed queries to calculate ticket usage.</p></div>
+<div class="alert alert-warning"><strong>青年汽车</strong><p>为了准确，可靠地报告票证统计信息，您将受基础票证注册表的支配，无法以高性能的方式支持该行为，这意味着必须考虑并仔细调整基础结构，网络功能和延迟。 这可能在群集部署中变得特别相关，这取决于所选择的票证注册表，CAS可能需要通过运行分布式查询来计算票证使用率， <i>询问</i></p></div>
 
-## Memcached
+## 记忆快取
 
 ```xml
 <dependency>
@@ -36,15 +36,15 @@ To see the relevant list of CAS properties, please [review this guide](../config
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#memcached-monitors).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#memcached-monitors)。
 
-The actual memcached implementation may be supported via one of the following options, expected to be defined in the overlay.
+可以通过以下选项之一来支持实际的内存缓存实现，这些选项预计将在叠加层中定义。
 
 ### Spymemcached
 
-Enable support via the [spymemcached library](https://code.google.com/p/spymemcached/).
+[spymemcached库](https://code.google.com/p/spymemcached/)启用支持。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -56,9 +56,9 @@ Support is enabled by including the following dependency in the WAR overlay:
 
 ### AWS ElastiCache
 
-For clusters running the Memcached engine, ElastiCache supports Auto Discovery—the ability for client programs to automatically identify all of the nodes in a cache cluster, and to initiate and maintain connections to all of these nodes.
+对于运行Memcached的发动机集群，ElastiCache支持自动发现，能力 的客户端程序来自动识别的所有节点的缓存群集， 和启动和维持所有这些节点的连接。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -68,9 +68,9 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-## Ehcache
+## 高速缓存
 
-Monitor the status and state of a cache backed by Ehcache.
+监视由Ehcache支持的缓存的状态和状态。
 
 ```xml
 <dependency>
@@ -80,11 +80,11 @@ Monitor the status and state of a cache backed by Ehcache.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#cache-monitors).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#cache-monitors)。
 
 ## MongoDb
 
-Monitor the status and availability of a MongoDb database.
+监视MongoDb数据库的状态和可用性。
 
 ```xml
 <dependency>
@@ -94,11 +94,11 @@ Monitor the status and availability of a MongoDb database.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#mongodb-monitors).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#mongodb-monitors)。
 
-## Hazelcast
+## 淡褐色
 
-Monitor the status and state of a cache backed by Hazelcast.
+监视由Hazelcast支持的缓存的状态和状态。
 
 ```xml
 <dependency>
@@ -108,11 +108,11 @@ Monitor the status and state of a cache backed by Hazelcast.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#cache-monitors).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#cache-monitors)。
 
 ## JDBC
 
-Monitor the status and availability of a relational SQL database.
+监视关系SQL数据库的状态和可用性。
 
 ```xml
 <dependency>
@@ -122,11 +122,11 @@ Monitor the status and availability of a relational SQL database.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#database-monitoring).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#database-monitoring)。
 
 ## LDAP
 
-Monitor the status and availability of an LDAP server.
+监视LDAP服务器的状态和可用性。
 
 ```xml
 <dependency>
@@ -136,4 +136,4 @@ Monitor the status and availability of an LDAP server.
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ldap-server-monitoring).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ldap-server-monitoring)。
