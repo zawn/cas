@@ -1,149 +1,149 @@
 ---
-layout: default
-title: CAS - Configuring Ticket Expiration Policy Components
-category: Ticketing
+layout: 默认
+title: CAS-配置票证过期策略组件
+category: 售票处
 ---
 
-# Ticket Expiration Policies
+# 票证过期政策
 
-CAS supports a pluggable and extensible policy framework to control the expiration policy of ticket-granting tickets (`TGT`), proxy-granting tickets (`PGT`), service tickets (`ST`) and proxy tickets (`PT`).
+CAS支持可插入和可扩展的策略框架，以控制授予票证的 张票证（`TGT`），授予票证的代理票证（`PGT`），服务票证（`ST`）和代理票证（`PT`）的过期策略。 。
 
-<div class="alert alert-info"><strong>There Is More</strong><p>There are many other types of artifacts in CAS that take the base form of a ticket abstraction. Each protocol or feature may introduce a new ticket type that carries its own expiration policy and you will need to consult the documentation for that feature or behavior to realize how expiration policies for its own ticket types may be tuned and controlled.</p></div>
+<div class="alert alert-info"><strong>还有更多</strong><p>CAS中还有许多其他类型的工件，它们采用票证抽象的基本形式。 每个协议或功能都可能引入带有其自己的过期策略的新票证类型，您将需要查阅该功能或行为的文档，以了解如何调整和控制其自己的票证类型的过期策略。</p></div>
 
-## Ticket-Granting Ticket Policies
+## 票务授予票务政策
 
-TGT expiration policy governs the time span during which an authenticated user may grant STs with a valid (non-expired) TGT without having to re-authenticate. An attempt to grant an ST with an expired TGT would require the user to re-authenticate to obtain a new (valid) TGT.
+TGT过期策略控制经过身份验证的用户可以向ST授予有效（未过期）TGT的时间跨度，而 身份验证。 尝试使用过期的TGT授予ST的请求将要求用户重新验证 以获得新的（有效）TGT。
 
-### Default
+### 默认
 
-This is the default option, which provides a hard-time out as well as a sliding window.
+这是默认选项，它提供了硬超时和滑动窗口。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#tgt-expiration-policy).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#tgt-expiration-policy)。
 
-### Per Service
+### 每项服务
 
-The expiration policy of ticket granting tickets can be conditionally decided on a per-application basis. The candidate service whose ticket granting ticket expiration policy is to deviate from the default configuration must be designed as such:
+可以根据每个应用程序有条件地确定授予票证的票证的过期策略。 其票证授予票证到期策略要偏离默认配置的候选服务
 
 ```json
 {
-    "@class" : "org.apereo.cas.services.RegexRegisteredService",
-    "serviceId" : "^https://.*",
-    "name" : "Sample",
-    "id" : 10,
-    "ticketGrantingTicketExpirationPolicy": {
-      "@class": "org.apereo.cas.services.DefaultRegisteredServiceTicketGrantingTicketExpirationPolicy",
-      "maxTimeToLiveInSeconds": 5
+    “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+    “ serviceId”：“ ^ https：//.*”，
+    “ name”：“ Sample”，
+    “ id”：10，
+    “ ticketGrantingTicketExpirationPolicy”：{
+      “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceTicketGrantingTicketExpirationPolicy”，
+      “ maxTimeToLiveInSeconds”：5
     }
 }
 ```
 
-### Timeout
+### 超时
 
-The expiration policy applied to TGTs provides for most-recently-used expiration policy, similar to a Web server session timeout. For example, a 2-hour time span with this policy in effect would require a TGT to be used every 2 hours or less, otherwise it would be marked as expired.
+应用于TGT的到期策略提供了最近使用的到期策略，类似于Web服务器会话超时。 例如，如果此策略有效期为2小时，则需要每2小时或更短的时间使用一次TGT，否则应将 标记为已过期。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#tgt-expiration-policy).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#tgt-expiration-policy)。
 
-### Hard Timeout
+### 硬超时
 
-The hard timeout policy provides for finite ticket lifetime as measured from the time of creation. For example, a 4-hour time span for this policy means that a ticket created at 1PM may be used up until 5PM; subsequent attempts to use it will mark it expired and the user will be forced to re-authenticate.
+硬超时策略提供了有限的票证生命周期，从创建时间起算。 例如，此策略的4小时时间跨度为 ，表示在下午1点创建的故障单可以使用到下午5点；以后尝试使用它将把它标记为过期 并且将迫使用户重新进行身份验证。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#tgt-expiration-policy).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#tgt-expiration-policy)。
 
-### Throttled
+### 节流的
 
-The throttled timeout policy extends the TimeoutExpirationPolicy with the concept of throttling where a ticket may be used at most every N seconds. This policy was designed to thwart denial of service conditions where a rogue or misconfigured client attempts to consume CAS server resources by requesting high volumes of service tickets in a short time.
+节流超时策略通过节流的概念扩展了TimeoutExpirationPolicy，其中每N秒最多 此策略旨在防止拒绝服务状况，在这种情况下，流氓或错误配置的客户端 会通过在短时间内请求大量服务票证来尝试消耗CAS服务器资源。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#tgt-expiration-policy).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#tgt-expiration-policy)。
 
-### Never
+### 绝不
 
-The never expires policy allows tickets to exist indefinitely. 
+永不过期策略允许票证无限期存在。 
 
-<div class="alert alert-warning"><strong>Usage Warning!</strong><p>Use of this policy has significant consequences to overall
-security policy and should be enabled only after a thorough review by a qualified security team. There are also implications to
-server resource usage for the ticket registries backed by filesystem storage. Since disk storage for tickets can never be reclaimed
-for those registries with this policy in effect, use of this policy with those ticket registry implementations
-is strongly discouraged.</p></div>
+<div class="alert alert-warning"><strong>使用警告！</strong><p>使用此策略会对整体
+安全策略产生重大影响，只有在合格的安全团队进行全面审查后才能启用此策略。 由文件系统存储支持的票证注册表的
+服务器资源使用率也有影响。 由于对于生效此策略的那些注册表，永远不能将票证的磁盘存储回收为
+，因此强烈建议不要
+</p></div>
 
-## Service Ticket Policies
+## 服务票政策
 
-ST expiration policy governs the time span during which an authenticated user may attempt to validate an ST.
+ST到期策略控制经过身份验证的用户可能尝试验证ST的时间跨度。
 
-### Default
+### 默认
 
-This is the default policy applied to service tickets where a ticket is expired after a fixed number of uses or after a maximum period of inactivity elapses.
+这是适用于服务票证的默认策略，在该票证中，票证在固定使用次数后或最多闲置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#service-tickets-behavior).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#service-tickets-behavior)。
 
-### Per Service
+### 每项服务
 
-The expiration policy of service tickets can be conditionally decided on a per-application basis. The candidate service whose service ticket expiration policy is to deviate from the default configuration must be designed as such:
+服务票证的到期策略可以根据每个应用程序有条件地确定。 其服务票证过期策略要偏离默认配置的候选服务
 
 ```json
 {
-    "@class" : "org.apereo.cas.services.RegexRegisteredService",
-    "serviceId" : "^https://.*",
-    "name" : "Sample",
-    "id" : 10,
-    "serviceTicketExpirationPolicy": {
-      "@class": "org.apereo.cas.services.DefaultRegisteredServiceServiceTicketExpirationPolicy",
-      "numberOfUses": 1,
-      "timeToLive": "10"
+    “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+    “ serviceId”：“ ^ https：//.*”，
+    “ name”：“ Sample”，
+    “ id”：10，
+    “serviceTicketExpirationPolicy”：{
+      “@class”： “org.apereo.cas.services.DefaultRegisteredServiceServiceTicketExpirationPolicy”，
+      “numberOfUses”：1，
+      “传输TimeToLive”： “10”
     }
 }
 ```
 
-## Proxy Ticket Policies
+## 代理票务政策
 
-PT expiration policy governs the time span during which an authenticated user may attempt to validate an PT.
+PT过期策略控制经过身份验证的用户可能尝试验证PT的时间跨度。
 
-### Default
+### 默认
 
-This is the default policy applied to proxy tickets where a ticket is expired after a fixed number of uses or after a maximum period of inactivity elapses.
+这是适用于代理票证的默认策略，在该票证中，票证在固定使用次数后或在最多不活动的
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#proxy-tickets-behavior).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#proxy-tickets-behavior)。
 
-### Per Service
+### 每项服务
 
-The expiration policy of proxy tickets can be conditionally decided on a per-application basis. The candidate service whose proxy ticket expiration policy is to deviate from the default configuration must be designed as such:
+可以根据每个应用程序有条件地决定代理凭单的到期策略。 其代理票证过期策略要偏离默认配置的候选服务
 
 ```json
 {
-    "@class" : "org.apereo.cas.services.RegexRegisteredService",
-    "serviceId" : "^https://.*",
-    "name" : "Sample",
-    "id" : 10,
-    "proxyTicketExpirationPolicy": {
-     "@class": "org.apereo.cas.services.DefaultRegisteredServiceProxyTicketExpirationPolicy",
-     "numberOfUses": 1,
-     "timeToLive": "30"
+    “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+    “ serviceId”：“ ^ https：//.*”，
+    “ name”：“ Sample”，
+    “ id”：10，
+    “proxyTicketExpirationPolicy”：{
+     “@class”： “org.apereo.cas.services.DefaultRegisteredServiceProxyTicketExpirationPolicy”，
+     “numberOfUses”：1，
+     “传输TimeToLive”： “30”
     } 
 }
 ```
 
-## Proxy-Granting Ticket Policies
+## 代理授予票证政策
 
-PGT expiration policy governs the time span during which CAS may grant PTs with a valid (non-expired) PGT.
+PGT过期策略控制CAS可以向PT授予有效（未过期）PGT的时间跨度。
 
-### Default
+### 默认
 
-By default, the expiration policy assigned to proxy-granting tickets is controlled by the same policy assigned to ticket-granting tickets.
+默认情况下，分配给授权代理凭单的到期策略由分配给凭单授予凭单的同一策略控制。
 
-### Per Service
+### 每项服务
 
-The expiration policy of proxy granting tickets can be conditionally decided on a per-application basis. The candidate service whose proxy granting ticket expiration policy is to deviate from the default configuration must be designed as such:
+可以根据每个应用程序有条件地确定代理授予票证的到期策略。 代理授予票证过期策略要偏离默认配置的候选服务
 
 ```json
 {
-    "@class" : "org.apereo.cas.services.RegexRegisteredService",
-    "serviceId" : "^https://.*",
-    "name" : "Sample",
-    "id" : 10,
-    "proxyGrantingTicketExpirationPolicy": {
-     "@class": "org.apereo.cas.services.DefaultRegisteredServiceProxyGrantingTicketExpirationPolicy",
-     "maxTimeToLiveInSeconds": 30
+    “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+    “ serviceId”：“ ^ https：//.*”，
+    “ name”：“ Sample”，
+    “ id”：10，
+    “ proxyGrantingTicketExpirationPolicy”：{
+     “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceProxyGrantingTicketExpirationPolicy”，
+     “ maxTimeToLiveInSeconds”：30
     } 
 }
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#proxy-granting-tickets-behavior).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#proxy-granting-tickets-behavior)。
