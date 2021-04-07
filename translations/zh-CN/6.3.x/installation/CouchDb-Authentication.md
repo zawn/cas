@@ -1,11 +1,11 @@
 ---
-layout: default
-title: CAS - CouchDb Authentication
+layout: 默认
+title: CAS-CouchDb身份验证
 ---
 
-# CouchDb Authentication
+# CouchDb验证
 
-Verify and authenticate credentials against a [CouchDb](http://couchdb.apache.org/) instance via pac4j. CAS will automatically create the design documents required by pac4j. Support is enabled by including the following dependency in the WAR overlay:
+通过pac4j [CouchDb](http://couchdb.apache.org/) 实例验证和认证凭据。 CAS将自动创建pac4j所需的设计文档。 通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -15,4 +15,4 @@ Verify and authenticate credentials against a [CouchDb](http://couchdb.apache.or
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchdb-authentication).
+要查看CAS属性的相关列表，请 [本指南](../configuration/Configuration-Properties.html#couchdb-authentication)。
