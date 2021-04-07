@@ -1,12 +1,12 @@
 ---
-layout: default
-title: CAS - CouchDB Ticket Registry
-category: Ticketing
+layout: 默认
+title: CAS-CouchDB票务注册表
+category: 售票处
 ---
 
-# CouchDB Ticket Registry
+# CouchDB票务注册表
 
-CouchDB integration is enabled by including the following dependency in the WAR overlay:
+通过在WAR覆盖中包含以下依赖项来启用CouchDB集成：
 
 ```xml
 <dependency>
@@ -17,22 +17,22 @@ CouchDB integration is enabled by including the following dependency in the WAR 
 ```
 
 
-[CouchDB](http://couchdb.apache.org) is a highly available, open source NoSQL database server based on [Erlang/OTP](http://www.erlang.org) and its mnesia database. The intention of this registry is to leverage the multi-master, multi-datacenter capabilities of CouchDB server to provide high availability to CAS.
+[CouchDB](http://couchdb.apache.org) [Erlang / OTP](http://www.erlang.org) 及其mnesia数据库的高度可用的开源NoSQL数据库服务器。 注册表的目的是利用CouchDB服务器的多主控，多数据中心功能为CAS提供高可用性。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#couchdb-ticket-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#couchdb-ticket-registry)。
 
 
-The only truly mandatory setting is the URL. However, CouchDB should not be used in admin party mode in production, so username and password are needed as well.
+唯一真正必需的设置是URL。 但是，不应在生产中以管理方模式使用CouchDB，因此也需要用户名和密码。
 
-## Caveat
+## 警告
 
-The trade off for multi-master replication across multiple datacenters if CouchDB does not fully delete records. Depending on deployment scale, usage, and available storage, the database may need regular cleaning through normal CouchDB techniques.
+条记录，则需要在多个数据中心之间进行多主机复制。 根据部署规模，使用情况和可用存储，数据库可能需要通过常规CouchDB技术
 
-## Troubleshooting
+## 故障排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他日志记录，请配置log4j配置文件以添加以下 级：
 
 ```xml
 ...
