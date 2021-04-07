@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - Authy Authentication
-category: Multifactor Authentication
+layout: 默认
+title: CAS-身份验证
+category: 多因素身份验证
 ---
 
-# Authy Authentication
+# 身份验证
 
-CAS provides support for Authy's [TOTP API](http://docs.authy.com/totp.html). This is done via Authy's REST API that does all the heavy lifting.
+CAS为Authy的 [TOTP API](http://docs.authy.com/totp.html)提供支持。 这样做是 通过Authy的REST API做所有繁重。
 
-Start by visiting the [Authy documentation](https://www.authy.com/developers/).
+首先访问 [Authy文档](https://www.authy.com/developers/)。
 
-Support is enabled by including the following module in the overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -20,10 +20,10 @@ Support is enabled by including the following module in the overlay:
 </dependency>
 ```
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#authy).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#authy)。
 
-## Registration
+## 登记
 
-By default, users are registered with authy based on their phone and email attributes retrieved by CAS.
+默认情况下，将根据CAS检索到的电话和电子邮件属性向用户注册authy。
