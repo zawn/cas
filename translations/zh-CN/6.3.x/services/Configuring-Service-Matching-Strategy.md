@@ -1,68 +1,68 @@
 ---
-layout: default
-title: CAS - Configuring Service Matching Strategy
-category: Services
+layout: 默认
+title: CAS-配置服务匹配策略
+category: 服务
 ---
 
-# Configuring Service Matching Strategy
+# 配置服务匹配策略
 
-Authentication requests that carry a client application identifier are compared against the service identifier that is assigned to a service definition. By default, the service identifier is treated as a regular expression pattern that needs to be properly encoded and defined for matching operation to successfully execute. This strategy can be defined on a per-service basis to allow for alternative options or a full strategy implementation that may want to take external factors and variables into account.
+将携带客户端应用程序标识符的身份验证请求与分配给服务定义 默认情况下，服务标识符被视为正则表达式模式 ，需要对其进行正确编码和定义以使匹配操作成功执行。 该策略可以 ，以允许替代选项或完整的策略实施，可能需要 考虑外部因素和变量。
 
-See below for details on matching strategies.
+有关匹配策略的详细信息，请参见下文。
 
-## Full Regex
+## 全正则表达式
 
-This is the default option that treats the `serviceId` as a regular expression. With this option, CAS tries to match the expression against the entire requested service identifier and implicitly adds a `^` at the start and `$` at the end of the defined pattern, meaning it will not look for substring matches.
+这是将 `serviceId` 视为正则表达式的默认选项。 使用此选项， CAS尝试将表达式与整个请求的服务标识符进行匹配，并且隐式 在定义的模式的开头添加 `^` `$` ，这意味着它将不查找子字符串匹配项。
 
-A sample JSON file follows:
+以下是一个示例JSON文件：
 
 ```json
 {
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId": "https://.*",
-  "name": "sample",
-  "id": 1,
-  "matchingStrategy": {
-    "@class": "org.apereo.cas.services.FullRegexRegisteredServiceMatchingStrategy"
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ https：//.*”，
+  “ name”：“ sample”，
+  “ id”：
+  “ matchingStrategy”：{
+    “ @class”：“ org.apereo.cas.services.FullRegexRegisteredServiceMatchingStrategy”
   }
 }
 ```
 
-## Partial Regex
+## 部分正则表达式
 
-This strategy treats the `serviceId` as a regular expression. With this option, CAS will look and allow for substring matches.
+此策略将 `serviceId` 视为正则表达式。 使用此选项，CAS将查找并允许子字符串匹配。
 
-A sample JSON file follows:
+以下是一个示例JSON文件：
 
 ```json
 {
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId": "\\d\\d\\d",
-  "name": "sample",
-  "id": 1,
-  "matchingStrategy": {
-    "@class": "org.apereo.cas.services.PartialRegexRegisteredServiceMatchingStrategy"
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ \\ d \\ d \\ d”，
+  “ name”：“ sample”，
+  “ id”：
+  “ matchingStrategy”：{
+    “ @class”：“ org.apereo.cas.services.PartialRegexRegisteredServiceMatchingStrategy”
   }
 }
 ```
 
-For example, the above pattern will match against `https://example123.com`.
+例如，上述模式将与 `https://example123.com`匹配。
 
-## Literal
+## 文字
 
-This strategy treats the `serviceId` as a literal text and will look for exact matches. This might be useful in scenarios where you may not wish to deal with encoding individual/special characters such as `?` in the URL.
+此策略将 `serviceId` 视为文字文本，并将查找完全匹配的内容。 编码单个/特殊字符（例如 `？）的情况下，这可能很有用。 URL中的`
 
-A sample JSON file follows:
+以下是一个示例JSON文件：
 
 ```json
 {
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId": "https://example.com?key=value",
-  "name": "sample",
-  "id": 1,
-  "matchingStrategy": {
-    "@class": "org.apereo.cas.services.LiteralRegisteredServiceMatchingStrategy",
-    "caseInsensitive": true
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://example.com?key=value”，
+  “名称”： “样品”，
+  “ID “：
+  ” matchingStrategy“：{
+    ” @class“：” org.apereo.cas.services.LiteralRegisteredServiceMatchingStrategy“，
+    ” caseInsensitive“：true
   }
 }
 ```
