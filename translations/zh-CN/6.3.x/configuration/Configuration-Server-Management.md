@@ -1,436 +1,490 @@
 ---
-layout: default
-title: CAS - Configuration Server
-category: Configuration
+layout: 违约
+title: CAS - 配置服务器
+category: 配置
 ---
 
-# Configuration Server
+# 配置服务器
 
-As your CAS deployment moves through the deployment pipeline from dev to test and into production you can manage the configuration between those environments and be certain that applications have everything they need to run when they migrate through the use of an external configuration server provided by the [Spring Cloud](https://github.com/spring-cloud/spring-cloud-config) project. As an alternative, you may decide to run CAS in a standalone mode removing the need for external configuration server deployment, though at the cost of losing features and capabilities relevant for a cloud deployment.
+当 CAS 部署通过部署管道从开发到测试并进入生产 您可以管理这些环境之间的配置，并确保应用程序 通过使用 [Spring云](https://github.com/spring-cloud/spring-cloud-config) 项目提供的外部配置服务器 迁移时拥有所需的一切运行。 作为替代方案， 您可能会决定以独立模式运行 CAS，从而消除外部配置服务器部署的需要， 但代价是丢失与云部署相关的功能和功能。
 
-## Configuration Profiles
+## 配置配置文件
 
-The CAS server web application responds to the following strategies that dictate how settings should be consumed.
+CAS 服务器 Web 应用程序响应以下策略，这些策略决定了应如何使用设置。
 
-### Standalone
+### 独立
 
-This is the default configuration mode which indicates that CAS does **NOT** require connections to an external configuration server and will run in an embedded *standalone mode*. When this option is turned on, CAS by default will attempt to locate settings and properties inside a given directory indicated under the setting name `cas.standalone.configuration-directory` and otherwise falls back to using `/etc/cas/config` as the configuration directory. You may instruct CAS to use this setting via the methods [outlined here](Configuration-Management.html#overview). There also exists a `cas.standalone.configuration-file` which can be used to directly feed a collection of properties to CAS in form of a file or classpath resource.
+这是默认配置模式，表明 CAS **不需要连接到外部配置服务器 ** ，并将在嵌入式 *独立模式*运行。 打开此选项后，CAS 默认将尝试在设置名称 `cas.独立.配置目录` 下注明的给定目录中查找 的设置和属性，否则将返回使用 `/等/cas/配置` 作为配置目录。 您可以通过此处概述的方法 [指示 CAS 使用此设置](Configuration-Management.html#overview)。 还存在一个 `cas.独立.配置文件` 可用于以文件或类路径资源的形式直接向 CAS 提供属性集合。
 
-Similar to the Spring Cloud external configuration server, the contents of this directory include `(cas|application).(yml|properties)` files that can be used to control CAS behavior. Also, note that this configuration directory can be monitored by CAS to auto-pick up changes and refresh the application context as needed. Please [review this guide](Configuration-Management-Reload.html#reload-strategy) to learn more.
+与春云外部配置服务器类似，此目录的内容包括 `（cas|应用）。（yml|专业）` 可用于控制CAS行为的文件。 此外，请注意，CAS 可以监控此配置目录，以便自动拾取 更改，并根据需要刷新应用上下文。 请 [查看本指南](Configuration-Management-Reload.html#reload-strategy) 了解更多。
 
-Note that by default, all CAS settings and configuration is controlled via the embedded `application.properties` file in the CAS server web application. There is also an embedded `application.yml` file that allows you to override all defaults if you wish to ship the configuration inside the main CAS web application and not rely on externalized configuration files. If you prefer properties to yaml, then `application-standalone.properties` will override `application.properties` as well.
+请注意，默认情况下，CAS 的所有设置和配置都通过嵌入式 `应用程序进行控制。 CAS 服务器中的属性` 文件 Web 应用程序。 还有一个嵌入式 `应用程序.yml` 文件，如果您希望将配置发货到 CAS 主 Web 应用程序内，并且不依赖外部化配置文件，则该文件允许您覆盖所有默认值。 如果你喜欢的属性比yaml，那么 `应用程序独立。属性` 将覆盖 `应用程序。属性` 以及。
 
-Settings found in external configuration files are and will be able to override the defaults provided by CAS. The naming of the configuration files inside the CAS configuration directory follows the below pattern:
+外部配置文件中找到的设置现在和现在都能够覆盖 CAS 提供的默认值。 CAS 配置目录内 配置文件的命名遵循以下模式：
 
-- An `application.(properties|yml|yaml)` file is always loaded, if found.
-- Settings located inside `properties|yml|yaml` files whose name matches the value of `spring.application.name` are loaded (i.e `cas.properties`) Note: `spring.application.name` defaults to uppercase `CAS` but the lowercase name will also be loaded.
-- Settings located inside `properties|yml|yaml` files whose name matches the value of `spring.profiles.active` are loaded (i.e `ldap.properties`).
-- Profile-specific application properties outside of your packaged web application (`application-{profile}.properties|yml|yaml`) This allows you to, if needed, split your settings into multiple property files and then locate them by assigning their name to the list of active profiles (i.e. `spring.profiles.active=standalone,testldap,stagingMfa`)
+- `应用程序。（属性|毫升|yml）` 文件总是加载，如果发现。
+- 位于 `属性内的设置|毫升|` 文件，其名称匹配 `spring.application.name` 值加载（即 `cas.属性`）注意： `spring.application.name` 默认 `CAS` 但小写名称也将加载。
+- 位于 `属性|毫升|yml` 文件内的设置，其名称与 `spring.profile.` 值匹配，加载了主动（即 `ldap.属性`）。
+- 在打包的 Web 应用程序（`应用程序-{profile}.属性|毫升|yaml`）之外的配置文件特定的应用程序属性 这允许您在需要时将设置拆分为多个属性文件，然后通过将它们的名称 分配到活动配置文件列表（即 `春天. 配置文件. 活动 = 独立， 测试， 舞台`）
 
-Configuration files are loaded in the following order where `spring.profiles.active=standalone,profile1,profile2`. Note that the last configuration file loaded will override any duplicate properties from configuration files loaded earlier:
+配置文件按以下顺序加载，其中 `弹簧。配置文件.主动=独立、配置文件 1、配置文件 2`。 请注意，加载的最后一个配置文件将覆盖之前加载的配置文件中的任何重复属性：
 
-1. `application.(properties|yml|yaml)`
-2. (lower case) `spring.application.name.(properties|yml|yaml)`
-3. `spring.application.name.(properties|yml|yaml)`
-4. `application-standalone.(properties|yml|yaml)`
-5. `standalone.(properties|yml|yaml)`
-6. `application-profile1.(properties|yml|yaml)`
-7. `profile1.(properties|yml|yaml)`
-8. `application-profile2.(properties|yml|yaml)`
-9. `profile2.(properties|yml|yaml)`
+1. `应用。（属性|毫升|亚毫升）`
+2. （小写） `spring.application.name。（属性|毫升|毫升）`
+3. `spring.application.name（属性|毫升|亚毫升）`
+4. `应用程序独立。（属性|毫升|亚毫升）`
+5. `独立。（属性|毫升|亚毫升）`
+6. `应用程序配置文件1.（属性|毫升|亚毫升）`
+7. `配置文件1.（属性|毫升|亚毫升）`
+8. `应用程序配置文件2.（属性|毫升|亚毫升）`
+9. `配置文件2.（属性|毫升|亚毫升）`
 
-If two configuration files with same base name and different extensions exist, they are processed in the order of `properties`, `yml` and then `yaml` and then `groovy` (last one processed wins where duplicate properties exist). These external configuration files will override files located in the classpath (e.g. files from `src/main/resources` in your CAS overlay that end up in `WEB-INF/classes`) but the internal files are loaded per the [spring boot](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) rules which differ from the CAS standalone configuration rules described here (e.g. <profile>.properties would not be loaded from classpath but `application-<profile>.properties` would).
+如果存在两个具有相同碱基名称和不同扩展的配置文件，则按 `属性`、 `yml` 、然后 `yaml` 然后 `凹凸不平的` （最后一个处理后的胜利存在重复属性）进行处理。 这些外部配置文件将覆盖位于类路径中的文件（例如，来自 CAS 叠加中 `src/主/资源` 的文件，这些文件最终 `WEB-INF/类`），但内部文件按照 [弹簧启动](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html) 规则加载，这些规则与此处描述的 CAS 独立配置规则不同（例如 <profile>。属性不会从类路径加载，但 `应用程序-<profile>。属性` ）。
 
-<div class="alert alert-warning"><strong>Remember</strong><p>You are advised to not overlay or otherwise
-modify the built in <code>application.properties</code> or <code>bootstrap.properties</code> files. This will only complicate and weaken your deployment.
-Instead try to comply with the CAS defaults and bootstrap CAS as much as possible via the defaults, override via <code>application.yml</code>, <code>application-standalone.properties</code> or
-use the <a href="Configuration-Management.html#overview">outlined strategies</a>. Likewise, try to instruct CAS to locate
-configuration files external to its own. Premature optimization will only lead to chaos.</p></div>
+<div class="alert alert-warning"><strong>记得</strong><p>建议您不要叠加或以其他方式
+修改 <code>应用程序中内置的属性</code> 或 <code>引导属性</code> 文件。 这只会使您的部署复杂化和削弱。
+相反，尽量遵守 CAS 违约和引导 CAS 通过默认，覆盖通过 <code>应用程序.yml</code>， <code>应用程序独立。 属性</code> 或
+使用 <a href="Configuration-Management.html#overview">概述的策略</a>。 同样，请尝试指示 CAS 查找其外部的
+配置文件。 过早的优化只会导致混乱。</p></div>
 
-### Spring Cloud
+### 春云
 
-CAS is able to use an external and central configuration server to obtain state and settings. The configuration server provides a very abstract way for CAS (and all of its other clients) to obtain settings from a variety of sources, such as file system, `git` or `svn` repositories, MongoDb databases, Vault, etc. The beauty of this solution is that to the CAS web application server, it matters not where settings come from and it has no knowledge of the underlying property sources. It talks to the configuration server to locate settings and move on.
+CAS 能够使用外部和中央配置服务器来获取状态和设置。 配置服务器为 CAS（及其所有其他客户端）提供了一种非常抽象的方式，从各种源 （如文件系统、 `git` 或 `svn` 存储库、MongoDb 数据库、Vault 等）获取设置。 此解决方案的美妙之处在于，对于 CAS Web 应用服务器来说，设置来自何处并不重要，它对潜在的属性来源一无所知。 它 与配置服务器交谈，以定位设置并继续前进。
 
-<div class="alert alert-info"><strong>Configuration Security</strong><p>This is a very good strategy to ensure configuration settings
-are not scattered around various deployment environments leading to a more secure deployment. The configuration server need not be
-exposed to the outside world, and it can safely and secure be hidden behind firewalls, etc allowing access to only authorized clients
-such as the CAS server web application.</p></div>
+<div class="alert alert-info"><strong>配置安全性</strong><p>这是一个很好的策略，以确保配置设置
+不会分散在各种部署环境中，从而导致更安全的部署。 配置服务器不需要
+暴露在外部世界，它可以安全可靠地隐藏在防火墙后面，等等，只允许访问授权客户端
+如CAS服务器Web应用程序。</p></div>
 
-A full comprehensive guide is provided by the [Spring Cloud project](https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html).
+[春云项目](https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html)提供了全面的指南。
 
-#### Overlay
+#### 覆盖
 
-The configuration server itself, similar to CAS, can be deployed via the following module in it own [WAR overlay](https://github.com/apereo/cas-configserver-overlay):
+配置服务器本身，类似于CAS，可以通过它自己的 [WAR覆盖](https://github.com/apereo/cas-configserver-overlay)中的以下模块部署 ：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-webapp-config-server</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡斯服务器-网络应用程序-配置服务器</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-In addition to the [strategies outlined here](Configuration-Management.html#overview), the configuration server may load CAS settings and properties via the following order and mechanics:
+除了此处列出的 [策略](Configuration-Management.html#overview)，配置服务器 可以通过以下顺序和机制加载 CAS 设置和属性：
 
-1. Profile-specific application properties outside of your packaged web application (`application-{profile}.properties|yml`)
-2. Profile-specific application properties packaged inside your jar (`application-{profile}.properties|yml`)
-3. Application properties outside of your packaged jar (`application.properties|yml`).
-4. Application properties packaged inside your jar (`application.properties|yml`).
+1. 包装网络应用程序（`应用程序-{profile}.属性|毫升`）以外的个人资料特定应用属性）
+2. 包装在罐子内的配置文件特定应用属性（`应用程序 -{profile}。属性|毫升`）
+3. 包装罐外的应用属性（`应用程序。属性|毫升`）。
+4. 应用属性包装在您的罐子内（`应用程序。属性|毫升`）。
 
-The configuration and behavior of the configuration server is also controlled by its own `src/main/resources/bootstrap.properties` file. By default, it runs under port `8888` at `/casconfigserver` inside an embedded Apache Tomcat server whose endpoints are protected with basic authentication where the default credentials are `casuser` and an auto-generated password defined in `src/main/resources/application.properties`.
+配置服务器的配置和行为也由它自己的 `src/主/资源/引导属性` 文件控制。 默认情况下，它运行在端口 `8888` 下，位于嵌入式 Apache Tomcat 服务器内部的 `/casconfigserver
+` ，该服务器的端点受到基本身份验证 保护，其中默认凭据 `casuser` 以及 `src/主/资源/`应用程序中定义的自动生成密码。
 
-Furthermore, by default it runs under a `native` profile described below.
+此外，默认情况下，它运行在下面描述的 `原生` 配置文件下。
 
-The following endpoints are secured and exposed by the configuration server:
+配置服务器保护并暴露了以下端点：
 
-| Parameter               | Description                                                                          |
-| ----------------------- | ------------------------------------------------------------------------------------ |
-| `/encrypt`              | Accepts a `POST` to encrypt CAS configuration settings.                              |
-| `/decrypt`              | Accepts a `POST` to decrypt CAS configuration settings.                              |
-| `/actuator/refresh`     | Accepts a `POST` and attempts to refresh the internal state of configuration server. |
-| `/actuator/env`         | Accepts a `GET` and describes all configuration sources of the configuration server. |
-| `/actuator/cas/default` | Describes what the configuration server knows about the `default` settings profile.  |
-| `/actuator/cas/native`  | Describes what the configuration server knows about the `native` settings profile.   |
+| 参数            | 描述                          |
+| ------------- | --------------------------- |
+| `/加密`         | 接受 `开机自检` 以加密 CAS 配置设置。     |
+| `/解密`         | 接受解密 CAS 配置设置的 `开机自检` 。     |
+| `/执行器/刷新`     | 接受 `POST` ，并尝试刷新配置服务器的内部状态。 |
+| `/执行器/执行器`    | 接受 `获取` 并描述配置服务器的所有配置源。     |
+| `/执行器/案例/默认值` | 描述配置服务器对 `默认` 设置配置文件的了解。    |
+| `/执行器/案例/本地`  | 描述配置服务器对 `本机` 设置配置文件的了解。    |
 
-Once you have the configuration server deployed and assuming the credentials used to secure the configuration server match the example below, you can observe the collection of settings via:
-
-```bash
-curl -u casuser:Mellon https://config.server.url:8888/casconfigserver/cas/native
-```
-
-Assuming actuator endpoints are enabled in the configuration, you can also observe the collection of property sources that provide settings to the configuration server:
+一旦部署了配置服务器，并假设用于保护配置服务器的凭据与下面的示例匹配，您可以通过以下方式观察设置的集合：
 
 ```bash
-curl -u casuser:Mellon https://config.server.url:8888/casconfigserver/actuator/env
+卷曲 - u 卡苏瑟： 梅隆 https://config.server.url:8888/casconfigserver/cas/native
 ```
 
-<div class="alert alert-info"><strong>Actuator Endpoints</strong><p>
-Remember that actuator endpoints typically are prefixed with <code>/actuator</code>.
+假设在配置中启用执行器端点，您还可以观察为配置服务器提供设置的属性源的集合：
+
+```bash
+卷曲 - u 卡苏瑟： 梅隆 https://config.server.url:8888/casconfigserver/actuator/env
+```
+
+<div class="alert alert-info"><strong>执行器端点</strong><p>
+请记住，执行器端点通常以 <code>/执行器</code>为前缀。
 </p></div>
 
-#### Clients and Consumers
+#### 客户和消费者
 
-To let the CAS server web application (or any other client for that matter) talk to the configuration server, the following settings need to be applied to CAS' own `src/main/resources/bootstrap.properties` file. The properties to configure the CAS server web application as the client of the configuration server must necessarily be read in before the rest of the application’s configuration is read from the configuration server, during the *bootstrap* phase.
+要让 CAS 服务器 Web 应用程序（或任何其他客户端）与配置服务器交谈， 以下设置需要应用于 CAS 自己的 `src/主/资源/引导属性` 文件。 将 CAS 服务器 Web 应用程序配置为配置服务器 的客户端的属性必须在从配置服务器读取应用程序的其余部分之前读取， *引导* 阶段。
 
 ```properties
-spring.cloud.config.uri=https://casuser:Mellon@config.server.url:8888/casconfigserver
-spring.cloud.config.profile=native
-spring.cloud.config.enabled=true
-spring.profiles.active=default
+春天.云.配置.urittps：//卡苏特：Mellon@config.服务器.url：8888/卡康菲格服务器
+春天.云.配置文件=原生
+弹簧.云.配置文件启用=真
+弹簧。
 ```
 
-Remember that configuration server serves property sources from `/{name}/{profile}/{label}` to applications, where the default bindings in the client app are the following:
+请记住，配置服务器提供从 `/{name}/{profile}/{label}` 到应用程序的属性源， 客户端应用中的默认绑定如下：
 
 ```bash
-"name" = ${spring.application.name}
-"profile" = ${spring.profiles.active}
-"label" = "master"
+"名称"= ${spring.application.name}
+"配置文件"= ${spring.profiles.active}
+"标签"="主"
 ```
 
-All of them can be overridden by setting `spring.cloud.config.*` (where `*` is "name", "profile" or "label"). The "label" is useful for rolling back to previous versions of configuration; with the default Config Server implementation it can be a git label, branch name or commit id. Label can also be provided as a comma-separated list, in which case the items in the list are tried on-by-one until one succeeds. This can be useful when working on a feature branch, for instance, when you might want to align the config label with your branch, but make it optional (e.g. `spring.cloud.config.label=myfeature,develop`).
+所有这些可以通过设置 `弹簧.cloud.comig.*` （其中 `*` 是"名称"、"配置文件"或"标签"）来覆盖它们。 "标签"可用于回滚到以前的配置版本：使用默认的 Config 服务器实施 它可以是 git 标签、分支名称或提交 ID。 标签也可以作为逗号分离列表提供， 在这种情况下，列表中的项目将逐一尝试，直到一个成功。 例如，当您可能想要将配置标签与分支对齐时， 分支的功能时，这可能会很有用， 但使其成为可选的（例如： `春天. 云. 配置. 标签 ] 我， 发展`） 。
 
-To lean more about how CAS allows you to reload configuration changes, please [review this guide](Configuration-Management-Reload.html).
+要了解 CAS 如何允许您重新加载配置更改，请 [查看本指南](Configuration-Management-Reload.html)。
 
-#### Profiles
+#### 配置 文件
 
-Various profiles exist to determine how configuration server should retrieve properties and settings.
+存在各种配置文件，以确定配置服务器应如何检索属性和设置。
 
-##### Native
+##### 本地
 
-The server is configured by default to load `cas.(properties|yml)` files from an external location that is `/etc/cas/config`. This location is constantly monitored by the server to detect external changes. Note that this location simply needs to exist, and does not require any special permissions or structure. The name of the configuration file that goes inside this directory needs to match the `spring.application.name` (i.e. `cas.properties`).
+默认情况下，将服务器配置为加载 `cas。（属性|毫升）从外部位置` `/等/cas/配置`的文件。 服务器会不断监控此位置以检测外部变化。 请注意，此位置只需要 存在，并且不需要任何特殊权限或结构。 此 目录内的配置文件的名称需要与 `spring.application.name` 匹配（即 ``）。
 
-If you want to use additional configuration files, they need to have the form `application-<profile>.(properties|yml)`. A file named `application.(properties|yml)` will be included by default. The profile specific files can be activated by using the `spring.profiles.include` configuration option, controlled via the `src/main/resources/bootstrap.properties` file:
+如果你想使用额外的配置文件，他们需要有 表格 `应用程序-<profile>。（属性|毫升）`。 名为 `应用程序的文件。（属性|毫升）默认情况下将包括` 。 配置文件特定 文件可以通过使用 `spring.profile.包括` 配置选项激活， 通过 `src/主/资源/引导属性` 文件进行控制：
 
 ```properties
-spring.profiles.active=native
-spring.cloud.config.server.native.searchLocations=file:///etc/cas/config
-spring.profiles.include=profile1,profile2
+春天.配置文件.活动=原生
+春天.云.配置.服务器.本地.搜索位置=文件//等/cas/配置
+弹簧。
 ```
 
-An example of an external `.properties` file hosted by an external location follows:
+外部位置托管的外部 `。属性` 文件示例如下：
 
 ```properties
-cas.server.name=...
+cas.server.name......
 ```
 
-You could have just as well used a `cas.yml` file to host the changes.
+您也可以使用 `cas.yml` 文件来托管更改。
 
-##### Default
+##### 违约
 
-The configuration server is also able to handle `git` or `svn` based repositories that host CAS configuration. Such repositories can either be local to the deployment, or they could be on the cloud in form of GitHub/BitBucket. Access to cloud-based repositories can either be in form of a username/password, or via SSH so as long the appropriate keys are configured in the CAS deployment environment which is really no different than how one would normally access a git repository via SSH.
+配置服务器还能够处理 `git` 或 `svn` 基于存储库的 CAS 配置。 此类存储库可以是部署的本地存储库，也可以以 GitHub/BitBucket 的形式在云上。 访问基于云的 存储库可以以用户名/密码的形式出现，也可以通过 SSH 进行访问，以便只要在 CAS 部署环境中配置适当的密钥，这与通常通过 SSH 访问 git 存储库的方式没有什么不同。
 
 ```properties
-# spring.profiles.active=default
-# spring.cloud.config.server.git.uri=https://github.com/repoName/config
-# spring.cloud.config.server.git.uri=file://${user.home}/config
-# spring.cloud.config.server.git.username=
-# spring.cloud.config.server.git.password=
+#春天. 配置文件. 活动 = 默认
+# 春天. 云. 配置. 服务器. git. uri
+.com= 配置.服务器.git.uri®文件：//${user.home}/配置
+#春天.云.配置.服务器.用户名=
+# 春天.云.配置.服务器。 git. 密码 –
 
-# spring.cloud.config.server.svn.basedir=
-# spring.cloud.config.server.svn.uri=
-# spring.cloud.config.server.svn.username=
-# spring.cloud.config.server.svn.password=
-# spring.cloud.config.server.svn.default-label=trunk
+[ 春天. 云. 配置. 服务器. svn. 基于]
+[ 春天. 云. 配置. 服务器. svn. uri]
+[ 春天. 云. 康夫 .服务器. svn. 用户名]
+[ 春天. 云. 配置. 服务器. svn. 密码]
+[ 春天. 云. 配置. 服务器. svn. 默认标签] 主干
 ```
 
-Needless to say, the repositories could use both YAML and properties syntax to host configuration files.
+不用说，存储库可以同时使用 YAML 和属性语法来托管配置文件。
 
-<div class="alert alert-info"><strong>Keep What You Need!</strong><p>Again, in all of the above strategies,
-an adopter is encouraged to only keep and maintain properties needed for their particular deployment. It is
-UNNECESSARY to grab a copy of all CAS settings and move them to an external location. Settings that are
-defined by the external configuration location or repository are able to override what is provided by CAS
-as a default.</p></div>
+<div class="alert alert-info"><strong>保留您需要的！</strong><p>同样，在上述所有战略中，
+鼓励采用者只保留和维护其特定部署所需的属性。 获取所有 CAS 设置的副本并将其移动到外部位置
+不必要的。 由外部配置位置或存储库
+定义的设置能够覆盖 CAS
+提供的默认值。</p></div>
 
-##### MongoDb
+##### 蒙古德布
 
-The server is also able to locate properties entirely from a MongoDb instance.
+该服务器还能够完全从 MongoDb 实例中定位属性。
 
-Support is provided via the following dependency in the WAR overlay:
+支持通过战争叠加中的以下依赖提供：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-mongo</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-配置-云-蒙戈</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-Note that to access and review the collection of CAS properties, you will need to use your own native tooling for MongoDB to configure and inject settings.
+请注意，要访问和审查 CAS 属性的集合， 您需要使用自己的原生模组为 MongoDB 配置和注入设置。
 
-MongoDb documents are required to be found in the collection `MongoDbProperty`, as the following document:
+蒙古银行文件必须在蒙古</code>`收集中找到，如下所述文件：</p>
 
-```json
-{
-    "id": "kfhf945jegnsd45sdg93452",
-    "name": "the-setting-name",
-    "value": "the-setting-value"
+<pre><code class="json">•
+    "id"："kfhf945jegnsd45sdg93452"，
+    "名称"："设置名称"，
+    "值"："设置值"
 }
-```
+`</pre>
 
-To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#mongodb).
+要查看此功能的 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#mongodb)。
 
-##### HashiCorp Vault
+##### 哈希公司保险库
 
-CAS is also able to use [Vault](https://www.vaultproject.io/) to locate properties and settings. [Please review this guide](Configuration-Properties-Security.html).
+CAS 还能够使用 [库](https://www.vaultproject.io/) 来 定位属性和设置。 [请查看本指南](Configuration-Properties-Security.html)。
 
-##### HashiCorp Consul
+##### 哈希公司领事
 
-CAS is also able to use [Consul](https://www.consul.io/) to locate properties and settings. [Please review this guide](../installation/Service-Discovery-Guide-Consul.html).
+CAS 还能够使用 [领事](https://www.consul.io/) 来 定位属性和设置。 [请查看本指南](../installation/Service-Discovery-Guide-Consul.html)。
 
-##### Apache ZooKeeper
+##### 阿帕奇动物园管理员
 
-CAS is also able to use [Apache ZooKeeper](https://zookeeper.apache.org/) to locate properties and settings.
+CAS还能够使用 [阿帕奇动物园管理员](https://zookeeper.apache.org/) 来定位属性和设置。
 
-Support is provided via the following dependency in the WAR overlay:
+支持通过战争叠加中的以下依赖提供：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-zookeeper</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持配置 - 云 - 动物园管理员</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#zookeeper).
+要查看此功能的 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#zookeeper)。
 
-You will need to map CAS settings to ZooKeeper's nodes that contain values. The parent node for all settings should match the configuration root value provided to CAS. Under the root, you could have folders such as `cas`, `cas,dev`, `cas,local`, etc where `dev` and `local` are Spring profiles.
+您将需要将 CAS 设置映射到包含值的动物园管理员节点。 所有设置的父节点应 与提供给 CAS 的配置根值相匹配。 在根部下，您可以有 `cas`、 `cas、dev`、 `cas、本地`等 文件夹，其中 `开发` 和 `本地` 是 Spring 配置文件。
 
-To create nodes and values in Apache ZooKeeper, try the following commands as a sample:
+要在 Apache 动物园管理员中创建节点和值，请尝试以下命令 作为示例：
 
 ```bash
-zookeeper-client -server zookeeper1:2181
-create /cas cas
-create /cas/config cas
-create /cas/config/cas cas
-create /cas/config/cas/settingName casuser::Test
+动物园管理员-客户端-服务器动物园管理员1：2181
+创建/cas cas
+创建/cas/配置cas
+创建/cas/配置/cas cas
+创建/cas/配置/cas/设置名棺材：：测试
 ```
 
-Creating nodes and directories in Apache ZooKeeper may require providing a value. The above sample commands show that the value `cas` is provided when creating directories. Always check with the official Apache ZooKeeper guides. You may not need to do that step.
+在阿帕奇动物园管理员中创建节点和目录可能需要提供价值。 上述示例命令显示，在创建目录时提供 cas</code> `值。 请务必咨询官方的阿帕奇动物园管理员指南。 您可能不需要这样做。</p>
 
-Finally in your CAS properties, the new `settingName` setting can be used as a reference.
+<p spaces-before="0">最后，在 CAS 属性中，新的 <code>设置"` 设置"可以用作参考。
 
 ```properties
-# cas.something.something=${settingName}
+#卡斯. 东西. 东西]${settingName}
 ```
 
-...where `${settingName}` gets the value of the contents of the Apache ZooKeeper node `cas/config/cas/settingName`.
+...其中 `${settingName}` 获得阿帕奇动物园管理员节点的内容的价值 `cas/配置/cas/设置`。
 
-##### Amazon S3
+##### 亚马逊 S3
 
-CAS is also able to use [Amazon S3](https://aws.amazon.com/s3/) to locate properties and settings.
+CAS 还能够使用 [亚马逊 S3](https://aws.amazon.com/s3/) 来定位属性和设置。
 
-Support is provided via the following dependency in the WAR overlay:
+支持通过战争叠加中的以下依赖提供：
 
  ```xml
  <dependency>
-      <groupId>org.apereo.cas</groupId>
-      <artifactId>cas-server-support-configuration-cloud-aws-s3</artifactId>
+      <groupId>组织. apereo. cas</groupId>
+      <artifactId>卡斯服务器支持配置 - 云 - aws - s3</artifactId>
       <version>${cas.version}</version>
  </dependency>
  ```
 
- See [this guide](Configuration-Properties.html#amazon-s3) for relevant settings.
+ 有关相关设置，请参阅本指南</a>
 
-##### Amazon Secrets Manager
+。</p> 
 
-CAS is also able to use [Amazon Secret Manager](https://aws.amazon.com/secrets-manager/) to locate properties and settings.
 
-Support is provided via the following dependency in the WAR overlay:
+
+##### 亚马逊秘密经理
+
+CAS还能够使用 [亚马逊秘密经理](https://aws.amazon.com/secrets-manager/) 来定位属性和设置。
+
+支持通过战争叠加中的以下依赖提供：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-aws-secretsmanager</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-配置-云-aws-秘密管理</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-See [this guide](Configuration-Properties.html#amazon-secrets-manager) for relevant settings.
 
-##### Amazon Systems Manager Parameter Store (SSM)
+有关相关设置，请参阅本指南</a> 。</p> 
 
-CAS is also able to use [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) to locate properties and settings.
 
-Support is provided via the following dependency in the WAR overlay:
+
+##### 亚马逊系统管理器参数存储 （SSM）
+
+CAS 还能够使用 [AWS 系统管理器参数存储](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) 来定位属性和设置。
+
+支持通过战争叠加中的以下依赖提供：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-aws-ssm</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持配置 - 云 - aws - ssm</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-See [this guide](Configuration-Properties.html#amazon-parameter-store) for relevant settings.
 
-##### DynamoDb
+有关相关设置，请参阅本指南</a> 。</p> 
 
-CAS is also able to use [DynamoDb](https://aws.amazon.com/dynamodb/) to locate properties and settings.
 
-Support is provided via the following dependency in the WAR overlay:
+
+##### 迪纳莫德布
+
+CAS 还能够使用 [DynamoDb](https://aws.amazon.com/dynamodb/) 来定位属性和设置。
+
+支持通过战争叠加中的以下依赖提供：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-dynamodb</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-配置-云-动态</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-The `DynamoDbCasProperties` table is automatically created by CAS with the following structure:
+
+`代dbcas专业` 表由中科院自动创建，结构如下：
+
+
 
 ```json
-{
-    "id": "primary-key",
-    "name": "the-setting-name",
-    "value": "the-setting-value"
+•
+    "id"："主键"，
+    "名称"："设置名称"，
+    "值"："设置值"
 }
 ```
 
-See [this guide](Configuration-Properties.html#dynamodb) for relevant settings.
 
-##### Azure KeyVault Secrets
+有关相关设置，请参阅本指南</a> 。</p> 
 
-CAS is also able to use Microsoft Azure's KeyVault Secrets to locate properties and settings. Support is provided via the following dependency in the WAR overlay:
+
+
+##### 蔚蓝钥匙沃特秘密
+
+CAS 还能够使用微软 Azure 的"钥匙伏特密钥"来定位属性和设置。 支持通过战争叠加中的以下依赖提供：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-azure-keyvault</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>套机服务器支持-配置-云-蔚蓝-键-</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#azure-keyvault-secrets).
 
-**IMPORTANT**: The allowed  name pattern in Azure Key Vault is `^[0-9a-zA-Z-]+$`. For properties that contain that contain `.` in the name (i.e. `cas.some.property`),  replace `.` with `-` when you store the setting in Azure Key Vault (i.e. `cas-some-property`). The module will handle the transformation for you.
+要查看此功能的 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#azure-keyvault-secrets)。
 
-See [this guide](Configuration-Properties.html#azure-keyvault-secrets) for relevant settings.
+**重要**：Azure 钥匙库中允许的名称模式 `^[0-9a-zA-Z-]+$`。 包含包含 `的 
+的属性。名称中的` （即 `cas.一些.财产`），取代 `。` 与 `-` ，当您存储在Azure钥匙库设置（即 `一些财产`）。 该模块将为您处理转换。 
 
-##### JDBC
+有关相关设置，请参阅本指南</a> 。</p> 
 
-CAS is also able to use a relational database to locate properties and settings.
 
-Support is provided via the following dependency in the WAR overlay:
+
+##### 京城
+
+CAS 还能够使用关系数据库来定位属性和设置。
+
+支持通过战争叠加中的以下依赖提供：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-jdbc</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>套机服务器支持配置-云-jdbc</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-By default, settings are expected to be found under a `CAS_SETTINGS_TABLE` that contains the fields: `id`, `name` and `value`. To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#jdbc).
 
-##### REST
+默认情况下，设置预计将在包含字段的 `CAS_SETTINGS_TABLE` 下找到： `id`、 `名称` 和 `值`。 要查看此功能的 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#jdbc)。
 
-CAS is also able to locate properties and settings using a REST API.
 
-Support is provided via the following dependency in the WAR overlay:
+
+##### 休息
+
+CAS 还能够使用 REST API 定位属性和设置。
+
+支持通过战争叠加中的以下依赖提供：
+
+
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-configuration-cloud-rest</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡-服务器-支持-配置-云-休息</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-The REST endpoint is expected to produce a `Map` in the payload with keys as the setting names and values as the setting value. To see the relevant list of CAS properties for this feature, please [review this guide](Configuration-Properties.html#rest).
 
-#### CAS Server Cloud Configuration
+REST 端点预计将在有效负载中生成 `地图` ，其中密钥是设置名称 ，值是设置值。 要查看此 功能的 CAS 属性的相关列表，请 [查看本指南](Configuration-Properties.html#rest)。
 
-The cloud configuration modules provided above on this page by the CAS project directly may also be used verbatim inside a CAS server overlay. Remember that the primary objective for these modules is to simply retrieve settings and properties from a source. While they are mostly and primarily useful when activated inside the Spring Cloud Configuration server and can be set to honor profiles and such, they nonetheless may also be used inside a CAS server overlay directly to simply fetch settings from a source while running in standalone mode. In such scenarios, all sources of configuration regardless of format or syntax will work alongside each other to retrieve settings and you can certainly mix and match as you see fit.
 
-#### Composite Sources
 
-In some scenarios you may wish to pull configuration data from multiple environment repositories. To do this just enable multiple profiles in your configuration server’s application properties or YAML file. If, for example, you want to pull configuration data from a Git repository as well as a SVN repository you would set the following properties for your configuration server.
+#### CAS 服务器云配置
+
+CAS 项目直接在此页面上提供的云配置模块也可以在 CAS 服务器覆盖 内逐字使用。 请记住，这些模块的主要目标是简单地从源中检索 设置和属性。 虽然它们在Spring云配置服务器内激活时主要和主要有用， 可以设置为荣誉配置文件等，但它们也可能直接用于 CAS 服务器覆盖内，以便在独立模式运行时从源 取取设置。 在这种情况下，无论格式或语法的 ，所有配置来源都将协同工作以检索设置，并且您当然可以根据需要进行混合和匹配。
+
+
+
+#### 复合来源
+
+在某些情况下，您可能希望从多个环境存储库提取配置数据。 要做到这一点，只需在配置服务器的应用程序属性或 YAML 文件中启用多个配置文件。 例如，如果您想从 Git 存储库以及 SVN 存储库提取配置数据，您将为配置服务器设置以下属性。
+
+
 
 ```yml
-spring:
-  profiles:
-    active: git, svn
-  cloud:
-    config:
-      server:
-        svn:
-          uri: file:///path/to/svn/repo
-          order: 2
-        git:
-          uri: file:///path/to/git/repo
-          order: 1
+春季：
+  配置文件：
+    活动：git，svn
+  云：
+    配置：
+      服务器：
+        svn：
+          uri：file:///path/to/svn/repo
+          订单：2
+        git：
+          uri：file:///path/to/git/repo
+          订单：1
 ```
 
-In addition to each repo specifying a URI, you can also specify an `order` property. The `order` property allows you to specify the priority order for all your repositories. The lower the numerical value of the order property the higher priority it will have. The priority order of a repository will help resolve any potential conflicts between repositories that contain values for the same properties.
 
-#### Property Overrides
+除了每个指定 URI 的回购之外，您还可以指定</code> 属性的 `订单。 <code>订单` 属性允许您指定 所有存储库的优先顺序。 订单属性的数字值越低，其优先级就越 。 存储库的优先顺序将有助于解决包含相同属性值的存储库之间的任何潜在 冲突。
 
-The configuration server has an "overrides" feature that allows the operator to provide configuration properties to all applications that cannot be accidentally changed by the application using the normal change events and hooks. To declare overrides add a map of name-value pairs to `spring.cloud.config.server.overrides`.
 
-For example:
+
+#### 财产覆盖
+
+配置服务器具有"覆盖"功能，允许操作员提供配置属性， 使用正常更改事件和挂钩的应用程序无法意外更改的所有应用程序。 要声明覆盖，请添加名称值对的地图，以 `春天。云.配置.服务器.覆盖`。 
+
+例如：
+
+
 
 ```yml
-spring:
-  cloud:
-    config:
-      server:
-        overrides:
-          foo: bar
+春季：
+  云：
+    配置：
+      服务器：
+        覆盖：
+          foo：栏
 ```
 
-This will cause the CAS server (as the client of the configuration server) to read `foo=bar` independent of its own configuration.
 
-## Securing Settings
+这将导致 CAS 服务器（作为配置服务器的客户端）阅读 `foo=bar` 独立于其自己的配置。
 
-To learn how sensitive CAS settings can be secured via encryption, [please review this guide](Configuration-Properties-Security.html).
 
-## Reloading Changes
 
-To lean more about how CAS allows you to reload configuration changes, please [review this guide](Configuration-Management-Reload.html).
+## 保护设置
 
-## Clustered Deployments
+要了解如何通过加密保护 CAS 设置的敏感性，请 [](Configuration-Properties-Security.html)查看本指南。
 
-CAS uses the [Spring Cloud Bus](http://cloud.spring.io/spring-cloud-static/spring-cloud.html) to manage configuration in a distributed deployment. Spring Cloud Bus links nodes of a distributed system with a lightweight message broker. This can then be used to broadcast state changes (e.g. configuration changes) or other management instructions.
 
-To learn how sensitive CAS settings can be secured via encryption, [please review this guide](Configuration-Management-Clustered.html).
+
+## 重新加载更改
+
+要了解 CAS 如何允许您重新加载配置更改，请 [查看本指南](Configuration-Management-Reload.html)。
+
+
+
+## 聚类部署
+
+CAS 使用 [春云总线](http://cloud.spring.io/spring-cloud-static/spring-cloud.html) 在分布式部署中管理配置。 春云总线将 分布式系统的节点与轻量级消息中间商连接。 然后，这可用于广播状态 更改（例如配置更改）或其他管理说明。
+
+要了解如何通过加密保护 CAS 设置的敏感性，请 [](Configuration-Management-Clustered.html)查看本指南。
