@@ -1,33 +1,33 @@
 ---
-layout: default
-title: CAS - Simple Multifactor Authentication
-category: Multifactor Authentication
+layout: 违约
+title: CAS - 简单多因素认证
+category: 多因素认证
 ---
 
-# Simple Multifactor Authentication
+# 简单的多因素身份验证
 
-Allow CAS to act as a multifactor authentication provider on its own, issuing tokens and sending them to end-users via pre-defined communication channels such as email or text messages. Tokens issued by CAS are tracked using the [ticket registry](../ticketing/Configuring-Ticketing-Components.html) and are assigned a configurable expiration policy controlled via CAS settings.
+允许 CAS 自行充当多因素身份验证提供商，通过预先定义的通信 电子邮件或短信等渠道向最终用户发行代币并将其发送给最终用户。 CAS 发行的代币使用 [票证注册表](../ticketing/Configuring-Ticketing-Components.html) 进行跟踪，并通过 CAS 设置分配可配置的到期策略。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following module in the overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-simple-mfa</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>的卡-服务器-支持-简单-mfa</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#simple-multifactor-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#simple-multifactor-authentication)。
 
-## Registration
+## 注册
 
-Registration is expected to have occurred as an out-of-band process. Ultimately, CAS expects to fetch the necessary attributes from configured attribute sources to determine communications channels for email and/or sms. The adopter is expected to have populated user records with enough information to indicate a phone number and/or email address where CAS could then be configured to fetch and examine those attributes to share generated tokens.
+注册预计将作为带外过程进行。 最终，CAS 希望从配置的属性源获取必要的属性 ，以确定电子邮件和/或短信的通信渠道。 预计采用者将填充 用户记录，其中包含足够的信息，以指示一个电话号码和/或电子邮件地址，然后 CAS 可以配置为提取和 检查这些属性以共享生成的代币。
 
-## Communication Strategy
+## 沟通战略
 
-Users may be notified of CAS-issued tokens via text messages and/or email. The authenticated CAS principal is expected to carry enough attributes, configurable via CAS settings, in order for CAS to properly send text messages and/or email to the end-user. Tokens may also be shared via notification strategies back by platforms such as Google Firebase, etc.
+可以通过短信和/或电子邮件通知用户 CAS 发行的代币。 认证的 CAS 委托人预计将携带足够的属性， 通过 CAS 设置进行配置，以便 CAS 正确向最终用户发送短信和/或电子邮件。 代币也可以通过通知策略 通过谷歌火力基础等平台共享。
 
-To learn more about available options, please [see this guide](../notifications/SMS-Messaging-Configuration.html) or [this guide](../notifications/Sending-Email-Configuration.html), or [this guide](../notifications/Notifications-Configuration.html).
+要了解有关可用选项的更多信息，请 [本指南](../notifications/SMS-Messaging-Configuration.html) 或本指南</a>，或 [本指南](../notifications/Notifications-Configuration.html)。</p>
