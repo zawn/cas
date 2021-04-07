@@ -1,11 +1,11 @@
 ---
-layout: default
-title: CAS - Ignite Ticket Registry
-category: Ticketing
+layout: 默认
+title: CAS-Ignite票务注册表
+category: 售票处
 ---
 
-# Ignite Ticket Registry
-Ignite integration is enabled by including the following dependency in the WAR overlay:
+# 点燃票务注册表
+通过在WAR叠加层中包含以下依赖项来启用Ignite集成：
 
 ```xml
 <dependency>
@@ -15,25 +15,25 @@ Ignite integration is enabled by including the following dependency in the WAR o
 </dependency>
 ```
 
-This registry stores tickets in an [Ignite](http://ignite.apache.org/) instance.
+该注册表将票证存储在 [Ignite](http://ignite.apache.org/) 实例中。
 
 
-## Distributed Cache
+## 分布式缓存
 
-Distributed caches are recommended for HA architectures since they offer fault tolerance in the ticket storage subsystem.
-
-
-## TLS Replication
-
-Ignite supports replication over TLS for distributed caches composed of two or more nodes. To learn more about TLS replication with Ignite, [see this resource](https://apacheignite.readme.io/docs/ssltls).
+对于HA体系结构，建议使用分布式缓存，因为它们在票证存储子系统中具有容错能力。
 
 
-## Configuration
+## TLS复制
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ignite-ticket-registry).
+Ignite支持通过TLS复制由两个或更多节点组成的分布式缓存。 要了解有关使用Ignite进行TLS复制的更多信息，请参见 [](https://apacheignite.readme.io/docs/ssltls)。
 
-## Troubleshooting
 
-* You will need to ensure that network communication across CAS nodes is allowed and no firewall or other component is blocking traffic.
-* If nodes external to CAS instances are utilized, ensure that each cache manager specifies a name that matches the Ignite configuration itself.
-* You may also need to adjust your expiration policy to allow for a larger time span, specially for service tickets depending on network traffic and communication delay across CAS nodes particularly in the event that a node is trying to join the cluster.
+## 配置
+
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ignite-ticket-registry)。
+
+## 故障排除
+
+* 您将需要确保允许跨CAS节点的网络通信，并且没有防火墙或其他组件阻止通信。
+* 如果利用了CAS实例外部的节点，请确保每个缓存管理器都指定一个与Ignite配置 本身匹配的名称。
+* 您可能还需要调整到期策略以允许更长的时间跨度，尤其是对于服务票证，具体取决于网络 流量和CAS节点之间的通信延迟，尤其是在节点尝试加入群集的情况下。
