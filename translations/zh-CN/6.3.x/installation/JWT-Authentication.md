@@ -1,54 +1,54 @@
 ---
-layout: default
-title: CAS - JWT Authentication
-category: Authentication
+layout: 默认
+title: CAS-JWT认证
+category: 验证
 ---
 
-# JWT Authentication
+# JWT认证
 
-[JSON Web Tokens](http://jwt.io/) are an open, industry standard RFC 7519 method for representing claims securely between two parties. CAS provides support for token-based authentication on top of JWT, where an authentication request can be granted an SSO session based on a form of credentials that are JWTs.
+[JSON Web令牌](http://jwt.io/) 是一种开放的行业标准RFC 7519方法，用于在两方之间安全地表示声明。 CAS在JWT的顶部提供了对基于令牌的身份验证的支持，其中可以基于JWT的凭据形式向身份
 
-## JWT Service Tickets
+## JWT服务票
 
-CAS may also be allowed to fully create signed/encrypted JWTs and pass them back to the application in form of service tickets. In this case, JWTs are entirely self-contained and contain the authenticated principal as well as all authorized attributes in form of JWT claims. To learn more about this functionality, [please review this guide](Configure-ServiceTicket-JWT.html).
+也可能允许CAS完全创建签名/加密的JWT，并将它们以服务票证的形式传递回应用程序。 在这种情况下，JWT完全是独立的，并且包含经过身份验证的主体以及所有以JWT声明的形式 要了解更多关于此功能， [请参阅本指南](Configure-ServiceTicket-JWT.html)。
 
-## Overview
+## 概述
 
-CAS expects a `token` parameter (or request header) to be passed along to the `/login` endpoint. The parameter value must be a JWT.
+CAS希望将 `令牌` 参数（或请求标头）传递给 `/ login` 端点。 参数值必须是JWT。
 
-<div class="alert alert-info"><strong>JCE Requirement</strong><p>It's safe to make sure you have the proper JCE bundle installed in your Java environment that is used by CAS, specially if you need to use specific signing/encryption algorithms and methods. Be sure to pick the right version of the JCE for your Java version. Java versions can be detected via the <code>java -version</code> command.</p></div>
+<div class="alert alert-info"><strong>JCE要求</strong><p>确保您已在CAS使用的Java环境中安装了正确的JCE软件包是安全的，特别是在您需要使用特定的签名/加密算法和方法的情况下。 确保为您的Java版本选择正确的JCE版本。 <code>java -version</code> 命令检测Java版本。</p></div>
 
-Here is an example of how to generate a JWT via [Pac4j](https://github.com/pac4j/pac4j):
+这是如何通过 [Pac4j](https://github.com/pac4j/pac4j)生成JWT的示例：
 
 ```java
-final String signingSecret = RandomUtils.randomAlphanumeric(256);
-final String encryptionSecret = RandomUtils.randomAlphanumeric(48);
+final String signingSecret = RandomUtils.randomAlphanumeric（256）;
+最终的String加密密钥秘密= RandomUtils.randomAlphanumeric（48）;
 
-System.out.println("signingSecret " + signingSecret);
-System.out.println("encryptionSecret " + encryptionSecret);
+System.out.println（“ signingSecret” + signingSecret）;
+System.out.println（“ encryptionSecret” + encryptionSecret）;
 
-final JwtGenerator<CommonProfile> g = new JwtGenerator<>();
-g.setSignatureConfiguration(new SecretSignatureConfiguration(signingSecret, JWSAlgorithm.HS256));
-g.setEncryptionConfiguration(new SecretEncryptionConfiguration(encryptionSecret,
-        JWEAlgorithm.DIR, EncryptionMethod.A192CBC_HS384));
+最后的JwtGenerator<CommonProfile> g =新的JwtGenerator<>（）;
+g.setSignatureConfiguration（new SecretSignatureConfiguration（signingSecret，JWSAlgorithm.HS256））;
+g.setEncryptionConfiguration（新的SecretEncryptionConfiguration（encryptionSecret，
+        JWEAlgorithm.DIR，EncryptionMethod.A192CBC_HS384））;
 
-final CommonProfile profile = new CommonProfile();
-profile.setId("casuser");
-final String token = g.generate(profile);
-System.out.println("token: " + token);
+最终的CommonProfile配置文件= new CommonProfile（）;
+profile.setId（“ casuser”）;
+最后的String令牌= g.generate（profile）;
+System.out.println（“ token：” +令牌）;
 ```
 
-Once the token is generated, you may pass it to the `/login` endpoint of CAS as such:
+生成令牌后，您可以将其传递给 `/ login` 端点，如下所示：
 
 ```bash
-/cas/login?service=https://...&token=<TOKEN_VALUE>
+/ cas / login？service = https：// ...&令牌=<TOKEN_VALUE>
 ```
 
-The `token` parameter may also be passed as a request header.
+`令牌` 参数也可以作为请求标头传递。
 
-## Configuration
+## 配置
 
-JWT authentication support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用JWT身份验证支持：
 
 ```xml
 <dependency>
@@ -58,44 +58,44 @@ JWT authentication support is enabled by including the following dependency in t
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#jwttoken-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#jwttoken-authentication)。
 
-Configure the appropriate service in your service registry to hold the secrets:
+在服务注册表中配置适当的服务以保存机密：
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://.+",
-  "name" : "testId",
-  "id" : 1,
-  "properties" : {
-    "@class" : "java.util.HashMap",
-    "jwtSigningSecret" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "<SECRET>" ] ]
-    },
-    "jwtEncryptionSecret" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "<SECRET>" ] ]
-    },
-    "jwtSigningSecretAlg" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "HS256" ] ]
-    },
-    "jwtEncryptionSecretAlg" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "dir" ] ]
-    },
-    "jwtEncryptionSecretMethod" : {
-      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-      "values" : [ "java.util.HashSet", [ "A192CBC-HS384" ] ]
-    },
-    "jwtSecretsAreBase64Encoded" : {
-       "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
-       "values" : [ "java.util.HashSet", [ "false" ] ]
+  “ @class”：“ org.apereo.cas.services.RegexRegisteredService”，
+  “ serviceId”：“ https：//.+”，
+  “ name”：“ testId”，
+  “ id”：
+  “ properties”：{
+    “ @class”：“ java.util.HashMap”，
+    “ jwtSigningSecret”：{
+      “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceProperty”，
+      “ values”：[“ java.util.HashSet“，[”<SECRET>“]]
+    }，
+    ” jwtEncryptionSecret“：{
+      ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceProperty“，
+      ” values“：[” java.util .HashSet“，[”<SECRET>“]]
+    }，
+    ” jwtSigningSecretAlg“：{
+      ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceProperty“，
+      ” values“：[” java.util.HashSet“ ，[“ HS256”]]
+    }，
+    “ jwtEncryptionSecretAlg”：{
+      “ @class”：“ org.apereo.cas.services.DefaultRegisteredServiceProperty”，
+      “ values”：[“ java.util.HashSet”，[“ dir“]]
+    }，
+    ” jwtEncryptionSecretMethod“：{
+      ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceProperty“，
+      ” values“：[” java.util.HashSet“，[” A192CBC-HS384 “]]
+    }，
+    ” jwtSecret sAreBase64Encoded“：{
+       ” @class“：” org.apereo.cas.services.DefaultRegisteredServiceProperty“，
+       ” values“：[” java.util.HashSet“，[” false“]]
     }
   }
 }
 ```
 
-Note that the only required property is `jwtSigningSecret`.
+请注意，唯一必需的属性是 `jwtSigningSecret`。
