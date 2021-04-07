@@ -1,200 +1,200 @@
 ---
-layout: default
-title: CAS - YubiKey Authentication
-category: Multifactor Authentication
+layout: 违约
+title: 中科院 - 尤比基认证
+category: 多因素认证
 ---
 
-# YubiKey Authentication
+# 尤比基认证
 
-Yubico is a cloud-based service that enables strong, easy-to-use and affordable two-factor authentication with one-time passwords through their flagship product, YubiKey. Once Yubico `clientId` and `secretKey` are obtained, then the configuration options available to use YubiKey devices as a primary authentication source that CAS server could use to authenticate users.
+Yubico 是一种基于云的服务，通过其旗舰产品 YubiKey 提供强大、易于使用且经济实惠的双重身份验证，并具有一次性密码。 一旦 Yubico `客户端id` 和 `秘密密钥` 获得，那么可用的 配置选项将 YubiKey 设备用作 CAS 服务器可用于对用户进行身份验证的主要身份验证源。
 
-To configure YubiKey accounts and obtain API keys, [refer to the documentation](https://upgrade.yubico.com/getapikey/).
+要配置 YubiKey 帐户并获取 API 密钥， [参考](https://upgrade.yubico.com/getapikey/)文档。
 
-[YubiKey](https://www.yubico.com/products/yubikey-hardware) authentication components are enabled by including the following dependencies in the WAR overlay:
+[YubiKey](https://www.yubico.com/products/yubikey-hardware) 身份验证组件通过在 WAR 叠加中包含以下依赖项而启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-yubikey</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>卡服务器支持-尤比基</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-## Administrative Endpoints
+## 行政终点
 
-The following endpoints are provided by CAS:
+CAS 提供以下端点：
 
-| Endpoint                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `yubikeyAccountRepository` | Manage and control [Google Authenticator account records](YubiKey-Authentication.html). A `GET` operation produces a list of all account records. A `DELETE` operation will delete all account records. A `GET` operation produces with a parameter selector of `/{username}` will list the record assigned to the user. A `DELETE` operation produces with a parameter selector of `/{username}` will remove the record assigned to the user. |
+| 端点         | 描述                                                                                                                                                                                       |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `尤比基帐户存储库` | 管理和控制 [谷歌身份验证器帐户记录](YubiKey-Authentication.html)。 `获取` 操作会生成所有帐户记录的列表。 `删除` 操作将删除所有帐户记录。 `GET` 操作中，使用 `/{username}` 的参数选择器生成，将列出分配给用户的记录。 使用 `/{username}` 的参数选择器生成的 `删除` 操作将删除分配给用户的记录。 |
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#yubikey).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#yubikey)。
 
-By default, all YubiKey accounts for users are allowed to authenticate. Devices that need to be authorized for authentication need to have followed an out-of-band registration process where the record for them is found in one of the following storage backends. Upon authentication, CAS will begin to search the configured registration database for matching record for the authenticated user and device in order to allow for a successful authentication event.
+默认情况下，用户的所有 YubiKey 帐户都允许进行身份验证。 需要授权进行身份验证的设备需要遵循带外注册流程，其中记录位于以下存储后端之一。 认证后，CAS 将开始搜索已配置的注册数据库，以匹配经过验证的用户和设备的记录，以便成功进行身份验证。
 
-### JSON
+### 杰森
 
-Registration records may be tracked inside a JSON file, provided the file path is specified in CAS settings. See [review this guide](../configuration/Configuration-Properties.html#yubikey) for more info.
+注册记录可以在 JSON 文件中跟踪，前提是在 CAS 设置中指定文件路径。 有关详细信息，请参阅 [查看本指南](../configuration/Configuration-Properties.html#yubikey) 。
 
-The JSON structure is a map of user id to yubikey public id representing any particular device:
+JSON 结构是用户 ID 到 yubikey 公共 ID 的地图，代表任何特定设备：
 
 ```json
 {
-  "uid1": ["yubikeyPublicId1"],
-  "uid2": ["yubikeyPublicId2"]
+  "uid1"：["尤比基公民1"]，
+  "uid2"：["尤比基公民2"]
 }
 ```
 
-### REST
+### 休息
 
-Registration records can be managed via an external REST API. See [review this guide](../configuration/Configuration-Properties.html#yubikey) for more info.
+注册记录可以通过外部 REST API 进行管理。 有关详细信息，请参阅 [查看本指南](../configuration/Configuration-Properties.html#yubikey) 。
 
-The following endpoints are expected to be available and implemented by the REST API:
+下列端点预计将由 REST API 提供并实施：
 
-| METHOD   | Endpoint       | Description                                                                           |
-| -------- | -------------- | ------------------------------------------------------------------------------------- |
-| `GET`    | `/`            | Get all registered records.                                                           |
-| `GET`    | `/{user}`      | Get all registered records for the user.                                              |
-| `DELETE` | `/`            | Delete all registered records.                                                        |
-| `DELETE` | `/{user}`      | Delete all registered records for the user.                                           |
-| `DELETE` | `/{user}/{id}` | Delete the registered device by its id from the the registration record for the user. |
-| `POST`   | `/`            | Store registration records passed as the request body.                                |
+| 方法   | 端点             | 描述                    |
+| ---- | -------------- | --------------------- |
+| `获取` | `/`            | 获取所有注册记录。             |
+| `获取` | `/{user}`      | 获取用户的所有注册记录。          |
+| `删除` | `/`            | 删除所有注册记录。             |
+| `删除` | `/{user}`      | 删除用户的所有注册记录。          |
+| `删除` | `/{user}/{id}` | 从用户的注册记录中删除其 ID 注册设备。 |
+| `发布` | `/`            | 商店注册记录作为请求主体通过。       |
 
-### Permissive
+### 许可的
 
-Registration records may be specified statically via CAS settings in form of a map that links registered usernames with the public id of the YubiKey device. See [review this guide](../configuration/Configuration-Properties.html#yubikey) for more info.
+注册记录可以通过 CAS 设置静态指定，其形式是将注册用户名 与 YubiKey 设备的公共 ID 连接在一起的地图。 有关详细信息，请参阅 [查看本指南](../configuration/Configuration-Properties.html#yubikey) 。
 
-### JPA
+### 日本经济与经济、经济、经济
 
-Support is enabled by including the following dependencies in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖项来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-yubikey-jpa</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 尤比基 - jpa</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-The expected database schema that is automatically created and configured by CAS contains a single table as `YubiKeyAccount` with the following fields:
+CAS 自动创建和配置的预期数据库模式包含一个表， `YubiKey 帐户` 以下字段：
 
-| Field      | Description                                                      |
-| ---------- | ---------------------------------------------------------------- |
-| `id`       | Unique record identifier, acting as the primary key.             |
-| `publicId` | The public identifier/key of the device used for authentication. |
-| `username` | The username whose device is registered.                         |
+| 田      | 描述                  |
+| ------ | ------------------- |
+| `ID`   | 唯一的记录标识符，作为主要键。     |
+| `公共Id` | 用于身份验证的设备的公共标识符/密钥。 |
+| `用户名`  | 其设备已注册的用户名。         |
 
-### CouchDb
+### 库奇德布
 
-Support is enabled by including the following dependencies in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖项来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-yubikey-couchdb</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 尤比基 - 库奇德布</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-The registration records are kept inside a single CouchDb database of your choosing that will be auto-created by CAS. The structure of this database's documents is as follows:
+注册记录保存在您选择的单个 CouchDb 数据库中，该数据库将由 CAS 自动创建。 该数据库文档的结构如下：
 
-| Field      | Description                                                      |
-| ---------- | ---------------------------------------------------------------- |
-| `id`       | Unique record identifier, acting as the primary key.             |
-| `publicId` | The public identifier/key of the device used for authentication. |
-| `username` | The username whose device is registered.                         |
+| 田      | 描述                  |
+| ------ | ------------------- |
+| `ID`   | 唯一的记录标识符，作为主要键。     |
+| `公共Id` | 用于身份验证的设备的公共标识符/密钥。 |
+| `用户名`  | 其设备已注册的用户名。         |
 
-### Redis
+### 雷迪斯
 
-Support is enabled by including the following dependencies in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖项来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-yubikey-redis</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 尤比基 - 雷迪斯</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#yubikey).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#yubikey)。
 
-### DynamoDb
+### 迪纳莫德布
 
-Support is enabled by including the following dependencies in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖项来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-yubikey-dynamodb</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 尤比基 - 迪纳莫德</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#yubikey).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#yubikey)。
 
-### MongoDb
+### 蒙古德布
 
-Support is enabled by including the following dependencies in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖项来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-yubikey-mongo</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 尤比基 - 蒙古</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-The registration records are kept inside a single MongoDb collection of your choosing that will be auto-created by CAS. The structure of this collection is as follows:
+注册记录保存在您选择的单个 MongoDb 集合中，该集合将由 CAS 自动创建。 此集合的结构如下：
 
-| Field      | Description                                                      |
-| ---------- | ---------------------------------------------------------------- |
-| `id`       | Unique record identifier, acting as the primary key.             |
-| `publicId` | The public identifier/key of the device used for authentication. |
-| `username` | The username whose device is registered.                         |
+| 田      | 描述                  |
+| ------ | ------------------- |
+| `ID`   | 唯一的记录标识符，作为主要键。     |
+| `公共Id` | 用于身份验证的设备的公共标识符/密钥。 |
+| `用户名`  | 其设备已注册的用户名。         |
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#yubikey).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#yubikey)。
 
-### Custom
+### 习惯
 
-If you wish to plug in a custom registry implementation that would determine which users are allowed to use their YubiKey accounts for authentication, you may plug in a custom implementation of the `YubiKeyAccountRegistry` that allows you to provide a mapping between usernames and YubiKey public keys.
+如果您希望插入自定义注册表实施， 以确定哪些用户可以使用其 YubiKey 帐户进行身份验证，则可以插入 `YubiKey 国家注册` 的自定义实施，该允许您在用户名和 YubiKey 公共密钥之间提供映射。
 
 
 ```java
-package org.apereo.cas.support.yubikey;
+包组织. 阿佩雷奥. 卡斯. 支持. 尤比基;
 
-@Configuration("myYubiKeyConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyYubiKeyConfiguration {
+@Configuration（"myYubiKey配置"）
+@EnableConfigurationProperties（配置专业.class）
+公共类MyYubiKey配置=
 
   @Bean
-  public YubiKeyAccountRegistry yubiKeyAccountRegistry() {
-      ...
-  }
+  公共尤比基国家注册yubiKey帐户注册（）{
+      。。。
+  •
 }
 ```
 
-## Device Registrations
+## 设备注册
 
-In the event that a new YubiKey should be registered, it may be desirable to execute additional validation processes before the account is registered with the underlying store. By default, the device registration step only verifies the device token. If you wish to extend this behavior, you can design your own validator that cross-checks the account against alternative sources and databases for validity and authorization:
+如果应注册新的 YubiKey，最好在帐户在基础商店注册之前执行额外的验证过程。 默认情况下，设备注册步骤仅验证设备令牌。 如果您想扩展此行为，您可以设计自己的验证器，根据替代源和数据库对账进行交叉检查，以获得有效性和授权：
 
 ```java
-package org.apereo.cas.support.yubikey;
+包组织. 阿佩雷奥. 卡斯. 支持. 尤比基;
 
-@Configuration("myYubiKeyConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyYubiKeyConfiguration {
+@Configuration（"myYubiKey配置"）
+@EnableConfigurationProperties（配置.class）
+公共类MyYubiKey配置=
 
   @Bean
-  public YubiKeyAccountValidator yubiKeyAccountValidator() {
-      ...
-  }
+  公共尤比基计数器yubiKey帐户验证器（）{
+      。。。
+  •
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[本指南](../configuration/Configuration-Management-Extensions.html) 了解有关如何将配置注册到 CAS 运行时间的更多信息。
 
-## REST Protocol Credential Extraction
+## REST 协议凭据提取
 
-In the event that the [CAS REST Protocol](../protocol/REST-Protocol.html) is turned on, a special credential extractor is injected into the REST authentication engine in order to recognize YubiKey credentials and authenticate them as part of the REST request. The expected parameter name in the request body is `yubikeyotp`.
+如果 [CAS REST 协议](../protocol/REST-Protocol.html) 打开，则向 REST 身份验证引擎注入特殊的凭据提取器，以便识别 YubiKey 凭据并将其作为 REST 请求的一部分进行身份验证。 请求主体中的预期参数名称 ``。
