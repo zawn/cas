@@ -1,16 +1,16 @@
 ---
-layout: default
-title: CAS - Redis Service Registry
-category: Services
+layout: 默认
+title: CAS-Redis服务注册中心
+category: 服务
 ---
 
-# Redis Service Registry
+# Redis服务注册表
 
-This service registry stores tickets in one or more [Redis](http://redis.io/) instances. The [spring data redis](http://projects.spring.io/spring-data-redis/) library used by this component presents Redis as a key/value store that accepts `String` keys and CAS service definition objects as values. The key is started with `CAS_SERVICE:`.
+此服务注册表将票证存储在一个或多个 [Redis](http://redis.io/) 实例中。 该 [spring data redis](http://projects.spring.io/spring-data-redis/) 库将Redis呈现为 键/值存储，该存储接受 `String` 键和CAS服务定义对象作为值。 密钥以 `CAS_SERVICE：`开头。
 
-The Redis service registry supports Redis Sentinel, which provides high availability for Redis. In practical terms this means that using Sentinel you can create a Redis deployment that resists without human intervention to certain kind of failures. Redis Sentinel also provides other collateral tasks such as monitoring, notifications and acts as a configuration provider for clients.
+Redis服务注册表支持Redis Sentinel，它为Redis提供了高可用性。 实际上，这意味着使用Sentinel可以创建Redis部署，该部署可以在无需人工干预的情况下抵抗某些类型的故障。 Redis Sentinel还提供其他附带任务，例如监视，通知，并充当客户端的配置提供程序。
 
-Support is enabled by including the following dependency in the overlay:
+通过在叠加层中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -20,8 +20,8 @@ Support is enabled by including the following dependency in the overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#redis-service-registry).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#redis-service-registry)。
 
-## Auto Initialization
+## 自动初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. See [this guide](AutoInitialization-Service-Management.html) for more info.
+在启动和配置允许的情况下，注册表可以根据CAS可用的默认JSON服务定义自动进行初始化。 有关更多信息，请参见 [本指南](AutoInitialization-Service-Management.html)
