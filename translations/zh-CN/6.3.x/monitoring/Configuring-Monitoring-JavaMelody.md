@@ -1,25 +1,25 @@
 ---
-layout: default
-title: CAS - JavaMelody Monitoring
-category: Monitoring & Statistics
+layout: 违约
+title: CAS - 爪哇旋律监测
+category: 监测 & 统计
 ---
 
-# JavaMelody Monitoring
+# 爪哇旋律监测
 
-Use [JavaMelody](https://github.com/javamelody/javamelody) is to monitor CAS in QA and production environments.
+使用 [爪哇旋律](https://github.com/javamelody/javamelody) 是监测CAS在QA和生产环境。
 
-Support is added by including the following dependency in the WAR overlay:
+通过在 WAR 叠加中包括以下依赖项来增加支持：
 
 ```xml
 <dependency>
-    <groupId>org.apereo.cas</groupId>
-    <artifactId>cas-server-support-javamelody</artifactId>
+    <groupId>组织. apereo. cas</groupId>
+    <artifactId>卡斯服务器支持 - 贾瓦梅洛迪</artifactId>
     <version>${cas.version}</version>
 </dependency>
 ```
 
-JavaMelody monitoring is by default exposed at `${context-path}/monitoring` where `${context-path}` is typically set to `/cas`.
+JavaMelody 监测默认在 `${context-path}/监测` 中暴露，其中 `${context-path}` 通常设置为 `/cas`。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#javamelody).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#javamelody)。
