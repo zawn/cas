@@ -1,14 +1,14 @@
 ---
-layout: default
-title: CAS - Groovy Authentication
-category: Authentication
+layout: 默认
+title: CAS-Groovy身份验证
+category: 验证
 ---
 
-# Groovy Authentication
+# Groovy身份验证
 
-Verify and authenticate credentials using Groovy scripts. The task of credential verification, principal transformation, handling password policy and all other related matters are the sole responsibility of the Groovy script.
+使用Groovy脚本验证和认证凭据。 凭证验证，主体转换， 处理密码策略以及所有其他相关事项的任务是Groovy脚本的唯一责任。
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -18,44 +18,44 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#groovy-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#groovy-authentication)。
 
-The Groovy script may be designed as:
+Groovy脚本可以设计为：
 
 ```groovy
-import org.apereo.cas.authentication.*
-import org.apereo.cas.authentication.credential.*
-import org.apereo.cas.authentication.metadata.*
+导入org.apereo.cas.authentication。*
+导入org.apereo.cas.authentication.credential。*
+导入org.apereo.cas.authentication.metadata。*
 
-import javax.security.auth.login.*
+导入javax.security.auth.login。*
 
-def authenticate(final Object... args) {
+def身份验证（最终对象... args）{
     def authenticationHandler = args[0]
-    def credential = args[1]
+    def凭据= args[1]
     def servicesManager = args[2]
-    def principalFactory = args[3]
+    defPrincipalFactory = args[3]
     def logger = args[4]              
 
-    /*
-     * Figure out how to verify credentials...
-     */
-    if (authenticationWorksCorrectly()) {
-        def principal = principalFactory.createPrincipal(credential.username);
-        return new DefaultAuthenticationHandlerExecutionResult(authenticationHandler,
-                new BasicCredentialMetaData(credential),
-                principal,
-                new ArrayList<>(0));
+    / *
+     *弄清楚如何验证凭据...
+     * /
+    如果（authenticationWorksCorrectly（））{
+        def主体= principalFactory.createPrincipal（credential.username）;
+        返回新的DefaultAuthenticationHandlerExecutionResult（authenticationHandler，
+                新的BasicCredentialMetaData（credential），
+                主体，
+                新的ArrayList<>（0））;
     }
-    throw new FailedLoginException();
+    抛出新的FailedLoginException（）;
 }
 
-def supportsCredential(final Object... args) {
-    def credential = args[0]
+defsupportsCredential（final Object ... args）{
+    def凭据= args[0]
     def logger = args[1]
-    return credential != null
+    返回凭据！= null
 }
 
-def supportsCredentialClass(final Object... args) {
+def supportCredentialClass（final Object ... args）{
     def credentialClazz = args[0]
     def logger = args[1]
     return credentialClazz == UsernamePasswordCredential.class
