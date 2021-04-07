@@ -1,186 +1,215 @@
 ---
-layout: default
-title: CAS - Release Notes
-category: Planning
+layout: 违约
+title: CAS - 发布说明
+category: 规划
 ---
 
-# RC1 Release Notes
+# RC1 发布说明
 
-We strongly recommend that you take advantage of the release candidates as they come out. Waiting for a `GA` release is only going to set you up for unpleasant surprises. A `GA` is simply [a tag and nothing more](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/). Note that CAS releases are *strictly* time-based releases; they are not scheduled or based on specific benchmarks, statistics or completion of features. To gain confidence in a particular release, it is strongly recommended that you start early by experimenting with release candidates and/or follow-up snapshots.
+我们强烈建议您利用释放候选人，因为他们出来。 等待一个 `GA` 发布只会设置 你不愉快的惊喜。 一个 `的GA` 只是 [一个标签，没有更多的](https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/)。 请注意，CAS 版本 *严格* 基于时间的版本：它们不是根据特定的基准、统计或功能完成来安排的。 为了获得 对特定版本的信心，强烈建议您尽早开始尝试发布候选和/或后续快照。
 
-## Apereo Membership
+## 阿佩雷奥会员
 
-If you benefit from Apereo CAS as free and open-source software, we invite you to [join the Apereo Foundation](https://www.apereo.org/content/apereo-membership) and financially support the project at a capacity that best suits your deployment. Note that all development activity is performed *almost exclusively* on a voluntary basis with no expectations, commitments or strings attached. Having the financial means to better sustain engineering activities will allow the developer community to allocate *dedicated and committed* time for long-term support, maintenance and release planning, especially when it comes to addressing critical and security issues in a timely manner. Funding will ensure support for the software you rely on and you gain an advantage and say in the way Apereo, and the CAS project at that, runs and operates. If you consider your CAS deployment to be a critical part of the identity and access management ecosystem, this is a viable option to consider.
+如果您受益于 Apereo CAS 的免费和开源软件，我们邀请您 [加入 Apereo 基金会](https://www.apereo.org/content/apereo-membership) ，并以最适合您部署的能力为项目提供财政支持。 请注意，所有发展活动都 *几乎完全* 自愿进行的，没有附加任何期望、承诺或条件。 拥有更好的资金手段来维持工程活动，将使开发人员社区能够分配 *专门和投入的* 时间进行长期支持、维护和发布规划，特别是在及时解决关键和安全问题方面。 资金将确保支持你所依赖的软件，你获得优势，并说的方式Apeo，和CAS项目，运行和运行。 如果您认为 CAS 部署是身份和访问管理生态系统的关键部分，则这是一个可行的选择。
 
-## Get Involved
+## 参与
 
-- Start your CAS deployment today. Try out features and [share feedback](/cas/Mailing-Lists.html).
-- Better yet, [contribute patches](/cas/developer/Contributor-Guidelines.html).
-- Suggest and apply documentation improvements.
+- 今天开始您的CAS部署。 尝试功能， [分享反馈](/cas/Mailing-Lists.html)。
+- 更妙的是， [](/cas/developer/Contributor-Guidelines.html)提供补丁。
+- 建议并应用文档改进。
 
-## Resources
+## 资源
 
-- [Release Schedule](https://github.com/apereo/cas/milestones)
-- [Release Policy](/cas/developer/Release-Policy.html)
+- [发布时间表](https://github.com/apereo/cas/milestones)
+- [发布策略](/cas/developer/Release-Policy.html)
 
-## Overlay
+## 覆盖
 
-In the `gradle.properties` of the [CAS WAR Overlay](../installation/WAR-Overlay-Installation.html), adjust the following setting:
+在 [CAS战争覆盖](../installation/WAR-Overlay-Installation.html)`` ，调整下列设置：
 
 ```properties
-cas.version=6.3.0-RC1
+卡斯.版本=6.3.0-RC1
 ```
 
 <div class="alert alert-info">
-  <strong>System Requirements</strong><br/>There are no changes to the minimum system/platform requirements for this release.
+  <strong>系统要求</strong><br/>本版本的最低系统/平台要求没有更改。
 </div>
 
-## New & Noteworthy
+## 值得注意的新 &
 
-### Spring Boot 2.3
+### 弹簧启动 2.3
 
-CAS has switched to Spring Boot `2.3.x.RELEASE`. The CAS Overlay has also been updated to be in sync with this change. While this is classified as a Spring Boot feature/minor release, the effects of the upgrade might be more apparent given the framework's significant usage in CAS.
+中科院已切换到春靴 `2.3.x.释放`。 CAS 叠加也已更新，以与此更改同步。 虽然 这被归类为弹簧启动功能/小版本，但鉴于该框架在 CAS 中的重要使用，升级的影响可能更加明显。
 
-The following settings are affected by the upgrade and should be adjusted to match below:
+下列设置受升级影响，应进行调整以匹配以下内容：
 
 ```properties
-server.tomcat.threads.min-spare=10
-server.tomcat.threads.max=200
+服务器.tomcat.线程.分钟备用=10
+服务器.tomcat.线程.max=200
 
-server.servlet.encoding.charset=UTF-8
-server.servlet.encoding.enabled=true
-server.servlet.encoding.force=true
+服务器.服务器.编码.编码.字符集=UTF-8
+服务器. servlet.en 编码.启用]真实
+服务器.servlet.编码.force=真实
 
-management.endpoint.health.status.order=WARN,DOWN,OUT_OF_SERVICE,UNKNOWN,UP
+管理.端点.健康.状态.订单=警告、向下、OUT_OF_SERVICE、未知、向上
 
-server.tomcat.connection-timeout=PT20S
-server.tomcat.max-http-form-post-size=2097152
+服务器.tomcat.连接超时=PT2 0S
+服务器.tomcat.max-http 格式后大小=2097152
 
-server.tomcat.remoteip.port-header=X-Forwarded-Port
-server.tomcat.remoteip.protocol-header=X-Forwarded-Proto
-server.tomcat.remoteip.protocol-header-https-value=https
-server.tomcat.remoteip.remote-ip-header=X-FORWARDED-FOR
+服务器.tomcat.remoteip.端口头=X 转发端口
+服务器.tomcat.远程 ip.协议-标题=X转发-原
+服务器.tomcat.远程.协议-标题-https-价值=
+服务器.tomcat.远程-ip-头=X-转发-FOR
 ```
 
-There were no compatibility issues discovered during the upgrade and the configuration namespace remains largely unaffected for CAS. That said, please suspect and verify.
+升级过程中未发现兼容性问题，配置名称空间对 CAS 基本未受影响。 也就是说，请怀疑和核实。
 
-### Test Coverage via CodeCov
+### 通过代码库进行测试覆盖
 
-CAS test coverage across all modules in the codebase has now reached `82%` and continues to climb. Additional validation rules are also applied to fail all pull requests that fall below this threshold. This area will be closely monitored and improved as progress is made with the goal of hopefully reaching at least `85%` before the final GA release. Of course, this will not be a blocker for the final release.
+目前，CAS 在代码库中所有模块的测试覆盖率已达到 82%</code> `，并且还在继续攀升。 
+，还应用了其他验证规则，以失败所有低于此阈值的拉取请求。 随着取得进展，这一领域将得到密切监测和改进，
+有望在最终大会发布前达到至少85%` `。 当然，这不会是最终版本的拦截器。</p>
 
-### Redis Cluster Support
+<h3 spaces-before="0">重新分配群集支持</h3>
 
-Redis support and configuration namespace are now capable of supporting connections to Redis clusters.
+<p spaces-before="0">重新分配支持和配置名称空间现在能够支持与 Redis 群集的连接。</p>
 
-### DynamoDb Storage for CAS Events
+<h3 spaces-before="0">用于 CAS 事件的发电机数据库存储</h3>
 
-[CAS Events](../installation/Configuring-Authentication-Events.html) can now be stored in DynamoDb instances.
+<p spaces-before="0"><a href="../installation/Configuring-Authentication-Events.html">CAS 事件</a> 现在可以存储在 DynamoDb 实例中。</p>
 
-### Couchbase Acceptable Usage Policy
+<h3 spaces-before="0">沙发基地可接受使用策略</h3>
 
-[Acceptable Usage Policy](../webflow/Webflow-Customization-AUP.html) decisions can now be managed and tracked via Couchbase databases.
+<p spaces-before="0"><a href="../webflow/Webflow-Customization-AUP.html">可接受的使用策略</a> 决策现在可以通过 Couchbase 数据库进行管理和跟踪。</p>
 
-### SAML2 Metadata via Git Repositories
+<h3 spaces-before="0">通过 Git 存储库的 SAML2 元数据</h3>
 
-[SAML2 Metadata](../installation/Configuring-SAML2-DynamicMetadata.html) artifacts can now be fetched and pulled from Git repositories. This capability supports both service and identity provider artifacts.
+<p spaces-before="0"><a href="../installation/Configuring-SAML2-DynamicMetadata.html">SAML2 元数据</a> 文物现在可以从 Git 存储库中提取和提取。 此功能支持服务和身份提供商工件。</p>
 
-### Multifactor Authentication Webflows
+<h3 spaces-before="0">多因素身份验证网络流</h3>
 
-Webflow definitions for multifactor authentication providers (i.e Google Authenticator, Authy, etc) are now constructed dynamically at runtime via webflow auto-configuration rather than static XML definitions. This allows for better flexibility as well as test coverage when it comes to customizations.
+<p spaces-before="0">多因素身份验证提供商的 Webflow 定义（即 Google 身份验证器、Authy 等）现在通过 Webflow 自动配置而不是静态 XML 定义在运行时动态 
+构建。 这允许更好的灵活性，以及测试覆盖，当涉及到自定义。</p>
 
-### U2F Multifactor Authentication Trusted Devices
+<h3 spaces-before="0">U2F 多因素身份验证受信任的设备</h3>
 
-Support for [Multifactor Authentication Trusted Device/Browser](../mfa/Multifactor-TrustedDevice-Authentication.html) is now extended to also include [U2F](../mfa/FIDO-U2F-Authentication.html). Furthermore, a number of new administrative actuator endpoints are presented to report back on the registered devices or delete/deregister devices.
+<p spaces-before="0">支持 <a href="../mfa/Multifactor-TrustedDevice-Authentication.html">多因素身份验证受信任的设备/浏览器</a> 现已扩展 
+，还包括 <a href="../mfa/FIDO-U2F-Authentication.html">U2F</a>。 此外，还 
+提出一些新的行政执行器端点，以报告注册设备或删除/取消注册设备。</p>
 
-### Authentication Actuator Endpoints
+<h3 spaces-before="0">身份验证执行器端点</h3>
 
-A number of new [administrative actuator endpoints](../installation/Configuring-Authentication-Components.html) are presented to report back on the registered authentication handlers and policies.
+<p spaces-before="0">一些新的 <a href="../installation/Configuring-Authentication-Components.html">行政执行器端点</a> 
+提交，以汇报注册认证处理程序和政策。</p>
 
-### DynamoDb Storage for U2F Multifactor Authentication
+<h3 spaces-before="0">用于 U2F 多因素身份验证的发电机数据库存储</h3>
 
-[U2F Multifactor Authentication](../mfa/FIDO-U2F-Authentication.html) devices can now be stored in DynamoDb instances.
+<p spaces-before="0"><a href="../mfa/FIDO-U2F-Authentication.html">U2F 多因素身份验证</a> 设备现在可以存储在 DynamoDb 实例中。</p>
 
-### Gradle Remote Build Cache
+<h3 spaces-before="0">格拉德尔远程构建缓存</h3>
 
-The CAS Gradle build is now connected to a remote build cache server to maximize performance for continuous integration builds.
+<p spaces-before="0">CAS Gradle 构建现在连接到远程构建缓存服务器，以最大限度地提高连续集成构建的性能。</p>
 
-![image](https://user-images.githubusercontent.com/1205228/84562682-9d46f300-ad6b-11ea-8ed8-3042a3facbec.png)
+<p spaces-before="0"><img src="https://user-images.githubusercontent.com/1205228/84562682-9d46f300-ad6b-11ea-8ed8-3042a3facbec.png" alt="图像" /></p>
 
-### Google Authenticator Account Registration
+<h3 spaces-before="0">谷歌身份验证器帐户注册</h3>
 
-Google Authenticator for multifactor authentication is now enhanced to ask for tokens prior to finalizing the account registration process. Once the provided token is validated, the account will be registered with CAS and is prepared for follow-up multifactor authentication.
+<p spaces-before="0">在完成帐户注册流程之前，已增强了多因素身份验证的 Google 身份验证器，以请求代币。 一旦所提供的令牌得到验证，该帐户将在 CAS 注册，并准备后续的多因素认证。</p>
 
-![image](https://user-images.githubusercontent.com/1205228/86023135-83323380-ba40-11ea-8d16-4fe8ff560c99.png)
+<p spaces-before="0"><img src="https://user-images.githubusercontent.com/1205228/86023135-83323380-ba40-11ea-8d16-4fe8ff560c99.png" alt="图像" /></p>
 
-### Apache JMeter Performance Tests
+<h3 spaces-before="0">阿帕奇 J 仪性能测试</h3>
 
-[Apache JMeter performance tests](../high_availability/Performance-Testing-JMeter.html) that ship with CAS are now added to [GitHub Actions](https://github.com/apereo/cas/actions). At this point, only the *CAS* variant is tested and other test categories for SAML2 and OAuth will be gradually added once a CAS runtime context (i.e. WAR Overlay) can be dynamically constructed on-demand with a module selection menu. The goal is to ensure the JMeter test artifacts and scripts are maintainable and manageable from one CAS release to the next.
+<p spaces-before="0"><a href="../high_availability/Performance-Testing-JMeter.html">阿帕奇JMeter性能测试</a> ，船舶与中科院现在 
+添加到 <a href="https://github.com/apereo/cas/actions">GitHub行动</a>。 此时，只有 <em x-id="3">CAS</em> 变种进行了测试， 
+一旦 CAS 运行时上下文（即 WAR 叠加）可以 
+模块选择菜单按需动态构建。 目标是确保 JMeter 测试工件 
+和脚本是可维护和管理的，从一个 CAS 版本到下一个 CAS 版本。</p>
 
-### Google Firebase Cloud Messaging
+<h3 spaces-before="0">谷歌火基云消息</h3>
 
-Preliminary support is available for notification based on [Google Firebase Cloud Messaging](../notifications/Notifications-Configuration.html). The very first consumer of this feature is the [Simple Multifactor Authentication](../mfa/Simple-Multifactor-Authentication.html) module.
+<p spaces-before="0">初步支持是基于 <a href="../notifications/Notifications-Configuration.html">谷歌火基云消息</a>的通知。 此功能的第一个消费者
+是 <a href="../mfa/Simple-Multifactor-Authentication.html">简单的多因素身份验证</a> 模块。</p>
 
-### Service Registry Replication via Apache Kafka
+<h3 spaces-before="0">通过阿帕奇·卡夫卡进行服务注册复制</h3>
 
-In the event that CAS service definitions are not managed globally via a centralized store, definitions need to be kept in sync throughout all CAS nodes in a cluster when more than one node is deployed. If you’d rather not resort to outside tooling and processes or if the native options for your deployment are not that attractive, you can take advantage of CAS’ own tooling [backed by Apache Kafka](../services/Configuring-Service-Replication.html) that provides a distributed cache to broadcast service definition files across the cluster.
+<p spaces-before="0">如果 CAS 服务定义不是通过集中存储在全球管理的，则当部署多个节点时，定义需要保持 
+在聚类中的所有 CAS 节点同步。 如果您不想求助于外部手件和流程，或者如果您的 
+部署的原生选项没有那么有吸引力，您可以利用 CAS 自己的模具 <a href="../services/Configuring-Service-Replication.html">由 Apache Kafka</a> 支持，该 
+分布式缓存用于在群集中广播服务定义文件。</p>
 
-### Google Authenticator Multiple Devices
+<h3 spaces-before="0">谷歌身份验证器多台设备</h3>
 
 <div class="alert alert-warning">
-  <strong>WATCH OUT!</strong><br />This may be a breaking change. The underlying data models and repository implementations that manage device records for users are modified to handle a collection of devices per user. This does affect database or filesystem schemas and API calls where a collection is expected instead of a single result.
+  <strong>小心！</strong><br />这可能是一个突破性的变化。 对管理用户设备记录的基础数据模型和存储库实现进行了修改，以处理每个用户的设备集合。 这确实会影响数据库或文件系统计划和 API 调用，其中需要收集而不是单个结果。
 </div>
 
-Google Authenticator for multifactor authentication is now allowed to accept and register multiple devices. Accounts or devices must be assigned a name on registration that is used for the device selection menu when multiple registration records are found. When validating Google Authenticator tokens via REST, the account identifier must be specified if the user account has more than one registered device. Furthermore, note that allowing multiple devices per user is controlled via CAS settings and is disabled by default to preserve behavioral compatibility with previous versions.
+<p spaces-before="0">谷歌多因素身份验证器现在允许接受和注册多个设备。 当找到多个注册记录时，必须在注册时分配用于设备选择菜单的帐户或设备的名称。 在通过 REST 验证 Google 身份验证器令牌时，如果用户帐户具有多个注册设备，则必须指定帐户标识符。 此外，请注意，允许每个用户使用多个设备是通过 CAS 设置控制的，默认情况下会禁用，以保持行为与之前版本的兼容性。</p>
 
-|                                                                                                               |                                                                                                               |
-| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| ![image](https://user-images.githubusercontent.com/1205228/85271898-ad0fb700-b490-11ea-9f69-60ae4aa59bd2.png) | ![image](https://user-images.githubusercontent.com/1205228/85271811-8a7d9e00-b490-11ea-9d49-5689f7f539f2.png) |
+<table spaces-before="0">
+<thead>
+<tr>
+  <th></th>
+  <th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><img src="https://user-images.githubusercontent.com/1205228/85271898-ad0fb700-b490-11ea-9f69-60ae4aa59bd2.png" alt="图像" /></td>
+  <td><img src="https://user-images.githubusercontent.com/1205228/85271811-8a7d9e00-b490-11ea-9d49-5689f7f539f2.png" alt="图像" /></td>
+</tr>
+</tbody>
+</table>
 
-### DynamoDb Storage for YubiKey Devices
+<h3 spaces-before="0">尤比基设备的发电机数据库存储</h3>
 
-[YubiKey Devices](../mfa/YubiKey-Authentication.html) can now be stored in DynamoDb instances.
+<p spaces-before="0"><a href="../mfa/YubiKey-Authentication.html">YubiKey 设备</a> 现在可以存储在 DynamoDb 实例中。</p>
 
-### Swagger Integration
+<h3 spaces-before="0">斯瓦格集成</h3>
 
-[Swagger Integration](../integration/Swagger-Integration.html) can is upgraded to use Swagger v2 via [SpringDoc](https://springdoc.org/).
+<p spaces-before="0"><a href="../integration/Swagger-Integration.html">斯瓦格集成</a> 可以通过 <a href="https://springdoc.org/">斯普林多克</a>升级为使用斯瓦格v2。</p>
 
-## Other Stuff
+<h2 spaces-before="0">其他内容</h2>
 
-- Attribute definitions mapped to an external Groovy script are corrected to handle caching in more resource-friendly ways.
-- The management of service definitions is now delegating search operations to the service registry rather than filtering matches internally while also utilizing a caching layer to improve performance as much as possible.
-- Generation of OAuth/OIDC `code` tokens is now properly audited. Additionally, the `who` flag for OAuth/OIDC functionality is restored back to the active principal id.
-- The authentication strategy backed by [Apache Syncope](../installation/Syncope-Authentication.html) is enhanced to not require a dependency on Apache Syncope modules, allowing the integration to work with all Apache Syncope versions. Additional improvements are put in to ensure the configuration can comply with reload requests and the likes of `@RefreshScope`.
-- The eligibility of passwordless accounts for multifactor & delegated authentication has switched to a `TriStateBoolean` type to allow for easier overrides and undefined states when examined against the global settings.
-- When working with Git integrations, username and email attributes used for commit operations are now resolved via local, global and system git configuration before falling back onto default CAS-controlled values.
-- Service management `findServiceBy()` operations are now delegated to the service registry directly with a modest cache layer in between to improve and preserve performance as much as possible.
-- Test improvements to reduce the number of duplicate configuration classes required to bootstrap the runtime context.
-- OpenID Connect ID tokens can now be correctly signed using the algorithm fetched from the keystore, and the `iss` field should properly reflect the configured issuer in CAS configuration.
-- [Locust performance tests](../high_availability/Performance-Testing-Locust.html) are now upgraded to use locust `1.1`.
-- Generation of id tokens or user-info payloads for OAuth or OpenID Connect are now hardenized to prevent the `none` algorithm if undefined in discovery settings.
+<ul>
+<li>已更正映射到外部 Groovy 脚本的属性定义，以更有利于资源的方式处理缓存。</li>
+<li>服务定义的管理现在将搜索操作委托给服务注册表，而不是在内部过滤匹配项，同时利用缓存层尽可能提高性能。</li>
+<li>非授权/OIDC <code>代币` 代码的生成现在已经过适当审核。 此外，为非授权/OIDC 功能</code> 标志的 `将恢复到活动主体 ID。</li>
+<li>由 <a href="../installation/Syncope-Authentication.html">Apache 同步</a> 支持的身份验证策略已增强，无需依赖 Apache 同步模块，允许集成与所有 Apache 同步版本配合工作。 进一步的改进，以确保配置可以符合重新加载的要求和 <code>@RefreshScope`等。</li>
+- 多因素 & 授权身份验证的无密码帐户的资格已切换到 `三国` 类型，以便根据全球设置进行审查时更容易覆盖和未定义状态。
+- 在使用 Git 集成时，用于提交操作的用户名和电子邮件属性现在通过本地、全球和系统 git 配置解决，然后再返回到默认的 CAS 控制值。
+- 服务管理 `发现ServiceBy（）` 操作现在直接委托给服务注册表，中间有一个适度的缓存层，以尽可能提高和保留性能。
+- 测试改进，以减少启动运行时上下文所需的重复配置类数量。
+- 现在，使用从钥匙店提取的算法可以正确签名 OpenID 连接 ID 代币， `是` 字段应正确反映 CAS 配置中的发行人。
+- [蝗灾性能测试](../high_availability/Performance-Testing-Locust.html) 现已升级为使用蝗虫 `110`。
+- OAuth 或 OpenID 连接的 ID 令牌或用户信息有效负载生成现在已硬化，以防止在发现设置中未定义时没有</code> 算法 。</li>
+</ul>
 
-## Library Upgrades
+<h2 spaces-before="0">库升级</h2>
 
-- ErrorProne Compiler
-- UnboundID LDAP SDK
-- Spring Boot
-- Spring Cloud
-- Spring Data
-- Spring Boot Admin
-- Nimbus
-- Swagger
-- Swagger
-- Amazon SDK
-- Apache Tomcat
-- Pac4j
-- Twillio
-- ActiveMQ
-- BouncyCastle
-- Swagger
-- DropWizard
-- Apache Curator
-- Locust
-- OpenSAML
-- Oshi
-- Couchbase Driver
-- MongoDb Driver
-- Nimbus OIDC
+<ul>
+<li>错误提示编译器</li>
+<li>未绑定 LDAP SDK</li>
+<li>弹簧启动</li>
+<li>春云</li>
+<li>春季数据</li>
+<li>弹簧启动管理</li>
+<li>雨云</li>
+<li>斯瓦格</li>
+<li>斯瓦格</li>
+<li>亚马逊 SDK</li>
+<li>阿帕奇·汤姆卡特</li>
+<li>帕克4j</li>
+<li>特维利奥</li>
+<li>主动MQ</li>
+<li>弹力城堡</li>
+<li>斯瓦格</li>
+<li>滴维扎德</li>
+<li>阿帕奇策展人</li>
+<li>蝗</li>
+<li>开放销售</li>
+<li>奥希</li>
+<li>沙发基地驱动程序</li>
+<li>蒙古德布司机</li>
+<li>尼姆布斯· 奥多克</li>
+</ul>
