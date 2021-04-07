@@ -1,26 +1,26 @@
 ---
-layout: default
-title: CAS - Configuring Ticketing Components
-category: Ticketing
+layout: 默认
+title: CAS-配置票证组件
+category: 售票处
 ---
 
-# Ticket Registry Replication Encryption
+# 票证注册表复制加密
 
-The following ticket registries are able to support secure ticket replication by encrypting and signing tickets:
+以下票证注册表通过对票证进行加密和签名，可以支持安全票证复制
 
-* [Hazelcast](../ticketing/Hazelcast-Ticket-Registry.html)
-* [Ehcache](../ticketing/Ehcache-Ticket-Registry.html)
-* [Ignite](../ticketing/Ignite-Ticket-Registry.html)
+* [淡褐色](../ticketing/Hazelcast-Ticket-Registry.html)
+* [高速缓存](../ticketing/Ehcache-Ticket-Registry.html)
+* [点燃](../ticketing/Ignite-Ticket-Registry.html)
 * [CouchDb](../ticketing/CouchDb-Ticket-Registry.html)
-* [Memcached](../ticketing/Memcached-Ticket-Registry.html)
-* [Redis](../ticketing/Redis-Ticket-Registry.html)
+* [记忆快取](../ticketing/Memcached-Ticket-Registry.html)
+* [雷迪斯](../ticketing/Redis-Ticket-Registry.html)
 * [MongoDb](../ticketing/MongoDb-Ticket-Registry.html)
 
-<div class="alert alert-info"><strong>Default Behavior</strong><p>Encryption by default is turned off
-when you use the above ticket registries. It requires explicit configuration before it can be used.</p></div>
+<div class="alert alert-info"><strong>默认行为</strong><p>使用上述票证注册表时，默认情况下，加密功能为
+ 在使用它之前，需要进行明确的配置。</p></div>
 
-## Configuration
+## 配置
 
-Each ticket registry configuration supports a cipher component that needs to be configured by the deployer. The settings, algorithms and secret keys used for the cipher may be controlled via CAS settings. Refer to the settings allotted for each registry to learn more about ticket encryption.
+每个票证注册表配置都支持需要由部署者配置的密码组件。 可以通过CAS设置来控制用于密码的设置，算法和秘密密钥。 请参阅为每个注册表分配的设置，以了解有关票证加密的更多信息。
 
-Additionally, [Ignite](../ticketing/Ignite-Ticket-Registry.html) may be configured to use TLS for replication transport.
+此外， [Ignite](../ticketing/Ignite-Ticket-Registry.html) 配置为使用TLS进行复制传输。
