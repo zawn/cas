@@ -1,23 +1,23 @@
 ---
-layout: default
-title: CAS - Google Apps Integration
-category: Integration
+layout: 默认
+title: CAS-Google Apps集成
+category: 一体化
 ---
 
-# Overview
+# 概述
 
-Google Apps for Education (or any of the Google Apps) utilizes SAML 2.0 to provide an integration point for external authentication services.
+Google Apps for Education（或任何Google Apps）利用SAML 2.0为外部身份验证服务 
 
-<div class="alert alert-warning"><strong>Usage</strong>
-<p>The Google Apps for Education integration described here allows CAS to act as a miniaturized SAML2 identity provider, 
-for deployments that may not be prepared to turn on and allow CAS to fully act as a SAML2 identity provider. 
-<strong>This feature is deprecated and is scheduled to be removed in the future.</strong> It does not
-make much sense to turn on and use both features in CAS at the same time, as one outranks the other and it is likely
-that using both features in CAS simultaneously would interfere with the functionality of both. If you can, consider using
-the SAML2 identity provider functionality in CAS to handle this integration as you would any other SAML2 service provider.</p>
+<div class="alert alert-warning"><strong>用法</strong>
+<p>此处描述的Google Apps for Education集成允许CAS充当小型化的SAML2身份提供者， 
+表示可能无法准备开启的部署，并允许CAS完全充当SAML2身份提供者。 
+<strong>不推荐使用此功能，并计划在将来将其删除。</strong> 这不
+多大意义打开，并在同一时间使用CAS这两项功能，作为一个级别高于对方，很可能
+，能同时使用CAS功能都将与这两者的功能造成干扰。 如果可以，请考虑像其他任何SAML2服务提供者一样，在CAS中
+</p>
 </div>
 
-Support is enabled by including the following dependency in the WAR overlay:
+通过在WAR叠加中包含以下依赖项来启用支持：
 
 ```xml
 <dependency>
@@ -27,49 +27,49 @@ Support is enabled by including the following dependency in the WAR overlay:
 </dependency>
 ```
 
-## Generate Public/Private Keys
+## 生成公钥/私钥
 
-The first step is to generate DSA/RSA public and private keys. These are used to sign and read the Assertions. After keys are created, the public key needs to be registered with Google.
+第一步是生成DSA / RSA公钥和私钥。 这些用于签署和阅读断言。 创建密钥后，需要向Google注册公共密钥。
 
-The keys will also need to be available to the CAS application (but not publicly available over the Internet) via the classpath though any location accessible by the user running the web server instance and not served publicly to the Internet is acceptable.  Thus, inside `src/main/resources` is nice because it is scoped to the web application but not normally served. `/etc/cas/` is also fine as well and protects the key from being overwritten on deploy of a new CAS webapp version.
+密钥也需要通过类路径可供CAS应用程序使用（但不能通过Internet公开使用） ，尽管可以接受运行Web服务器 实例的用户访问且不公开提供给Internet的任何位置。  因此，在 `src / main / resources` 是 不错，因为它的作用域是Web应用程序，但通常不提供服务。 `/ etc / cas /` 也很好，它可以防止密钥在部署新的CAS Webapp版本时被覆盖。
 
 ```bash
 openssl genrsa -out private.key 1024
-openssl rsa -pubout -in private.key -out public.key -inform PEM -outform DER
-openssl pkcs8 -topk8 -inform PER -outform DER -nocrypt -in private.key -out private.p8
+openssl rsa -pubout -in private.key -out public.key-通知PEM -outer DER
+openssl pkcs8 -topk8-通知PER -outder DER -nocrypt -in private.key -out private .p8
 openssl req -new -x509 -key private.key -out x509.pem -days 365
 ```
 
-The `x509.pem` file should be uploaded into Google Apps under Security/SSO.
+`x509.pem` 文件应上传到Google Apps中的“安全性/ SSO”下。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#google-apps-authentication).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#google-apps-authentication)。
 
-## Register Google Apps
+## 注册Google Apps
 
-Ensure that Google Apps is registered in your [service registry](../services/Service-Management.html).
+确保Google Apps已在您的 [服务注册表](../services/Service-Management.html)注册。
 
 ```json
 {
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "https://www.google.com/a/YourGoogleDomain/acs",
-  "name" : "googleApps",
-  "id" : 1000,
-  "evaluationOrder" : 10
+  “@class”： “org.apereo.cas.services.RegexRegisteredService”，
+  “服务Id”： “https://www.google.com/a/YourGoogleDomain/acs”，
+  “名称”： “的GoogleApps” ，
+  “ID”：1000，
+  “evaluationOrder”：10
 }
 ```
 
-## Configure Username Attribute
+## 配置用户名属性
 
-As an optional step, you can configure an alternate username to be send to Google in the SAML reply. This alternate user name can be specified in the CAS service registry via [username attribute providers](../services/Service-Management.html) for the registered Google Apps service.
+作为可选步骤，您可以配置备用用户名，以在SAML回复中发送给Google。 [用户名属性提供程序](../services/Service-Management.html) 为注册的Google Apps服务在CAS服务注册表中指定该备用用户名
 
-## Configure Google
+## 配置Google
 
-You'll need to provide Google with the URL for your SAML-based SSO service, as well as the URL your users will be redirected to when they log out of a hosted Google application. Use the following URLs when you are configuring for Google Apps:
+您需要向Google提供基于SAML的SSO服务的URL，以及用户在退出托管的Google应用程序 为Google Apps配置时，请使用以下网址：
 
-* Sign-in page URL: `https://sso.school.edu/cas/login`
-* Sign-out page URL: `https://sso.school.edu/cas/logout`
-* Change password URL: `https://mgmt.password.edu/`
+* 登录页面网址： `https://sso.school.edu/cas/login`
+* 登出页面网址： `https://sso.school.edu/cas/logout`
+* 更改密码网址： `https://mgmt.password.edu/`
 
-## Test
+## 测试
 
-Attempt to access a Google-hosted application, such as Google Calendar with the url: `https://calendar.google.com/a/YourGoogleDomain`
+尝试使用以下网址访问Google托管的应用程序，例如Google Calendar `https://calendar.google.com/a/YourGoogleDomain`
