@@ -1,114 +1,114 @@
 ---
-layout: default
-title: CAS - JMeter Performance Testing
-category: High Availability
+layout: 违约
+title: CAS - J 米性能测试
+category: 高可用性
 ---
 
-# JMeter Performance Testing
+# J 仪性能测试
 
-Apache JMeter is a great performance testing tool that is used heavily within the Java community.
+Apache JMeter 是一种出色的性能测试工具，在 Java 社区中大量使用。
 
-## Install JMeter
+## 安装仪表
 
-* Linux and Mac:
-  * Download the JMeter binary.
+* Linux 和 Mac：
+  * 下载J米二进制文件。
     * [http://jmeter.apache.org/download_jmeter.cgi](http://jmeter.apache.org/download_jmeter.cgi)
-  * Unzip apache-jmeter-*.tgz to your preferred location
-  * Run `bin/jmeter.sh`
-    * Note: Mac users can also use the popular HomeBrew package manager to install JMeter.
-* Windows:
-  * Here is a tutorial for windows setup.
+  * 解压阿帕奇 - jmeter - *. tgz 到您的首选位置
+  * 运行 `箱/里程表.sh`
+    * 注意：Mac用户还可以使用流行的家庭布鲁包管理器来安装JMeter。
+* 窗户：
+  * 以下是窗口设置的教程。
     * [https://toolsqa.com/jmeter/download-and-installation-jmeter/](http://toolsqa.com/jmeter/download-and-installation-jmeter/)
 
-## Sample Test Scripts
+## 示例测试脚本
 
-Below you will find three generic runnable login scripts for the three most popular CAS implementation flavors. Please feel free to edit and use for your needs.
+下面你会发现三个通用的可运行登录脚本的三个最流行的CAS实现口味。 请随时编辑和使用您的需求。
 
-Although the scripts support different login methodologies, they do share some common traits.
+虽然脚本支持不同的登录方法，但它们确实具有一些共同的特点。
 
-## Common Settings Tabs
+## 常见设置选项卡
 
-* _User Defined Variables_
-  * _ThreadCount_ - Number of Threads (Kind of like Users).  Recommend starting with 100 users or so.
-  * _Duration_ -  How long should the test run.  Usually, the more threads(users) the longer the duration should be
-  * _RampUpPeriod_ - How long to take to ramp up to full set of thread count
-* _Thread Group_ (or Tests):
-  * _Loop Count_ - # of Loops, or more correctly the # of users to run through the test.
-    * Count will be associated to the total users that will run through the test
-    * _Forever_ check box will loop through file and keep going till manually stopped or until reaches Duration from "User Defined Variables" page
-* _CSV Get Users/Passwords_:
-  * Name and location of file containing test user credentials
-  * Should be in the format of `User,Password`, with no spaces between “User", the “comma" and “Password”
+* _用户定义变量_
+  * _线程计数_ - 线程数（有点像用户）。  建议从100个用户左右开始。
+  * _持续时间_ - 测试应运行多长时间。  通常，线程（用户）越多，持续时间就越长
+  * _Rampupperiod_ - 需要多长时间才能升级到全套线程计数
+* _线程组_ （或测试）：
+  * _循环计数_ -#循环，或更正确的#用户运行通过测试。
+    * 计数将与将运行通过测试的总用户关联
+    * _永远_ 复选框将循环通过文件，并保持到手动停止或直到达到持续时间 从"用户定义的变量"页面
+* _CSV获取用户/密码_：
+  * 包含测试用户凭据的文件的名称和位置
+  * 应采用 `用户、密码`格式，在"用户"、"逗号"和"密码"之间没有空格
 
-**Scripts**
+**脚本**
 
-The scripts can be downloaded from [here](https://github.com/apereo/cas/raw/master/etc/loadtests/).
+脚本可以从 [这里下载](https://github.com/apereo/cas/raw/master/etc/loadtests/)。
 
-* **_CAS_CAS.jmx_**
-  * Vanilla installation of CAS using standard CAS login process
-  * No SP (Service Provider) is needed
-  * User Defined Variables:
-    * _IdPHost_ - URL of your CAS instance
-    * _CasSP_ - SP (Service Provider) URL but does not have to be active
-  * Test Fragments:
-    * _GET - CAS Login Page_ -- Access login page for a typical CAS login
-    * _POST - Login Credentials_ -- Post credentials from user file into CAS instance
-    * _GET - User Info with Service Ticket_ -- Get user info with Service Ticket that CAS generated when user logged in
-      * Under Assertion, may need to update expected user results
-    * _GET - User Logout_ -- Logout user from CAS session via CAS logout
-* **_CAS_Oauth.jmx_**
-  * CAS supporting OAuth login process
-  * An active SP is optional
-  * Script reflects the most common way that OAuth is used, the Authorization Code method
-  * _User Defined Variables_:
-    * _IdPHost_ - URL of your CAS instance
-    * _CasSP_ - SP (Service Provider) URL but does not have to be active
-    * _SpClientId_ - The clientId of the SP within the CAS service file
-    * _SpRedirectUri_ - Endpoint in SP that will be used to receive the "Authorization Code"
-    * _SpState_ - CSRF token used
-    * _SpClientName_ - The OAuth call type being used for authentication
-    * _SpResponseType_ - The OAuth method being used, in this case "code", which stands for "Authorization Code"
-    * _SpClientSecret_ - Secret phrase or word shared between the SP and CAS
-  * _Test Fragments_:
-    * _Verify Service Provider_ -- Verifies URL to SP is correct (Optional, can be disabled)
-    * _Start CAS Login process_ -- Accessing CAS login page for OAuth with all parameters set
-    * _1a-1d_ -- Post login credentials for user, followed by redirects to get code in Access Token
-      * broken into several processes due to encoding issues when testing
-    * _GET - User Profile with Access Token_ -- Call to CAS to get the user's info with Access Token
-      * Under Assertion, may need to update expected user results
-    * _GET - User Logout_ -- Logout user from CAS session via CAS logout
-* **_CAS_SAML2.jmx_**
-  * CAS support for SAML2 Login process
-  * An active SP is required!
-    * For this test used SimpleSAMLphp
-  * _User Defined Variables_:
-    * _CasSP_ - Domain of registered CAS SP using SAML
-    * _ProviderId_ - SAML EntityID stated in metadata for SP
-  * _Test Fragments_:
-    * _Go To SP for CAS Login_ -- SP page protected by SAML2 that will redirect to CAS login endpoint
-    * _POST - Login User_ -- Post credentials from user file into CAS SAML2 login
-    * _POST - CAS Authorization to SP_ -- Send response from CAS to SP for processing and final request for user info
-      * May need to updated Assertion for successful user information returned
-    * _GET - User Logout_ -- Logout user from CAS session via CAS logout
+* **_CAS_CAS. jmx_**
+  * 使用标准 CAS 登录过程安装 CAS 的香草
+  * 无需 SP（服务提供商）
+  * 用户定义变量：
+    * _Idphost_ - 您的 Cas 实例的 Url
+    * _卡斯普_ - SP（服务提供商）URL，但不必处于活动状态
+  * 测试片段：
+    * _GET - CAS 登录页面_ - 访问典型 CAS 登录的登录页面
+    * _职位 - 登录凭据_ - 将用户文件的凭据发布到 CAS 实例
+    * _获取-用户信息与服务票_ -获取用户信息与服务票，CAS生成时，用户登录
+      * 根据断言，可能需要更新预期的用户结果
+    * _GET - 用户注销_ - 通过 CAS 注销从 CAS 会话的注销用户
+* **_CAS_Oauth. jmx_**
+  * 支持非授权登录过程的CAS
+  * 活动 SP 是可选的
+  * 脚本反映了使用 OAuth 的最常见方式，即授权代码方法
+  * _用户定义变量_：
+    * _Idphost_ - 您的 Cas 实例的 Url
+    * _卡斯普_ - SP（服务提供商）URL，但不必处于活动状态
+    * _斯普克莱恩迪德_ - CAS 服务文件中 SP 的客户端
+    * _斯普雷杜里_ - SP 中的终点，用于接收"授权代码"
+    * _斯普州_ - 使用CSRF令牌
+    * _斯普克莱恩特_ - 用于身份验证的非真实呼叫类型
+    * _Sp 响应类型_ - 正在使用的非授权方法，在此例中代表"授权代码"的"代码"
+    * _斯普克莱特秘密_ - SP 和 CAS 之间共享的秘密短语或单词
+  * _测试片段_：
+    * _验证服务提供商_ -- 验证网址到 SP 是正确的（可选，可禁用）
+    * _开始 CAS 登录过程_ - 访问具有所有参数设置的 OAuth 的 CAS 登录页面
+    * _1a-1d_ - 为用户发布登录凭据，然后重定向以获取访问令牌中的代码
+      * 由于测试时的编码问题而分为多个过程
+    * _获取-用户配置文件与访问令牌_ -致电CAS获取用户的信息与访问令牌
+      * 根据断言，可能需要更新预期的用户结果
+    * _GET - 用户注销_ - 通过 CAS 注销从 CAS 会话的注销用户
+* **_CAS_SAML2. jmx_**
+  * CAS 支持 SAML2 登录过程
+  * 需要一个活跃的SP！
+    * 对于此测试使用简单萨姆帕普
+  * _用户定义变量_：
+    * _卡斯普_ - 使用 Saml 注册的 Cas Sp 域名
+    * _提供商id_ - SP元数据中注述的SAML实体ID
+  * _测试片段_：
+    * _转到SP的CAS登录_ -SP页面受SAML2保护，将重定向到CAS登录端点
+    * _帖子 - 登录用户_ - 将用户文件的凭据发布到 CAS SAML2 登录
+    * _邮政 - CAS 授权 SP_ - 从 CAS 向 SP 发送响应以进行处理和最终请求以获取用户信息
+      * 可能需要更新断言才能返回成功的用户信息
+    * _GET - 用户注销_ - 通过 CAS 注销从 CAS 会话的注销用户
 
-## Run Test Scripts
+## 运行测试脚本
 
-Once you have saved the test scripts to your system. You can either run within the JMeter GUI or via command line. It his highly recommended that the GUI be used for troubleshooting the scripts to work within your environment. Then, when you actually start load testing, you do that via the command line.
+一旦您将测试脚本保存到您的系统中。 您可以在GUI JMeter内运行，也可以通过命令行运行。 他强烈建议 GUI 用于 故障排除脚本，以便在您的环境中工作。 然后，当您实际开始 负载测试时，您可以通过命令行进行加载测试。
 
-To activate the JMeter GUI, from the command line type:
-
-```bash
-prompt$ /usr/local/bin/jmeter
-```
-
-This path should correspond to the location you chose to install Jmeter.
-
-A simple example of a JMeter startup via command line:
+要从命令行类型激活 JMeter GUI：
 
 ```bash
-prompt$ /usr/local/bin/jmeter -n -t your_script.jmx
+提示$/usr/本地/箱/计量器
 ```
 
-`-n` run JMeter in non-GUI mode. `-t` path to .jmx test file.
+此路径应对应于您选择安装 Jmeter 的位置。
 
-More examples can be found on the [Jmeter site](http://jmeter.apache.org/usermanual/get-started.html#non_gui).
+通过命令行启动 JMeter 的简单示例：
+
+```bash
+提示$/usr/本地/箱/计-n-t your_script.jmx
+```
+
+`-n` 非GUI模式运行J米。 `-t` 条通往.jmx测试文件的路径。
+
+更多的例子可以在</a>Jmeter站点找到。</p>
