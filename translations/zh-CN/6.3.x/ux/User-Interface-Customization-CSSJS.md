@@ -1,91 +1,91 @@
 ---
-layout: default
-title: CSS & JavaScript - User Interface Customization - CAS
-category: User Interface
+layout: 违约
+title: CSS & 爪哇脚本 - 用户界面自定义 - CAS
+category: 用户界面
 ---
 
 # CSS
 
-The default styles are all contained in one single file located in `src/main/resources/static/css/cas.css`. This location is set in `cas-theme-default.properties`. CAS by default uses [Material.io](https://material.io/) library and design specification as a base for its user experience.
+默认样式都包含在位于 `src/主/资源/静态/css/cas.css`的单个文件中。 此位置设置为 `个 cas 主题默认。 属性`。 CAS默认使用 [Material.io](https://material.io/) 库和设计规范作为用户体验的基础。
 
-If you would like to create your own `css/custom.css file`, for example, you will need to update `cas.standard.css.file` key in that file.
+如果您想创建自己的 `css/自定义.css文件`，例如，您将需要更新该文件中的 `cas.标准.css.文件` 密钥。
 
 ```bash
-cas.standard.css.file=/css/cas.css
-cas.standard.js.file=/js/cas.js
+cas.标准.css.文件=/css/卡.css
+卡.js.文件=/js/cas.js
 ```
 
-## Responsive Design
+## 响应式设计
 
-CSS media queries bring responsive design features to CAS which would allow the adopter to focus on one theme for all appropriate devices and platforms. These queries are defined in the same `cas.css` file. They follow the Twitter Bootstrap breakpoints and grid.
+CSS 媒体查询为 CAS 带来了响应式设计功能，使采用者能够将 集中在所有适当设备和平台的一个主题上。 这些查询在 相同的 `.css` 文件中定义。 他们关注推特引导断点和网格。
 
-# Javascript
+# 爪哇脚本
 
-If you need to add some JavaScript, feel free to append `src/main/resources/static/js/cas.js`.
+如果您需要添加一些 JavaScript，请随时附加 `src/主/资源/静态/js/cas.js`。
 
-You can also create your own `custom.js` file, for example, and call it from within `scripts.html` like so:
+例如，您还可以创建自己的 `自定义.js` 文件，并从 `脚本内调用它.html` 类似：
 
 ```html
 <script type="text/javascript" src="/js/custom.js"></script>
 ```
 
-If you are developing themes per service, each theme also has the ability to specify a custom `cas.js` file under the `cas.standard.js.file` setting.
+如果您正在开发每个服务的主题，每个主题还能够根据 `cas.标准.js.文件` 设置指定自定义 `cas.js` 文件。
 
-Most importantly, the following Javascript libraries are utilized by CAS automatically:
+最重要的是，CAS 会自动使用以下 Javascript 库：
 
-* [JQuery](https://jquery.com/)
-* [Bootstrap for grid / flex utilities](https://getbootstrap.com/docs/4.5/getting-started/contents/#css-files)
+* [杰奎里](https://jquery.com/)
+* [网格/弹性公用设施的引导](https://getbootstrap.com/docs/4.5/getting-started/contents/#css-files)
 * [Material.io](https://material.io/)
 
-## Script Loading
+## 脚本加载
 
-CAS provides a callback function that allows adopters to be notified when script loading has completed and this would be a safe time to execute/load other Javascript-related functions that depend on JQuery inside the actual page.
+CAS 提供回调功能，允许在脚本加载完成时通知采用者，这将是执行/加载实际页面内依赖于 JQuery 的其他 Javascript 相关功能的安全时间。
 
 ```javascript
-function jqueryReady() {
-    // Custom Javascript tasks can be carried out now via JQuery...
+功能jquery已准备好（）{
+    //自定义爪哇脚本任务现在可以通过JQuery执行。。。
 }
 ```
 
-## Checking CAPSLOCK
+## 检查卡普洛克
 
-CAS will display a brief warning when the CAPSLOCK key is turned on during the typing of the credential password. This check is enforced by the `cas.js` file.
+在输入凭据密码时，当 CAPSLOCK 密钥打开时，CAS 将显示简短的警告。 此检查由 `.js` 文件执行。
 
-## Browser Cookie Support
+## 浏览器曲奇支持
 
-For CAS to honor a single sign-on session, the browser MUST support and accept cookies. CAS will notify the user if the browser has turned off its support for cookies. This behavior is controlled via the `cas.js` file.
+CAS 要遵守单个登录会话，浏览器必须支持并接受 Cookie。 如果浏览器关闭了对 Cookie 的支持，CAS 将通知 用户。 此行为通过 `.js` 文件进行控制。
 
-## Preserving Anchor Fragments
+## 保存锚碎片
 
-Anchors/fragments may be lost across redirects as the server-side handler of the form post ignores the client-side anchor, unless appended to the form POST url. This is needed if you want a CAS-authenticated application to be able to use anchors/fragments when bookmarking. CAS is configured by default to preserve anchor fragments where and when specified. There is nothing further for you to do.
+锚点/片段可能会在重定向中丢失，因为表单柱的服务器端处理程序忽略客户端锚，除非附在表单POST url 中。 如果您希望 CAS 认证的应用程序能够在书签时使用锚/片段，则需要这样做。 CAS 在默认情况下进行配置，以在指定时保留锚定片段。 你没有什么可做的了。
 
-### WebJARs for Javascript/CSS Libraries
+### 爪哇脚本/CSS库的网络照片
 
-The CAS application packages third party static resources inside the CAS webapp rather than referencing CDN links so that CAS may be deployed on networks with limited internet access.
+CAS 应用程序在 CAS Webapp 中包装第三方静态资源，而不是引用 CDN 链接，以便 CAS 可以部署在互联网接入有限的 网络上。
 
-The 3rd party static resources are packaged in "WebJAR" jar files and served up via the servlet `3.0` feature that merges any folders under `META-INF/resources` in web application jars with the application's web root.
+第三方静态资源被包装在"WebJAR"罐中，并通过servlet `3.0` 功能 提供，该功能将 `META-INF/资源下的任何文件夹合并到web应用程序罐中` 与应用程序的 Web 根部。
 
-For developers modifying CAS, if adding or modifying a 3rd party library, the steps are:
+对于修改 CAS 的开发人员，如果添加或修改第三方库，则步骤是：
 
-- Add WebJAR dependency to `dependencies.gradle` in the `ext.library.webjars` section.
-- Add dependency version to `gradle.properties` and use it in `dependency.gradle`.
-- Add entry to `core/cas-server-core-web/src/main/resources/cas_common_messages.properties` for each resource (e.g. js or css).
-- Reference the version from `gradle.properties` in the URL and it will be filtered in at build time).
+- 将 WebJAR 依赖性添加到 `依赖项中。在 <code>的 ex.library.webjars` 部分中添加</code> 。
+- 将依赖性版本添加到 `语法.属性` ，并将其用于 ``依赖中。
+- 添加每个资源（例如.js或 css）</code> `核心/cas-服务器-核心 web/src/主/资源/cas_common_messages.属性的条目。</li>
+<li>参考 <code>gradle.` 在 URL 中的版本，它将在构建时间进行过滤）。
 
-<div class="alert alert-info"><strong>Resource Caching</strong><p>The build attempts to rebuild all relevant modules again when version numbers change and resources upgraded. If you do need to forcefully remove cached artifacts and repackage the application anew, run the build's <code>clean</code> task inside the <code>core/cas-server-core-web</code> module.</p></div>
+<div class="alert alert-info"><strong>资源缓存</strong><p>当版本号更改和资源升级时，构建尝试再次重建所有相关模块。 如果您确实需要强制移除缓存的工件并重新重新包装应用程序，请在 <code>核心/cas-服务器-web</code> 模块内运行构建的 <code>清洁</code> 任务。</p></div>
 
-For example:
+例如：
 
 ```properties
-webjars.zxcvbn.js=/webjars/zxcvbn/dist/zxcvbn.js
+网络贾尔斯.zxcvbn.js/网络贾尔斯/zxcvbn/迪斯特/兹克斯克夫本.js
 ```
 
-Then Reference the entry from `cas_common_messages.properties` in the relevant view (i.e HTML page) where the entry is `webjars.zxcvbn.js`:
+然后参考相关视图（即 HTML 页面）中 `cas_common_messages.属性` 的条目，其中条目 `webjars.zxcvbn.js`：
 
 ```html
 <script type="text/javascript" th:src="@{#{webjars.zxcvbn.js}}"></script>
 ```
 
-#### Building WebJARs
+#### 构建网络贾尔斯
 
-You can search for webjars at http://webjars.org. There are three flavors of WebJARs that you can read about but the NPM and Bower types can be created automatically for any version (if they don't already exist) as long as there exists an NPM or Bower package for the web resources you want to use. Click the "Add a webjar" button and follow the instructions. If customizing the UI in an overlay, the deployer can add webjars as dependencies to their overlay project and reference the URLs of the resource either directly in an html file or via adding an entry to a `common_messages.properties` file in the overlay project's `src\main\resources` folder.
+您可以在 http://webjars.org 搜索网络聊天。 有三种口味的WebJAR，你可以阅读，但NPM和鲍尔类型可以自动创建为任何版本（如果他们不存在），只要有一个NPM或鲍尔包的网络资源，你想使用。 单击"添加 Webjar"按钮并按照说明操作。 如果在叠加中自定义 UI，则部署人员可以将 Webjars 添加为其叠加项目的依赖项，并直接在 html 文件中或通过在叠加项目 `src\r` 文件夹中添加 `common_messages.属性` 文件来引用资源的网址。
