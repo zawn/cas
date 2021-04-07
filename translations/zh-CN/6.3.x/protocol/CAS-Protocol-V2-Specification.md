@@ -1,597 +1,597 @@
 ---
-layout: default
-title: CAS - CAS Protocol 2.0 Specification
-category: Protocols
+layout: 默认
+title: CAS-CAS协议2.0规范
+category: 通讯协定
 ---
 
 <a name="headTop"></p>
 <h1 spaces-before="0">
-  <em x-id="3">CAS Protocol 2.0 Specification</em>
+  <em x-id="3">CAS协议2.0规范</em>
 </h1>
 
 <p spaces-before="0">
-  Author: Drew Mazurek Contributors: Susan Bramhall Howard Gilbert Andy Newman Andrew Petro Version: 1.0
+  作者：Drew Mazurek 撰稿人： Susan Bramhall Howard Gilbert Andy Newman Andrew Petro 版本：1.0
 </p>
 
 <p spaces-before="0">
-  Release Date: May 4, 2005 Copyright © 2005, Yale University
+  发行日期：2005年5月4日 版权所有©2005，耶鲁大学
 </p>
 
 <h1 spaces-before="0">
-  1. Introduction
+  1。 介绍
 </h1>
 
 <p spaces-before="0">
-  This is the official specification of the CAS 1.0 and 2.0 protocols. It is subject to change.
+  这是CAS 1.0和2.0协议的正式规范。 它可能随时更改。
 </p>
 
 <h2 spaces-before="0">
-  1.1. Conventions & Definitions
+  1.1。 约定 & 定义
 </h2>
 
 <p spaces-before="0">
-  The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119[1].
+  本文档中的关键字“必须”，“不得”，“必须”，“应”，“应禁止”，“应”，“不应”，“建议”，“可以”， 和“可选”按照RFC 2119[1]描述进行解释。
 </p>
 
 <ul>
   <li>
-    "Client" refers to the end user and/or the web browser.
+    “客户端”是指最终用户和/或Web浏览器。
   </li>
   <li>
-    "Server" refers to the Central Authentication Service server.
+    “服务器”是指中央身份验证服务服务器。
   </li>
   <li>
-    "Service" refers to the application the client is trying to access.
+    “服务”是指客户端尝试访问的应用程序。
   </li>
   <li>
     <p spaces-before="0">
-      "Back-end service" refers to the application a service is trying to access on behalf of a client. This can also be referred to as the "target service."
+      “后端服务”是指服务试图代表客户端访问的应用程序。 也可以 称为“目标服务”。
     </p>
   </li>
   <li>
     <p spaces-before="0">
-      <LF> is a bare line feed (ASCII value 0x0a).
+      <LF> 是空换行符（ASCII值0x0a）。
     </p>
   </li>
 </ul>
 
 <h1 spaces-before="0">
-  2. CAS URIs
+  2。 CAS URI
 </h1>
 
 <p spaces-before="0">
-  CAS is an HTTP[2,3]-based protocol that requires each of its components to be accessible through specific URIs. This section will discuss each of the URIs.
+  CAS是基于HTTP [2,3]的协议，要求它的每个组件都可以通过特定的URI进行访问。 本节将讨论每个URI。
 </p>
 
 <h2 spaces-before="0">
-  2.1. <em x-id="3">/login</em> as credential requestor
+  2.1。 <em x-id="3">/登录</em> 作为凭据请求者
 </h2>
 
 <p spaces-before="0">
-  The <em x-id="3">/login</em> URI operates with two behaviors: as a credential requestor, and as a credential acceptor. It responds to credentials by acting as a credential acceptor and otherwise acts as a credential requestor.
+  <em x-id="3">/ login</em> URI有两种行为：作为凭据请求者和凭据接受者。 它通过充当凭据接受者来对凭据
 </p>
 
 <p spaces-before="0">
-  If the client has already established a single sign-on session with CAS, the web browser presents to CAS a secure cookie containing a string identifying a ticket-granting ticket. This cookie is called the ticket-granting cookie. If the ticket-granting cookie keys to a valid ticket-granting ticket, CAS may issue a service ticket provided all the other conditions in this specification are met. See Section 3.6 for more information on ticket-granting cookies.
+  如果客户端已经与CAS建立了单点登录会话，则Web浏览器将向CAS提供一个安全的 cookie，该cookie包含一个标识票证授予票证的字符串。 此cookie称为授予票证的cookie。 如果授予票证的cookie密钥指向有效的授予票证的票证，则只要满足本规范中的 有关授予票证的cookie的更多信息，请参见第3.6节。
 </p>
 
 <h3 spaces-before="0">
-  2.1.1. parameters
+  2.1.1。 参数
 </h3>
 
 <p spaces-before="0">
-  The following HTTP request parameters may be passed to <em x-id="3">/login</em> while it is acting as a credential requestor. They are all case-sensitive, and they all MUST be handled by <em x-id="3">/login</em>.
+  当以下HTTP请求参数充当凭据请求者时， <em x-id="3">/ login</em> 它们都是区分大小写的，并且都必须由 <em x-id="3">/ login</em>处理。
 </p>
 
 <ol start="1">
   <li>
     <p spaces-before="0">
-      <code>service [OPTIONAL]</code> - the identifier of the application the client is trying to access. In almost all cases, this will be the URL of the application. Note that as an HTTP request parameter, this URL value MUST be URL-encoded as described in Section 2.2 of RFC 1738 [4]. If a service is not specified and a single sign-on session does not yet exist, CAS SHOULD request credentials from the user to initiate a single sign-on session. If a service is not specified and a single sign-on session already exists, CAS SHOULD display a message notifying the client that it is already logged in.
+      <code>服务 [OPTIONAL]</code> 客户端尝试访问的应用程序的标识符。 在几乎所有情况下，这将是应用程序的URL 请注意，作为HTTP请求参数，必须按照 [4]第2.2节 描述，对该URL值进行URL编码。 如果未指定服务且单点登录会话尚不存在，则CAS应该 要求用户提供凭据以启动单点登录会话。 如果未指定服务，并且 会话，则CAS应该显示一条消息，通知客户端它已经登录。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      <code>renew [OPTIONAL]</code> - if this parameter is set, single sign-on will be bypassed. In this case, CAS will require the client to present credentials regardless of the existence of a single sign-on session with CAS. This parameter is not compatible with the "gateway" parameter. Services redirecting to the <em x-id="3">/login</em> URI and login form views posting to the <em x-id="3">/login</em> URI SHOULD NOT set both the "renew" and "gateway" request parameters. Behavior is undefined if both are set. It is RECOMMENDED that CAS implementations ignore the "gateway" parameter if "renew" is set. It is RECOMMENDED that when the renew parameter is set itsvalue be "true".
+      <code>更新 [OPTIONAL]</code> 如果设置了此参数，将跳过单点登录。 在这种情况下，无论是否存在与CAS的单点登录会话，CAS都将要求客户端 该参数与“ gateway”参数 重定向到 <em x-id="3">/ login</em> URI的服务和登录到 <em x-id="3">/ login</em> URI 登录表单视图不应同时设置“ renew”和“ gateway”请求参数。 如果两者都设置，则行为是不确定的。 建议将 设置为“更新”，CAS实现将忽略“网关”参数。 建议将更新参数 设置为“ true”。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      <code>gateway [OPTIONAL]</code> - if this parameter is set, CAS will not ask the client for credentials. If the client has a pre-existing single sign-on session with CAS, or if a single sign-on session can be established through non-interactive means (i.e. trust authentication), CAS MAY redirect the client to the URL specified by the "service" parameter, appending a valid service ticket. (CAS also MAY interpose an advisory page informing the client that a CAS authentication has taken place.) If the client does not have a single sign-on session with CAS, and a non-interactive authentication cannot be established, CAS MUST redirect the client to the URL specified by the "service" parameter with no "ticket" parameter appended to the URL. If the "service" parameter is not specified and "gateway" is set, the behavior of CAS is undefined. It is RECOMMENDED that in this case, CAS request credentials as if neither parameter was specified. This parameter is not compatible with the "renew" parameter. Behavior is undefined if both are set. It is RECOMMENDED that when the gateway parameter is set its value be "true".
+      <code>网关 [OPTIONAL]</code> 如果设置了此参数，CAS将不会要求客户端提供凭据。 如果客户端 单点登录会话，或者可以通过非交互方式 （即信任身份验证）建立单点登录会话，则CAS可以将客户端重定向到由“服务”参数，附加有效的 服务票证。 （CAS也可以插入一个咨询页面，通知客户已经进行了CAS认证。） 如果客户端没有与CAS的单点登录会话，并且无法建立非交互式身份验证，则CAS 必须将客户端重定向到由“服务”参数指定的URL，并且没有附加“票证”参数网址。 如果未指定“服务”参数并且设置了“网关”，则CAS的行为未定义。 建议在 ，则CAS请求凭据，就像未指定任何参数一样。 该参数与“更新” 参数不兼容。 如果两者都设置，则行为是不确定的。 建议将网关参数设置为“ true”。
     </p>
   </li>
 </ol>
 
 <h3 spaces-before="0">
-  2.1.2. URL examples of <em x-id="3">/login</em>
+  2.1.2。 URL的示例 <em x-id="3">/登录</em>
 </h3>
 
 <p spaces-before="0">
-  Simple login example:
+  简单的登录示例：
 </p>
 
-<pre><code>https://server/cas/login?service=http%3A%2F%2Fwww.service.com
+<pre><code>https：// server / cas / login？service = http%3A%2F%2Fwww.service.com
 </code></pre>
 
 <p spaces-before="0">
-  Don't prompt for username/password:
+  不要提示输入用户名/密码：
 </p>
 
-<pre><code>https://server/cas/login?service=http%3A%2F%2Fwww.service.com&gateway=true
+<pre><code>https：// server / cas / login？service = http%3A%2F%2Fwww.service.com&网关= true
 </code></pre>
 
 <p spaces-before="0">
-  Always prompt for username/password:
+  总是提示输入用户名/密码：
 </p>
 
-<pre><code>https://server/cas/login?service=http%3A%2F%2Fwww.service.com&renew=true
+<pre><code>https：// server / cas / login？service = http%3A%2F%2Fwww.service.com&renew = true
 </code></pre>
 
 <h3 spaces-before="0">
-  2.1.3. response for username/password authentication
+  2.1.3。 用户名/密码认证的响应
 </h3>
 
 <p spaces-before="0">
-  When <em x-id="3">/login</em> behaves as a credential requestor, the response will vary depending on the type of credentials it is requesting. In most cases, CAS will respond by displaying a login screen requesting a username and password. This page MUST include a form with the parameters, "username", "password", and "lt". The form MAY also include the parameter, "warn". If "service" was specified to <em x-id="3">/login</em>, "service" MUST also be a parameter of the form, containing the value originally passed to <em x-id="3">/login</em>. These parameters are discussed in detail in Section 2.2.1. The form MUST be submitted through the HTTP POST method to <em x-id="3">/login</em> which will then act as a credential acceptor, discussed in Section 2.2.
+  当 <em x-id="3">/ login</em> 充当凭据请求者时，响应将根据其请求的凭据类型而有所不同。 在大多数情况下，CAS会通过显示要求输入用户名和密码的登录屏幕进行响应。 该页面必须包含一个带有参数“用户名”，“密码”和“ lt” 该表格还可以包含参数“ warn”。 如果将“ service”指定为 <em x-id="3">/ login</em> ，则“ service”也必须是格式的参数，包含最初传递给 <em x-id="3">/ login</em>。 在第2.2.1节中将详细讨论这 表单必须通过HTTP POST方法提交给 <em x-id="3">/ login</em> ， 将充当凭据接受器，如2.2节所述。
 </p>
 
 <h3 spaces-before="0">
-  2.1.4. response for trust authentication
+  2.1.4。 信任认证响应
 </h3>
 
 <p spaces-before="0">
-  Trust authentication accommodates consideration of arbitrary aspects of the request as a basis for authentication. The appropriate user experience for trust authentication will be highly deployer-specific in consideration of local policy and of the logistics of the particular authentication mechanism implemented.
+  信任身份验证可考虑将请求的任意方面作为身份验证的基础。 和所实施的特定身份验证机制的后勤功能，用于信任身份验证的适当用户体验将是高度特定于部署者的。
 </p>
 
 <p spaces-before="0">
-  When <em x-id="3">/login</em> behaves as a credential requestor for trust authentication, its behavior will be determined by the type of credentials it will be receiving. If the credentials are valid, CAS MAY transparently redirect the user to the service. Alternately, CAS MAY display a warning that credentials were presented and allow the client to confirm that it wants to use those credentials. It is RECOMMENDED that CAS implementations allow the deployer to choose the preferred behavior. If the credentials are invalid or non-existent, it is RECOMMENDED that CAS display to the client the reason authentication failed, and possibly present the user with alternate means of authentication (e.g. username/password authentication).
+  当 <em x-id="3">/ login</em> 充当信任身份验证的凭据请求者时，其行为将由它将接收 如果凭据有效，则CAS可以透明地将用户重定向到服务。 或者，CAS可以显示一个警告，提示已提供凭据，并允许客户端确认要使用 那些凭据。 建议CAS实现允许部署者选择首选行为。 如果 凭据无效或不存在，建议CAS向客户端显示身份验证失败的原因 并可能向用户显示其他身份验证方式（例如，用户名/密码身份验证）。
 </p>
 
 <h3 spaces-before="0">
-  2.1.5. response for single sign-on authentication
+  2.1.5。 单点登录身份验证的响应
 </h3>
 
 <p spaces-before="0">
-  If the client has already established a single sign-on session with CAS, the client will have presented its HTTP session cookie to <em x-id="3">/login</em> and behavior will be handled as in Section 2.2.4. However, if the "renew" parameter is set, the behavior will be handled as in Section 2.1.3 or 2.1.4.
+  如果客户端已经建立了与CAS的单点登录会话，则客户端将向 <em x-id="3">/ login</em> cookie，并将按照第2.2.4节中的方式处理行为。 但是，如果设置了“ renew”参数，则该行为将按2.1.3或2.1.4节处理为
 </p>
 
 <h2 spaces-before="0">
-  2.2. <em x-id="3">/login</em> as credential acceptor
+  2.2。 <em x-id="3">/登录</em> 作为凭据接受者
 </h2>
 
 <p spaces-before="0">
-  When a set of accepted credentials are passed to <em x-id="3">/login</em>, it acts as a credential acceptor and its behavior is defined in this section.
+  将一组接受的凭据传递给 <em x-id="3">/ login</em>，它充当凭据接受者，其行为在本节的
 </p>
 
 <h3 spaces-before="0">
-  2.2.1. parameters common to all types of authentication
+  2.2.1。 所有认证类型共有的参数
 </h3>
 
 <p spaces-before="0">
-  The following HTTP request parameters MAY be passed to <em x-id="3">/login</em> while it is acting as a credential acceptor. They are all case-sensitive and they all MUST be handled by <em x-id="3">/login</em>.
+  当以下HTTP请求参数充当凭据接受器时， <em x-id="3">/ login</em> 它们都是 区分大小写，并且都必须由 <em x-id="3">/ login</em>处理。
 </p>
 
 <ol start="1">
   <li>
     <p spaces-before="0">
-      <code>service [OPTIONAL]</code> - the URL of the application the client is trying to access. CAS MUST redirect the client to this URL upon successful authentication. This is discussed in detail in Section 2.2.4.
+      <code>服务 [OPTIONAL]</code> 客户端尝试访问的应用程序的URL。 成功进行身份验证后，CAS必须将客户端重定向到该URL 这将在第2.2.4节中详细讨论。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      <code>warn [OPTIONAL]</code> - if this parameter is set, single sign-on MUST NOT be transparent. The client MUST be prompted before being authenticated to another service.
+      <code>警告 [OPTIONAL]</code> 如果设置了此参数，则单点登录绝不能透明。 认证到另一个服务之前提示客户端。
     </p>
   </li>
 </ol>
 
 <h3 spaces-before="0">
-  2.2.2. parameters for username/password authentication
+  2.2.2。 用户名/密码认证的参数
 </h3>
 
 <p spaces-before="0">
-  In addition to the OPTIONAL parameters specified in Section 2.2.1, the following HTTP request parameters MUST be passed to <em x-id="3">/login</em> while it is acting as a credential acceptor for username/password authentication. They are all case-sensitive.
+  除了在2.2.1节中指定的可选参数外，以下HTTP请求参数在充当用户名/密码身份验证的凭据接受器时，还 <em x-id="3">/ login</em> 它们都是区分大小写的。
 </p>
 
 <ol start="1">
   <li>
-    <code>username [REQUIRED]</code> - the username of the client that is trying to log in
+    <code>username [REQUIRED]</code> 尝试登录的客户端的用户名
   </li>
   
   <li>
-    <code>password [REQUIRED]</code> - the password of the client that is trying to log in
+    <code>password [REQUIRED]</code> 尝试登录的客户端的密码
   </li>
   
   <li>
-    <code>lt [REQUIRED]</code> - a login ticket. This is provided as part of the login form discussed in Section 2.1.3. The login ticket itself is discussed in Section 3.5.
+    <code>lt [REQUIRED]</code> 登录票。 这是第2.1.3节中讨论的登录表单的一部分。 登录票证本身将在3.5节中讨论。
   </li>
 </ol>
 
 <h3 spaces-before="0">
-  2.2.3. parameters for trust authentication
+  2.2.3。 信任认证的参数
 </h3>
 
 <p spaces-before="0">
-  There are no REQUIRED HTTP request parameters for trust authentication. Trust authentication may be based on any aspect of the HTTP request.
+  没有用于信任身份验证的REQUIRED HTTP请求参数。 信任认证可以基于HTTP请求的
 </p>
 
 <h3 spaces-before="0">
-  2.2.4. response
+  2.2.4。 回复
 </h3>
 
 <p spaces-before="0">
-  One of the following responses MUST be provided by /login when it is operating as a credential acceptor.
+  / login作为凭据接受者运行时，必须由/ login提供以下响应之一。
 </p>
 
 <ol start="1">
   <li>
     <p spaces-before="0">
-      successful login: redirect the client to the URL specified by the "service" parameter in a manner that will not cause the client's credentials to be forwarded to the service. This redirection MUST result in the client issuing a GET request to the service. The request MUST include a valid service ticket, passed as the HTTP request parameter, "ticket". See Appendix B for more information. If "service" was not specified, CAS MUST display a message notifying the client that it has successfully initiated a single sign-on session.
+      成功登录：客户端重定向到“服务”参数的方式指定的URL不会导致 客户端的凭证转发给服务。 这种重定向必须导致客户端向服务 该请求必须包括有效的服务票证，该服务票证作为HTTP请求参数“ ticket”传递。 有关更多信息，请参见附录B。 如果未指定“服务”，则CAS必须显示一条消息，通知客户端 已成功启动了单次登录会话。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      failed login: return to /login as a credential requestor. It is RECOMMENDED in this case that the CAS server display an error message be displayed to the user describing why login failed (e.g. bad password, locked account, etc.), and if appropriate, provide an opportunity for the user to attempt to login again.
+      登录失败：以凭据请求者身份返回/ login。 正是在这种情况下，建议将CAS服务器显示 的错误信息会显示来描述为什么登录失败（如密码错误，锁定帐号等）的用户，如果 适当，提供一个机会，让用户尝试再次登录。
     </p>
   </li>
 </ol>
 
 <h2 spaces-before="0">
-  2.3. <em x-id="3">/logout</em>
+  2.3。 <em x-id="3">/登出</em>
 </h2>
 
 <p spaces-before="0">
-  <em x-id="3">/logout</em> destroys a client's single sign-on CAS session. The ticket-granting cookie (Section 3.6) is destroyed, and subsequent requests to <em x-id="3">/login</em> will not obtain service tickets until the user again presents primary credentials (and thereby establishes a new single sign-on session).
+  <em x-id="3">/ logout</em> 破坏客户端的单点登录CAS会话。 票证授予cookie（第3.6节）被破坏，并且 <em x-id="3">/登录</em> 后续请求将不会获得服务票证，直到用户再次提供主凭证 （从而建立新的单点登录会话）为止。
 </p>
 
 <h3 spaces-before="0">
-  2.3.1. parameters
+  2.3.1。 参数
 </h3>
 
 <p spaces-before="0">
-  The following HTTP request parameter MAY be specified to <em x-id="3">/logout</em>. It is case sensitive and SHOULD be handled by <em x-id="3">/logout</em>.
+  可以将以下HTTP请求参数指定为 <em x-id="3">/ logout</em>。 这是区分大小写的，应该由 <em x-id="3">/ logout</em>处理。
 </p>
 
 <ol start="1">
   <li>
-    url [OPTIONAL] - if "url" is specified, the URL specified by "url" SHOULD be on the logout page with descriptive text. For example, "The application you just logged out of has provided a link it would like you to follow. Please click here to access http://www.go-back.edu."
+    url [OPTIONAL] 如果指定了“ url”，则“ url”指定的URL应该在具有描述性文字的注销页面上。 例如，“您刚刚注销的应用程序提供了一个链接，希望您遵循该链接。 请点击此处 访问http://www.go-back.edu。”
   </li>
 </ol>
 
 <h3 spaces-before="0">
-  2.3.2. response
+  2.3.2。 回复
 </h3>
 
 <p spaces-before="0">
-  <em x-id="3">/logout</em> MUST display a page stating that the user has been logged out. If the "url" request parameter is implemented, <em x-id="3">/logout</em> SHOULD also provide a link to the provided URL as described in Section 2.3.1.
+  <em x-id="3">/ logout</em> 必须显示一个页面，指出用户已经注销。 如果实现了“ url”请求参数，则 <em x-id="3">/ logout</em> 也应提供指向所提供URL的链接，如第2.3.1节所述。
 </p>
 
 <h2 spaces-before="0">
-  2.4. <em x-id="3">/validate</em> [CAS 1.0]
+  2.4。 <em x-id="3">/验证</em> [CAS 1.0]
 </h2>
 
 <p spaces-before="0">
-  <em x-id="3">/validate</em> checks the validity of a service ticket./validate is part of the CAS 1.0 protocol and thus does not handle proxy authentication. CAS MUST respond with a ticket validation failure response when a proxy ticket is passed to <em x-id="3">/validate</em>.
+  <em x-id="3">/ validate</em> 检查服务票证的有效性。/validate是CAS 1.0协议的一部分，因此不处理代理 身份验证。 <em x-id="3">/ validate</em>时，CAS必须以票证验证失败响应来响应。
 </p>
 
 <h3 spaces-before="0">
-  2.4.1. parameters
+  2.4.1。 参数
 </h3>
 
 <p spaces-before="0">
-  The following HTTP request parameters MAY be specified to <em x-id="3">/validate</em>. They are case sensitive and MUST all be handled by <em x-id="3">/validate</em>.
+  可以将以下HTTP请求参数指定为 <em x-id="3">/ validate</em>。 它们区分大小写，并且必须全部通过 <em x-id="3">/ validate</em> 。
 </p>
 
 <ol start="1">
   <li>
-    <code>service [REQUIRED]</code> - the identifier of the service for which the ticket was issued, as discussed in Section 2.2.1.
+    <code>service [REQUIRED]</code> 为其发出票证的服务的标识符，如第2.2.1节所述。
   </li>
   
   <li>
-    <code>ticket [REQUIRED]</code> - the service ticket issued by /login. Service tickets are described in Section 3.1.
+    <code>票 [REQUIRED]</code> / login发行的服务票。 服务票在第3.1节中进行了描述。
   </li>
   
   <li>
-    <code>renew [OPTIONAL]</code> - if this parameter is set, ticket validation will only succeed if the service ticket was issued from the presentation of the user's primary credentials. It will fail if the ticket was issued from a single sign-on session.
+    <code>renew [OPTIONAL]</code> 如果设置了此参数，则仅当从用户的主要凭据的表示中 如果票是从单个登录会话发出的，它将失败。
   </li>
 </ol>
 
 <h3 spaces-before="0">
-  2.4.2. response
+  2.4.2。 回复
 </h3>
 
 <p spaces-before="0">
-  <em x-id="3">/validate</em> will return one of the following two responses:
+  <em x-id="3">/ validate</em> 将返回以下两个响应之一：
 </p>
 
 <p spaces-before="0">
-  On ticket validation success:
+  票证验证成功：
 </p>
 
-<pre><code>yes&lt;LF&gt;
-username&lt;LF&gt;
+<pre><code>是&lt;LF&gt;
+用户名&lt;LF&gt;
 </code></pre>
 
 <p spaces-before="0">
-  On ticket validation failure:
+  在票证验证失败时：
 </p>
 
-<pre><code>no&lt;LF&gt;
+<pre><code>否&lt;LF&gt;
 &lt;LF&gt;
 </code></pre>
 
 <h3 spaces-before="0">
-  2.4.3. URL examples of <em x-id="3">/validate</em>
+  2.4.3。 URL示例 <em x-id="3">/ validate</em>
 </h3>
 
 <p spaces-before="0">
-  Simple validation attempt:
+  简单的验证尝试：
 </p>
 
-<pre><code>https://server/cas/validate?service=http%3A%2F%2Fwww.service.com&ticket=...
+<pre><code>https：// server / cas / validate？service = http%3A%2F%2Fwww.service.com&票= ...
 </code></pre>
 
 <p spaces-before="0">
-  Ensure service ticket was issued by presentation of primary credentials:
+  确保通过提供主要凭证来发行服务票证：
 </p>
 
-<pre><code>https://server/cas/validate?service=http%3A%2F%2Fwww.service.com&ticket=...
+<pre><code>https：// server / cas / validate？service = http%3A%2F%2Fwww.service.com&票= ...
 </code></pre>
 
 <h2 spaces-before="0">
-  2.5. <em x-id="3">/serviceValidate</em> [CAS 2.0]
+  2.5。 <em x-id="3">/ serviceValidate</em> [CAS 2.0]
 </h2>
 
 <p spaces-before="0">
-  <em x-id="3">/serviceValidate</em> checks the validity of a service ticket and returns an XML-fragment response. <em x-id="3">/serviceValidate</em> MUST also generate and issue proxy-granting tickets when requested. /serviceValidate MUST NOT return a successful authentication if it receives a proxy ticket. It is RECOMMENDED that if /serviceValidate receives a proxy ticket, the error message in the XML response SHOULD explain that validation failed because a proxy ticket was passed to <em x-id="3">/serviceValidate</em>.
+  <em x-id="3">/ serviceValidate</em> 检查服务票证的有效性并返回XML片段响应。 <em x-id="3">/ serviceValidate</em> 必须在请求时还生成并颁发代理授予票证。 如果/ serviceValidate收到代理票证，则绝不能返回成功的 建议如果/ serviceValidate接收到代理票证，则 错误消息应该说明验证失败，因为将代理票证传递给 <em x-id="3">/ serviceValidate</em>。
 </p>
 
 <h3 spaces-before="0">
-  2.5.1. parameters
+  2.5.1。 参数
 </h3>
 
 <p spaces-before="0">
-  The following HTTP request parameters MAY be specified to <em x-id="3">/serviceValidate</em>. They are case sensitive and MUST all be handled by <em x-id="3">/serviceValidate</em>.
+  可以将以下HTTP请求参数指定为 <em x-id="3">/ serviceValidate</em>。 它们是大小写敏感的，必须全部 通过处理 <em x-id="3">/ serviceValidate</em>。
 </p>
 
 <ol start="1">
   <li>
-    <code>service [REQUIRED]</code> - the identifier of the service for which the ticket was issued, as discussed in Section 2.2.1.
+    <code>service [REQUIRED]</code> 为其发出票证的服务的标识符，如第2.2.1节所述。
   </li>
   
   <li>
-    <code>ticket [REQUIRED]</code> - the service ticket issued by /login. Service tickets are described in Section 3.1.
+    <code>票 [REQUIRED]</code> / login发行的服务票。 服务票在第3.1节中进行了描述。
   </li>
   
   <li>
-    <code>pgtUrl [OPTIONAL]</code> - the URL of the proxy callback. Discussed in Section 2.5.4.
+    <code>pgtUrl [OPTIONAL]</code> 代理回调的URL。 在第2.5.4节中讨论。
   </li>
   
   <li>
-    <code>renew [OPTIONAL]</code> - if this parameter is set, ticket validation will only succeed if the service ticket was issued from the presentation of the user's primary credentials. It will fail if the ticket was issued from a single sign-on session.
+    <code>renew [OPTIONAL]</code> 如果设置了此参数，则仅当服务票证是根据用户的主要凭证的表示发行的时，票证验证才会成功。 如果票是从单个登录会话发出的，它将失败。
   </li>
 </ol>
 
 <h3 spaces-before="0">
-  2.5.2. response
+  2.5.2。 回复
 </h3>
 
 <p spaces-before="0">
-  <em x-id="3">/serviceValidate</em> will return an XML-formatted CAS serviceResponse as described in the XML schema in Appendix A. Below are example responses:
+  <em x-id="3">/ serviceValidate</em> 将返回XML格式的CAS serviceResponse，如附录A中的XML模式中所述 以下是示例响应：
 </p>
 
 <p spaces-before="0">
-  On ticket validation success:
+  票证验证成功：
 </p>
 
 <pre><code>&lt;cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'&gt;
     &lt;cas:authenticationSuccess&gt;
-        &lt;cas:user&gt;username&lt;/cas:user&gt;
-            &lt;cas:proxyGrantingTicket&gt;PGTIOU-84678-8a9d...
+        &lt;cas:user&gt;用户名&lt;/cas:user&gt;
+            &lt;cas:proxyGrantingTicket&gt;PGTIOU-84678-8a9d ...
         &lt;/cas:proxyGrantingTicket&gt;
     &lt;/cas:authenticationSuccess&gt;
 &lt;/cas:serviceResponse&gt;
 </code></pre>
 
 <p spaces-before="0">
-  On ticket validation failure:
+  在票证验证失败时：
 </p>
 
 <pre><code>&lt;cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'&gt;
     &lt;cas:authenticationFailure code="INVALID_TICKET"&gt;
-        Ticket ST-1856339-aA5Yuvrxzpv8Tau1cYQ7 not recognized
+        无法识别票证ST-1856339-aA5Yuvrxzpv8Tau1cYQ7
     &lt;/cas:authenticationFailure&gt;
 &lt;/cas:serviceResponse&gt;
 </code></pre>
 
 <h3 spaces-before="0">
-  2.5.3. error codes
+  2.5.3。 错误代码
 </h3>
 
 <p spaces-before="0">
-  The following values MAY be used as the "code" attribute of authentication failure responses. The following is the minimum set of error codes that all CAS servers MUST implement. Implementations MAY include others.
+  以下值可以用作认证失败响应的“代码”属性。 以下是所有CAS服务器必须实现的最小 实现可能包括其他实现。
 </p>
 
 <ol start="1">
   <li>
-    <code>INVALID_REQUEST</code> - not all of the required request parameters were present
+    <code>INVALID_REQUEST</code> 并非所有必需的请求参数都存在
   </li>
   
   <li>
     <p spaces-before="0">
-      <code>INVALID_TICKET</code> - the ticket provided was not valid, or the ticket did not come from an initial login and "renew" was set on validation. The body of the <cas:authenticationFailure> block of the XML response SHOULD describe the exact details.
+      <code>INVALID_TICKET</code> 提供的票证无效，或者该票证不是来自初始登录，并且在验证时设置了 的身体 <cas:authenticationFailure> XML响应的块应该描述确切的 细节。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      <code>INVALID_SERVICE</code> - the ticket provided was valid, but the service specified did not match the service associated with the ticket. CAS MUST invalidate the ticket and disallow future validation of that same ticket.
+      <code>INVALID_SERVICE</code> 提供的票证有效，但是指定的服务与与票证 CAS必须使该票证失效，并禁止将来对该票证进行验证。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      <code>INTERNAL_ERROR</code> - an internal error occurred during ticket validation
+      <code>INTERNAL_ERROR</code> 票证验证期间发生内部错误
     </p>
   </li>
 </ol>
 
 <p spaces-before="0">
-  For all error codes, it is RECOMMENDED that CAS provide a more detailed message as the body of the <code>&lt;cas:authenticationFailure&gt;</code> block of the XML response.
+  对于所有错误代码，建议CAS提供更详细的消息作为XML响应 <code>&lt;cas:authenticationFailure&gt;</code>
 </p>
 
 <h3 spaces-before="0">
-  2.5.4. proxy callback
+  2.5.4。 代理回调
 </h3>
 
 <p spaces-before="0">
-  If a service wishes to proxy a client's authentication to a back-end service, it must acquire a proxy-granting ticket. Acquisition of this ticket is handled through a proxy callback URL. This URL will uniquely and securely identify the back-end service that is proxying the client's authentication. The back-end service can then decide whether or not to accept the credentials based on the back-end service's identifying callback URL.
+  如果服务希望将客户端的身份验证代理到后端服务，则它必须获取授予代理的凭单。 通过代理回调URL处理此票证的获取。 该URL将唯一且安全地标识代理客户端身份验证 然后，后端服务可以根据后端服务的标识回调URL
 </p>
 
 <p spaces-before="0">
-  The proxy callback mechanism works as follows:
+  代理回调机制的工作方式如下：
 </p>
 
 <p spaces-before="0">
-  The service that is requesting a proxy-granting ticket specifies upon initial service ticket or proxy ticket validation the HTTP request parameter "pgtUrl" to <em x-id="3">/serviceValidate</em> (or <em x-id="3">/proxyValidate</em>). This is a callback URL of the service to which CAS will connect to verify the service's identity. This URL MUST be HTTPS, and CAS MUST verify both that the SSL certificate is valid and that its name matches that of the service. If the certificate fails validation, no proxy-granting ticket will be issued, and the CAS service response as described in Section 2.5.2 MUST NOT contain a <code>&lt;proxyGrantingTicket&gt;</code> block. At this point, the issuance of a proxy-granting ticket is halted, but service ticket validation will continue, returning success or failure as appropriate. If certificate validation is successful, issuance of a proxy-granting ticket proceeds as in step 2. CAS uses an HTTP GET request to pass the HTTP request parameters "pgtId" and "pgtIou" to the pgtUrl. These entities are discussed in Sections 3.3 and 3.4, respectively.
+  请求代理授予票证的服务在初始服务票证或代理票证验证时将 HTTP请求参数“ pgtUrl”设置为 <em x-id="3">/ serviceValidate</em> （或 <em x-id="3">/ proxyValidate</em>）。 这是CAS 将连接到的服务的回调URL，以验证服务的身份。 该URL必须是HTTPS，并且CAS必须验证SSL证书是否为 有效且其名称与服务名称匹配。 如果证书未通过验证，则不会 的授权代理票证，并且第2.5.2节中所述的CAS服务响应 <code>&lt;proxyGrantingTicket&gt;</code> 块。 在此 点，将停止发放授权代理票证，但服务票证验证将继续，并根据情况 如果证书验证成功，则按照步骤2进行授权代理票证的发行。 CAS使用HTTP GET请求将HTTP请求参数“ pgtId”和“ pgtIou”传递给pgtUrl。 这些实体分别在第3.3节和第3.4节中讨论
 </p>
 
 <p spaces-before="0">
-  If the HTTP GET returns an HTTP status code of 200 (OK), CAS MUST respond to the <em x-id="3">/serviceValidate</em> (or <em x-id="3">/proxyValidate</em>) request with a service response (Section 2.5.2) containing the proxy-granting ticket IOU (Section 3.4) within the <code>&lt;cas:proxyGrantingTicket&gt;</code> block. If the HTTP GET returns any other status code, excepting HTTP 3xx redirects, CAS MUST respond to the <em x-id="3">/serviceValidate</em> (or <em x-id="3">/proxyValidate</em>) request with a service response that MUST NOT contain a <code>&lt;cas:proxyGrantingTicket&gt;</code> block. CAS MAY follow any HTTP redirects issued by the pgtUrl. However, the identifying callback URL provided upon validation in the <code>&lt;proxy&gt;</code> block MUST be the same URL that was initially passed to <em x-id="3">/serviceValidate</em> (or <em x-id="3">/proxyValidate</em>) as the "pgtUrl" parameter.
+  如果HTTP GET返回HTTP状态代码200（确定），则CAS必须使用服务响应（第2.5.2节）响应 <em x-id="3">/ serviceValidate</em> （或 <em x-id="3">/ proxyValidate</em>） （第3.4节）位于 <code>&lt;cas:proxyGrantingTicket&gt;</code> 块内。 如果HTTP GET返回除HTTP 3xx重定向以外的任何其他状态代码，则CAS必须 响应 <em x-id="3">/ serviceValidate</em> （或 <em x-id="3">/ proxyValidate</em>）请求，并提供一个服务响应，该响应 <code>&lt;cas:proxyGrantingTicket&gt;</code> 块。 CAS可以遵循pgtUrl发出的任何HTTP重定向。 但是，验证后在 <code>&lt;proxy&gt;</code> 块中提供的标识回 URL必须与最初作为“ pgtUrl”参数 <em x-id="3">/ serviceValidate</em> （或 <em x-id="3">/ proxyValidate</em>
 </p>
 
 <p spaces-before="0">
-  The service, having received a proxy-granting ticket IOU in the CAS response, and both a proxy-granting ticket and a proxy-granting ticket IOU from the proxy callback, will use the proxy-granting ticket IOU to correlate the proxy-granting ticket with the validation response. The service will then use the proxy-granting ticket for the acquisition of proxy tickets as described in Section 2.7.
+  该服务已在CAS响应中接收到代理授权票证IOU，并且 代理授权票证IOU，将使用代理授权票证IOU来关联代理授权 张带有验证响应的票证。 然后，该服务将使用代理授予票证来获取2.7节中所述
 </p>
 
 <h3 spaces-before="0">
-  2.5.5. URL examples of <em x-id="3">/serviceValidate</em>
+  2.5.5。 URL示例 <em x-id="3">/ serviceValidate</em>
 </h3>
 
 <p spaces-before="0">
-  Simple validation attempt:
+  简单的验证尝试：
 </p>
 
-<pre><code>https://server/cas/serviceValidate?service=http%3A%2F%2Fwww.service.com&...
+<pre><code>https：// server / cas / serviceValidate？service = http%3A%2F%2Fwww.service.com&...
 </code></pre>
 
 <p spaces-before="0">
-  Ensure service ticket was issued by presentation of primary credentials:
+  确保通过提供主要凭证来发行服务票证：
 </p>
 
 <p spaces-before="0">
-  https://server/cas/serviceValidate?service=http%3A%2F%2Fwww.service.com&... ST-1856339-aA5Yuvrxzpv8Tau1cYQ7&renew=true
+  https：// server / cas / serviceValidate？service = http%3A%2F%2Fwww.service.com&... ST-1856339-aA5Yuvrxzpv8Tau1cYQ7&renew = true
 </p>
 
 <p spaces-before="0">
-  Pass in a callback URL for proxying:
+  传递用于代理的回调URL：
 </p>
 
 <p spaces-before="0">
-  https://server/cas/serviceValidate?service=http%3A%2F%2Fwww.service.com&...
+  https：// server / cas / serviceValidate？service = http%3A%2F%2Fwww.service.com&...
 </p>
 
 <h2 spaces-before="0">
-  2.6. <em x-id="3">/proxyValidate</em> [CAS 2.0]
+  2.6。 <em x-id="3">/ proxyValidate</em> [CAS 2.0]
 </h2>
 
 <p spaces-before="0">
-  <em x-id="3">/proxyValidate</em> MUST perform the same validation tasks as /serviceValidate and additionally validate proxy tickets. <em x-id="3">/proxyValidate</em> MUST be capable of validating both service tickets and proxy tickets.
+  <em x-id="3">/ proxyValidate</em> 必须执行与/ serviceValidate相同的验证任务，并另外验证代理票证。 <em x-id="3">/ proxyValidate</em> 必须能够验证服务票证和代理票证。
 </p>
 
 <h3 spaces-before="0">
-  2.6.1. parameters
+  2.6.1。 参数
 </h3>
 
 <p spaces-before="0">
-  <em x-id="3">/proxyValidate</em> has the same parameter requirements as <em x-id="3">/serviceValidate</em>. See Section 2.5.1.
+  <em x-id="3">/ proxyValidate</em> <em x-id="3">/ serviceValidate</em>具有相同的参数要求。 请参阅第2.5.1节。
 </p>
 
 <h3 spaces-before="0">
-  2.6.2. response
+  2.6.2。 回复
 </h3>
 
 <p spaces-before="0">
-  <em x-id="3">/proxyValidate</em> will return an XML-formatted CAS serviceResponse as described in the XML schema in Appendix A. Below are example responses:
+  <em x-id="3">/ proxyValidate</em> 将返回XML格式的CAS serviceResponse，如附录A中的XML模式中所述 以下是示例响应：
 </p>
 
 <p spaces-before="0">
-  On ticket validation success:
+  票证验证成功：
 </p>
 
 <pre><code>&lt;cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'&gt;
   &lt;cas:authenticationSuccess&gt;
-      &lt;cas:user&gt;username&lt;/cas:user&gt;
-      &lt;cas:proxyGrantingTicket&gt;PGTIOU-84678-8a9d...&lt;/cas:proxyGrantingTicket&gt;
+      &lt;cas:user&gt;用户名&lt;/cas:user&gt;
+      &lt;cas:proxyGrantingTicket&gt;PGTIOU-84678-8a9d ...&lt;/cas:proxyGrantingTicket&gt;
       &lt;cas:proxies&gt;
-          &lt;cas:proxy&gt;https://proxy2/pgtUrl&lt;/cas:proxy&gt;
-          &lt;cas:proxy&gt;https://proxy1/pgtUrl&lt;/cas:proxy&gt;
+          &lt;cas:proxy&gt;https：// proxy2 / pgtUrl&lt;/cas:proxy&gt;
+          &lt;cas:proxy&gt;https：// proxy1 / pgtUrl&lt;/cas:proxy&gt;
       &lt;/cas:proxies&gt;
   &lt;/cas:authenticationSuccess&gt;
 &lt;/cas:serviceResponse&gt;
 </code></pre>
 
 <p spaces-before="0">
-  Note that when authentication has proceeded through multiple proxies, the order in which the proxies were traversed MUST be reflected in the <cas:proxies> block. The most recently-visited proxy MUST be the first proxy listed, and all the other proxies MUST be shifted down as new proxies are added. In the above example, the service identified by <em x-id="3">https://proxy1/pgtUrl</em> was visited first, and that service proxied authentication to the service identified by <em x-id="3">https://proxy2/pgtUrl</em>.
+  请注意，当认证通过多个代理进行时，代理遍历的顺序 必须反映在代理中。 <cas:proxies> 堵塞。 最近访问的代理必须是列出的第一个代理， 其他代理必须在添加新代理后向下移动。 在上面的示例中，首先访问了由 <em x-id="3">https：// proxy1 / pgtUrl</em> 标识的服务，并且该服务代理了对由 <em x-id="3">https：// proxy2 / pgtUrl</em>标识的服务的身份验证。
 </p>
 
 <p spaces-before="0">
-  On ticket validation failure:
+  在票证验证失败时：
 </p>
 
 <pre><code>&lt;cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'&gt;
   &lt;cas:authenticationFailure code="INVALID_TICKET"&gt;
-      ticket PT-1856376-1HMgO86Z2ZKeByc5XdYD not recognized
+      票证PT-1856376-1HMgO86Z2ZKeByc5XdYD无法识别
   &lt;/cas:authenticationFailure&gt;
 &lt;/cas:serviceResponse&gt;
 </code></pre>
 
 <h3 spaces-before="0">
-  2.6.3 URL examples of <em x-id="3">/proxyValidate</em>
+  2.6.3 URL示例 <em x-id="3">/ proxyValidate</em>
 </h3>
 
 <p spaces-before="0">
-  <em x-id="3">/proxyValidate</em> accepts the same parameters as <em x-id="3">/serviceValidate</em>. See Section 2.5.5 for use examples, substituting "proxyValidate" for "serviceValidate".
+  <em x-id="3">/ proxyValidate</em> <em x-id="3">/ serviceValidate</em>相同的参数。 有关使用示例，请参见第2.5.5节，将 “ proxyValidate”替换为“ serviceValidate”。
 </p>
 
 <h2 spaces-before="0">
-  2.7. <em x-id="3">/proxy</em> [CAS 2.0]
+  2.7。 <em x-id="3">/代理</em> [CAS 2.0]
 </h2>
 
 <p spaces-before="0">
-  <em x-id="3">/proxy</em> provides proxy tickets to services that have acquired proxy-granting tickets and will be proxying authentication to back-end services.
+  <em x-id="3">/ proxy</em> 为已获得代理授权票证的服务提供代理票证，并将代理 身份验证到后端服务。
 </p>
 
 <h3 spaces-before="0">
-  2.7.1. parameters
+  2.7.1。 参数
 </h3>
 
 <p spaces-before="0">
-  The following HTTP request parameters MUST be specified to /proxy. They are both case-sensitive.
+  必须将以下HTTP请求参数指定给/ proxy。 它们都区分大小写。
 </p>
 
 <ol start="1">
   <li>
-    <code>pgt [REQUIRED]</code> - the proxy-granting ticket acquired by the service during service ticket or proxy ticket validation
+    <code>pgt [REQUIRED]</code> 服务在服务票证或代理票证验证期间获取的代理票证
   </li>
   
   <li>
-    <code>targetService [REQUIRED]</code> - the service identifier of the back-end service. Note that not all back-end services are web services so this service identifier will not always be a URL. However, the service identifier specified here MUST match the "service" parameter specified to /proxyValidate upon validation of the proxy ticket.
+    <code>targetService [REQUIRED]</code> 后端服务的服务标识符。 请注意，并非所有后端服务都是 Web服务，因此此服务标识符将不会始终是URL。 但是，在验证代理票证后，此处指定的服务标识符必须 匹配为/ proxyValidate指定的“服务”参数。
   </li>
 </ol>
 
 <h3 spaces-before="0">
-  2.7.2. response
+  2.7.2。 回复
 </h3>
 
 <p spaces-before="0">
-  <em x-id="3">/proxy</em> will return an XML-formatted CAS serviceResponse as described in the XML schema in Appendix A. Below are example responses:
+  <em x-id="3">/ proxy</em> 将返回XML格式的CAS serviceResponse，如附录A中的XML模式中所述 以下是示例响应：
 </p>
 
 <p spaces-before="0">
-  On request success:
+  根据请求成功：
 </p>
 
 <pre><code>&lt;cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'&gt;
@@ -602,306 +602,306 @@ username&lt;LF&gt;
 </code></pre>
 
 <p spaces-before="0">
-  On request failure:
+  应要求失败：
 </p>
 
 <pre><code>&lt;cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'&gt;
   &lt;cas:proxyFailure code="INVALID_REQUEST"&gt;
-      'pgt' and 'targetService' parameters are both required
+      'PGT'和'targetService'参数都需要
   &lt;/cas:proxyFailure&gt;
 &lt;/cas:serviceResponse&gt;
 </code></pre>
 
 <h3 spaces-before="0">
-  2.7.3. error codes
+  2.7.3。 错误代码
 </h3>
 
 <p spaces-before="0">
-  The following values MAY be used as the "code" attribute of authentication failure responses. The following is the minimum set of error codes that all CAS servers MUST implement. Implementations MAY include others.
+  以下值可以用作认证失败响应的“代码”属性。 以下是所有CAS服务器必须实现的最小错误代码集 实现可能包括其他实现。
 </p>
 
 <ol start="1">
   <li>
-    <code>INVALID_REQUEST</code> - not all of the required request parameters were present
+    <code>INVALID_REQUEST</code> 并非所有必需的请求参数都存在
   </li>
   
   <li>
-    <code>BAD_PGT</code> - the pgt provided was invalid
+    <code>BAD_PGT</code> 提供的pgt无效
   </li>
   
   <li>
-    <code>INTERNAL_ERROR</code> - an internal error occurred during ticket validation
+    <code>INTERNAL_ERROR</code> 票证验证期间发生内部错误
   </li>
 </ol>
 
 <p spaces-before="0">
-  For all error codes, it is RECOMMENDED that CAS provide a more detailed message as the body of the <code>&lt;cas:authenticationFailure&gt;</code> block of the XML response.
+  对于所有错误代码，建议CAS提供更详细的消息作为XML响应 <code>&lt;cas:authenticationFailure&gt;</code>
 </p>
 
 <h3 spaces-before="0">
-  2.7.4. URL example of <em x-id="3">/proxy</em>
+  2.7.4。 URL示例 <em x-id="3">/代理</em>
 </h3>
 
 <p spaces-before="0">
-  Simple proxy request:
+  简单的代理请求：
 </p>
 
-<pre><code>https://server/cas/proxy?targetService=http%3A%2F%2Fwww.service.com&pgt=......
+<pre><code>https：// server / cas / proxy？targetService = http%3A%2F%2Fwww.service.com&pgt = ......
 </code></pre>
 
 <h1 spaces-before="0">
-  3. CAS Entities
+  3。 CAS实体
 </h1>
 <h2 spaces-before="0">
-  3.1. service ticket
+  3.1。 服务票
 </h2>
 
 <p spaces-before="0">
-  A service ticket is an opaque string that is used by the client as a credential to obtain access to a service. The service ticket is obtained from CAS upon a client's presentation of credentials and a service identifier to <em x-id="3">/login</em> as described in Section 2.2.
+  服务票证是一个不透明的字符串，客户端将其用作获取对服务的访问的凭据。 如2.2节所述，在 <em x-id="3">/ login</em> 提供凭据和服务标识符后，可以从CAS获得服务凭单。
 </p>
 
 <h3 spaces-before="0">
-  3.1.1. service ticket properties
+  3.1.1。 服务票属性
 </h3>
 
 <ol start="1">
   <li>
     <p spaces-before="0">
-      Service tickets are only valid for the service identifier that was specified to /login when they were generated. The service identifier SHOULD NOT be part of the service ticket.
+      服务凭单仅对生成时在/ login中指定的服务标识符有效。 服务标识符不应成为服务凭单的一部分。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Service tickets MUST only be valid for one ticket validation attempt. Whether or not validation was successful, CAS MUST then invalidate the ticket, causing all future validation attempts of that same ticket to fail.
+      服务票仅对一次票确认尝试有效。 无论验证是否成功， 然后会使该票证失效，从而导致该票证的所有将来的验证尝试均失败。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      CAS SHOULD expire unvalidated service tickets in a reasonable period of time after they are issued. If a service presents for validation an expired service ticket, CAS MUST respond with a validation failure response. It is RECOMMENDED that the validation response include a descriptive message explaining why validation failed. It is RECOMMENDED that the duration a service ticket is valid before it expires be no longer than five minutes. Local security and CAS usage considerations MAY determine the optimal lifespan of unvalidated service tickets.
+      CAS应在未批准的服务票签发后的合理时间内将其过期。 如果服务 为验证提供了过期的服务票证，则CAS必须以验证失败响应作为响应。 建议验证响应中包含一条描述性消息，说明验证失败的原因。 建议服务票证在过期之前的有效期限不超过五分钟。 本地安全性和CAS使用注意事项可以确定未经验证的服务票证的最佳使用寿命。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Service tickets MUST contain adequate secure random data so that a ticket is not guessable.
+      服务票证必须包含足够的安全随机数据，以使票证不可猜测。
     </p>
   </li>
   
   <li>
-    Service tickets MUST begin with the characters, "ST-".
+    服务票必须以字符“ ST-”开头。
   </li>
   
   <li>
-    Services MUST be able to accept service tickets of up to 32 characters in length. It is RECOMMENDED that services support service tickets of up to 256 characters in length.
+    服务必须能够接受最长32个字符的服务票证。 建议服务 支持最多256个字符的服务票证。
   </li>
 </ol>
 
 <h2 spaces-before="0">
-  3.2. proxy ticket
+  3.2。 代理票
 </h2>
 
 <p spaces-before="0">
-  A proxy ticket is an opaque string that a service uses as a credential to obtain access to a back-end service on behalf of a client. Proxy tickets are obtained from CAS upon a service's presentation of a valid proxy-granting ticket (Section 3.3), and a service identifier for the back-end service to which it is connecting.
+  代理票证是一个不透明的字符串，服务将其用作凭证以代表客户端 代理票证是在服务提供有效的代理授予票证 （第3.3节）以及与其连接的后端服务的服务标识符后从CAS获得的。
 </p>
 
 <h3 spaces-before="0">
-  3.2.1. proxy ticket properties
+  3.2.1。 代理票证属性
 </h3>
 
 <ol start="1">
   <li>
     <p spaces-before="0">
-      Proxy tickets are only valid for the service identifier specified to /proxy when they were generated. The service identifier SHOULD NOT be part of the proxy ticket.
+      代理票证仅对生成时指定给/ proxy的服务标识符有效。 服务标识符不应该是代理凭单的一部分。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Proxy tickets MUST only be valid for one ticket validation attempt. Whether or not validation was successful, CAS MUST then invalidate the ticket, causing all future validation attempts of that same ticket to fail.
+      代理凭单仅对一次凭单验证尝试有效。 无论验证是否成功， 然后会使该票证失效，从而导致该票证的所有将来的验证尝试均失败。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      CAS SHOULD expire unvalidated proxy tickets in a reasonable period of time after they are issued. If a service presents for validation an expired proxy ticket, CAS MUST respond with a validation failure response. It is RECOMMENDED that the validation response include a descriptive message explaining why validation failed. It is RECOMMENDED that the duration a proxy ticket is valid before it expires be no longer than five minutes. Local security and CAS usage considerations MAY determine the optimal lifespan of unvalidated proxy tickets.
+      CAS应该在未验证的代理票证签发后的合理时间内过期。 如果服务提供了用于验证过期的代理凭单，则CAS必须以验证失败响应作为响应。 建议验证响应中包含一条描述性消息，说明验证失败的原因。 建议代理票证过期之前的有效期限不超过五分钟。 本地安全性和CAS使用注意事项可以确定未验证的代理票证的最佳寿命。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Proxy tickets MUST contain adequate secure random data so that a ticket is not guessable.
+      代理凭单必须包含足够的安全随机数据，以使凭单不可猜测。
     </p>
   </li>
   
   <li>
-    Proxy tickets SHOULD begin with the characters, "PT-".
+    代理票应以字符“ PT-”开头。
   </li>
   
   <li>
-    Proxy tickets MUST begin with either the characters, "ST-" or "PT-".
+    代理票必须以字符“ ST-”或“ PT-”开头。
   </li>
   
   <li>
-    Back-end services MUST be able to accept proxy tickets of up to 32 characters in length. It is RECOMMENDED that back-end services support proxy tickets of up to 256 characters in length.
+    后端服务必须能够接受最多32个字符的代理票证。 建议后端服务支持最多256个字符的代理票证。
   </li>
 </ol>
 
 <h2 spaces-before="0">
-  3.3. proxy-granting ticket
+  3.3。 授权代理票
 </h2>
 
 <p spaces-before="0">
-  A proxy-granting ticket is an opaque string that is used by a service to obtain proxy tickets for obtaining access to a back-end service on behalf of a client. Proxy-granting tickets are obtained from CAS upon validation of a service ticket or a proxy ticket. Proxy-granting ticket issuance is described fully in Section 2.5.4.
+  授予代理的票证是一个不透明的字符串，服务使用它来获取代理票证，以代表客户端 服务票证或代理票证后，可从CAS获得代理票证。 授予代理票证的票证在第2.5.4节中有完整描述。
 </p>
 
 <h3 spaces-before="0">
-  3.3.1. proxy-granting ticket properties
+  3.3.1。 代理授权票证属性
 </h3>
 
 <ol start="1">
   <li>
     <p spaces-before="0">
-      Proxy-granting tickets MAY be used by services to obtain multiple proxy tickets. Proxy-granting tickets are not one-time-use tickets.
+      服务可以使用授权代理票证来获取多个代理票证。 授予代理的票证不是一次性使用的票证。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Proxy-granting tickets MUST expire when the client whose authentication is being proxied logs out of CAS.
+      当代理身份验证的客户端从CAS中注销时，必须授予代理授权的票证。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Proxy-granting tickets MUST contain adequate secure random data so that a ticket is not guessable in a reasonable period of time through brute-force attacks.
+      授予代理的票证必须包含足够的安全随机数据，以使票证在合理的 时间内无法通过蛮力攻击进行猜测。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Proxy-granting tickets SHOULD begin with the characters, "PGT-".
+      授予代理的票证应以字符“ PGT-”开头。
     </p>
   </li>
   
   <li>
-    Services MUST be able to handle proxy-granting tickets of up to 64 characters in length. It is RECOMMENDED that services support proxy-granting tickets of up to 256 characters in length.
+    服务必须能够处理最长64个字符的授权代理票证。 建议服务支持最长256个字符的授权代理票证。
   </li>
 </ol>
 
 <h2 spaces-before="0">
-  3.4. proxy-granting ticket IOU
+  3.4。 代理授权票IOU
 </h2>
 
 <p spaces-before="0">
-  A proxy-granting ticket IOU is an opaque string that is placed in the response provided by <em x-id="3">/serviceValidate</em> and <em x-id="3">/proxyValidate</em> used to correlate a service ticket or proxy ticket validation with a particular proxy-granting ticket. See Section 2.5.4 for a full description of this process.
+  授予代理票证的IOU是一个不透明的字符串，它位于由 <em x-id="3">/ serviceValidate</em> 和 <em x-id="3">/ proxyValidate</em> 提供的响应中，用于将服务票证或代理票证的验证与特定的代理授予票证 有关此过程的完整说明，请参见第2.5.4节。
 </p>
 
 <h3 spaces-before="0">
-  3.4.1. proxy-granting ticket IOU properties
+  3.4.1。 授予代理票证的IOU属性
 </h3>
 
 <ol start="1">
   <li>
     <p spaces-before="0">
-      Proxy-granting ticket IOUs SHOULD NOT contain any reference to their associated proxy-granting tickets. Given a particular PGTIOU, it MUST NOT be possible to derive its corresponding PGT through algorithmic methods in a reasonable period of time.
+      授予代理票证的借条不应包含对其关联的代理票证的任何引用。 给定一个特定的PGTIOU，一定不能在 合理的时间内通过算法方法导出其对应的PGT。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Proxy-granting ticket IOUs MUST contain adequate secure random data so that a ticket is not guessable in a reasonable period of time through brute-force attacks.
+      授予代理的票证IOU必须包含足够的安全随机数据，以确保在 合理的时间内通过蛮力攻击无法猜测到票证。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Proxy-granting ticket IOUs SHOULD begin with the characters, "PGTIOU-".
+      授予代理票务的借条应以字符“ PGTIOU-”开头。
     </p>
   </li>
   
   <li>
-    Services MUST be able to handle PGTIOUs of up to 64 characters in length. It is RECOMMENDED that services support PGTIOUs of up to 256 characters in length.
+    服务必须能够处理最多64个字符的PGTIOU。 建议服务支持最长256个字符的PGTIOU。
   </li>
 </ol>
 
 <h2 spaces-before="0">
-  3.5. login ticket
+  3.5。 登录票
 </h2>
 
 <p spaces-before="0">
-  A login ticket is a string that is provided by <em x-id="3">/login</em> as a credential requestor and passed to <em x-id="3">/login</em> as a credential acceptor for username/password authentication. Its purpose is to prevent the replaying of credentials due to bugs in web browsers.
+  登录票证是一个字符串，由字符串 <em x-id="3">/ login</em> 作为凭据请求者提供，并作为 <em x-id="3">/ login</em> ，用于用户名/密码身份验证。 其目的是防止由于Web浏览器中的错误而
 </p>
 
 <h3 spaces-before="0">
-  3.5.1. login ticket properties
+  3.5.1。 登录票证属性
 </h3>
 
 <ol start="1">
   <li>
-    Login tickets issued by /login MUST be probabilistically unique.
+    / login发行的登录票必须是概率唯一的。
   </li>
   
   <li>
     <p spaces-before="0">
-      Login tickets MUST only be valid for one authentication attempt. Whether or not authentication was successful, CAS MUST then invalidate the login ticket, causing all future authentication attempts with that instance of that login ticket to fail.
+      登录票仅对一次身份验证尝试有效。 无论身份验证是否成功， 登录凭单的该实例进行的所有将来的身份验证尝试都将失败。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Login tickets SHOULD begin with the characters, "LT-".
+      登录票应以字符“ LT-”开头。
     </p>
   </li>
 </ol>
 
 <h2 spaces-before="0">
-  3.6. ticket-granting cookie
+  3.6。 购票饼干
 </h2>
 
 <p spaces-before="0">
-  A ticket-granting cookie is an HTTP cookie[5] set by CAS upon the establishment of a single sign-on session. This cookie maintains login state for the client, and while it is valid, the client can present it to CAS in lieu of primary credentials. Services can opt out of single sign-on through the "renew" parameter described in Sections 2.1.1, 2.4.1, and 2.5.1.
+  授予票证的cookie是CAS在建立单点登录会话时设置[5] 该cookie维护客户端的登录状态，并且在有效期间，客户端可以将其提交给CAS代替主要凭证的 2.1.1、2.4.1和2.5.1节中所述的“更新”参数选择退出单点登录。
 </p>
 
 <h3 spaces-before="0">
-  3.6.1. ticket-granting cookie properties
+  3.6.1。 授予票证的Cookie属性
 </h3>
 
 <ol start="1">
   <li>
-    Ticket-granting cookies MUST be set to expire at the end of the client's browser session.
+    授予票证的cookie必须设置为在客户端的浏览器会话结束时到期。
   </li>
   
   <li>
     <p spaces-before="0">
-      CAS MUST set the cookie path to be as restrictive as possible. For example, if the CAS server is set up under the path /cas, the cookie path MUST be set to /cas.
+      CAS必须将Cookie路径设置为尽可能严格。 例如，如果将CAS服务器设置在 路径/ cas下，则cookie路径必须设置为/ cas。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      The value of ticket-granting cookies MUST contain adequate secure random data so that a ticket-granting cookie is not guessable in a reasonable period of time.
+      票证cookie的值必须包含足够的安全随机数据，以使票证cookie在合理的时间段内不可猜测
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      The value of ticket-granting cookies SHOULD begin with the characters, "TGC-".
+      授予票务的cookie的值应以字符“ TGC-”开头。
     </p>
   </li>
 </ol>
 
 <h2 spaces-before="0">
-  3.7. ticket and ticket-granting cookie character set
+  3.7。 票证和授予票证的Cookie字符集
 </h2>
 
 <p spaces-before="0">
-  In addition to the above requirements, all CAS tickets and the value of the ticket-granting cookie MUST contain only characters from the set {A-Z, a-z, 0-9, and the hyphen character ?-'}.
+  除上述要求外，所有CAS票和票证授予cookie的值只能包含 从字符的集合{包括AZ，az，0-9和连字符- '}。
 </p>
 
 <h1 spaces-before="0">
-  Appendix A: CAS response XML schema
+  附录A：CAS响应XML模式
 </h1>
 
 <pre><code><!--
@@ -963,91 +963,91 @@ username&lt;LF&gt;
 </code></pre>
 
 <h1 spaces-before="0">
-  Appendix B: Safe redirection
+  附录B：安全重定向
 </h1>
 
 <p spaces-before="0">
-  After a successful login, safely redirecting the client from CAS to its final destination must be handled with care. In most cases, the client has sent credentials to the CAS server over a POST request. By this specification, the CAS server must then forward the user to the application with a GET request.
+  成功登录后，必须谨慎处理将客户端从CAS重定向到其最终目的地的安全操作。 在大多数情况下，客户端已通过POST请求将凭据发送到CAS服务器。 根据此规范，CAS 服务器随后必须使用GET请求将用户转发到应用程序。
 </p>
 
 <p spaces-before="0">
-  The HTTP/1.1 RFC[3] provides a response code of 303: See Other, which provides for the desired behavior: a script that receives data through a POST request can, through a 303 redirection, forward the browser to another URL through a GET request. However, not all browsers have implemented this behavior correctly.
+  HTTP / 1.1 RFC[3] 提供的响应代码为303：请参见其他，以提供所需的行为： 通过POST请求接收数据的脚本可以通过303重定向，将浏览器转发到另外 URL（通过GET）要求。 但是，并非所有浏览器都正确实现了此行为。
 </p>
 
 <p spaces-before="0">
-  The recommended method of redirection is thus JavaScript. A page containing a window.location.href in the following manner performs adequately:
+  因此，推荐的重定向方法是JavaScript。 方式包含window.location.href的页面可以正常执行：
 </p>
 
 <pre><code>&lt;html&gt;
     &lt;head&gt;
-        &lt;title&gt;Yale Central Authentication Service&lt;/title&gt;
+        &lt;title&gt;Yale中央身份验证服务&lt;/title&gt;
         &lt;script&gt;
-            window.location.href="https://portal.yale.edu/Login?ticket=ST-..." mce_href="https://portal.yale.edu/Login?ticket=ST-...";
+            window.location.href =“ https：//portal.yale.edu/Login？ticket = ST -...” mce_href =“ https：//portal.yale .edu / Login？ticket = ST -...“；
        &lt;/script&gt;
     &lt;/head&gt;
     &lt;body&gt;
         &lt;noscript&gt;
-            &lt;p&gt;CAS login successful.&lt;/p&gt;
-            &lt;p&gt;  Click &lt;a xhref="https://portal.yale.edu/Login?ticket=ST-..." mce_href="https://portal.yale.edu/Login?ticket=ST-..."&gt;here&lt;/a&gt;
-            to access the service you requested.&lt;br /&gt;  &lt;/p&gt;
+            &lt;p&gt;CAS登录成功。&lt;/p&gt;
+            &lt;p&gt;  单击 &lt;a xhref="https://portal.yale.edu/Login?ticket=ST-..." mce_href="https://portal.yale.edu/Login?ticket=ST-..."&gt;这里&lt;/a&gt;
+            以访问您请求的服务。&lt;br /&gt;  &lt;/p&gt;
         &lt;/noscropt&gt;
     &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
 
 <p spaces-before="0">
-  Additionally, CAS should disable browser caching by setting all of the various cache-related headers:
+  此外，CAS应该通过设置所有与缓存相关的所有标头来禁用浏览器缓存：
 </p>
 
-<pre><code>Pragma: no-cache
-Cache-Control: no-store
-Expires: [RFC 1123[6] date equal to or before now]
+<pre><code>语法：无缓存
+缓存控制：无存储
+过期：[RFC 1123[6] 日期等于或早于现在]
 </code></pre>
 
 <p spaces-before="0">
-  The introduction of the login ticket removed the possibility of CAS accepting credentials that were cached and replayed by a browser. However, early versions of Apple's Safari browser contained a bug where through usage of the Back button, Safari could be coerced into presenting the client's credentials to the service it is trying to access. CAS can prevent this behavior by not automatically redirecting if it detects that the remote browser is one of these early versions of Safari. Instead, CAS should display a page that states login was successful, and provide a link to the requested service. The client must then manually click to proceed.
+  登录票证的引入消除了CAS接受浏览器 但是，Apple的Safari浏览器的早期版本存在一个错误，即通过使用“后退”按钮， Safari向其尝试访问的服务提供客户端凭据。 如果CAS Safari的这些早期版本之一，则可以通过不自动重定向 而是，CAS应显示一个表明登录成功的页面，并提供指向所请求服务的链接。 然后，客户端必须手动单击以继续。
 </p>
 
 <p spaces-before="0">
-  Appendix C: References [1] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", RFC 2119, Harvard University, March 1997. [2] Berners-Lee, T., Fielding, R., Frystyk, H., "Hypertext Transfer Protocol - HTTP/1.0", RFC 1945, MIT/LCS, UC Irvine, MIT/LCS, May 1996. [3] Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., Berners-Lee, T., "Hypertext Transfer Protocol - HTTP/1.1", RFC 2068, UC Irvine, Compaq/W3C, Compaq, W3C/MIT, Xerox, Microsoft, W3C/MIT, June 1999. [4] Berners-Lee, T., Masinter, L., and MaCahill, M., "Uniform Resource Locators (URL)", RFC 1738, CERN, Xerox Corporation, University of Minnesota, December 1994. [5] Kristol, D., Montulli, L., "HTTP State Management Mechanism", RFC 2965, Bell Laboratories/Lucent Technologies, Epinions.com, Inc., October 2000. [6] Braden, R., "Requirements for Internet Hosts - Application and Support", RFC 1123, Internet Engineering Task Force, October 1989.
+  附录C：参考文献 [1] Bradner，S.，“用于RFC中以指示需求水平的关键词”，RFC 2119，哈佛大学，1997年3月。 [2] Berners-Lee，T.，Fielding，R.，Frystyk，H。，“超文本传输协议-HTTP / 1.0”，RFC 1945，MIT / LCS，加州大学欧文分校，MIT / LCS，1996年5月。 [3] Fielding，R.，Gettys，J.，Mogul，J.，Frystyk，H.，Masinter，L.，Leach，P.，Berners-Lee，T.，“超文本传输协议-HTTP / 1.1”，RFC 2068 ，加州大学欧文分校，Compaq / W3C，Compaq，W3C / MIT，施乐，微软，W3C / MIT，1999年6月。 [4] T. Berners-Lee，L。Masinter和M. MaCahill，“统一资源定位符（URL）”，RFC 1738，CERN，施乐公司，明尼苏达大学，1994年12月。 [5] Kristol，D.，Montulli，L。，“ HTTP状态管理机制”，RFC 2965，贝尔实验室/朗讯科技公司，Epinions.com，Inc.，2000年10月。 [6] Braden，R。，“ Internet主机的要求-应用程序和支持”，RFC 1123，Internet工程任务组，1989年10月。
 </p>
 
 <h1 spaces-before="0">
-  Appendix D: CAS License
+  附录D：CAS许可证
 </h1>
 
 <p spaces-before="0">
-  Copyright (c) 2000-2005 Yale University. THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ARE EXPRESSLY DISCLAIMED. IN NO EVENT SHALL YALE UNIVERSITY OR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED, THE COSTS OF PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED IN ADVANCE OF THE POSSIBILITY OF SUCH DAMAGE.
+  耶鲁大学（c）2000-2005版权所有。 本软件按“原样”提供，任何明示或暗示的担保，包括但不限于对特定目的的适销性和适用性的 在 大学或其员工均不对任何直接，间接，偶发，特殊，特殊或后果性损害 （包括但不限于，替代商品或服务的采购成本；使用损失，或利润； 或业务中断），无论是基于合同，严格责任还是侵权 （包括疏忽或其他方式），无论是出于任何责任，都基于上述任何责任，无论是出于使用本软件的目的，还是出于上述原因， 可能性中的一种。
 </p>
 
 <p spaces-before="0">
-  Redistribution and use of this software in source or binary forms, with or without modification, are permitted, provided that the following conditions are met:
+  再分配和使用该软件源代码或二进制形式，有或没有修饰的，是允许的，提供 的是，满足以下条件：
 </p>
 
 <ol start="1">
   <li>
     <p spaces-before="0">
-      Any redistribution must include the above copyright notice and disclaimer and this list of conditions in any related documentation and, if feasible, in the redistributed software.
+      文档以及可能的情况下在重新分发的软件中包括上述版权声明和免责声明以及此条件列表。
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      Any redistribution must include the acknowledgment, "This product includes software developed by Yale University,"\\ in any related documentation and, if feasible, in the redistributed software.
+      任何重新分发都必须在任何相关文档中（如果可行的话）在重新分发的软件中包含确认：“该产品包括由耶鲁大学开发的软件” \\
     </p>
   </li>
   
   <li>
     <p spaces-before="0">
-      The names "Yale" and "Yale University" must not be used to endorse or promote products derived from this software.
+      不得使用名称“ Yale”和“ Yale University”来认可或促销从该软件派生的产品。
     </p>
   </li>
 </ol>
 
 <h1 spaces-before="0">
-  Appendix E: Changes to this Document
+  附录E：对本文档的更改
 </h1>
 
 <p spaces-before="0">
-  May 4, 2005: v1.0 - initial release
+  2005年5月4日：v1.0-初始版本
 </p>
