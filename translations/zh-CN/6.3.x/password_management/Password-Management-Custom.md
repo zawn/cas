@@ -1,25 +1,25 @@
 ---
-layout: default
-title: CAS - Password Management
-category: Password Management
+layout: 违约
+title: CAS - 密码管理
+category: 密码管理
 ---
 
-# Password Management - Custom
+# 密码管理 - 自定义
 
-You may also inject your own implementation for password management into CAS that would itself handle account updates and retrievals. In order to do this, you will need to design a configuration class that roughly matches the following:
+您也可以将自己的密码管理实施注入 CAS，该 CAS 本身将处理帐户更新和检索。 为此，您需要设计大致匹配以下配置类：
 
 ```java
-package org.apereo.cas.pm;
+包装 org.apereo.cas.pm;
 
-@Configuration("MyPasswordConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyPasswordConfiguration {
+@Configuration（"我的密码配置"）
+@EnableConfigurationProperties（配置.class）
+公共类MyPassword配置=
 
     @Bean
-    public PasswordManagementService passwordChangeService() {
-        ...
-    }
+    公共密码管理服务密码更改服务（）{
+        。。。
+    •
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[本指南](../configuration/Configuration-Management-Extensions.html) 了解有关如何将配置注册到 CAS 运行时间的更多信息。
