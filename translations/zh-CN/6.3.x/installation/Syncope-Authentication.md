@@ -1,47 +1,47 @@
 ---
-layout: default
-title: CAS - Apache Syncope Authentication
-category: Authentication
+layout: 违约
+title: CAS - 阿帕奇同步身份验证
+category: 认证
 ---
 
-# Apache Syncope Authentication
+# 阿帕奇同步身份验证
 
-CAS support handling the authentication event via [Apache Syncope](http://syncope.apache.org/). This is done by using the `rest/users/self` REST API that is exposed by a running Syncope instance. As part of a successful authentication attempt, the properties of the provided user object are transformed into CAS attributes that can then be released to applications, etc.
+CAS 支持通过 [阿帕奇同步](http://syncope.apache.org/)处理身份验证事件。 这是通过使用运行同步实例所暴露的 `休息/用户/自我` REST API 来完成的。 作为成功身份验证尝试的一部分，所提供的用户对象的属性被转换为 CAS 属性，然后可以发布到应用程序等。
 
 
-## Components
+## 组件
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-syncope-authentication</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-同步-身份验证</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#syncope-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#syncope-authentication)。
 
-## Attributes
+## 属性
 
-As part of a successful authentication attempt, the following attributes provided by Apache Syncope are collected by CAS:
+作为成功身份验证尝试的一部分，CAS 收集了 Apache 同步提供的以下属性：
 
-| Attribute Name                |
-| ----------------------------- |
-| `syncopeUserRoles`            |
-| `syncopeUserSecurityQuestion` |
-| `syncopeUserStatus`           |
-| `syncopeUserRealm`            |
-| `syncopeUserCreator`          |
-| `syncopeUserCreationDate`     |
-| `syncopeUserChangePwdDate`    |
-| `syncopeUserLastLoginDate`    |
-| `syncopeUserDynRoles`         |
-| `syncopeUserDynRealms`        |
-| `syncopeUserMemberships`      |
-| `syncopeUserDynMemberships`   |
-| `syncopeUserDynRelationships` |
-| `syncopeUserAttrs`            |
+| 属性名称          |
+| ------------- |
+| `同步使用器罗尔斯`    |
+| `同步使用器安全问题`   |
+| `同步使用者状态`     |
+| `同步使用者雷姆`     |
+| `同步使用者创建器`    |
+| `同步使用器创建日`    |
+| `同步使用者改变交换日`  |
+| `同步使用器最后日志`   |
+| `同步使用者丁罗尔斯`   |
+| `同步使用者丁雷亚尔姆斯` |
+| `同步使用者记忆`     |
+| `同步使用`        |
+| `同步使用者关系`     |
+| `同步使用器`       |
 
-Note that attributes are only collected if they contain a value.
+请注意，只有当属性包含一个值时，才会收集属性。
