@@ -1,44 +1,44 @@
 ---
-layout: default
-title: CAS - Amazon Cloud Directory Authentication
-category: Authentication
+layout: 违约
+title: CAS - 亚马逊云目录认证
+category: 认证
 ---
 
-# Amazon Cloud Directory Authentication
+# 亚马逊云目录认证
 
-Amazon Cloud Directory is a highly available multi-tenant directory-based store in AWS. These directories scale automatically to hundreds of millions of objects as needed for applications. This lets operation's staff focus on developing and deploying applications that drive the business, not managing directory infrastructure.
+亚马逊云目录是 AWS 中高度可用的基于租户目录的商店。 这些目录会根据应用需要自动缩放到数亿个对象。 这让运营人员专注于开发和部署驱动业务的应用程序，而不是管理目录基础设施。
 
-To learn more, please [see this guide](http://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_amazon_cd.html).
+要了解更多，请 [本指南](http://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_amazon_cd.html)。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-cloud-directory-authentication</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-云目录-认证</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#amazon-cloud-directory-authentication).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#amazon-cloud-directory-authentication)。
 
-AWS credentials are fetched from the following sources automatically, where relevant and made possible via CAS configuration:
+AWS 凭据会自动从以下来源获取，如果相关，则通过 CAS 配置实现：
 
-1. EC2 instance metadata linked to the IAM role.
-2. External properties file that contains `accessKey` and `secretKey` as property keys.
-3. AWS profile path and profile name.
-4. System properties that include `aws.accessKeyId`, `aws.secretKey` and `aws.sessionToken`
-5. Environment variables that include `AWS_ACCESS_KEY_ID`, `AWS_SECRET_KEY` and `AWS_SESSION_TOKEN`.
-6. Properties file on the classpath as `awscredentials.properties` that contains `accessKey` and `secretKey` as property keys.
-7. Static credentials for access key and secret provided directly by the configuration at hand (logging, etc).
+1. 与 IAM 角色关联的 EC2 实例元数据。
+2. 包含 `访问的外部属性文件键` 和 `密钥` 作为属性密钥。
+3. AWS配置文件路径和配置文件名称。
+4. 系统属性， 包括 `aws. 访问键`， `aws. 秘密钥匙` 和 `aws. 会话`
+5. 包括 `AWS_ACCESS_KEY_ID`、 `AWS_SECRET_KEY` 和 `AWS_SESSION_TOKEN`的环境变量。
+6. 分类路径上的属性文件为 `ascredentials.包含 <code>访问键` 和 `密钥` 作为属性密钥的属性</code> 。
+7. 访问密钥和由手头配置直接提供的秘密的静态凭据（记录等）。
 
-## Troubleshooting
+## 故障 排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下级别：
 
-```xml ...
+" ...
 <Logger name="com.amazonaws" level="debug" additivity="false">
     <AppenderRef ref="console"/>
     <AppenderRef ref="file"/>
