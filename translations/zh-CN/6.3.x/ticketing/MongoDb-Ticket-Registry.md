@@ -1,30 +1,30 @@
 ---
-layout: default
-title: CAS - MongoDb Ticket Registry
-category: Ticketing
+layout: 违约
+title: CAS - 蒙哥银行票务注册处
+category: 票务
 ---
 
-# MongoDb Ticket Registry
+# 蒙古银行票务登记处
 
-MongoDb ticket registry integration is enabled by including the following dependency in the WAR overlay:
+MongoDb 票证注册表集成通过在 WAR 叠加中包括以下依赖关系而实现：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-mongo-ticket-registry</artifactId>
+     <groupId>组织. apereo. cas</groupId>
+     <artifactId>卡斯服务器支持 - 蒙古票 - 注册</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-This registry stores tickets in one or more [MongoDb](https://www.mongodb.com/) instances. Tickets are auto-converted and wrapped into document objects as JSON. Special indices are created to let MongoDb handle the expiration of each document and cleanup tasks. Note that CAS generally tries to  create the relevant collections automatically to manage different ticket types.
+此注册表在一个或多个 [MongoDb](https://www.mongodb.com/) 实例中存储门票。 门票作为 JSON 自动转换并包裹成文档对象。 创建特殊指标，让 MongoDb 处理每个文档的过期和清理任务。 请注意，CAS 通常尝试自动创建相关集合以管理不同的票证类型。
 
-## Configuration
+## 配置
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#mongodb-ticket-registry).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#mongodb-ticket-registry)。
 
-## Troubleshooting
+## 故障 排除
 
-To enable additional logging, configure the log4j configuration file to add the following levels:
+要启用其他记录，请配置 log4j 配置文件以添加以下 级别：
 
 ```xml
 ...
