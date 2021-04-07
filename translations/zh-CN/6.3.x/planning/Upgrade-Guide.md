@@ -1,70 +1,87 @@
 ---
-layout: default
-title: CAS - Upgrade Guide
-category: Planning
+layout: 违约
+title: CAS - 升级指南
+category: 规划
 ---
 
-# Upgrade Guide
+# 升级指南
 
-In general, it is recommended that adopters try to keep their CAS deployment in alignment with the latest CAS version available. In particular, releases that are of `PATCH` or `SECURITY` nature should be immediately applied as they are drop-in replacements for their corresponding parent version. See CAS [Release Policy](../../developer/Release-Policy.html) for more info.
+一般来说，建议采用者尽量保持其 CAS 部署与最新的 CAS 版本保持一致。 特别是，应立即应用具有 `PATCH` 或 `安全` 性质的版本，因为它们是相应父版本 的掉落替代品。 有关详细信息，请参阅 CAS [发布策略](../../developer/Release-Policy.html) 。
 
-The general objectives of a CAS upgrade could be:
+CAS 升级的总体目标可能是：
 
-1. Does the upgrade fix a critical security vulnerability or annoying issue? Is my CAS deployment affected by that vulnerability and/or bug?
-2. Does the upgrade present features that might be useful to achieve local use cases?
-3. Does the upgrade provide functionality that is carried locally within my overlay, such that by getting rid of those local changes, I can realize their benefit from CAS directly and end up with a smaller more-maintainable overlay?
+1. 升级是否修复了关键的安全漏洞或恼人的问题？ 我的 CAS 部署是否 该漏洞和/或错误的影响？
+2. 升级是否提供可能有助于实现本地使用案例的功能？
+3. 升级是否提供了在我的叠加内本地携带的功能，以便通过摆脱这些 本地更改，我可以直接实现它们从 CAS 中获益，并最终获得更小、更可维护的覆盖？
 
-This document attempts to describe, at a very high level, the scope and effort required to upgrade a given [CAS deployment](../installation/WAR-Overlay-Installation.html). Rather than describing all steps/changes that would be required to review and adjust (which would be impossible), we describe a strategy by which the upgrade could be executed.
+本文档试图在非常高的层次上描述升级给定 [CAS 部署所需的范围和努力，](../installation/WAR-Overlay-Installation.html)。 我们不是描述 审查和调整所需的所有步骤/更改（这是不可能的），而是描述了可以执行升级的战略。
 
-## Change Log
+## 更改日志
 
-Before attempting to upgrade, please review the [CAS change log](https://github.com/apereo/cas/releases) to determine what changes/fixes are contained in the version you intend to upgrade to, and whether those are applicable to your environment and your CAS deployment. If you are working with an older CAS version and are experiencing what appears to be a bug, chances are by reviewing the change log, you will find a drop-in replacement for your overlay that takes care of the issue.
+在尝试升级之前，请查看 CAS 更改日志</a>
 
-## Discuss Issue
+，以确定您打算升级到的版本中包含哪些更改/修复 ，以及这些更改/修复是否适用于您的环境 和 CAS 部署。 如果您正在使用较旧的 CAS 版本，并且遇到看似错误的情况，则通过查看更改日志，可能会 ，您将找到一个用于处理问题的叠加的掉入替换。 </p> 
 
-Having reviewed the change log, if you do not see an improvement that fixes/adjusts the behavior you have in mind, please discuss the issue on the appropriate CAS mailing lists. The result of the discussing would be a scope/effort evaluation to determine feasibility of the solution and the target version in which the fix will be done.
 
-## Scope Review
 
-Once you decide your ideal CAS version for the upgrade, before attempting to upgrade, please review the CAS [Release Policy](../../developer/Release-Policy.html). This will provide you with an understanding of what changes you may expect from new version and what the required effort may be for the upgrade.
+## 讨论问题
 
-## Evaluate Local Overlay
+在查看了更改日志后，如果您没有看到修复/调整您心目中的行为的改进，请 在适当的 CAS 邮件列表中讨论此问题。 讨论的结果将是范围/努力 评估，以确定解决方案的可行性和将进行修复的目标版本。 
 
-As a best practice, it is recommended that you deploy CAS via the [overlay method](../installation/WAR-Overlay-Installation.html). If you have, the task here would be to identify the number of files your overlay has touched and modified. Catalog the what and why of the changes applied, and cross-check those changes with the CAS change log. Chances are, many of the local changes that are present within your overlay are provided by default via CAS as a result of that upgrade which will have you shed many of those improvements locally.
 
-Your changes typically are:
 
-* Authentication scheme and strategy (i.e. LDAP, JDBC, etc)
-* Settings controlling CAS behavior in CAS properties files
-* User Interface changes may include CSS and JavaScript
-* Attribute resolution and release policy
-* Services registered and authorized to use CAS
+## 范围审查
 
-## Prepare Development Environment
+一旦您决定您的理想CAS版本的升级，在尝试升级之前， 请审查CAS [发布政策](../../developer/Release-Policy.html)。 这将为您 了解您可能期望从新版本中获得哪些更改，以及升级所需的 努力。
+
+
+
+## 评估本地覆盖
+
+作为最佳实践，建议您通过 [叠加方法](../installation/WAR-Overlay-Installation.html)部署 CAS 。 如果您有，这里的任务将是识别您的叠加已触及和修改的文件数量。 编目 应用更改的内容和原因，并使用 CAS 更改日志对这些更改进行交叉检查。 很有可能，您的覆盖范围内存在的许多 局部更改是默认通过 CAS 提供的，因为升级将 您在本地放弃许多这些改进。 
+
+您的更改通常是：
+
+* 身份验证方案和策略（即 LDAP、日本广播公司等）
+* 在 CAS 属性文件中控制 CAS 行为的设置
+* 用户界面更改可能包括 CSS 和爪哇脚本
+* 属性解析和发布策略
+* 注册并授权使用 CAS 的服务
+
+
+
+## 准备发展环境
 
 <img src="http://i.imgur.com/jcdDHWb.jpg" width="160px" height="200px" />
 
-Um, No.
+嗯，不 
 
-Make sure you have a separate development environment ready for configuration and testing. Regardless of how small the upgrade is, you want to make sure it is well tested in your environment before you flip the switch. Evaluate the software dependencies and platform requirements of the new upgrade (i.e. Java, etc) and make sure you have everything installed and configured correctly before you attempt.
+确保您有一个单独的开发环境，为配置和测试做好准备。 无论升级 有多小，您都希望在翻转开关之前确保它在您的环境中经过良好的测试。 评估 新升级的软件依赖性和平台要求（即 Java 等） ，并确保在尝试之前正确安装和配置所有内容。 
 
-## Sanitize Configuration
 
-We recommend that you first start out with a separate clean [CAS overlay](../installation/WAR-Overlay-Installation.html) targeted at the version to which you want to upgrade. This has the advantage of guaranteeing that your new CAS deployment will be functional without any local changes. Build and deploy the clean CAS overlay once to make sure your build/deployment process is functional.
 
-## Apply Changes
+## 消毒配置
 
-Go through your catalog of changes found in your local overlay. Compare and diff those files with their original version. You can find out the delta between two versions via the following ways:
+我们建议您首先从单独的干净 [CAS 覆盖开始，](../installation/WAR-Overlay-Installation.html) 针对您想要升级的版本 。 这可以保证您的新 CAS 部署 在没有任何本地更改的情况下正常工作。 生成并部署干净的 CAS 覆盖一次，以确保 构建/部署过程正常工作。
 
-1. If you have built the clean CAS overlay once, you will automatically get the original version typically in the `target` or `build/libs` directory of CAS overlay. Find the correct file at the correct path and compare.
 
-2. Go directly to the [project source repository](https://github.com/apereo/cas), find the appropriate branch and compare files.
 
-Needless to say, you are going to need:
+## 应用更改
 
-1. A decent diff tool, such as [KDiff3](http://kdiff3.sourceforge.net/), [WinDiff](http://winmerge.org), [Beyond Compare](http://www.scootersoftware.com/), etc.
-2. A decent intelligent text editor, such as [Sublime](http://www.sublimetext.com), [Atom](https://atom.io/) or a full blown IDE such as [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+翻阅本地叠加中发现的变化目录。 将这些文件与其 原始版本进行比较和差异。 您可以通过以下方式找出两个版本之间的三角洲：
 
-## Document Changes
+1. 如果您已经构建了一次干净的 CAS 叠加，您将自动获得通常 `目标` 或 `构建/libs` CAS 叠加目录中的原始版本。 在正确的路径找到正确的文件并进行比较。
 
-Remember to document the remaining changes that exist within your local overlay, so that the next time you do the same process, you have a clue as for why the overlay looks the way it does. 
+2. 直接转到 [项目源存储库](https://github.com/apereo/cas)，查找相应的分支 并比较文件。 
+
+不用说，你需要：
+
+1. 一个体面的差异工具，如 [KDiff3](http://kdiff3.sourceforge.net/)， [温迪夫](http://winmerge.org)， [超越比较](http://www.scootersoftware.com/)等。
+
+2. 一个体面的智能文本编辑，如 [崇高的](http://www.sublimetext.com)， [原子](https://atom.io/) 或完全吹IDE，如 [英特利杰IDEA](https://www.jetbrains.com/idea/)。
+
+
+
+## 文档更改
+
+请记住记录本地叠加中存在的其余更改，以便下次执行 相同的过程时，您就知道为什么叠加看起来会如此。 
