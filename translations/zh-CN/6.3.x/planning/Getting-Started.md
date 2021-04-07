@@ -1,61 +1,61 @@
 ---
-layout: default
-title: CAS - Getting Started Guide
-category: Planning
+layout: 默认
+title: CAS-入门指南
+category: 规划
 ---
 
-# Getting Started
+# 入门
 
-This document provides a high-level guide on how to get started with a CAS server deployment. The sole focus of the guide is describe the process that must be followed and adopted by CAS deployers in order to arrive at a successful and sustainable architecture and deployment.
+本文档提供了有关如何开始进行CAS服务器部署的高级指南。 本指南的唯一重点是描述CAS部署人员必须遵循并采用 以及可持续的体系结构和部署。
 
-## Collect Use Cases
+## 收集用例
 
-It is very important that you document, catalog and analyze your desired use cases and requirements prior to the deployment. Once you have a few ideas, please discuss and share those with the [CAS community](/cas/Support.html) to learn about common trends, practices and patterns that may already have solved the same issues you face today. 
+在部署之前，记录，分类和分析所需的用例和需求非常重要。 一旦您有了一些想法，请与 [CAS社区](/cas/Support.html) 讨论并分享这些想法，以了解可能已经解决了您今天面临的相同问题的共同趋势，实践和模式 
 
-<div class="alert alert-warning"><strong>KISS</strong><p>In general, avoid designing and/or adopting
-use cases and workflows that heavily alter the CAS internal components, induce a heavy burden on your management
-and maintenance of the configuration or re-invent the CAS software and its supported protocols. All options 
-add to maintenance cost and headache.</p></div>
+<div class="alert alert-warning"><strong>吻</strong><p>通常，避免设计和/或采用
+用例和工作流，这些用例和工作流会严重改变CAS内部组件，给管理
+和配置维护带来沉重负担，或者重新发明CAS软件及其支持的协议。 所有选项 
+增加维护成本和麻烦。</p></div>
 
-## Study Architecture
+## 研究建筑
 
-Understand what CAS is and can do. This will help you develop a foundation to realize which of your use cases and requirements may already be possible with CAS. Take a look at the fundamentals of the [CAS architecture](Architecture.html) to see what options and choices might be available for deployments and application integrations.
+了解CAS是什么并且可以做什么。 这将帮助您建立基础，以了解您的用例 和CAS中可能已经存在需求。 [CAS体系结构](Architecture.html) 的基本原理 ，以了解哪些选项和选择可用于部署和应用程序集成。
 
-Likewise, it's equally important that you study the list of CAS [supported protocols and specifications](../protocol/Protocol-Overview.html).
+CAS [支持的协议和规范](../protocol/Protocol-Overview.html)的列表也同样重要。
 
-## Review Blog
+## 评论博客
 
-From time to time, blog posts appears on the [Apereo Blog](https://apereo.github.io/) that might become useful as you are thinking about requirements and evaluating features. It is generally recommended that you follow the blog and keep up with project news and announcements as much as possible, and do not shy away from writing and contributing your own blog posts, experiences and updates throughout your CAS deployment.
+博客文章有时会 [](https://apereo.github.io/) ，这在您考虑需求和评估功能时可能会很有用。 通常建议您关注该博客，并尽可能多地关注项目新闻和 公告，并且不要回避在整个CAS部署中撰写和贡献自己的博客文章，经验和更新。
 
-## Prepare Environment
+## 准备环境
 
-Study the [installation requirements](Installation-Requirements.html) for the deployment environment.
+研究部署环境 [安装要求](Installation-Requirements.html)
 
-## Deploy CAS
+## 部署CAS
 
-It is recommended to build and deploy CAS locally using the [WAR Overlay method](../installation/WAR-Overlay-Installation.html). This approach does not require the adopter to *explicitly* download any version of CAS, but rather utilizes the overlay mechanism to combine CAS original artifacts and local customizations to further ease future upgrades and maintenance.
+[WAR叠加方法](../installation/WAR-Overlay-Installation.html)在本地构建和部署CAS。 这种方法不需要采用者 *明确* 下载CAS的任何版本，但 ，而利用叠加机制，以CAS原有的文物和地方联合 定制，以方便未来的进一步升级和维护。
 
-**Note**: Do NOT clone or download the CAS codebase directly. That is ONLY required if you wish to contribute to the development of the project.
+**注**：不要直接克隆或下载CAS代码库。 仅当您 希望为项目的发展做出贡献时，才需要这样做。
 
-It is **VERY IMPORTANT** that you try to get a functional baseline working before doing anything else. Avoid making ad-hoc changes right away to customize the deployment. Stick with the CAS-provided defaults and settings and make changes **one step at a time**. Keep track of process and applied changes in source control and tag changes as you make progress.
+在执行其他任何操作之前，尝试使功能基线正常运行是 **非常重要** 避免立即进行临时更改以自定义部署。 坚持使用CAS提供的默认值 和设置，并一次更改 **一次**。 跟踪过程和已应用的更改， ，并在进行进度时标记更改。
 
-## Customize
+## 定制
 
-This is where use cases get mapped to CAS features. Browse the documentation to find the closest match and apply. Again, it is important that you stick with the CAS baseline as much as possible:
+这是用例映射到CAS功能的地方。 浏览文档以找到最接近的匹配项并应用。 同样，重要的是要尽可能地坚持CAS基准：
 
-- Avoid making ad-hoc changes to the software internals.
-- Avoid making manual changes to core configuration components such as Spring and Spring Webflow.
-- Avoid making one-off bug fixes to the deployment, should you encounter an issue.
+- 避免对软件内部进行临时更改。
+- 避免对核心配置组件（例如Spring和Spring Webflow）进行手动更改。
+- 如果遇到问题，请避免对部署进行一次性错误修复。
 
-As noted previously, all such strategies lead to headache and cost.
+如前所述，所有这些策略都会导致头痛和成本上升。
 
-Instead, try to warm up to the following suggestions:
+相反，请尝试热身以下建议：
 
-- Bug fixes and small improvements belong to the core CAS software. Not your deployment. Make every attempt to report issues, contribute fixes and patches and work with the CAS community to solve issues once and for all.
-- Certain number of internal CAS components are made difficult to augment and modify. In most cases, this approach is done on purpose to steer you away from dangerous and needlessly complicated changes. If you come across a need and have a feature or use case in mind whose configuration and implementation requires modifications to the core internals of the software, discuss that with the CAS community and attempt to build the enhancement directly into the CAS software, rather than treating it as a snowflake.
+- 错误修复和小改进属于CAS的核心软件。 不是您的部署。 尽一切努力报告问题，提供 修补程序和补丁，并与CAS社区一劳永逸地解决问题。
+- 某些内部CAS组件很难进行扩充和修改。 在大多数情况下，此方法是 ，以使您远离危险和不必要的复杂更改。 如果遇到需求 并记住某个功能或用例，其功能和用例的配置和实现需要修改 ，请与CAS社区讨论，并尝试将增强功能直接构建到CAS软件中， 而不是将其视为雪花。
 
-To summarize, only make changes to the deployment configuration if they are truly and completely specific to your needs. Otherwise, try to generalize and contribute back to keep maintenance costs down. Repeatedly, failure to comply with this strategy will likely lead to disastrous results in the long run.
+总而言之，仅在部署配置真正真正地完全满足您的需求时才对其进行更改。 否则，请尝试归纳并回馈以降低维护成本。 长期而言，不遵守该策略 可能会导致灾难性的后果。
 
-## Troubleshooting
+## 故障排除
 
-The [troubleshooting guide](../installation/Troubleshooting-Guide.html) might have some answers for issues you may have run into and it generally tries to describe a strategy useful for troubleshooting and diagnostics. You may also seek assistance from the [CAS community](/cas/Mailing-Lists.html).
+[故障排除指南](../installation/Troubleshooting-Guide.html) 可能会为您遇到的问题提供一些答案 ，并且通常会尝试描述对故障排除 和诊断有用的策略。 您也可以从 [CAS社区](/cas/Mailing-Lists.html)寻求帮助。
