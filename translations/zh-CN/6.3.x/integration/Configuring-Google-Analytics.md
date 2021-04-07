@@ -1,15 +1,15 @@
 ---
-layout: default
-title: CAS - Google Analytics
-category: Integration
+layout: 默认
+title: CAS-Google Analytics（分析）
+category: 一体化
 ---
 
-# Google Analytics
+# 谷歌分析
 
-Google Analytics can be used to deliver useful statistics. create custom dimensions and metrics to gain insight into CAS and user traffic.
+Google Analytics（分析）可用于提供有用的统计信息。 创建自定义维度和指标，以获得 洞察CAS和用户流量。
 
 
-Support is enabled by including the following module in the Overlay:
+通过在叠加层中包含以下模块来启用支持：
 
 ```xml
 <dependency>
@@ -19,6 +19,6 @@ Support is enabled by including the following module in the Overlay:
 </dependency>
 ```
 
-Furthermore, CAS presents the ability to drop in a special cookie upon successful authentication events to be later process and consumed by Google Analytics. The value of this cookie is determined as a principal/authentication attribute.
+此外，CAS提供了在成功的身份验证事件后放入特殊cookie的功能，以便稍后处理 并由Google Analytics（分析）使用。 此cookie的值确定为主体/身份验证属性。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#google-analytics).
+要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#google-analytics)。
