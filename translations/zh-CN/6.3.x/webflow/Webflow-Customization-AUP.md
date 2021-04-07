@@ -1,291 +1,291 @@
 ---
-layout: default
-title: CAS - Web Flow Acceptable Usage Policy
-category: Webflow Management
+layout: 违约
+title: CAS - 网络流可接受的使用策略
+category: 网络流管理
 ---
 
-# Acceptable Usage Policy
+# 可接受的使用策略
 
-Also known as *Terms of Use* or *EULA*, CAS presents the ability to allow the user to accept the usage policy before moving on to the application. Production-level deployments of this feature would require modifications to the flow such that the retrieval and/or acceptance of the policy would be handled via an external storage mechanism such as LDAP or JDBC.
+CAS 也称为 *使用条款* 或 *EULA*，它提供了允许用户在进入应用程序之前接受使用策略的能力。 此功能的生产级部署将需要修改流程，以便检索 和/或接受策略将通过外部存储机制（如 LDAP 或 JDBC）进行处理。
 
-## Configuration
+## 配置
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-aup-webflow</artifactId>
+  <groupId>组织.apereo.cas</groupId>
+  <artifactId>卡-服务器-支持-上-网络流</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-Customize the policy by modifying the `src/main/resources/templates/casAcceptableUsagePolicyView.html`. See [this guide](../ux/User-Interface-Customization.html) to learn more about user interface customizations. Note that the view here should have full access to the resolved principal and attributes, if you wish to dynamically alter the page to present different text, etc.
+通过修改 `src/main/resources/templates/casAcceptableUsagePolicyView.html`来定制策略。 请参阅本指南 [](../ux/User-Interface-Customization.html) 了解有关用户界面定制的更多了解。 请注意，此处的视图应完全访问已解决的本金和属性，如果您希望动态更改页面以显示不同的文本，则 等。
 
-<div class="alert alert-info"><strong>Webflow Sequence</strong><p>Remember that acceptable usage policy executes
-after a successful authentication event where CAS has already established the authentication principal, since the 
-policy record is strongly tied to the identified user record. Implementing this feature before the authentication event
-would require rather heavy modifications to the CAS webflow as well as alternative means of storing and remembering decisions
-such as cookies or browser storage, etc.</p></div>
+<div class="alert alert-info"><strong>网流序列</strong><p>请记住，可接受的使用策略在 CAS 已建立身份验证本金的成功认证事件后执行
+，因为 
+策略记录与已识别的用户记录紧密相关联。 在认证事件之前实施此功能
+需要对 CAS 网络流进行相当繁重的修改，以及存储和记住决策的替代方法，
+如 Cookie 或浏览器存储等。</p></div>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptable-usage-policy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptable-usage-policy)。
 
-## Per Service
+## 每种服务
 
-Acceptable usage policy can be disabled and skipped on a per-service basis:
+可按服务禁用和跳过可接受的使用策略：
 
 ```json
-{
-  "@class": "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId": "https://app.example.org",
-  "name": "Example",
-  "id": 1,
-  "acceptableUsagePolicy":
-  {
-    "@class": "org.apereo.cas.services.DefaultRegisteredServiceAcceptableUsagePolicy",
-    "enabled": true,
-    "messageCode": "example.code",
-    "text": "example text"
-  }
-}
+•
+  "@class"："org.apereo.cas.服务.注册服务"，
+  "服务ID"："https://app.example.org"，
+  "名称"："示例"，
+  "id"： 1，
+  "可接受的使用政策"：
+  =
+    "@class"："org.apereo.cas.服务.默认注册服务可接受使用政策"，
+    "启用"：真实、
+    "消息代码"："示例代码"，
+    "文本"："示例文本"
+  =
+
 ```
 
-The policy assigned to each service includes the following features:
+分配给每个服务的策略包括以下功能：
 
-| Field         | Description                                                                                               |
-| ------------- | --------------------------------------------------------------------------------------------------------- |
-| `enabled`     | Control whether policy is active/inactive for this service. Default is `true`.                            |
-| `messageCode` | The policy language code that is linked to the CAS language bundles which carries the actual policy text. |
-| `text`        | The policy text that should be displayed for this application.                                            |
+| 田      | 描述                             |
+| ------ | ------------------------------ |
+| `启用`   | 控制此服务的政策是否为活动/非活动。 默认值 `真实`。   |
+| `消息代码` | 链接到带有实际策略文本的 CAS 语言捆绑包的政策语言代码。 |
+| `发短信`  | 应显示此应用程序的政策文本。                 |
 
-## Storage Mechanism
+## 存储机制
 
-Usage policy user decisions are stored and remembered via the following ways.
+使用策略用户决策通过以下方式存储和记住。
 
-In almost all storage strategies, CAS allows the deployer to detect the current user's policy choice via a CAS single-valued `boolean` attribute. The attribute must be resolved using the [CAS attribute resolution strategy](../integration/Attribute-Resolution.html). If the attribute contains a value of `false`, CAS will attempt to ask for policy acceptance. Upon accepting the policy, the result will be stored back into storage.
+在几乎所有存储策略中，CAS 允许部署器 通过 CAS 单值 `布尔` 属性检测当前用户的政策选择。 属性必须使用 [CAS属性解析策略](../integration/Attribute-Resolution.html)来解决。 如果该属性包含 `虚假`值，CAS 将尝试 要求政策接受。 接受保单后，结果将存储回存储。
 
-### Default
+### 违约
 
-By default the task of remembering the user's choice is kept in memory by default and will be lost upon container restarts and/or in clustered deployments. This option is only useful during development, testing and demos and is not at all suitable for production.
+默认情况下，记住用户选择的任务默认保留在内存中，并在 容器重新启动和/或聚类部署时丢失。 此选项仅在开发、测试 和演示过程中有用，根本不适合生产。
 
-The scope of the default storage mechanism can be adjusted from the default of GLOBAL (described above) to AUTHENTICATION which will result in the user having to agree to the policy during each authentication event. The user will not have to agree to the policy when CAS grants access based on an existing ticket granting ticket cookie.
+默认存储机制的范围可以从 GLOBAL 的默认值（上文所述）调整为 身份验证，这将导致用户在每次身份验证事件期间必须同意该策略。 当 CAS 根据现有门票授予 票 cookie 授予访问权限时，用户将不必同意该策略。
 
-### Groovy
+### 槽的
 
-Alternatively, CAS can be configured to use a Groovy script to verify status of policies and store results. The script should match the following:
+或者，CAS 可以配置为使用 Groovy 脚本来验证政策和存储结果的状态 。 脚本应匹配以下内容：
 
 ```groovy
-import org.apereo.cas.authentication.principal.*
-import org.apereo.cas.authentication.*
-import org.apereo.cas.util.*
-import org.apereo.cas.aup.*
-import org.springframework.webflow.execution.*
+进口组织.apereo.cas.认证.
+进口组织.apereo.cas.认证.*
+进口组织.apereo.cas.
+进口组织.apereo.cas.aup.*
+进口组织.弹簧框架 .webflow.执行.*
 
-def verify(Object[] args) {
-    def requestContext = args[0]
-    def credential = args[1]
-    def applicationContext = args[2]
-    def principal = args[3]
-    def logger = args[4]
+定义验证（对象[]args）{
+    定义请求机密=args[0]
+    定义凭据=args[1]
+    def应用程序机密=args[2]
+    def本金=args[3]
+    去记录器=args[4]
     ...
-    if (policyAccepted()) {
-        return AcceptableUsagePolicyStatus.accepted(principal)
-    }
-    return AcceptableUsagePolicyStatus.denied(principal)
-}
+    如果（政策接受）{
+        返回可接受的使用政策状态。接受（本金）
+    =
+    返回可接受的使用政策状态。拒绝（原则）
+=
 
-def submit(Object[] args) {
-     def requestContext = args[0]
-     def credential = args[1]
-     def applicationContext = args[2]
-     def principal = args[3]
-     def logger = args[4]
+提交（对象[] args）{
+     def请求机密=args[0]
+     除卡凭据=args[1]
+     def应用程序本金=args[2]
+     def本金=args[3]
+     定义记录器=args[4]
      ...
-     return true
-}
+     返回真实
+=
 
 /*
-    A special callback function is implemented
-    as an override to return an `AcceptableUsagePolicyTerms` 
-    object back to CAS to be re-purposed
-    for acceptable usage policy flows.
+    实施特殊回调功能
+    作为覆盖项，将"可接受使用策略" 
+    对象返回 CAS，以重新用于可接受的使用策略流
+    。
 */
-def fetch(Object[] args) {
-    def requestContext = args[0]
-    def credential = args[1]
-    def applicationContext = args[2]
-    def principal = args[3]
-    def logger = args[4]
+德获取（对象[]args）{
+    定义请求通信=args[0]
+    定义凭据=args[1]
+    def应用程序本金=args[2]
+    def本金=args[3]
+    d伐木机=args[4]
 
     ...    
 
-    return AcceptableUsagePolicyTerms.builder()
-            .defaultText("Hello, World")
-            .code(AcceptableUsagePolicyTerms.CODE)
-            .build();
+    返回可接受的使用周期。建设者（）
+            .默认Text（"你好， 世界"）
+            .代码（可接受的使用周期。CODE）
+            。构建（）：
 }
 ```
 
-The parameters passed are as follows:
+通过的参数如下：
 
-| Parameter            | Description                                                                 |
-| -------------------- | --------------------------------------------------------------------------- |
-| `requestContext`     | The object representing the Spring Webflow `RequestContext`.                |
-| `credential`         | The object representing the authentication `Credential`.                    |
-| `applicationContext` | The object representing the Spring `ApplicationContext`.                    |
-| `principal`          | The object representing the authenticated `Principal`.                      |
-| `logger`             | The object responsible for issuing log messages such as `logger.info(...)`. |
+| 参数      | 描述                                |
+| ------- | --------------------------------- |
+| `请求康德信` | 代表春季网络流的对象 `请求信`。                 |
+| `凭据`    | 表示认证的对象 `凭据`。                     |
+| `应用康德信` | 代表春季 `应用信的对象`。                    |
+| `主要`    | 表示经过验证的 `主体`的对象。                  |
+| `记录`    | 负责发布日志消息的对象，如 `logger.info（。。。）`。 |
 
-### LDAP
+### 阿尔达普
 
-Alternatively, CAS can be configured to use LDAP as the storage mechanism. Upon accepting the policy, the result will be stored back into LDAP and remembered via the same attribute. Support is enabled by including the following dependency in the WAR overlay:
+或者，CAS 可以配置为使用 LDAP 作为存储机制。 接受保单后，结果将存储回 LDAP，并通过相同的属性 记住。 支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-aup-ldap</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - aup - ldap</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#ldap-1).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#ldap-1)。
 
-### MongoDb
+### 蒙古德布
 
-CAS can be configured to use a MongoDb instance as the storage mechanism. Upon accepting the policy, the adopter is expected to provide a collection name where the decision is kept and the document is assumed to contain a `username` column as well as one that matches the AUP attribute name defined.
+CAS 可以配置为使用 MongoDb 实例作为存储机制。 在接受保单后，采用者应提供保存 决策的集合名称，并假定文档包含 `用户名` 列以及与定义的 AUP 属性名称匹配的用户名。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-aup-mongo</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - 阿普 - 蒙戈</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptable-usage-policy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptable-usage-policy)。
 
-### Redis
+### 雷迪斯
 
-CAS can be configured to use a Redis instance as the storage mechanism. Decisions are mapped to a combination of CAS username and the designated AUP attribute name.
+CAS 可以配置为使用 Redis 实例作为存储机制。 决策映射为 CAS 用户名和指定 AUP 属性名称的组合。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-aup-redis</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - 阿普 - 雷迪斯</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptable-usage-policy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptable-usage-policy)。
 
-### CouchDb
+### 库奇德布
 
-CAS can be configured to use a CouchDb instance as the storage mechanism. Upon accepting the policy, the adopter is expected to provide a collection name where the decision is kept and the document is assumed to contain a `username` column as well as one that matches the AUP attribute name defined.
+CAS 可以配置为使用沙发数据库实例作为存储机制。 在接受保单后，采用者应提供保存 决策的集合名称，并假定文档包含 `用户名` 列以及与定义的 AUP 属性名称匹配的用户名。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-aup-couchdb</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - 阿普 - 库奇德布</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptable-usage-policy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptable-usage-policy)。
 
-### Couchbase
+### 沙发基地
 
-CAS can be configured to use a Couchbase instance as the storage mechanism. Upon accepting the policy, the decision is kept inside a document with a `username` column and the AUP attribute name with the result of the decision.
+CAS 可以配置为使用沙发底座实例作为存储机制。 接受保单后， 决定将保存在具有 `用户名` 列和 AUP 属性名称的文件中，该文档具有决策结果。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-aup-couchbase</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - aup - 沙发基地</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptable-usage-policy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptable-usage-policy)。
 
-### JDBC
+### 京城
 
-CAS can be configured to use a database as the storage mechanism. Upon accepting the policy, the adopter is expected to provide a table name where the decision is kept and the table is assumed to contain a `username` column as well as one that matches the AUP attribute name defined.
+CAS 可以配置为使用数据库作为存储机制。 接受保单后，采用者应提供保留 决定的表名，并假定该表包含 `用户名` 列以及与定义的 AUP 属性名称匹配的名称。
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-aup-jdbc</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - aup - jdbc</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptable-usage-policy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptable-usage-policy)。
 
-### REST
+### 休息
 
-CAS can be configured to use a REST API as the storage mechanism. Upon accepting the policy, the API is contacted passing along a `username` parameter who has accepted the policy. The expected response status code is `200`.
+CAS 可配置为使用 REST API 作为存储机制。 接受保单后， 联系 API，传递已接受保单的 `用户名` 参数。 预期响应状态代码 `200`。
 
-Furthermore, the API endpoint at `${endpoint}/policy` will be invoked by CAS to fetch the appropriate policy terms. The API is contacted passing along `username` and `locale` parameters and the expected response status code is `200`. The response output body is expected to be an instance of `AcceptableUsagePolicyTerms` as such:
+此外，中科院将援引 `${endpoint}/政策` 的API终点来获取适当的政策条款。 通过 `用户名` 和 `本地` 参数联系 API，预期响应状态代码 `200`。 产出机构 响应预计将是 `可接受使用政策周期` 实例：
 
 ```json
-{
-  "@class": "org.apereo.cas.aup.AcceptableUsagePolicyTerms",
-  "code": "screen.aup.policyterms.some.key",
-  "defaultText": "Default policy text"
+•
+  "@class"："org.apereo.cas.aup.可接受使用策略"，
+  "代码"："屏幕.aup.政策图.key"，
+  "默认文本"："默认策略文本"
 }
 ```
 
-Support is enabled by including the following dependency in the WAR overlay:
+支持通过在 WAR 叠加中包括以下依赖性来启用：
 
 ```xml
 <dependency>
-  <groupId>org.apereo.cas</groupId>
-  <artifactId>cas-server-support-aup-rest</artifactId>
+  <groupId>组织. apereo. cas</groupId>
+  <artifactId>卡斯服务器支持 - 上休息</artifactId>
   <version>${cas.version}</version>
 </dependency>
 ```
 
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptable-usage-policy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptable-usage-policy)。
 
-### Custom
+### 习惯
 
-If you wish to design your own storage mechanism, you may follow the below approach:
+如果您希望设计自己的存储机制，您可以采用以下方法：
 
 ```java
-package org.apereo.cas.custom;
+包组织. 阿佩雷奥. 卡斯. 自定义;
 
-@Configuration("myUsagePolicyConfiguration")
-@EnableConfigurationProperties(CasConfigurationProperties.class)
-public class MyUsagePolicyConfiguration {
+@Configuration（"我的使用政策配置"）
+@EnableConfigurationProperties（配置.class）
+公共类的"使用政策配置"=
 
     @Bean
-    public AcceptableUsagePolicyRepository acceptableUsagePolicyRepository() {
-      ...
-    }
+    公共可接受的使用政策配置可接受的使用政策配置（）=
+      。。。
+    •
 
 }
 ```
 
-[See this guide](../configuration/Configuration-Management-Extensions.html) to learn more about how to register configurations into the CAS runtime.
+[本指南](../configuration/Configuration-Management-Extensions.html) 了解有关如何将配置注册到 CAS 运行时间的更多信息。
 
-## Policy Terms
+## 政策条款
 
-Storage options outlined above are also available to fetch the acceptable usage policy and pass it along to the appropriate views for display and acceptance under the attribute `aupPolicy`. The policy terms can reference to a particular message code found in CAS language bundles, or it can contain the default policy text that would be used for display verbatim.
+上述存储选项也可用于获取可接受的使用策略 ，并将其传递给适当的视图，以显示和接受根据属性 `超政策`。 策略术语可以引用 CAS 语言捆绑包中找到的特定消息代码， 也可以包含用于逐字显示的默认策略文本。
 
-Unless the storage option overrides and specializes this ability, th default behavior to fetch policy terms is based on a single-valued attribute defined in CAS properties that typically might indicate user status or membership. The attribute value is appended to the language code `screen.aup.policyterms` to then allow CAS to look up the specific policy text from language bundles. If no such key is available in CAS languages bundles, a default policy text found under the same language key will be displayed.
+除非存储选项覆盖并专门化此能力，否则 获取策略条款的默认行为基于 CAS 属性中定义的单个值属性，该属性通常可能表示用户状态或会员资格。 属性值附加到 `屏幕的语言代码.aup.政策策略` ，然后允许 CAS 从语言捆绑包中查找特定 策略文本。 如果 CAS 语言捆绑包中没有此类密钥，则将显示在同一语言密钥下找到的默认策略文本 。
 
-The defined attribute must of course be available for the resolved authenticated principal from the relevant sources.
+当然，必须从相关来源为已解决的经过验证的委托人提供定义属性。
 
-For example, if the policy terms attribute is defined as `status` with the value of `developer`, the expected language code to carry the policy text would be `screen.aup.policyterms.developer=<p>Policy for developers</p>`.
+例如，如果策略术语属性定义为 `状态` 与 `开发人员`值，则携带策略文本的预期语言 代码将 `</p>`&lt;p&gt;屏幕。
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#acceptable-usage-policy).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#acceptable-usage-policy)。
