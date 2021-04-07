@@ -1,28 +1,28 @@
 ---
-layout: default
-title: CAS - SAML SP Integrations
-category: Integration
+layout: 违约
+title: CAS - 萨姆尔SP集成
+category: 集成
 ---
 
-# SAML SP Integrations
+# 萨姆尔 SP 集成
 
-CAS provides built-in integration support for a number of SAML2 service providers. Configuring these service providers is simply about declaring the relevant properties in the CAS configuration as well as the configuration module below. Each integration, when configured appropriately, will register the service provider with the CAS service registry as a SAML SP and will follow a recipe (that is documented by the SP publicly) to configure attribute release policies, name ids and entity IDs. If you need to, you can review the registration record inside the CAS service registry to adjust options.
+CAS 为多个 SAML2 服务提供商提供内置集成支持。 将这些服务提供商配置 只是宣布 CAS 配置中的相关属性以及下面的配置模块。 每次集成（ 适当配置时，都会将服务提供商在 CAS 服务注册处注册为 SAML SP，并将遵循 配方（SP 公开记录），以配置属性发布策略、名称 ID 和实体 ID。 如果您需要， 您可以查看 CAS 服务注册表内的注册记录以调整选项。
 
-**NOTE:** In the event that special attributes and/or name ids are required for the integration, you are required to ensure all such [attributes are properly resolved](Attribute-Resolution.html) and are available to the CAS principal.
+**注：** 如果集成需要特殊属性和/或名称 ID，则需要 以确保所有此类 [属性](Attribute-Resolution.html) 得到妥善解决，并提供给 CAS 负责人。
 
-<div class="alert alert-warning"><strong>Remember</strong><p>SAML2 service provider integrations listed here simply attempt to automate CAS configuration based on known and documented integration guidelines and recipes provided by the service provider owned by the vendor. These recipes can change and break CAS over time and needless to say, they need to be properly and thoroughly tested as the project itself does not have a subscription to each application to test for correctness. YMMV. If you find an issue with an automated integration strategy here, please <strong>speak up</strong>.</p></div>
+<div class="alert alert-warning"><strong>记得</strong><p>此处列出的 SAML2 服务提供商集成只是尝试根据供应商拥有的服务提供商提供的已知和有记录的集成指南和配方实现 CAS 配置自动化。 这些食谱可以随着时间的推移改变和打破CAS，不用说，他们需要正确和彻底的测试，因为项目本身没有订阅每个应用程序来测试正确性。 基督教青年会。 如果您在这里发现自动集成策略有问题，请 <strong></strong>直言不讳。</p></div>
 
-Support is enabled by including the following module in the Overlay:
+支持通过在覆盖中包括以下模块来启用：
 
 ```xml
 <dependency>
-     <groupId>org.apereo.cas</groupId>
-     <artifactId>cas-server-support-saml-sp-integrations</artifactId>
+     <groupId>组织.apereo.cas</groupId>
+     <artifactId>的卡斯服务器支持-萨姆-斯普集成</artifactId>
      <version>${cas.version}</version>
 </dependency>
 ```
 
-The following SAML SP integrations, as samples, are provided by CAS:
+以下 SAML SP 集成作为示例由 CAS 提供：
 
 <div class="img-cloud">
 <a href="http://www.incommon.org/federation/metadata.html">
@@ -204,12 +204,12 @@ The following SAML SP integrations, as samples, are provided by CAS:
 
 </div>
 
-To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#saml-sps).
+要查看 CAS 属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#saml-sps)。
 
-<div class="alert alert-info"><strong>Configure Once, Run Everywhere</strong><p>If you have developed a recipe for integrating
-with a SAML service provider, consider contributing that recipe to the project so its configuration
-can be automated once and for all to use. Let the change become a feature of the project, rather than something you alone have to maintain.</p></div>
+<div class="alert alert-info"><strong>配置一次，随处运行</strong><p>如果您已开发出将
+与 SAML 服务提供商集成的配方，请考虑将该配方贡献给项目，以便其配置
+可以一劳永逸地实现自动化。 让变革成为项目的一个特点，而不是你一个人必须维护的东西。</p></div>
 
-## Google Apps
+## 谷歌应用程序
 
-The Google Apps SAML integration is also provided by CAS natively [based on this guide](Google-Apps-Integration.html).
+谷歌应用程序SAML集成也由CAS本地 [根据本指南](Google-Apps-Integration.html)提供。
