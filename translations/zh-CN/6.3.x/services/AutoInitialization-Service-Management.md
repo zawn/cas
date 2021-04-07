@@ -1,13 +1,15 @@
 ---
-layout: default
-title: CAS - Service Registry Initialization
-category: Services
+layout: 默认
+title: CAS-服务注册表初始化
+category: 服务
 ---
 
-# Service Registry Initialization
+# 服务注册表初始化
 
-Upon startup and configuration permitting, the registry is able to auto initialize itself from default JSON service definitions available to CAS. Populating the registry with a set of default services serves as *a starting point* and an example at that where one is able to immediately start integrating applications. For production purposes, it is recommended that you pick a more relevant [option for storage](Service-Management.html) and disable this behavior.
+在启动和配置允许的情况下，注册表可以根据CAS可用的默认JSON服务定义自动进行初始化。 使用一组默认服务填充注册表 *开始，从* 开始，在此示例中，该服务可以立即开始集成应用程序。 出于生产目的，建议您为存储</a>
 
-The default service definitions that are used by the initializer component ship with CAS by default and are put on the classpath. The initializer is able to detect all service definitions files found on the classpath (i.e. `src/main/resources/services`) and import them into the *real* service registry used. This means that if this behavior is enabled and additional files are found on the classpath at the relevant paths, CAS will take the default services as well as any and all other services found in order to import them into the service registry used. Note that the location of the JSON files while typically set to the classpath may be controlled via CAS properties; The same setting property that controls the location of the JSON service files for the JSON service registry is used by the initialization logic to locate service files.
+选项并禁用此行为。</p> 
 
-Again, this behavior is only useful as a starting point, an example and for small and specialized deployments. It is recommended that you take explicit control over the registry and register services and applications which you have fully authorized. To see the relevant list of CAS properties, please [review this guide](../configuration/Configuration-Properties.html#service-registry).
+初始化程序组件使用的默认服务定义默认情况下随CAS一起提供，并放在类路径中。 初始化程序能够检测在类路径上找到的所有服务定义文件（即 `src / main / resources / services`）并将它们导入使用的 ** 实数服务注册表中。 这意味着，如果启用了此行为，并且在类路径的相关路径上找到了其他文件，则CAS将采用默认服务以及找到的所有其他服务，以将它们导入使用的服务注册表中。 请注意，JSON文件的位置（通常设置为类路径）通常可以通过CAS属性进行控制；初始化逻辑使用相同的设置属性来控制JSON服务注册表的JSON服务文件的位置，以查找服务文件。 
+
+同样，此行为仅作为起点，示例以及小型和专业部署有用。 建议您对注册表进行显式控制，并注册已完全授权的服务和应用程序。 要查看CAS属性的相关列表，请 [查看本指南](../configuration/Configuration-Properties.html#service-registry)。
