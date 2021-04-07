@@ -1,24 +1,26 @@
 ---
-layout: default
-title: CAS - Papertrail Logging Configuration
-category: Logs & Audits
+layout: 违约
+title: CAS - 纸挂记录配置
+category: 日志 & 审计
 ---
 
-# Papertrail Logging
+# 纸面记录
 
-[Papertrail](https://papertrailapp.com) is a cloud-based log management service that provides aggregated logging tools, flexible system groups, team-wide access, long-term archives, charts and analytics exports, monitoring webhooks and more.
+[纸轨](https://papertrailapp.com) 是一种基于云的日志管理服务，提供聚合伐木工具、 灵活的系统组、全团队访问、长期档案、图表和分析出口、监控网钩等。
 
-See [this guide](http://help.papertrailapp.com/kb/configuration/java-log4j-logging/#log4j2) for more info.
+有关详细信息，请参阅本指南</a>。</p> 
+
+
 
 ```xml
 ...
 <Appenders>
     <Syslog name="Papertrail"
             host="<host>.papertrailapp.com"
-            port="XXXXX"
-            protocol="TCP" appName="MyApp" mdcId="mdc"
-            facility="LOCAL0" enterpriseNumber="18060" newLine="true"
-            format="RFC5424" ignoreExceptions="false" exceptionPattern="%throwable{full}">
+            端口="XXX"
+            协议="TCP"应用名="MyApp"mdcId="mdc"
+            设施="LOCAL0"企业N "18060"新线="真"
+            格式="RFC5424"忽略例外="假"例外="可投掷{full}%">
     </Syslog>
 </Appenders>
 ...
