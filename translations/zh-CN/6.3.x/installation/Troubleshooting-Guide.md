@@ -1,10 +1,10 @@
 ---
 layout: default
-title: CAS - Troubleshooting Guide
-category: Installation
+title: CAS - 故障排除指南
+category: 安装
 ---
 
-# Troubleshooting Guide
+# 疑难解答
 
 A number of common questions and answers are gathered here. Please watch for updates as this is likely to grow as time/development moves on.
 
