@@ -48,40 +48,40 @@ category: 安装
 
 ## 在负载均衡器/代理后面配置SSL
 
-You might be running CAS inside a [servlet container](Configuring-Servlet-Container.html) such as Apache Tomcat behind some sort of proxy such as haproxy, Apache httpd, etc where the proxy is handling the SSL termination. The connections to the user are secured via `https`, yet those between the proxy and CAS service are just `http`.
+你可能将包含CAS的[servlet容器](Configuring-Servlet-Container.html)（如Apache Tomcat）运行在某种处理SSL连接的代理后面，如haproxy，Apache httpd等， 与用户的连接通过 `https`进行保护，而代理服务器和CAS服务之间的连接仅为 `http`。
 
-With this setup, the CAS login screen may still warn you about a non-secure connection. There is no setting in CAS that would allow you to control/adjust this, as this is entirely controlled by the container itself. All CAS cares about is whether the incoming connection request identifies itself as a secure connection. So to remove the warning, you will need to look into your container's configuration and docs to see how the connection may be secured between the proxy and CAS.
+使用此设置，CAS登录屏幕可能仍会警告您有关不安全的连接。 CAS中没有设置可以让您控制/调整此设置，因为它完全由容器本身控制。 CAS唯一关心的是传入的连接请求是否将自身标识为安全连接。 因此，要删除警告，您将需要查看容器的配置和文档，以了解如何将代理与CAS之间的连接设置为安全的。
 
-For [Apache Tomcat](https://tomcat.apache.org/tomcat-9.0-doc/config/http.html), you may be able to adjust the connector that talks to the proxy with a `secure=true` attribute.
+对于 [Apache Tomcat](https://tomcat.apache.org/tomcat-9.0-doc/config/http.html) ，你可以通过`secure = true` 属性来调整与代理通信的连接器。
 
 ## Application X "redirected you too many times"
 
-"Too many redirect" errors are usually cause by service ticket validation failure events, generally caused by application misconfiguration. Ticket validation failure may be caused by expired or unrecognized tickets, SSL-related issues and such. Examine your CAS logs and you will find the cause.
+"Too many redirect" 错误通常是由服务票据验证失败事件造成的，一般都是由应用程序配置错误导致的。 票据验证失败可能是由票据过期或无法识别，与SSL相关的问题等引起的。 检查您的CAS日志，您将找到原因。
 
-## Not Receiving Attributes
+## 未接收到属性
 
-If your client application is not receiving attributes, you will need to make sure:
+如果您的客户端应用程序未接收到属性，则需要确保：
 
-1. The client is using a version of [CAS protocol](../protocol/CAS-Protocol.html) that is able to release attributes.
-2. The client, predicated on #1, is hitting the appropriate endpoint for service ticket validation (i.e. `/p3/serviceValidate`).
-3. The CAS server itself is [resolving and retrieving attributes](../integration/Attribute-Resolution.html) correctly.
-4. The CAS server is authorized to [release attributes](../integration/Attribute-Release.html) to that particular client application inside its service registry.
+1. 客户端正在使用能够得到属性的 [CAS协议](../protocol/CAS-Protocol.html)版本
+2. 基于＃1的客户端，是否在适当的端点进行服务票据验证（即`/p3/serviceValidate`）。
+3. CAS服务器本身是否 [正确解析和获取属性](../integration/Attribute-Resolution.html)。
+4. 在服务注册中心，CAS服务器是否已经授权该特性的客户端程序[获取属性](../integration/Attribute-Release.html)。
 
-Please [review this guide](../services/Service-Management.html) to better understand the CAS service registry.
+请 [查看本指南](../services/Service-Management.html) 以更好地了解CAS服务注册表。
 
-## Application Not Authorized
+## 应用程序未授权
 
-You may encounter this error, when the requesting application/service url cannot be found in your CAS service registry. When an authentication request is submitted to the CAS `login` endpoint, the destination application is indicated as a url parameter which will be checked against the CAS service registry to determine if the application is allowed to use CAS. If the url is not found, this message will be displayed back. Since service definitions in the registry have the ability to be defined by a url pattern, it is entirely possible that the pattern in the registry for the service definition is misconfigured and does not produce a successful match for the requested application url.
+当您的CAS服务注册表中找不到请求的应用程序/服务URL时，您可能会遇到此错误。 当将身份验证请求提交到CAS `登录` 端点时，目标应用程序地址被包含在url参数中，CAS服务器将对照服务注册表检车，以确定是否允许该应用程序使用CAS。 如果未找到该URL，则会显示这个消息。 由于注册表中的服务定义允许使用url pattern，因此完全可能是注册表中用于服务定义的`pattern`配置不正确，并且无法成功匹配请求的应用程序url 。
 
-Please [review this guide](../services/Service-Management.html) to better understand the CAS service registry.
+请 [查看本指南](../services/Service-Management.html) 以更好地了解CAS服务注册表。
 
-## Invalid/Expired CAS Tickets
+## 无效/过期的CAS票据
 
-You may experience `INVAILD_TICKET` related errors when attempting to use a CAS ticket whose expiration policy dictates that the ticket has expired. The CAS log should further explain in more detail if the ticket is considered expired, but for diagnostic purposes, you may want to adjust the [ticket expiration policy configuration](../ticketing/Configuring-Ticket-Expiration-Policy.html) to remove and troubleshoot this error.
+当尝试使用过期策略规定了已过期的票据时可能会遇到 `INVAILD_TICKET` 相关的错误。 CAS日志会进一步详细解释为什么票据会被认为是过期的，但是为了诊断的目的，你可能想要调整[票据过期策略配置](../ticketing/Configuring-Ticket-Expiration-Policy.html)来删除和解决此问题。
 
-Furthermore, if the ticket itself cannot be located in the CAS ticket registry the ticket is also considered invalid. You will need to observe the ticket used and compare it with the value that exists in the ticket registry to ensure that the ticket id provided is valid.
+此外，如果票据本身无法在CAS票证注册表中找到，则该票据也被视为无效。 您将需要观察所使用的票据，并将其与票据注册表中存在的值进行比较，以确保提供的票据ID有效。
 
-## Out of Heap Memory Error
+## 堆内存不足错误
 
 ```bash
 java.lang.OutOfMemoryError: GC overhead limit exceeded
